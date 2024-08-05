@@ -110,7 +110,7 @@ hook.Add("PlayerDeath", "ZShelter-PlayerDeath", function(ply, inflictor, attacke
 	timer.Simple(1, function()
 		ply:Spectate(6)
 	end)
-	if(attacker:IsPlayer()) then
+	if(attacker:IsPlayer() && ply != attacker) then
 		attacker:SetNWInt("TKAmount", attacker:GetNWInt("TKAmount", 0) + 1)
 	end
 	ZShelter.BroadcastNotify(true, true, ply:Nick())

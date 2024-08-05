@@ -19,6 +19,8 @@ ZShelter.StartedDifficulty = ZShelter.StartedDifficulty || -1
 function ZShelter.HandleWin(title, desc)
 	ZShelter.AddWinCount(GetGlobalInt("Day", 1), GetConVar("zshelter_difficulty"):GetInt())
 	ZShelter.BroadcastEnd(true, title, desc)
+
+	hook.Run("ZShelter-OnWinningRound")
 end
 
 function ZShelter.ToggleBarricadeCollision(toggle)

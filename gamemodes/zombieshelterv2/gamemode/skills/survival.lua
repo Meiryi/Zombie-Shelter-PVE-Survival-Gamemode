@@ -147,7 +147,7 @@ ZShelter.AddSkills(ClassName, "OnGatheringResources",
 		local current = GetGlobalInt(type, 0)
 		local capacity = GetGlobalInt("Capacity", 16)
 		if(current >= capacity) then return end
-		player:AddFrags(amount)
+		player:AddFrags(amount * 3)
 		SetGlobalInt(type, math.min(current + amount, capacity))
 
 		resource.Amount = resource.Amount - 1

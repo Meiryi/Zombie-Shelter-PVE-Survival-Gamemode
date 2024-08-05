@@ -389,6 +389,7 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 		canbuild = false
 	end
 
+--[[
 	local mins, maxs = ZShelter.PreviewEntity:GetModelBounds()
 	local rotatedA,rotatedB = ZShelter.PreviewEntity:GetRotatedAABB(mins, maxs)
 	local tr = {
@@ -397,12 +398,13 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 		ignoreworld = true,
 		mins = rotatedA,
 		maxs = rotatedB,
-		mask = MASK_SHOT,	
+		mask = MASK_SHOT_HULL,
 	}
 	local ret = util.TraceHull(tr)
 	if(IsValid(ret.Entity)) then
 		canbuild = false
 	end
+]]
 	local shelter = GetGlobalEntity("ShelterEntity")
 	if(IsValid(shelter)) then
 		local shelterpos = shelter:GetPos()

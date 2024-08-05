@@ -122,6 +122,7 @@ function ENT:ShockWave()
 	VJ_EmitSound(self,self.SoundTbl_Shockwave_Ready,100,100)
 	VJ_EmitSound(self,self.SoundTbl_Shockwave_Ready,100,100) 
 	timer.Simple(2, function()
+		if(!IsValid(self)) then return end
 		VJ_EmitSound(self,self.SoundTbl_Shockwave,100,100)
 		VJ_EmitSound(self,self.SoundTbl_Shockwave,100,100) 
 

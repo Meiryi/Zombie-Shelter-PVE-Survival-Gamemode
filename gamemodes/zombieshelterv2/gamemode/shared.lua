@@ -61,7 +61,7 @@ file.CreateDir("zombie shelter v2/mapconfig/")
 file.CreateDir("zombie shelter v2/avatars/")
 file.CreateDir("zombie shelter v2/multiplayer/")
 
-ZShelter.GameVersion = "1.0.3"
+ZShelter.GameVersion = "1.0.4"
 ZShelter.ConfigVersion = "1.0.9" -- DANGER, MODIFY THIS WILL RESET CONFIGS
 ZShelter.BasePath = "zombieshelterv2/gamemode/"
 ZShelter.MaximumDifficulty = 9

@@ -47,12 +47,13 @@ function ZShelter.CreateFrame(parent, x, y, w, h, color)
     return panel
 end
 
-function ZShelter.CreatePanel(parent, x, y, w, h, color)
+function ZShelter.CreatePanel(parent, x, y, w, h, color, r)
+    r = r || 0
     local panel = vgui.Create("DPanel", parent)
         panel:SetPos(x, y)
         panel:SetSize(w, h)
         panel.Paint = function()
-            draw.RoundedBox(0, 0, 0, w, h, color)
+            draw.RoundedBox(r, 0, 0, w, h, color)
         end
     return panel
 end
@@ -191,6 +192,61 @@ function ZShelter.InvisButton(parent, x, y, w, h, func)
         btn.DoClick = func
         
         return btn
+end
+
+function ZShelter.CustomPopupMenu(parent, x, y, w, h, color)
+    local menu = ZShelter.CreatePanel(nil, x, y, w, 1, color)
+    menu:SetZPos(32766)
+    menu:MakePopup()
+    local removing = false
+    local alpha = 0
+
+    menu.TargetHeight = 0
+    menu.CurrentTall = 1
+    menu.AddOptions = function(opt, func)
+        local btn = ZShelter.CreateButton(menu, 0, 0, menu:GetWide(), ScreenScaleH(16), opt, "ZShelter-ScoreboardPopupFont", Color(220, 220, 220, 255), Color(30, 30, 30, 255), function()
+            removing = true
+            func()
+        end)
+        btn:Dock(TOP)
+        btn:DockMargin(0, 0, 0, ScreenScaleH(1))
+        menu.TargetHeight = menu.TargetHeight + ScreenScaleH(17)
+        btn.Alpha = 0
+        btn.Paint = function()
+            draw.RoundedBox(0, 0, 0, btn:GetWide(), btn:GetTall(), Color(30, 30, 30, 255))
+            if(btn:IsHovered()) then
+                btn.Alpha = math.Clamp(btn.Alpha + ZShelter.GetFixedValue(15), 0, 105)
+            else
+                btn.Alpha = math.Clamp(btn.Alpha - ZShelter.GetFixedValue(15), 0, 105)
+            end
+            draw.RoundedBox(0, 0, 0, btn:GetWide(), btn:GetTall(), Color(255, 255, 255, btn.Alpha))
+        end
+    end
+
+    menu.Wait = true
+    menu:SetAlpha(0)
+    menu.Think = function()
+        if(menu.Wait) then menu.Wait = false return end -- 1 Frame delay
+        if(removing) then
+            alpha = math.Clamp(alpha - ZShelter.GetFixedValue(15), 0, 255)
+            menu.CurrentTall = math.Clamp(menu.CurrentTall - ZShelter.GetFixedValue(menu.CurrentTall * 0.25), 0, menu.TargetHeight)
+        else
+            alpha = math.Clamp(alpha + ZShelter.GetFixedValue(15), 0, 255)
+            menu.CurrentTall = math.Clamp(menu.CurrentTall + ZShelter.GetFixedValue((menu.TargetHeight - menu.CurrentTall) * 0.25), 0, menu.TargetHeight)
+        end
+        if(!IsValid(parent) || !menu:HasFocus()) then
+            removing = true
+        end
+        menu:SetTall(menu.CurrentTall)
+        menu:SetAlpha(alpha)
+        if(alpha <= 0 && removing) then
+            menu:Remove()
+        end
+    end
+    menu.Paint = function()
+        draw.RoundedBox(0, 0, 0, menu:GetWide(), menu:GetTall(), color)
+    end
+    return menu
 end
 
 function ZShelter.CreateButton(parent, x, y, w, h, text, font, tcolor, bcolor, func, r)

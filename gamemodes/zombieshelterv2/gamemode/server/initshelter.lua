@@ -188,6 +188,7 @@ hook.Add("EntityRemoved", "ZShelter-HandleFail", function(ent)
 	if(ent == GetGlobalEntity("ShelterEntity")) then
 		ZShelter.AddFailCount(GetGlobalInt("Day", 1), GetConVar("zshelter_difficulty"):GetInt())
 		ZShelter.BroadcastEnd(false, "#Defeat", "#ShelterDestroyed")
+		hook.Run("ZShelter-OnLosingRound")
 	end
 end)
 

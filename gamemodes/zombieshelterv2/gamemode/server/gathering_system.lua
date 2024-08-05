@@ -28,7 +28,7 @@ function ZShelter.AddResourceToPlayer(player, resource, amount)
 end
 
 function ZShelter.GatheringSystem(player, resource, nocallback) 
-	if(!IsValid(resource)) then return end
+	if(!IsValid(resource) || !resource.Amount) then return end
 	local type = resource.ResourceType
 	local capacity = player:GetNWFloat("ResourceCapacity", 10)
 	local current = player:GetNWFloat(type, 0)
@@ -36,7 +36,7 @@ function ZShelter.GatheringSystem(player, resource, nocallback)
 	local full = current >= capacity
 
 	if(!full) then
-		player:AddFrags(add * 2)
+		player:AddFrags(add * 3)
 	end
 
 	SetGlobalInt("T"..type, GetGlobalInt("T"..type, 0) + add)
