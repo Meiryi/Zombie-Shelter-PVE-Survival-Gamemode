@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/resident/resident-orign"
+	"$surfaceprop" "BloodyFlesh"
+	"$alphatest" 1
+	"$nolod" 1
+}

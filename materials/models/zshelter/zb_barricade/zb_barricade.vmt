@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	$basetexture	"models\zshelter\zb_barricade\zb_barricade"
+	$bumpmap "models\zshelter\zb_barricade\zb_barricade_n"
+	$nocull "1"
+	$phong "1"
+	$phongexponent "20"
+	$phongfresnelranges "[0.15 0.65 1.00]"
+	$phongalbedotint "1"
+	$phongboost "32"
+}

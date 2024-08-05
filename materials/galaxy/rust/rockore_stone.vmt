@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "galaxy/rust/rockore_stone"
+	"$bumpmap" "galaxy/rust/rockore_normal"
+}

@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/psycho/CCSO_O_Copyright(C)[2007]NEXON&ValveCorp_AllRightsReserved"
+	"$surfaceprop" "BloodyFlesh"
+	"$alphatest" 1
+	"$nolod" 1
+}

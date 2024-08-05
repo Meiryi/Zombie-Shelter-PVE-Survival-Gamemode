@@ -1,0 +1,6 @@
+"UnLitGeneric"
+{
+    $basetexture    "models\zshelter\scanning_mesh\$0b_scanning01"
+    $additive        "1"
+	$nocull    "1"
+}

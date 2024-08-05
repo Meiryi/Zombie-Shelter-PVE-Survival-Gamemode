@@ -1,0 +1,16 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "sprites/ef_y20s3plasmaexab_ball"
+	"$translucent" 1
+	"$additive" 1
+	"$nocull" 1
+	"Proxies"
+	{
+	"AnimatedTexture"
+		{
+		"animatedTextureVar" "$basetexture"
+		"animatedTextureFrameNumVar" "$frame"
+		"animatedTextureFrameRate" "9"
+		}
+	}
+}

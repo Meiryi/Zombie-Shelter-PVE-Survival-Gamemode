@@ -1,0 +1,6 @@
+"UnLitGeneric"
+{
+    $basetexture    "models\zshelter\shelter_b_electric_defense\$0b_elec01"
+    $additive        "1"
+	$nocull    "1"
+}

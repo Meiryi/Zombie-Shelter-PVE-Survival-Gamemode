@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/zombibomb/PW_Frogbomb"
+	"$surfaceprop" "BloodyFlesh"
+	"$alphatest" 1
+	"$nolod" 1
+}

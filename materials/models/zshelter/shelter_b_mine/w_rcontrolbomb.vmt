@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	$basetexture	"models\zshelter\shelter_b_mine\w_rcontrolbomb"
+	$bumpmap "models\zshelter\shelter_b_mine\w_rcontrolbomb_n"
+
+	$nocull		    "1"
+	$phong "1"
+	$phongexponent "20"
+	$phongfresnelranges "[0.15 0.65 1.00]"
+	$phongalbedotint "1"
+	$phongboost "16"
+}

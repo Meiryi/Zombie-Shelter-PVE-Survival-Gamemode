@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	$basetexture	"models\zshelter\shelter_b_electric_defense\electric_defence"
+	$bumpmap "models\zshelter\shelter_b_electric_defense\electric_defence_n"
+	$nocull "1"
+	$phong "1"
+	$phongexponent "20"
+	$phongfresnelranges "[0.15 0.65 1.00]"
+	$phongalbedotint "1"
+	$phongboost "32"
+}

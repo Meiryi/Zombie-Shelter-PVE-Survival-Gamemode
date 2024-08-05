@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/zombitrap/Trap_128"
+	"$surfaceprop" "BloodyFlesh"
+	"$vertexcolor" 1
+}

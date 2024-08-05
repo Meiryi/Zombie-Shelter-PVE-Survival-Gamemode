@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	$basetexture	"models\zshelter\shelter_b_ammobox01\police_b_rifle_ammo01"
+	$bumpmap "models\zshelter\shelter_b_ammobox01\police_b_rifle_ammo01_n"
+	$nocull "1"
+	$phong "1"
+	$phongexponent "20"
+	$phongfresnelranges "[0.15 0.65 1.00]"
+	$phongalbedotint "1"
+	$phongboost "32"
+}

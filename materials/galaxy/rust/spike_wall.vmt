@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "galaxy/rust/spike_wall"
+	"$bumpmap" "galaxy/rust/spike_wall_normal"
+}

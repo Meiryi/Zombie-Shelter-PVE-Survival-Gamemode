@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "galaxy/rust/wood_main"
+	"$bumpmap" "galaxy/rust/wood_main_normal"
+}

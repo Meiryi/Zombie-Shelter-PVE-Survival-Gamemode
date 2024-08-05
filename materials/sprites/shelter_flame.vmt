@@ -1,0 +1,17 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "sprites/shelter_flame"
+	"$vertexcolor" "1"
+	"$translucent" 1
+	"$additive" 1
+	"$nocull" 1
+	"Proxies"
+	{
+	"AnimatedTexture"
+		{
+		"animatedTextureVar" "$basetexture"
+		"animatedTextureFrameNumVar" "$frame"
+		"animatedTextureFrameRate" "21"
+		}
+	}
+}

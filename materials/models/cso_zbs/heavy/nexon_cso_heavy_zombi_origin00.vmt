@@ -1,0 +1,7 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/heavy/NEXON_CSO_heavy_zombi_origin00"
+	"$surfaceprop" "BloodyFlesh"
+	"$translucent" 1
+	"$vertexcolor" 1
+}

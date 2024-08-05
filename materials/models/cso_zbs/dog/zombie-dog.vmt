@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/dog/zombie-dog"
+	"$alphatest" 1
+	"$nolod" 1
+}

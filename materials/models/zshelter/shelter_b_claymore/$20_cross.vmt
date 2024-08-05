@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	$basetexture	"models\zshelter\shelter_b_claymore\$20_cross"
+	$additive		"1"
+    $nocull		1
+}

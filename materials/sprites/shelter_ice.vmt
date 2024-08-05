@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "sprites/shelter_ice"
+	"$vertexcolor" "1"
+	"$translucent" 1
+	"$additive" 1
+	"$nocull" 1
+}

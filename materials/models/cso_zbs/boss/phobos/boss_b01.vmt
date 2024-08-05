@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/boss/phobos/boss_b01"
+	"$alphatest" 1
+}

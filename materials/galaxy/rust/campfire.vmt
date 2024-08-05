@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "galaxy/rust/campfire"
+	"$bumpmap" "galaxy/rust/campfire_normal"
+}

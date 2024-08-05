@@ -1,0 +1,15 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "sprites/spr_boomer"
+    "$translucent" 1
+	"$additive" 1
+	"Proxies"
+	{
+	"AnimatedTexture"
+		{
+		"animatedTextureVar" "$basetexture"
+		"animatedTextureFrameNumVar" "$frame"
+		"animatedTextureFrameRate" "27"
+		}
+	}
+}
