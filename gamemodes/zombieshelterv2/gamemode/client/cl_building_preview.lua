@@ -389,9 +389,10 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 		canbuild = false
 	end
 
---[[
+
 	local mins, maxs = ZShelter.PreviewEntity:GetModelBounds()
 	local rotatedA,rotatedB = ZShelter.PreviewEntity:GetRotatedAABB(mins, maxs)
+--[[
 	local tr = {
 		start = pos,
 		endpos = pos,
