@@ -15,6 +15,16 @@
 
 ZShelter.RescueList = {}
 
+function ZShelter.StartRescue()
+	SetGlobalInt("Time", 300)
+	SetGlobalBool("Rescuing", true)
+	ZShelter.RemovePathFinder()
+	ZShelter.RestorePaths()
+	ZShelter.FilteEnemy(true)
+	ZShelter.ToggleBarricadeCollision(true)
+	ZShelter.BroadcastMessage("Rescue will come in 5 minutes!", Color(255, 255, 255, 255), true)
+end
+
 function ZShelter.ProcessRescue(ply)
 	if(GetGlobalBool("Rescuing")) then return end
 	if(ZShelter.RescueList[ply:EntIndex()]) then return end
@@ -23,12 +33,14 @@ function ZShelter.ProcessRescue(ply)
 	ZShelter.BroadcastMessage(ply:Nick().." Called for rescue!   ["..count.."/"..(player.GetCount()).."]", Color(255, 255, 255, 255), true)
 
 	if(count >= player.GetCount()) then
-		SetGlobalInt("Time", 300)
-		SetGlobalBool("Rescuing", true)
-		ZShelter.RemovePathFinder()
-		ZShelter.RestorePaths()
-		ZShelter.FilteEnemy(true)
-		ZShelter.ToggleBarricadeCollision(true)
-		ZShelter.BroadcastMessage("Rescue will come in 5 minutes!", Color(255, 255, 255, 255), true)
+		ZShelter.StartRescue()
 	end
 end
+
+hook.Add("PlayerDisconnected", "ZShelter-DisconnectRescueCheck", function(ply)
+	local count = player.GetCount() - 1
+	if(!GetGlobalBool("GameStarted")) then return end
+	if(count >= table.Count(ZShelter.RescueList)) then
+		ZShelter.StartRescue()
+	end
+end)

@@ -389,6 +389,31 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 		canbuild = false
 	end
 
+	local mins, maxs = ZShelter.PreviewEntity:GetModelBounds()
+	local rotatedA,rotatedB = ZShelter.PreviewEntity:GetRotatedAABB(mins, maxs)
+	local tr = {
+		start = pos,
+		endpos = pos,
+		ignoreworld = true,
+		mins = rotatedA,
+		maxs = rotatedB,
+		mask = MASK_SHOT,	
+	}
+	local ret = util.TraceHull(tr)
+	if(IsValid(ret.Entity)) then
+		canbuild = false
+	end
+	local shelter = GetGlobalEntity("ShelterEntity")
+	if(IsValid(shelter)) then
+		local shelterpos = shelter:GetPos()
+		local mins, maxs = shelter:GetCollisionBounds()
+		local ra, rb = shelter:GetRotatedAABB(mins, maxs)
+		local a, b = shelterpos + rb, shelterpos + ra
+		local aa, bb = rotatedA + pos, rotatedB + pos
+		if(aa:WithinAABox(a, b) || bb:WithinAABox(a, b)) then
+			canbuild = false
+		end
+	end
 	if(canbuild) then
 		ZShelter.PreviewEntity:SetColor(Color(255, 255, 255, 180))
 	else

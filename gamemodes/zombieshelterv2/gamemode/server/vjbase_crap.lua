@@ -29,7 +29,7 @@ end
 local vecZ500 = Vector(0, 0, 500)
 local vecZ4 = Vector(0, 0, 4)
 
-function VJ_MeleeAttackCode(self, isPropAttack) -- Remove ability to hit multiple enemies
+function VJ_MeleeAttackCode(self, isPropAttack) -- Note : Remove ability to hit multiple enemies
 
 end
 
@@ -40,6 +40,7 @@ function VJ_PriorToKilled(self, dmginfo, hitgroup) -- Remove dead body if they a
 
 	local function DoKilled()
 		if IsValid(self) then
+			hook.Run("OnNPCKilled", self, dmgAttacker, dmgInflictor)
 			if self.WaitBeforeDeathTime == 0 then
 				self:OnKilled(dmginfo, hitgroup)
 			else
@@ -50,7 +51,6 @@ function VJ_PriorToKilled(self, dmginfo, hitgroup) -- Remove dead body if they a
 				end)
 			end
 		end
-		hook.Run("OnNPCKilled", self, dmgAttacker, dmgInflictor)
 	end
 
 	self:SetHealth(0)

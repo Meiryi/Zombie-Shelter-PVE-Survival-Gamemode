@@ -171,6 +171,12 @@ hook.Add( "PlayerNoClip", "ZShelter_Noclip", function(ply, desiredNoClipState)
 end)
 
 hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
+	if(ent1:IsPlayer() && ent2:IsPlayer()) then
+		return false
+	end
+	if(ent2:IsPlayer() && ent1:IsPlayer()) then
+		return false
+	end
 	if(ent1.OnlyCollideToBarricade) then
 		if(!ent2.IsPlayerBarricade) then
 			return false

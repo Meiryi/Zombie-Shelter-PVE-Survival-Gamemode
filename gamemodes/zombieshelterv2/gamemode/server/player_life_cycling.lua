@@ -121,6 +121,7 @@ hook.Add("PlayerDeathThink", "ZShelter-BlockRespawn", function(ply)
 end)
 
 hook.Add("PlayerSpawn", "ZShelter-PlayerSpawn", function(ply)
+	ply:SetCustomCollisionCheck(true)
 	ply:SetNWFloat("Sanity", 100)
 	ZShelter.GiveMelee(ply)
 
