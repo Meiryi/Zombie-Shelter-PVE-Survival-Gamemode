@@ -131,7 +131,7 @@ end
 
 local chunkSize = 512
 local safeDistance = 1800
-local maximumDistance = 3600
+local maximumDistance = 3072
 function ZShelter.SetupSpawnPoints()
 	if(ZShelter.SpawnPointsInited || !IsValid(ZShelter.Shelter)) then return end
 	if(table.Count(ZShelter.AiNodes)) then
@@ -153,6 +153,22 @@ function ZShelter.SetupSpawnPoints()
 		table.insert(ZShelter.ValidSpawnPointsAll, v)
 	end
 
+	for k,v in pairs(ents.FindByClass("info_zshelter_extra_enemy_spawn")) do
+		local vpos = v:GetPos()
+		if(vpos:Distance(shelterPos) > maximumDistance) then continue end
+		table.insert(ZShelter.ValidRaiderSpawnPoints, vpos)
+	end
+
+	local dedicated = ents.FindByClass("info_zshelter_dedicated_enemy_spawn")
+	if(#dedicated > 0) then
+		print("---- Dedicated spawnpoints found ----")
+		ZShelter.ValidRaiderSpawnPoints = {}
+		for k,v in pairs(dedicated) do
+			print("Added spawn point", v:GetPos())
+			table.insert(ZShelter.ValidRaiderSpawnPoints, v:GetPos())
+		end
+	end
+
 	for k,v in pairs(ents.FindByClass("info_zshelter_treasure_area")) do
 		table.insert(ZShelter.TreasureArea, v:GetPos())
 	end
@@ -172,11 +188,26 @@ function ZShelter.SetupSpawnPoints()
 end
 
 function ZShelter.BroadcastPoints()
-	local data, len = ZShelter.CompressTable(ZShelter.ResourceSpawnPoint)
+	local data, len = ZShelter.CompressTable(ZShelter.ValidRaiderSpawnPoints)
 	net.Start("ZShelter-SendPoints")
 	net.WriteUInt(len, 32)
 	net.WriteData(data, len)
 	net.Broadcast()
+end
+
+function ZShelter.CalcAttackBoost()
+	local boost = math.max(1, 1 + ((player.GetCount() - 1) * 0.05))
+	return boost
+end
+
+function ZShelter.CalcPlayerHPScaling_Debug(playercount)
+	local boost = math.max(1, 1 + ((playercount - 1) * 0.08))
+	return boost
+end
+
+function ZShelter.CalcPlayerHPScaling()
+	local boost = math.max(1, 1 + ((player.GetCount() - 1) * 0.05))
+	return boost
 end
 
 function ZShelter.FilteEnemy(ignoreDay)
@@ -200,6 +231,8 @@ function ZShelter.FilteEnemy(ignoreDay)
 		max_amount = maxamount, -- Means how much this enemy can be spawn, leave -1 for no limit
 		hp_boost_day = hp_boost_day,
 	]]
+	local dmgscale = ZShelter.CalcAttackBoost()
+	local plyscale = ZShelter.CalcPlayerHPScaling()
 	local difficulty = GetConVar("zshelter_difficulty"):GetInt()
 	local diffScale = (1 + ((difficulty - 1) * 0.02))
 	local day = GetGlobalInt("Day", 0)
@@ -216,12 +249,13 @@ function ZShelter.FilteEnemy(ignoreDay)
 			if(v.day > bossday) then
 				ZShelter.TreasureAreaEnemy = {
 					class = v.class,
-					hp = (v.hp * diffScale) + (day * v.hp_boost_day),
+					hp = ((v.hp * diffScale) * plyscale) + (day * v.hp_boost_day),
 					noclear = v.noclear,
 					attack = v.attack,
 					mutation = v.mutation,
 					color = v.color,
 					index = randIndex,
+					weaponclass = v.weaponclass,
 				}
 				bossday = v.day
 			end
@@ -230,8 +264,8 @@ function ZShelter.FilteEnemy(ignoreDay)
 		if(v.night_or_day) then
 			table.insert(ZShelter.FiltedNightEnemies, {
 				class = v.class,
-				hp = (v.hp * diffScale) + (day * v.hp_boost_day),
-				attack = v.attack,
+				hp = ((v.hp * diffScale) * plyscale) + (day * v.hp_boost_day),
+				attack = v.attack * dmgscale,
 				noclear = v.noclear,
 				chance = v.chance,
 				max = v.max_amount,
@@ -239,12 +273,13 @@ function ZShelter.FilteEnemy(ignoreDay)
 				color = v.color,
 				index = randIndex,
 				maxamount = v.max_exists,
+				weaponclass = v.weaponclass,
 			})
 		else
 			table.insert(ZShelter.FiltedDayEnemies, {
 				class = v.class,
-				hp = (v.hp * diffScale) + (day * v.hp_boost_day),
-				attack = v.attack,
+				hp = ((v.hp * diffScale) * plyscale) + (day * v.hp_boost_day),
+				attack = v.attack * dmgscale,
 				noclear = v.noclear,
 				chance = v.chance,
 				max = v.max_amount,
@@ -252,6 +287,7 @@ function ZShelter.FilteEnemy(ignoreDay)
 				color = v.color,
 				index = randIndex,
 				maxamount = v.max_exists,
+				weaponclass = v.weaponclass,
 			})
 		end
 	end
@@ -314,8 +350,9 @@ function ZShelter.SpawnDayEnemies()
 			enemy.IsZShelterEnemy = true
 			enemy.DayEnemy = true
 			enemy.eIndex = data.index
+			enemy.WepClass = data.weaponclass
+			enemy.MutationClass = data.mutation
 			ZShelter.EnemyExistCounter[data.index] = ZShelter.EnemyExistCounter[data.index] + 1
-
 			ZShelter.CurrentDayEnemy = ZShelter.CurrentDayEnemy + 1
 
 			if(data.noclear) then
@@ -326,7 +363,7 @@ function ZShelter.SpawnDayEnemies()
 				enemy.AnimTbl_Walk = {ACT_WALK}
 				enemy.AnimTbl_Run = {ACT_WALK}
 			end
-
+			
 		hook.Run("ZShelter-EnemyCreated", enemy, false)
 
 		if(data.max != -1) then
@@ -341,10 +378,18 @@ function ZShelter.SpawnDayEnemies()
 	end
 end
 
+function ZShelter.CalcSpawnAmount_Debug(day, diff, ply)
+	local day = day
+	local diffScale = 1 + (diff * 0.15)
+	local plyScale = 1 + ((ply - 1) * 0.15)
+	return math.max(math.floor((6 + ((day * 0.34) * diffScale)) * plyScale), 1) -- make sure it's more than 0
+end
+
 function ZShelter.CalcSpawnAmount()
 	local day = GetGlobalInt("Day", 1)
 	local diffScale = 1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.15)
-	return math.max(math.floor(6 + ((day * 0.34) * diffScale)), 1) -- make sure it's more than 0
+	local plyScale = 1 + ((player.GetCount() - 1) * 0.15)
+	return math.max(math.floor((6 + ((day * 0.34) * diffScale)) * plyScale), 1) -- make sure it's more than 0
 end
 
 function ZShelter.CalcMaxAmount_Debug(day)
@@ -395,6 +440,8 @@ function ZShelter.SpawnPanicEnemies()
 			enemy.DayEnemy = true
 			enemy.ForceNoCollide = true
 			enemy.eIndex = data.index
+			enemy.WepClass = data.weaponclass
+			enemy.MutationClass = data.mutation
 			ZShelter.EnemyExistCounter[data.index] = ZShelter.EnemyExistCounter[data.index] + 1
 
 		hook.Run("ZShelter-EnemyCreated", enemy, true)
@@ -447,8 +494,9 @@ function ZShelter.SpawnNightEnemies()
 			enemy.IsZShelterEnemy = true
 			enemy.NightEnemy = true
 			enemy.eIndex = data.index
+			enemy.WepClass = data.weaponclass
+			enemy.MutationClass = data.mutation
 			ZShelter.EnemyExistCounter[data.index] = ZShelter.EnemyExistCounter[data.index] + 1
-
 			ZShelter.CurrentNightEnemy = ZShelter.CurrentNightEnemy + 1
 
 			if(data.noclear) then
@@ -505,8 +553,9 @@ function ZShelter.SpawnNightEnemiesNoLimit()
 			enemy.IsZShelterEnemy = true
 			enemy.NightEnemy = true
 			enemy.eIndex = data.index
+			enemy.WepClass = data.weaponclass
+			enemy.MutationClass = data.mutation
 			ZShelter.EnemyExistCounter[data.index] = ZShelter.EnemyExistCounter[data.index] + 1
-
 			ZShelter.CurrentNightEnemy = ZShelter.CurrentNightEnemy + 1
 
 			if(data.noclear) then
@@ -567,6 +616,8 @@ function ZShelter.SetupTreasureArea()
 				boss.IsBoss = true
 				boss.Awake = false
 				boss.IsZShelterEnemy = true
+
+				boss:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
 			ZShelter.BossRecord[k] = boss
 			if(bossdata.noclear) then
 				boss.ImmunityNightDamage = true
@@ -583,7 +634,8 @@ function ZShelter.KillDayEnemies()
 end
 
 function ZShelter.CalcSpawnTime(day, diff)
-	return math.max((30 - diff) - (day * (diff * 0.3)), 1.5)
+	local scaling = math.max(1 - (0.1 * (player.GetCount() - 1)), 0.25)
+	return math.max(((30 - diff) - (day * (diff * 0.3))) * scaling, 1.5)
 end
 
 local dayTimer = 0
@@ -607,7 +659,7 @@ hook.Add("Tick", "ZShelter-Spawner", function()
 	if(GetGlobalBool("Rescuing")) then
 		if(forceTimer < CurTime()) then
 			ZShelter.SpawnNightEnemiesNoLimit()
-			forceTimer = CurTime() + math.max(5, 5 - diff * 0.15)
+			forceTimer = CurTime() + 5
 		end
 	end
 	if(ZShelter.PanicEnemySpawnTime > CurTime()) then
@@ -633,6 +685,13 @@ end
 
 hook.Add("ZShelter-EnemyCreated", "ZShelter-ApplyMutation", function(enemy, night)
 	enemy:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
+	if(enemy.WepClass && enemy.WepClass != "none") then
+		enemy:Give(enemy.WepClass)
+	end
+	if(enemy.MutationClass && enemy.MutationClass != "none") then
+		ZShelter.ApplyMutation(enemy, enemy.MutationClass)
+		return
+	end
 	local diff = GetConVar("zshelter_difficulty"):GetInt()
 	local day = GetGlobalInt("Day", 0)
 	local m_id = ZShelter.MutationList[math.random(1, #ZShelter.MutationList)]
@@ -645,7 +704,10 @@ hook.Add("ZShelter-EnemyCreated", "ZShelter-ApplyMutation", function(enemy, nigh
 	if(diff < 9 && day < tday) then return end
 	mul = mul + (day * (0.1 + (diff * 0.05)))
 	if(diff >= 8) then
-		mul = mul + 7.5 -- maximum troll
+		mul = mul + 8.5 -- maximum troll
+		if(diff >= 9) then
+			mul = mul * 2
+		end
 	end
 	local seed = math.random(0, 100) - mul
 	if(!night) then

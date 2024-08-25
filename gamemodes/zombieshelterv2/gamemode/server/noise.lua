@@ -27,11 +27,13 @@ local scaleSD = {
 	["weapons/zsh/melees/slash.wav"] = 0,
 	["weapons/zsh/melees/hit1.wav"] = 0.15,
 	["weapons/zsh/melees/hit2.wav"] = 0.15,
+	["items/flashlight1.wav"] = 0.33,
 }
 hook.Add("EntityEmitSound", "ZShelter-GetSounds", function(t)
 	if(immunitySounds > SysTime() || GetGlobalBool("Night", false) || GetGlobalBool("Rescuing") || !GetGlobalBool("GameStarted") || ZShelter.PanicEnemySpawnTime > CurTime()) then return end
 	local ent = t.Entity
 	if(!IsValid(ent) || !ent:IsPlayer()) then return end
+	if(string.sub(t.SoundName, 1, 17) == "player/footsteps/") then return end
 	local vol = t.Volume
 	local scale = scaleSD[t.SoundName]
 	if(!scale) then scale = 1 end

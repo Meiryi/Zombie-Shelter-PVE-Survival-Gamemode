@@ -73,16 +73,23 @@ end
 
 function ENT:SetUpGibesOnDeath(dmginfo, hitgroup)
 	--util.BlastDamage(self, self, self:GetPos(), 170, 90)
-	local dmg = 38 * (1 + ((GetConVar("zshelter_difficulty"):GetInt() - 1) * 0.055))
-	local spos, up = self:GetPos(), Vector(0, 0, 35)
+	local dmg = 45 * (1 + ((GetConVar("zshelter_difficulty"):GetInt() - 1) * 0.055))
+	local spos, up = self:GetPos(), Vector(0, 0, 10)
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), 170)) do
 		if(v:IsPlayer()) then
-			v:SetVelocity(((v:GetPos() + up)- spos):Angle():Forward() * 600)
+			local vel = ((v:GetPos() + up) - spos)
+			vel:Normalize()
+			vel.z = math.min(vel.z, 0.25)
+			v:SetVelocity(vel * 900)
 			v:TakeDamage(30, self, self)
 			continue
 		end
 		if(!v.IsBuilding) then continue end
-		ZShelter.ApplyDamageFast(v, dmg, true)
+		if(v.IsTrap) then
+			ZShelter.ApplyDamageFast(v, 8, true, true)
+		else
+			ZShelter.ApplyDamageFast(v, dmg, true)
+		end
 	end
 	self:DropEf()
 end

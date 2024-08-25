@@ -371,7 +371,7 @@ end
 SWEP.DisplayCTime = 0
 SWEP.DisplayAlpha = 255
 SWEP.DisplayString = "#BuildHints"
-function SWEP:DrawHUD()
+function SWEP:DrawHUDBackground()
     if(self.DisplayCTime < CurTime()) then
         self.DisplayString = ZShelter_GetTranslate("#BuildHints")
         self.DisplayCTime = CurTime() + 1

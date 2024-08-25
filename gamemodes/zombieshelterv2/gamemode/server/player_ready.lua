@@ -79,6 +79,10 @@ function ZShelter.CheckStart()
 			end
 		end
 		timer.Simple(10, function()
+			if(#ZShelter.AiNodes <= 0) then
+				ParseFile()
+				ZShelter.ForceReloadPoints()
+			end
 			local diff = GetConVar("zshelter_difficulty"):GetInt()
 			local fullres = GetConVar("zshelter_start_with_resources"):GetInt() == 1
 			local resources = math.floor(24 / player.GetCount())

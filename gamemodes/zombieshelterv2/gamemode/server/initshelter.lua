@@ -34,6 +34,7 @@ function ZShelter.InitShelter()
 		if(!cfg) then
 			ZShelter.BroadcastMapStats(true)
 			ZShelter.UnsupportedMap = true
+			GetConVar("zshelter_debug_enable_sandbox"):SetInt(1)
 			return
 		else
 			ZShelter.BroadcastMapStats(false)
@@ -142,7 +143,7 @@ function ZShelter.InitShelter()
 end
 
 function ZShelter.SetupFog()
-	if(IsValid(ZShelter.FogController)) then return end
+	if(IsValid(ZShelter.FogController) || GetConVar("zshelter_enable_fog"):GetInt() != 1) then return end
 	local fog = ents.Create("env_fog_controller")
 	fog:SetKeyValue("farz", 2100)
 	ZShelter.FogController = fog

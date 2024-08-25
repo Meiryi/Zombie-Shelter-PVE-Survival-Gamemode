@@ -68,6 +68,24 @@ local datas = {
 		title = "#BonusPos",
 		desc = "#BonusDesc",
 	},
+	[5] = {
+		type = "spawnpoint_extra",
+		class = "info_zshelter_extra_enemy_spawn",
+		model = "models/Zombie/Classic.mdl",
+		required = -1,
+		offset = Vector(0, 0, 1),
+		title = "#SpawnPointExtra",
+		desc = "#SpawnPointExtraDesc",
+	},
+	[6] = {
+		type = "spawnpoint_extra",
+		class = "info_zshelter_dedicated_enemy_spawn",
+		model = "models/Zombie/Poison.mdl",
+		required = -1,
+		offset = Vector(0, 0, 1),
+		title = "#SpawnPointDedicated",
+		desc = "#SpawnPointDedicatedDesc",
+	}
 }
 
 function ZShelter.RemoveAllMapEnt()

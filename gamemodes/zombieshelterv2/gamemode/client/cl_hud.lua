@@ -175,6 +175,8 @@ local currentIndex = 0
 local currentTime = 0
 local interval = 0.03
 local shouldDisplay = false
+local shouldenablehud = true
+local nextcheckhud = 0
 function ZShelter.DrawPowerOutage()
 	if(currentTime < SysTime()) then
 		currentIndex = currentIndex + 1
@@ -277,6 +279,7 @@ end
 
 if(ArcCW) then
 	function ArcCW:ShouldDrawHUDElement(ele)
+		if(!shouldenablehud) then return true end
 	    if ele == "CHudHealth" then return false end
 	    if ele == "CHudBattery" then return false end
 	    return true
@@ -288,6 +291,7 @@ local elem = {
 	["CHudBattery"] = true,
 }
 hook.Add("HUDShouldDraw", "ZShelter-HideHUD", function(name)
+	if(!shouldenablehud) then return end
 	if(elem[name]) then
 		return false
 	end
@@ -482,32 +486,34 @@ function ZShelter.PaintHUD()
 	surface_DrawTexturedRect(startX + wide / 2, startY - (resTall + padding4x), imagesx, imagesx)
 	draw_DrawText(LocalPlayer():GetNWInt("Irons", 0).." / "..LocalPlayer():GetNWInt("ResourceCapacity", 0), "ZShelter-HUDElemFont", startX + wide * 0.8, startY - (resTall), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 
-	draw_RoundedBox(padding, padding, startY, wide, tall, Color(30, 30, 30, 200))
+	if(shouldenablehud) then
+		draw_RoundedBox(padding, padding, startY, wide, tall, Color(30, 30, 30, 200))
 
-	startX = startX + padding2x
-	startY = startY + padding2x
-	v1 = math_Clamp(v1 + ZShelter.GetFixedValue(((LocalPlayer():Health() / LocalPlayer():GetMaxHealth()) - v1) * 0.2), 0, 1)
-	v2 = math_Clamp(v2 + ZShelter.GetFixedValue(((LocalPlayer():Armor() / LocalPlayer():GetMaxArmor()) - v2) * 0.2), 0, 1)
-	v3 = math_Clamp(v3 + ZShelter.GetFixedValue(((LocalPlayer():GetNWFloat("Sanity", 0) / 100) - v3) * 0.2), 0, 1)
+		startX = startX + padding2x
+		startY = startY + padding2x
+		v1 = math_Clamp(v1 + ZShelter.GetFixedValue(((LocalPlayer():Health() / LocalPlayer():GetMaxHealth()) - v1) * 0.2), 0, 1)
+		v2 = math_Clamp(v2 + ZShelter.GetFixedValue(((LocalPlayer():Armor() / LocalPlayer():GetMaxArmor()) - v2) * 0.2), 0, 1)
+		v3 = math_Clamp(v3 + ZShelter.GetFixedValue(((LocalPlayer():GetNWFloat("Sanity", 0) / 100) - v3) * 0.2), 0, 1)
 
-	surface_SetDrawColor(255, 255, 255, 255)
-	surface_SetMaterial(sanitymat)
-	surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
-	ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v3, Color(255, 255 * v3, 255 * v3, 255), Color(20, 20, 20, 255))
+		surface_SetDrawColor(255, 255, 255, 255)
+		surface_SetMaterial(sanitymat)
+		surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
+		ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v3, Color(255, 255 * v3, 255 * v3, 255), Color(20, 20, 20, 255))
 
-	startY = startY + imagesx + padding2x
+		startY = startY + imagesx + padding2x
 
-	surface_SetDrawColor(255, 255, 255, 255)
-	surface_SetMaterial(armormat)
-	surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
-	ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v2, Color(255, 255 * v2, 255 * v2, 255), Color(20, 20, 20, 255))
+		surface_SetDrawColor(255, 255, 255, 255)
+		surface_SetMaterial(armormat)
+		surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
+		ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v2, Color(255, 255 * v2, 255 * v2, 255), Color(20, 20, 20, 255))
 
-	startY = startY + imagesx + padding2x
+		startY = startY + imagesx + padding2x
 
-	surface_SetDrawColor(255, 255, 255, 255)
-	surface_SetMaterial(hpmat)
-	surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
-	ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v1, Color(255, 255 * v1, 255 * v1, 255), Color(20, 20, 20, 255))
+		surface_SetDrawColor(255, 255, 255, 255)
+		surface_SetMaterial(hpmat)
+		surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
+		ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v1, Color(255, 255 * v1, 255 * v1, 255), Color(20, 20, 20, 255))
+	end
 
 	local skill = LocalPlayer():GetNWString("Tier4Skill", "")
 	local skTable = ZShelter.SkillDatas[skill]
@@ -552,6 +558,10 @@ end
 local day_mat = Material("zsh/icon/day.png", "smooth")
 local night_mat = Material("zsh/icon/night.png", "smooth")
 local escape_mat = Material("zsh/icon/escape.png", "smooth")
+local home_mat = Material("zsh/icon/home.png", "smooth")
+local nextcheckpos = 0
+local homealpha = 0
+local homepos = Vector(0, 0, 0)
 local centWide = ScreenScaleH(1)
 local nextupdate = 0
 local shelterstring = "Tier 1 Shelter"
@@ -660,6 +670,33 @@ hook.Add("HUDPaint", "ZShelter-HUD", function()
 		draw_RoundedBox(padding2x, centX - wide / 2 + padding2x, tall + padding2x * 2, shelter.hLength, tall3, Color(255, color, color, 200))
 		draw_DrawText(shelterstring, "ZShelter-HUDFontSmall", centX - wide / 2 + padding2x, tall + ScreenScaleH(9) + padding2x, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 		draw_DrawText(hp.." / "..maxhp, "ZShelter-HUDFontSmall", centX + wide / 2 - padding2x, tall + ScreenScaleH(9) + padding2x, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+	end
+
+
+	if(nextcheckpos < CurTime() && IsValid(GetGlobalEntity("ShelterEntity"))) then
+		local e = GetGlobalEntity("ShelterEntity")
+		homepos = e:GetPos() + (e:GetAngles():Right() * -20 - e:GetAngles():Forward() * 175 + e:GetAngles():Up() * 50)
+		nextcheckpos = SysTime() + 0.2
+	end
+
+	if(homepos != Vector(0, 0, 0)) then
+		local dst = LocalPlayer():GetPos():Distance(homepos)
+		if(dst < 1024) then
+			homealpha = math.Clamp(1 - (1024 - dst) / 256, 0, 1) * 255
+		else
+			homealpha = 255
+		end
+		local sx = ScreenScaleH(16)
+		local offs = sx * 0.5
+		local pos = homepos:ToScreen()
+		surface_SetDrawColor(255, 255, 255, homealpha)
+		surface_SetMaterial(home_mat)
+		surface_DrawTexturedRect(pos.x - offs, pos.y - offs, sx, sx)
+	end
+
+	if(nextcheckhud < SysTime()) then
+		shouldenablehud = GetConVar("zshelter_enable_hud"):GetInt() == 1
+		nextcheckhud = SysTime() + 0.1
 	end
 
 	ZShelter.DebugDrawing()

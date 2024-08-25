@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/boss/oberon/oberon02"
+	"$alphatest" 1
+}

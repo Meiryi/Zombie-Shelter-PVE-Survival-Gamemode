@@ -66,7 +66,7 @@ function ENT:Think()
 				wep:SetClip1(self.Ammos)
 			end
 		end
-		self.AmmoRegenTimer = CurTime() + 0.2
+		self.AmmoRegenTimer = CurTime() + (0.33 - (self:GetNWInt("UpgradeCount", 0) * 0.075))
 	end
 	if(IsValid(self.Controller)) then
 		self.Controller:SetPos(self:GetPos())
@@ -97,6 +97,9 @@ function ENT:Think()
 					self.NextMountTime = CurTime() + 1
 					return
 				else
+					if(SERVER) then
+						wep.DamageScaling = self.AttackScaling || 1
+					end
 					local ammo = wep:Clip1()
 					if(ammo < self.Ammos) then
 						self.AmmoRegenDelay = CurTime() + 2

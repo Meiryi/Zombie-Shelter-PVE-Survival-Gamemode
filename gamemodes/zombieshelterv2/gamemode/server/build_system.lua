@@ -25,13 +25,14 @@ function ZShelter.SyncHP(building, player)
 	net.Send(player)
 end
 
-function ZShelter.StunBuilding(building, time)
-	if(!building.IsTurret || building:Health() > building:GetMaxHealth()) then return end
+function ZShelter.StunBuilding(building, time, bypass)
+	if(!building.IsTurret || building:Health() > building:GetMaxHealth() || building:GetNWFloat("StunTime", 0) > CurTime()) then if(!bypass) then return end end
 	building:NextThink(CurTime() + time)
 	building:SetNWFloat("StunTime", CurTime() + time)
 end
 
 function ZShelter.RemoveStun(building)
+	if(GetGlobalInt("Powers", 0) < 0) then return end
 	building:NextThink(CurTime())
 	building:SetNWFloat("StunTime", 0)
 end
@@ -109,12 +110,14 @@ local damageSD = {
 	"vj_hlr/fx/metal3.wav",
 }
 
-function ZShelter.ApplyDamageFast(building, damage, sd)
+function ZShelter.ApplyDamageFast(building, damage, sd, bypass_durability)
 	local phys = building:GetPhysicsObject()
 	if(IsValid(phys)) then
 		phys:EnableMotion(false)
 	end 
 	if(GetConVar("zshelter_debug_disable_building_damage"):GetInt() == 1) then return end
+	if(building:GetNWBool("DurabilitySystem", false) && !bypass_durability) then return end
+	building.LastDamagedTime = CurTime()
 	building:SetHealth(building:Health() - damage)
 	if(game.SinglePlayer()) then
 		local owner = building:GetOwner()
@@ -165,6 +168,7 @@ function ZShelter.ApplyDamage(attacker, building, dmginfo)
 		if(!IsValid(attacker) || (IsValid(attacker) && !attacker:IsPlayer())) then return end
 	end
 	if(building:GetNWBool("NoBuildSystem", false)) then return end
+	building.LastDamagedTime = CurTime()
 	local damage = dmginfo:GetDamage()
 	local owner = building.Builder
 	if(IsValid(owner) && owner:IsPlayer()) then
@@ -249,20 +253,14 @@ function ZShelter.BuildSystemNoScale(player, building, buildspeed) -- Do not use
 end
 
 function ZShelter.TrapRepairSystem(player, building)
-	local rCount = building:GetNWInt("DurabilityRepairTarget", 4)
-	local rCurrent = building:GetNWInt("DurabilityRepairCount", 0)
-	building:SetNWInt("DurabilityRepairCount", building:GetNWInt("DurabilityRepairCount", 0) + 1)
 	if(player.Callbacks && player.Callbacks.OnRepairingTraps) then
 		for k,v in pairs(player.Callbacks.OnRepairingTraps) do
-			v(player, building, (rCount <= (rCurrent + 1)))
+			v(player, building)
 		end
 	end
-	if(rCount <= (rCurrent + 1)) then
-		local restore = (building.DurabilityRepair || 1) * player:GetNWFloat("TrapRepairSpeed", 1)
-		building:SetHealth(math.min(building:Health() + restore, building:GetMaxHealth()))
-		building:SetNWInt("DurabilityRepairCount", 0)
-		ZShelter.SyncHP(building, player)
-	end
+	local restore = (building.DurabilityRepair || 1) * player:GetNWFloat("TrapRepairSpeed", 1)
+	building:SetHealth(math.min(building:Health() + restore, building:GetMaxHealth()))
+	ZShelter.SyncHP(building, player)
 end
 
 function ZShelter.BuildSystem(player, building, buildspeed)
@@ -272,7 +270,19 @@ function ZShelter.BuildSystem(player, building, buildspeed)
 		return
 	end
 	local baseScale = player:GetNWFloat("BuildingSpeed", 1)
-	if(building.bspeed && !building:GetNWBool("Completed", false)) then baseScale = baseScale + building.bspeed end
+	if(building.bspeed && !building:GetNWBool("Completed", false)) then
+		if(!building.boostremaining) then
+			building.boostremaining = building:GetMaxHealth()
+		end
+		if(building.boostremaining > 0) then
+			baseScale = baseScale + building.bspeed
+		end
+	end
+	if(building:GetNWBool("Completed", false) && building.LastDamagedTime) then
+		if(CurTime() - building.LastDamagedTime > 10) then
+			baseScale = baseScale + 0.15
+		end
+	end
 	local bspeed = baseScale * buildspeed
 	if(building:GetNWBool("Completed", false)) then
 		bspeed = player:GetNWFloat("RepairSpeed", 1) * bspeed
@@ -287,6 +297,9 @@ function ZShelter.BuildSystem(player, building, buildspeed)
 	end
 	if(building:Health() >= building:GetMaxHealth()) then return end
 	building:SetHealth(math.Clamp(building:Health() + bspeed, 0, building:GetMaxHealth()))
+	if(building.boostremaining) then
+		building.boostremaining = math.max(building.boostremaining - bspeed, 0)
+	end
 	ZShelter.SyncHP(building, player)
 	if(!building:GetNWBool("Completed", false) && building:Health() >= building:GetMaxHealth()) then
 		building:NextThink(CurTime())
@@ -334,7 +347,7 @@ function ZShelter.CreateRemovelThinker(owner, func, interval)
 			end
 			if(!owner:GetNWBool("Completed", false)) then return end
 			thinker:SetPos(owner:GetPos())
-			func(thinker)
+			func(owner)
 			thinker:NextThink(CurTime() + interval)
 			return true
 		end
@@ -541,7 +554,7 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 		timer.Simple(0.33, function()
 			ZShelter.SyncVariables(ent, ent:GetNWBool("Upgradable", false), ent:GetNWInt("MaxUpgrade", 2), 0, ent:GetNWFloat("AttackScale", 0.25), ent:GetNWFloat("HealthScale", 0.1))
 		end)
-		SetGlobalInt("Powers", math.max(GetGlobalInt("Powers", 0) - powers, 0))
+		SetGlobalInt("Powers", GetGlobalInt("Powers", 0) - powers)
 		sound.Play("shigure/build.mp3", ent:GetNWVector("NoOffsetPos", ent:GetPos(), 100, 100, 2))
 end)
 

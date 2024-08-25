@@ -35,10 +35,15 @@ m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 				sound.Play("ambient/explosions/explode_7.wav", self:GetPos())
 			util.Effect("Explosion", e)
 
+			local breaked = false
 			for k,v in pairs(ents.FindInSphere(self:GetPos(), 200)) do
 				if(!v.IsBuilding && !v:IsPlayer()) then continue end
-				if(v.IsBuilding) then
+				if(v.IsBuilding && !v.IsShelter) then
 					v:TakeDamage(55, self, self)
+					if(!breaked) then
+						ZShelter.ApplyDamageFast(v, 300, true)
+						breaked = true
+					end
 				else
 					v:TakeDamage(35, self, self)
 				end

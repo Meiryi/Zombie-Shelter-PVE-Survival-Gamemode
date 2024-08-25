@@ -50,6 +50,7 @@ function ZShelter:CreatePreview(model, offset, cat, index, tdata)
 
 	ZShelter.PreviewEntity.CanBuild = false
 	ZShelter.PreviewEntity.Offset = offset
+	ZShelter.PreviewEntity.CanBuildInsideShelter = (tdata.insideshelter || false) || GetConVar("zshelter_build_in_shelter"):GetInt() == 1
 
 	ZShelter.PreviewEntity.waitForRelease_Attack = true
 	ZShelter.PreviewEntity.waitForRelease_Attack2 = true
@@ -208,15 +209,7 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 		local colorVar = 165 * scale
 		local colorVar2 = 165 - colorVar
 		entity.hlen = math.Clamp(entity.hlen + ZShelter.GetFixedValue((currentLength - entity.hlen) * 0.1), 0, maxW)
-		if(entity:GetNWBool("DurabilitySystem", false)) then
-			local _h = hpbar * 0.5
-			draw_RoundedBox(0, startX, drawY, entity.hlen, _h, Color(255 - colorVar, 255 - colorVar2, 90, 255))
-			local len = entity:GetNWInt("DurabilityRepairCount", 0) / entity:GetNWInt("DurabilityRepairTarget", 4)
-			if(entity:Health() >= entity:GetMaxHealth()) then len = 1 end
-			draw_RoundedBox(0, startX, drawY + _h, maxW * len, _h, Color(40, 240, 230, 255))
-		else
-			draw_RoundedBox(0, startX, drawY, entity.hlen, hpbar, Color(255 - colorVar, 255 - colorVar2, 90, 255))
-		end
+		draw_RoundedBox(0, startX, drawY, entity.hlen, hpbar, Color(255 - colorVar, 255 - colorVar2, 90, 255))
 
 		local overheal = math.Clamp((entity:Health() - entity:GetMaxHealth()) / entity:GetMaxHealth(), 0, 1) * maxW
 		entity.olen = math.Clamp(entity.olen + ZShelter.GetFixedValue((overheal - entity.olen) * 0.1), 0, maxW)
@@ -269,12 +262,12 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 			local _x = drawX + w * 0.1
 			surface_SetMaterial(woods)
 			surface_DrawTexturedRect(_x, drawY, sx, sx)
-			draw_DrawText(math.floor(math.max(entity:GetNWInt("Woods", 0) * 0.8, 1)), "ZShelter-HUDUpgrade", _x + sx * 0.5, drawY + sx, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+			draw_DrawText(math.floor(math.max(entity:GetNWInt("Woods", 0), 1)), "ZShelter-HUDUpgrade", _x + sx * 0.5, drawY + sx, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 
 			surface_SetMaterial(irons)
 			_x = drawX + w * 0.23
 			surface_DrawTexturedRect(_x, drawY, sx, sx)
-			draw_DrawText(math.floor(math.max(entity:GetNWInt("Irons", 0) * 0.4, 1)), "ZShelter-HUDUpgrade", _x + sx * 0.5, drawY + sx, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+			draw_DrawText(math.floor(math.max(entity:GetNWInt("Irons", 0) * 0.5, 1)), "ZShelter-HUDUpgrade", _x + sx * 0.5, drawY + sx, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 
 			local str = ZShelter_GetTranslate("#UpgradeHint")
 			if(fraction > 0) then
@@ -407,7 +400,7 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 	end
 ]]
 	local shelter = GetGlobalEntity("ShelterEntity")
-	if(IsValid(shelter)) then
+	if(IsValid(shelter) && !ZShelter.PreviewEntity.CanBuildInsideShelter) then
 		local shelterpos = shelter:GetPos()
 		local mins, maxs = shelter:GetCollisionBounds()
 		local ra, rb = shelter:GetRotatedAABB(mins, maxs)

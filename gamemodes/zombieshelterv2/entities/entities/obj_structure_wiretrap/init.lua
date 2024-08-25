@@ -37,5 +37,5 @@ function ENT:Touch(ent)
 
 	ent:TakeDamage(5, self, self)
 	ent:SetMoveVelocity(ent:GetMoveVelocity() * sd_amount)
-	ent.LastFreezeTime = CurTime() + 0.1
+	ent.LastFreezeTime = CurTime() + 0.175
 end

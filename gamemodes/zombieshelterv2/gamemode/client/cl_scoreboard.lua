@@ -201,7 +201,7 @@ function ZShelter.ToggleScoreboard(display)
 				for x,y in pairs(details) do
 					local var = y.func(v)
 					local baseX, baseY = XPos[y.title], base:GetTall() * 0.5
-					local _, _, text = ZShelter.CreateLabel(base, baseX, baseY, var, "ZShelter-ScoreboardDetailsFont2x", Color(255, 255, 255, 255))
+					local _, _, text = ZShelter.CreateLabel(base, baseX, baseY, var, "ZShelter-ScoreboardDetailsFont", Color(255, 255, 255, 255))
 					text:CentPos()
 
 					text.NextUpdate = SysTime()

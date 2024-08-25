@@ -33,6 +33,7 @@ ENT.CheckValidTime = 0
 ENT.DmgAngle = math.cos(math.rad(30))
 
 function ENT:Think()
+	self.MaximumDistance = 256 + (self:GetNWInt("UpgradeCount", 0) * 64)
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
 		self:NextThink(CurTime() + 0.33)

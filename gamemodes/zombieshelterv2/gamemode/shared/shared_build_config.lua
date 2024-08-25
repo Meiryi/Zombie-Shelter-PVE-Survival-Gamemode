@@ -17,6 +17,7 @@ ZShelter.BuildingConfig = {}
 ZShelter.BuildingData = {}
 ZShelter.WeaponConfig = {}
 ZShelter.IngredientConfig = {}
+ZShelter.TurretClasses = {}
 
 function ZShelter.AddBuildItem(cat, name, wood, iron, power, health, class, model, shelterlvl, offset, tdata, specialreq, finddata) -- Note to myself, rewrite this shit when I got time
 	if(!ZShelter.BuildingConfig[cat]) then
@@ -39,7 +40,9 @@ function ZShelter.AddBuildItem(cat, name, wood, iron, power, health, class, mode
 		specialreq = specialreq,
 		finddata = finddata,
 	})
-
+	if(cat == "Turret") then
+		table.insert(ZShelter.TurretClasses, class)
+	end
 	ZShelter.BuildingData[name] = {
 		woods = wood,
 		irons = iron,
@@ -48,6 +51,15 @@ function ZShelter.AddBuildItem(cat, name, wood, iron, power, health, class, mode
 		offset = offset,
 		shelterlvl = shelterlvl,
 	}
+end
+
+function ZShelter.RemoveBuildings(cat, name)
+	if(!ZShelter.BuildingConfig[cat]) then return end
+	for k,v in pairs(ZShelter.BuildingConfig[cat]) do
+		if(v.title != name) then continue end
+		table.remove(ZShelter.BuildingConfig[cat], k)
+		return
+	end
 end
 
 local str = [[
@@ -113,6 +125,8 @@ end
 	dothink = Enable ENT:Think() even it's incomplete
 	noowner = Don't set the owner, could fix the collison problem to the owner with the objects
 	forceowner = Force sets owner, it can fix the problem where damage is not dealt by players
+	insideshelter = Allow to build inside of shelter
+	playercount = Limit the amount of this building with player count
 
 	maxamount = Maximum amount of this building
 	bait = Creates a bait entity so enemy will attack this building
@@ -148,7 +162,7 @@ end
 	onuse(player, self)
 	onshelterupgrade(self)
 
-	thinkfunc()
+	thinkfunc(self)
 	thinkinterval = interval of thinking
 ]]
 
@@ -158,13 +172,55 @@ ZShelter.AddBuildItem("Barricade",  "Wire Fence",  0,  3,  0,  1000,  "prop_phys
 
 ZShelter.AddBuildItem("Barricade",  "Metal Wall",  2,  3,  0,  850,  "prop_physics",  "models/galaxy/rust/metal_wall.mdl",  1,  Vector(0, 0, 1), {buildspeed = 2})
 ZShelter.AddBuildItem("Barricade",  "Reinforced Wire Fence",  1,  4,  0,  1450,  "prop_physics",  "models/zshelter/shelter_b_wall02.mdl",  1,  Vector(0, 0, 0), {buildspeed = 2})
-ZShelter.AddBuildItem("Barricade",  "Metal Gate",  3,  10,  2,  2200,  "npc_vj_zshelter_door_metal",  "models/zshelter/shelter_b_metaldoor01.mdl",  1,  Vector(0, 0, 0), {buildspeed = 4, forcecollide = true, dothink = true, noowner = true})
+ZShelter.AddBuildItem("Barricade",  "Metal Gate",  3,  10,  2,  2200,  "prop_physics",  "models/zshelter/shelter_b_metaldoor01.mdl",  1,  Vector(0, 0, 0), {
+	buildspeed = 4,
+	forcecollide = true,
+	dothink = true,
+	noowner = true,
+	thinkfunc = function(self)
+		self:SetPlaybackRate(5)
+		if(self.OpenTime && self.OpenTime > CurTime()) then
+			self:SetCollisionGroup(2)
+			self:SetSequence(3)
+		else
+			if(self.OpenTime && CurTime() - self.OpenTime > 0.15) then
+				self:SetCollisionGroup(0)
+			end
+			self:SetSequence(1)
+		end
+	end,
+	onuse = function(player, self)
+		self.OpenTime = CurTime() + 3
+	end,
+	thinkinterval = 0.05,
+})
 
 ZShelter.AddBuildItem("Barricade",  "Metal Barricade",  2,  5,  0,  2400,  "prop_physics",  "models/zshelter/zb_barricade.mdl",  2,  Vector(0, 0, 83), {buildspeed = 3})
 ZShelter.AddBuildItem("Barricade",  "Concrete Wall",  2,  4,  0,  2800,  "prop_physics",  "models/nickmaps/rostok/bar_parede_uniq.mdl",  2,  Vector(0, 0, 50), {buildspeed = 3})
-ZShelter.AddBuildItem("Barricade",  "Concrete Gate",  4,  12,  2,  4000,  "npc_vj_zshelter_door_concrete",  "models/zshelter/shelter_b_metaldoor02.mdl",  2,  Vector(0, 0, 0), {buildspeed = 5, forcecollide = true, dothink = true, noowner = true})
+ZShelter.AddBuildItem("Barricade",  "Concrete Gate",  4,  12,  2,  4000,  "prop_physics",  "models/zshelter/shelter_b_metaldoor02.mdl",  2,  Vector(0, 0, 0), {
+	buildspeed = 5,
+	forcecollide = true,
+	dothink = true,
+	noowner = true,
+	thinkfunc = function(self)
+		self:SetPlaybackRate(5)
+		if(self.OpenTime && self.OpenTime > CurTime()) then
+			self:SetCollisionGroup(2)
+			self:SetSequence(3)
+		else
+			if(self.OpenTime && CurTime() - self.OpenTime > 0.15) then
+				self:SetCollisionGroup(0)
+			end
+			self:SetSequence(1)
+		end
+	end,
+	onuse = function(player, self)
+		self.OpenTime = CurTime() + 3
+	end,
+	thinkinterval = 0.05,
+})
 
-ZShelter.AddBuildItem("Barricade",  "Concrete Barricade",  4,  6,  0,  2500,  "prop_physics",  "models/props_phx/construct/concrete_barrier00.mdl",  3,  Vector(0, 0, 0), {buildspeed = 3.5})
+ZShelter.AddBuildItem("Barricade",  "Concrete Barricade",  4,  6,  0,  2500,  "prop_physics",  "models/props_phx/construct/concrete_barrier00.mdl",  3,  Vector(0, 0, 0), {buildspeed = 3.5,})
 ZShelter.AddBuildItem("Barricade",  "Reinforced Concrete Wall",  4,  6,  0,  5500,  "prop_physics",  "models/shigure/shelter_b_wall03.mdl",  3,  Vector(0, 0, 0), {buildspeed = 5.5})
 
 ZShelter.AddBuildItem("Recovery",  "Healing Station",  5,  5,  0,  250,  "prop_physics",  "models/shigure/medibed.mdl",  0,  Vector(0, 0, 15), {
@@ -299,19 +355,20 @@ ZShelter.AddBuildItem("Trap",  "Landmine",  1,  2,  0,  150,  "npc_vj_zshelter_m
 	damage = 325,
 	buildspeed = 1,
 	forceowner = true,
+	insideshelter = true,
 })
-ZShelter.AddBuildItem("Trap",  "Razorwire",  1,  5,  0, 100,  "obj_structure_wiretrap",  "models/zshelter/barricade_wire.mdl",  0,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Trap",  "Razorwire",  1,  4,  0, 130,  "obj_structure_wiretrap",  "models/zshelter/barricade_wire.mdl",  0,  Vector(0, 0, 0), {
 	damage = 3,
 	forceowner = true,
-	upgrade_attackscale = 0.5,
-	upgrade_healthscale = 0.15,
+	durability = true,
+	upgrade_attackscale = 0.33,
+	upgrade_healthscale = 0.25,
 	upgradable = true,
 	upgradecount = 2,
-	durability = true,
 	durability_cost = 1,
-	durability_cost_interval = 0.3,
-	durability_repair_amount = 3,
+	durability_cost_interval = 0.15,
 	nodestroymessage = true,
+	insideshelter = true,
 })
 ZShelter.AddBuildItem("Trap",  "Claymore",  2,  3,  0,  175,  "npc_vj_zshelter_clay",  "models/zshelter/shelter_b_claymore01.mdl",  0,  Vector(0, 0, 5), {
 	damage = 850,
@@ -319,91 +376,139 @@ ZShelter.AddBuildItem("Trap",  "Claymore",  2,  3,  0,  175,  "npc_vj_zshelter_c
 	forceowner = true,
 	faceforward = true,
 	faceforward_offset = 0,
+	insideshelter = true,
 }, {"Claymore"})
-ZShelter.AddBuildItem("Trap",  "Freeze Bomb",  1,  3,  0,  125,  "npc_vj_zshelter_freeze_bomb",  "models/shigure/gastank.mdl",  1,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Trap",  "Freeze Bomb",  1,  3,  0,  155,  "npc_vj_zshelter_freeze_bomb",  "models/shigure/gastank.mdl",  1,  Vector(0, 0, 0), {
 	damage = 5,
 	forceowner = true,
+	insideshelter = true,
 })
-ZShelter.AddBuildItem("Trap",  "Spike Trap",  3,  5,  10,  120,  "npc_vj_zshelter_spike_trap",  "models/zshelter/shelter_b_thron01.mdl",  1,  Vector(0, 0, 0), {
-	damage = 40,
+ZShelter.AddBuildItem("Trap",  "Spike Trap",  3,  5,  10,  150,  "npc_vj_zshelter_spike_trap",  "models/zshelter/shelter_b_thron01.mdl",  1,  Vector(0, 0, 0), {
+	damage = 35,
 	forceowner = true,
 	upgrade_attackscale = 0.25,
 	upgrade_healthscale = 0.25,
 	upgradable = true,
 	upgradecount = 2,
 	durability = true,
-	durability_cost = 5,
+	durability_cost = 8,
 	durability_cost_interval = 0.2,
 	nodestroymessage = true,
+	insideshelter = true,
 })
 ZShelter.AddBuildItem("Trap",  "Flame Trap",  5,  3,  0,  120,  "obj_structure_flame_trap",  "models/combine_helicopter/helicopter_bomb01.mdl",  2,  Vector(0, 0, -7), {
 	damage = 25,
 	forceowner = true,
 	nodestroymessage = true,
+	insideshelter = true,
 })
-ZShelter.AddBuildItem("Trap",  "Propeller Trap",  4,  8,  12,  300,  "obj_structure_propeller_trap",  "models/props_c17/trappropeller_engine.mdl",  2,  Vector(0, 0, 18), {
+ZShelter.AddBuildItem("Trap",  "Propeller Trap",  4,  8,  15,  330,  "obj_structure_propeller_trap",  "models/props_c17/trappropeller_engine.mdl",  2,  Vector(0, 0, 18), {
 	damage = 5,
 	forceowner = true,
-	upgrade_attackscale = 0.4,
+	upgrade_attackscale = 0.2,
 	upgrade_healthscale = 0.2,
 	upgradable = true,
 	upgradecount = 2,
 	canstun = true,
 	durability = true,
 	durability_cost = 2,
-	durability_cost_interval = 0.5,
+	durability_cost_interval = 0.25,
 	nodestroymessage = true,
+	insideshelter = true,
+})
+ZShelter.AddBuildItem("Trap",  "CMB Trap",  8,  6,  0,  200,  "obj_structure_cmb_mine",  "models/props_combine/combine_mine01.mdl",  3,  Vector(0, 0, 0), {
+	damage = 0,
+	forceowner = true,
+	nodestroymessage = true,
+	insideshelter = true,
+})
+ZShelter.AddBuildItem("Trap",  "Laser Trap",  16,  16,  7,  600,  "obj_structure_laser_trap",  "models/props_combine/combine_light001a.mdl",  3,  Vector(0, 0, 5), {
+	damage = 7,
+	forceowner = true,
+	nodestroymessage = true,
+	insideshelter = true,
+	durability = true,
+	durability_cost = 1,
+	durability_cost_interval = 1,
 })
 ZShelter.AddBuildItem("Turret",  "Basic Turret",  3,  4,  10,  300,  "npc_vj_zshelter_turret",  "models/zshelter/zb_turret.mdl",  0,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgrade_attackscale = 0.2,
 	upgrade_healthscale = 0.25,
 	upgradecount = 2,
-	damage = 16,
+	damage = 14,
+	insideshelter = true,
 })
 ZShelter.AddBuildItem("Turret",  "Freeze Turret",  5,  4,  12,  450,  "npc_vj_zshelter_ice_turret",  "models/vj_hlr/decay/sentry.mdl",  0,  Vector(0, 0, 0), {
 	damage = 1,
+	insideshelter = true,
 }, nil, {find = true, day = 1})
-ZShelter.AddBuildItem("Turret",  "Mounted Machine Gun",  10,  10,  0,  600,  "npc_vj_zshelter_mounted_mg",  "models/tfa_cso/emplacement/w_csomountgun.mdl",  0,  Vector(0, 0, 0), {}, {}, {find = true, day = 1})
+ZShelter.AddBuildItem("Turret",  "Mounted Machine Gun",  12,  12,  0,  500,  "npc_vj_zshelter_mounted_mg",  "models/tfa_cso/emplacement/w_csomountgun.mdl",  0,  Vector(0, 0, 0), {
+	playercount = true,
+	damage = 40,
+	upgradable = true,
+	upgrade_attackscale = 0,
+	upgrade_healthscale = 0.2,
+	upgradecount = 3,
+
+	oncomplete = function(self)
+		local buff = 1 + (GetGlobalInt("ShelterLevel", 0) * 0.2933)
+		self.AttackScaling = buff
+		self.AttackDamage = math.floor(40 * buff)
+		self:SetNWInt("AttackDamage", math.floor(40 * buff))
+	end,
+	onshelterupgrade = function(self)
+		local buff = 1 + (GetGlobalInt("ShelterLevel", 0) * 0.2933)
+		self.AttackScaling = buff
+		self.AttackDamage = math.floor(40 * buff)
+		self:SetNWInt("AttackDamage", math.floor(40 * buff))
+	end,
+}, {}, {find = true, day = 1})
 ZShelter.AddBuildItem("Turret",  "Flame Turret",  4,  6,  17,  500,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
 	upgrade_attackscale = 0.33,
 	upgrade_healthscale = 0.3,
 	upgradable = true,
 	upgradecount = 2,
 	damage = 4,
+	insideshelter = true,
 })
 ZShelter.AddBuildItem("Turret",  "Enemy Scanner",  4,  7,  10,  800,  "obj_structure_scanner",  "models/zshelter/obj_decoy01.mdl",  1,  Vector(0, 0, 20), {}, nil, {find = true, day = 1})
 ZShelter.AddBuildItem("Turret",  "Mending Tower",  18,  18,  40,  150,  "npc_vj_zshelter_repairer",  "models/props_lab/reciever_cart.mdl",  1,  Vector(0, 0, 32.5), {
 	upgradable = true,
 	upgrade_attackscale = 0,
-	upgrade_healthscale = 0.5,
-	upgradecount = 2,
+	upgrade_healthscale = 0.3,
+	upgradecount = 4,
 	forcecollide = true,
 	noowner = true,
+	insideshelter = true,
 }, {}, {find = true, day = 1})
-ZShelter.AddBuildItem("Turret",  "Blast Turret",  3,  5,  18,  750,  "npc_vj_zshelter_blast_turret",  "models/vj_hlr/hl1/sentry.mdl",  2,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Blast Turret",  3,  5,  18,  450,  "npc_vj_zshelter_blast_turret",  "models/vj_hlr/hl1/sentry.mdl",  2,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgrade_attackscale = 0.25,
 	upgrade_healthscale = 0.35,
 	upgradecount = 2,
 	damage = 40,
+	insideshelter = true,
 }, {}, {find = true, day = 3})
-ZShelter.AddBuildItem("Turret",  "Minigun Turret",  7,  8,  20,  500,  "npc_vj_zshelter_minigun_turret",  "models/zshelter/shelter_b_turret_bg01.mdl",  2,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Minigun Turret",  7,  8,  25,  500,  "npc_vj_zshelter_minigun_turret",  "models/zshelter/shelter_b_turret_bg01.mdl",  2,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgrade_attackscale = 0.33,
 	upgrade_healthscale = 0.1,
 	upgradecount = 3,
 	damage = 10,
+	insideshelter = true,
 }, {})
 ZShelter.AddBuildItem("Turret",  "Pusher Tower",  10, 12,  35,  500,  "obj_structure_pusher",  "models/props_combine/combine_light001b.mdl",  2,  Vector(0, 0, 20), {
-	damage = 2,
+	damage = 1,
+	insideshelter = true,
 }, nil, {find = true, day = 4})
 ZShelter.AddBuildItem("Turret",  "Railgun Cannon",  8,  11,  40,  700,  "npc_vj_zshelter_railgun_turret",  "models/vj_hlr/hl1/alien_cannon.mdl",  2,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgrade_attackscale = 0.4,
 	upgrade_healthscale = 0.1,
 	upgradecount = 3,
-	damage = 300,
+	damage = 250,
+	insideshelter = true,
 }, nil, {find = true, day = 4})
 ZShelter.AddBuildItem("Turret",  "Plasma Turret",  16,  18,  30,  700,  "npc_vj_zshelter_plasma_turret",  "models/zshelter/shelter_b_laser_tower.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
@@ -411,6 +516,7 @@ ZShelter.AddBuildItem("Turret",  "Plasma Turret",  16,  18,  30,  700,  "npc_vj_
 	upgrade_attackscale = 0.35,
 	upgrade_healthscale = 0.1,
 	damage = 120,
+	insideshelter = true,
 }, {})
 ZShelter.AddBuildItem("Turret",  "Mortar Cannon",  14,  16,  35,  700,  "npc_vj_zshelter_mortar",  "models/zshelter/shelter_b_turret01.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
@@ -418,6 +524,7 @@ ZShelter.AddBuildItem("Turret",  "Mortar Cannon",  14,  16,  35,  700,  "npc_vj_
 	upgrade_healthscale = 0.05,
 	upgradecount = 3,
 	damage = 50,
+	insideshelter = true,
 }, {})
 ZShelter.AddBuildItem("Turret",  "Electric Defense Tower",  18,  20,  40,  1500,  "npc_vj_zshelter_electric_defense",  "models/zshelter/shelter_b_electric_defense.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
@@ -425,13 +532,23 @@ ZShelter.AddBuildItem("Turret",  "Electric Defense Tower",  18,  20,  40,  1500,
 	upgrade_healthscale = 0.25,
 	upgradecount = 2,
 	damage = 10,
+	insideshelter = true,
+}, {})
+ZShelter.AddBuildItem("Turret",  "Laser Turret",  20,  20,  35,  400,  "npc_vj_zshelter_laser_turret",  "models/combine_turrets/ground_turret.mdl",  3,  Vector(0, 0, 25), {
+	upgradable = true,
+	upgradecount = 2,
+	upgrade_attackscale = 0.25,
+	upgrade_healthscale = 0.3,
+	damage = 20,
+	insideshelter = true,
 }, {})
 ZShelter.AddBuildItem("Turret",  "Combine Mortar Cannon",  24,  24,  50,  450,  "npc_vj_zshelter_combine_mortar",  "models/props_combine/combine_mortar01a.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgradecount = 2,
-	upgrade_attackscale = 0.75,
+	upgrade_attackscale = 0.5,
 	upgrade_healthscale = 0,
-	damage = 400,
+	damage = 300,
+	insideshelter = true,
 }, nil, {find = true, day = 7})
 
 function ZShelter:SetupIngredients()

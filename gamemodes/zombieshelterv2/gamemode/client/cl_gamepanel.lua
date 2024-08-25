@@ -170,6 +170,13 @@ function ZShelter.HTTPUpdateStatus()
 	)
 end
 
+local serverlist = {
+	{
+		host = "NPCZ | Shelter",
+		address = "193.243.190.18:27025",
+	},
+}
+
 function ZShelter.ReadName()
 	local ctx = file.Read("zombie shelter v2/multiplayer/names.txt", "DATA")
 	if(ctx) then
@@ -224,10 +231,10 @@ local func = {
 			local pad3x = ScreenScaleH(12)
 			local pad4x = ScreenScaleH(30)
 			ZShelter.AddDockLabel(ui, "Zombie Shelter v"..ZShelter.GameVersion, "ZShelter-GameUITitle", pad2x, pad2x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(ui, "- Changes", "ZShelter-GameUIGameUITitle2x", pad3x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(ui, "Added a new convar to allow building inside of shelter (zshelter_build_in_shelter)", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
 			ZShelter.AddDockLabel(ui, "- Bug Fixes", "ZShelter-GameUIGameUITitle2x", pad3x, pad1x, Color(255, 255, 255, 255))
-			ZShelter.AddDockLabel(ui, "Fixed a bug in config system that caused all weapons can't get ammo from ammo crate", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
-			ZShelter.AddDockLabel(ui, "Fixed syncing problem in config system", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
-			ZShelter.AddDockLabel(ui, "Fixed a bug that doesn't let you join public lobby", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(ui, "Fixed music toggling not working", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
 		end,
 	},
 	[2] = {
@@ -479,6 +486,41 @@ local func = {
 		end,
 	},
 	[4] = {
+		title = "ServerList",
+		func = function(ui)
+			local sidepadding = ScreenScaleH(4)
+			local colorwide = ScreenScaleH(2)
+			local gap = ScreenScaleH(2)
+			local gap1x = ScreenScaleH(1)
+			local textpadding = ScreenScaleH(12)
+			local tw, th, counttext = ZShelter.CreateLabel(ui, textpadding, 0, ZShelter_GetTranslate("#ServerListHint"), "ZShelter-GameUITitle", Color(255, 255, 255, 255))
+			local top_padding = th + textpadding * 2
+			local scroll = ZShelter.CreateScroll(ui, sidepadding, top_padding + sidepadding, ui:GetWide() - sidepadding * 2, (ui:GetTall() - top_padding) - sidepadding * 2, Color(30, 30, 30, 255))
+				for k,v in pairs(serverlist) do
+					local base = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.185, Color(25, 25, 25, 255))
+						base:Dock(TOP)
+						base:DockMargin(0, 0, 0, gap)
+						local tw, th, hostname = ZShelter.CreateLabel(base, sidepadding, gap, v.host, "ZShelter-GameUITitle", Color(255, 255, 255, 255))
+						local tw, th, addr = ZShelter.CreateLabel(base, sidepadding, sidepadding + th, ZShelter_GetTranslate_Var("#ServerListAddr", v.address), "ZShelter-GameUIDescription", Color(255, 255, 255, 120))
+						local tw, th, c2j = ZShelter.CreateLabel(base, 0, 0, ZShelter_GetTranslate("#ServerListClick"), "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+						c2j:SetPos(base:GetWide() - (tw + sidepadding), base:GetTall() - (th + sidepadding))
+
+						local btn = ZShelter.InvisButton(base, 0, 0, base:GetWide(), base:GetTall(), function()
+							LocalPlayer():ConCommand("connect "..v.address)
+						end)
+						btn.Alpha = 0
+						btn.Paint = function()
+							if(btn:IsHovered()) then
+								btn.Alpha = math.Clamp(btn.Alpha + ZShelter.GetFixedValue(1.5), 0, 15)
+							else
+								btn.Alpha = math.Clamp(btn.Alpha - ZShelter.GetFixedValue(1.5), 0, 15)
+							end
+							draw.RoundedBox(0, 0, 0, btn:GetWide(), btn:GetTall(), Color(255, 255, 255, btn.Alpha))
+						end
+				end
+		end,
+	},
+	[5] = {
 		title = "Discord",
 		clickfunc = function()
 			gui.OpenURL("https://discord.gg/XMZQpDavbU")
@@ -510,7 +552,7 @@ function ZShelter.GameUI()
 			surface.DrawTexturedRect(_half, _half, half, half)
 		end
 		local gap = ScreenScaleH(1)
-		local wide = ui:GetWide() * 0.2
+		local wide = ui:GetWide() * 0.15
 		local nextX = 0
 		for k,v in ipairs(func) do
 			local panel = ZShelter.CreatePanel(ui.Container, 0, 0, ui.Container:GetWide(), ui.Container:GetTall(), Color(0, 0, 0, 0))
@@ -535,7 +577,7 @@ function ZShelter.GameUI()
 					end
 				end
 			end)
-			if(k == 3) then
+			if(k == 2) then
 				ui.Container.CurrentPanel = panel
 				btn.DoClick()
 			end

@@ -40,6 +40,12 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		damage = dmginfo:GetDamage()
 	end
 
+	if(target:GetNWFloat("DefenseNerfTime", 0) > CurTime()) then
+		dmginfo:SetDamage(damage * 1.35)
+		addScale = 1.35
+		damage = dmginfo:GetDamage()
+	end
+
 	if(target.IsBarricade) then
 		if(attacker:IsPlayer()) then
 			local wep = attacker:GetActiveWeapon()
@@ -122,7 +128,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 				attacker.LastDurabilityCostTime = 0
 			end
 			if(attacker.LastDurabilityCostTime < CurTime()) then
-				ZShelter.ApplyDamageFast(attacker, attacker.DurabilityCost, false)
+				ZShelter.ApplyDamageFast(attacker, attacker.DurabilityCost, false, true)
 				attacker.LastDurabilityCostTime = CurTime() + attacker.DurabilityInv
 			end
 		end

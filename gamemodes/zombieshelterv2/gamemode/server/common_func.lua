@@ -102,12 +102,12 @@ function ZShelterVisible_Vec_IgnoreTurret(self, vec, target)
 	local tr = {
 		start = vec,
 		endpos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z / 2),
-		filter = {self, target},
+		filter = ZShelter.TurretClasses,
 		mask = MASK_SHOT,
 	}
 	local ret = util.TraceLine(tr)
 	local ent = ret.Entity
-	return ret.Fraction == 1 || (!ret.HitWorld && IsValid(ent) && !ZShelter_IsProp(ent:GetClass()) && !ent.IsBuilding && target.LastStuckTime && target.LastStuckTime > CurTime()) || (IsValid(ent) && (ZShelter_WhiteListedEntity[ent:GetClass()] || ent.IsTurret)) -- This is terrible
+	return ret.Fraction == 1 || target == ent || (!ret.HitWorld && IsValid(ent) && !ZShelter_IsProp(ent:GetClass()) && !ent.IsBuilding && target.LastStuckTime && target.LastStuckTime > CurTime()) || (IsValid(ent) && (ZShelter_WhiteListedEntity[ent:GetClass()])) -- This is terrible
 end
 
 function ZShelterVisible_VecExtra(self, vec, target, ignore)

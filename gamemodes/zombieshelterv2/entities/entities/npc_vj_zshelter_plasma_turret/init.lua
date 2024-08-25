@@ -54,6 +54,7 @@ ENT.ShouldShoot = false
 ENT.NextFire = 4
 
 function ENT:Think()
+	self.NextFire = 4 - (self:GetNWInt("UpgradeCount", 0) * 0.35)
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
 		self:NextThink(CurTime() + 0.33)

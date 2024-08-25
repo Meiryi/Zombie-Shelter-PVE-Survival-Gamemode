@@ -16,6 +16,7 @@
 util.AddNetworkString("ZShelter-PlayMusic")
 
 function ZShelter.PlayMusic(music)
+	if(GetConVar("zshelter_enable_music"):GetInt() != 1) then return end
 	net.Start("ZShelter-PlayMusic")
 	net.WriteString(music)
 	net.Broadcast()

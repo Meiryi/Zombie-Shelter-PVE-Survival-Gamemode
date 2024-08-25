@@ -15,7 +15,7 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
 	self:DrawShadow(false)
-	self:SetCollisionGroup(0)
+	self:SetCollisionGroup(2)
 
 	if(self:GetPhysicsObject()) then
 		self:GetPhysicsObject():EnableMotion(false)

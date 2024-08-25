@@ -59,6 +59,7 @@ hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
     	ent.PriorToKilled = VJ_PriorToKilled
     	ent.LastValidTime = 0
     	ent.OverrideMove = function(self, finv)
+    		if(ent.IsBuilding) then return end
     		if(self:Health() <= 0) then return end
     		if(self:GetGoalPos() == Vector(0, 0, 0) && IsValid(self:GetEnemy()) && (self.LastValidTime && (CurTime() - self.LastValidTime) > 0.33) && IsValid(ZShelter.Shelter)) then
     			self:SetEnemy(ZShelter.Shelter)
@@ -73,7 +74,7 @@ hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
     			if(self.UnStuckTime && self.UnStuckTime < CurTime()) then
 	    			local vel = Angle(0, math.random(-180, 180), 0):Forward()
 	    			self:SetMoveVelocity(vel * 64)
-	    			self:SetLocalVelocity(vel * 512)
+	    			self:SetLocalVelocity(vel * 550)
     				self.UnStuckTime = CurTime() + 0.5
     			end
     		else

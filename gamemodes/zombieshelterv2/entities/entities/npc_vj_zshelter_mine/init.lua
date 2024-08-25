@@ -15,7 +15,7 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
 	self:DrawShadow(false)
-	self:SetCollisionGroup(0)
+	self:SetCollisionGroup(2)
 
 	if(self:GetPhysicsObject()) then
 		self:GetPhysicsObject():EnableMotion(false)
@@ -56,6 +56,10 @@ function ENT:Think()
 
 		if(ZShelter.ShouldDetonate(self:GetOwner(), self)) then
 			self:Remove()
+		else
+			self.AimTarget = nil
+			self:NextThink(CurTime() + 10)
+			return true
 		end
 	end
 	self:NextThink(CurTime() + 0.1)

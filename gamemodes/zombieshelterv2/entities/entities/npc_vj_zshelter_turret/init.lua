@@ -41,6 +41,7 @@ ENT.LosAngle = 8
 ENT.CheckValidTime = 0
 
 function ENT:Think()
+	self.Firerate = 0.25 - (self:GetNWInt("UpgradeCount", 0) * 0.015)
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
 		self:NextThink(CurTime() + 0.33)
@@ -92,6 +93,6 @@ function ENT:Think()
 		end
 
 	end
-	self:NextThink(CurTime() + 0.1)
+	self:NextThink(CurTime() + 0.025)
 	return true
 end

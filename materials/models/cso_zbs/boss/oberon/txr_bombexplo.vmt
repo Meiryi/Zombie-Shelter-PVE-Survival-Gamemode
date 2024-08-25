@@ -1,0 +1,9 @@
+
+"VertexlitGeneric"
+{
+             "$basetexture" "models/cso_zbs/boss/oberon/txr_bombexplo"
+	"$vertexcolor" "1"
+	"$translucent" 1
+	"$additive" 1
+	"$nocull" 1
+}

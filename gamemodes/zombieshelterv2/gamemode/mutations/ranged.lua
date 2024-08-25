@@ -2,7 +2,7 @@ local m = {}
 m.Name = "ranged" -- id to use in config system
 m.Day = 5 -- Day to start apply this mutation
 m.Chance = 2 -- Chance to spawn
-m.Difficulty = 1 -- Minimum difficulty to spawn
+m.Difficulty = 4 -- Minimum difficulty to spawn
 m.Color = Color(119, 52, 235, 255)
 
 --[[
@@ -18,12 +18,13 @@ m.Variables = {
 	zsh_NextRangedAttack = 0,
 	zsh_NextCheckValidTime = 0,
 	zsh_AimTarget = nil,
-	zsh_MaximumRange = 2500,
+	zsh_MaximumRange = 1800,
 	zsh_DamageInfo = DamageInfo()
 } -- Variables for mutation functions, leave empty for nothing
 
 m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 	OnApplyMutation = function(self)
+		if(self:Health() >= 1000) then return true end
 		self:SetCollisionGroup(1)
 		local e = EffectData()
 			e:SetEntity(self)
@@ -72,7 +73,7 @@ m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 				local vec = self:GetPos() + Vector(0, 0, (self:OBBMaxs().z * 1.25) + 5)
 				local count = 0
 				for k,v in ipairs(ents.FindInSphere(self:GetPos(), self.zsh_MaximumRange)) do
-					if(count >= 3) then break end
+					if(count >= 1) then break end
 					if(!v.IsTurret || !ZShelterVisible_NPCVec(self, vec, v)) then continue end
 					self.ZShelter_DoRangeAttack(self, v)
 					count = count + 1

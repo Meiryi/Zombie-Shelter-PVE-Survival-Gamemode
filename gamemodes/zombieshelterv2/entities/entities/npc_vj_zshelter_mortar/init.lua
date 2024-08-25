@@ -53,6 +53,8 @@ function ENT:FireMissile()
 end
 
 function ENT:Think()
+	self.MaxShot = 4 + math.floor(self:GetNWInt("UpgradeCount", 0) * 0.5)
+	self.ShootingInterval = 0.8 - (self:GetNWInt("UpgradeCount", 0) * 0.05)
 	local rotate = self:GetBoneController(1)
 	if(!self.Shooting) then
 		if(!IsValid(self.ShootingTarget) || self.AimVec == Vector(0, 0, 0)) then

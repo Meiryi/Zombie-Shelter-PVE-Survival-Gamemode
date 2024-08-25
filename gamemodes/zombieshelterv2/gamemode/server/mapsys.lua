@@ -26,6 +26,7 @@ net.Receive("ZShelter-SendMapConfig", function(len, ply)
 	--if(!ZShelter.ValidateMapConfig(tab)) then return end -- This should never happen
 	file.Write("zombie shelter v2/mapconfig/"..game.GetMap()..".txt", tab)
 	ZShelter.InitShelter()
+	GetConVar("zshelter_debug_enable_sandbox"):SetInt(0)
 	ply.LastSendMapCFGTime = CurTime() + 0.5
 end)
 

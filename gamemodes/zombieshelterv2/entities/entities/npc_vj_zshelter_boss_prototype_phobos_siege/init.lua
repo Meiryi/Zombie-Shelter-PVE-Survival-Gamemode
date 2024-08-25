@@ -4,7 +4,7 @@ include('shared.lua')
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 ENT.Model = {"models/cso_zbs/monsters/zbs_phobos.mdl"}
-ENT.StartHealth = 500
+ENT.StartHealth = 5000
 ENT.HullType = HULL_HUMAN
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -58,17 +58,18 @@ ENT.CanFlinch = 0
 	-- ====== Leap Code ====== --
 ENT.HasLeapAttack = true -- Should the SNPC have a leap attack?
 ENT.AnimTbl_LeapAttack = {"zbs_attack_mahadash"} -- Melee Attack Animations
-ENT.LeapDistance = 800 -- The distance of the leap, for example if it is set to 500, when the SNPC is 500 Unit away, it will jump
-ENT.LeapToMeleeDistance = 150 -- How close does it have to be until it uses melee?
-ENT.TimeUntilLeapAttackDamage = 1 -- How much time until it runs the leap damage code?
-ENT.NextLeapAttackTime = 25 -- How much time until it can use a leap attack?
+ENT.LeapDistance = 1024 -- The distance of the leap, for example if it is set to 500, when the SNPC is 500 Unit away, it will jump
+ENT.LeapToMeleeDistance = 64 -- How close does it have to be until it uses melee?
+ENT.TimeUntilLeapAttackDamage = 1.2 -- How much time until it runs the leap damage code?
+ENT.NextLeapAttackTime = 10 -- How much time until it can use a leap attack?
+ENT.StopLeapAttackAfterFirstHit = false
 ENT.NextAnyAttackTime_Leap = 1-- How much time until it can use any attack again? | Counted in Seconds
 ENT.LeapAttackExtraTimers = {0.4,0.6,0.8,1} -- Extra leap attack timers | it will run the damage code after the given amount of seconds
 ENT.TimeUntilLeapAttackVelocity = 1 -- How much time until it runs the velocity code?
-ENT.LeapAttackVelocityForward = 1300 -- How much forward force should it apply?
+ENT.LeapAttackVelocityForward = 2048 -- How much forward force should it apply?
 ENT.LeapAttackVelocityUp = 30 -- How much upward force should it apply?
-ENT.LeapAttackDamage = 110
-ENT.LeapAttackDamageDistance = 220 -- How far does the damage go?
+ENT.LeapAttackDamage = 35
+ENT.LeapAttackDamageDistance = 200 -- How far does the damage go?
 
 	-- ====== Knock Back Variables ====== --
 ENT.HasMeleeAttackKnockBack = true
@@ -94,13 +95,50 @@ ENT.RushTimer = 0
 ENT.ShockWaveTimer = 0
 ENT.RushAngle = Angle(0, 0, 0)
 
+ENT.Zsh_LastLeapAttackingTime = 0
+ENT.LeapAngle = Angle(0, 0, 0)
+ENT.GetLeapAngle = true
+ENT.NextLeapAttackCodeTime = 0
+ENT.LeapEndTime = 0
+
+function ENT:CustomOnLeapAttackVelocityCode()
+	self.LeapEndTime = CurTime() + 1
+end
+
 function ENT:CustomOnThink()
 	self:SetCollisionBounds(Vector(30, 30, 100), Vector(-30, -30, 0))
 	if(IsValid(self:GetEnemy())) then
-		if(self.ShockWaveTimer < CurTime()) then
+		if(self.ShockWaveTimer < CurTime() && !self.Rushing) then
 			self:ShockWave()
 			self.ShockWaveTimer = CurTime() + math.random(18, 25)
 		end
+	end
+	if((self.LeapAttacking && !self.DoingShockwave) || self.LeapEndTime > CurTime()) then
+		if(CurTime() - self.Zsh_LastLeapAttackingTime > 0.5) then
+			local enemy = self:GetEnemy()
+			if(IsValid(enemy) && ZShelterVisible_NPC(self, enemy)) then
+				if(self.GetLeapAngle) then
+					self.LeapAngle = (enemy:GetPos() - self:GetPos()):Angle()
+					self.GetLeapAngle = false
+				end
+				local ang = self.LeapAngle
+				self:SetAngles(Angle(0, ang.y, 0))
+				local vel = self:GetAngles():Forward() * 2048
+				vel.z = 0
+				self:SetVelocity(vel)
+			else
+				local vel = self:GetAngles():Forward() * 2048
+				vel.z = 0
+				self:SetVelocity(vel)
+			end
+			if(self.NextLeapAttackCodeTime < CurTime()) then
+				self:LeapDamageCode()
+				self.NextLeapAttackTime = CurTime() + 0.08
+			end
+		end
+	else
+		self.GetLeapAngle = true
+		self.Zsh_LastLeapAttackingTime = CurTime()
 	end
 end
 
@@ -117,24 +155,33 @@ function ENT:ShockWave()
 	self.HasLeapAttack = false
 	self.DisableChasingEnemy = true
 	self.DisableFindEnemy = true
-	self:SetEnemy(nil, true)
-	self:VJ_ACT_PLAYACTIVITY("zbs_attack_shockwave", true) 
+	self.DoingShockwave = true
+	self:VJ_ACT_PLAYACTIVITY("zbs_attack_shockwave", true, 3.5, false)
 	VJ_EmitSound(self,self.SoundTbl_Shockwave_Ready,100,100)
 	VJ_EmitSound(self,self.SoundTbl_Shockwave_Ready,100,100) 
 	timer.Simple(2, function()
 		if(!IsValid(self)) then return end
 		VJ_EmitSound(self,self.SoundTbl_Shockwave,100,100)
 		VJ_EmitSound(self,self.SoundTbl_Shockwave,100,100) 
-
+		local diff = GetConVar("zshelter_difficulty"):GetInt()
+		local radius = 512 * (1 + (diff - 1) * 0.05)
+		local dmg = 70 * (1 + (diff - 1) * 0.05)
 		for k,v in pairs(ents.FindInSphere(self:GetPos(), 512)) do
 			if(v == self) then continue end
-			v:TakeDamage(70, self, self)
+			if(v.IsBuilding) then
+				ZShelter.ApplyDamageFast(v, dmg, true, true)
+				if(v.IsTurret && diff >= 8) then
+					ZShelter.StunBuilding(v, 6, true)
+				end
+			else
+				v:TakeDamage(35, self, self)
+			end
 		end
-		util.ScreenShake( self:GetPos(), 50, 50, 2, 1024)
+		util.ScreenShake(self:GetPos(), 50, 50, 2, 1024)
 		self.HasMeleeAttack = true
 		self.HasLeapAttack = true
 		self.DisableChasingEnemy = false
 		self.DisableFindEnemy = false
+		self.DoingShockwave = false
 	end)
 end
-

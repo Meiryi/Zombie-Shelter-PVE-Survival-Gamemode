@@ -59,5 +59,5 @@ ENT.LastDamageTime = 0
 function ENT:Touch(entity)
 	if(self.LastDamageTime > CurTime() || ZShelter.ValidateEntity(nil, entity) || entity.IsPathTester || entity:IsPlayer()) then return end
 	ZShelter.ApplyDamageFast(self, 20, true)
-	self.LastDamageTime = CurTime() + 0.33
+	--self.LastDamageTime = CurTime() + 0.33
 end

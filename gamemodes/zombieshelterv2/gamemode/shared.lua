@@ -24,6 +24,8 @@ CreateConVar("zshelter_difficulty", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_A
 
 CreateConVar("zshelter_enable_music", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable music", 0, 1)
 CreateConVar("zshelter_enable_director", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable map director, it dynamicly increases difficulty depends on current situation (Experimental)", 0, 1)
+CreateConVar("zshelter_enable_fog", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable fogs (Restart required)", 0, 1)
+CreateConVar("zshelter_build_in_shelter", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Allow players to build inside of shelter", 0, 1)
 
 CreateConVar("zshelter_display_name", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Display teammate's name even it's not visible", 0, 1)
 CreateConVar("zshelter_public_lobby", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Allow players connect from server browser", 0, 1)
@@ -41,7 +43,7 @@ CreateConVar("zshelter_config_name", "", FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR
 CreateConVar("zshelter_default_enemy_config", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Use default enemy config", 0, 1)
 CreateConVar("zshelter_default_item_config", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Use default item config", 0, 1)
 
-CreateConVar("zshelter_friendly_fire", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Friendly fire", 0, 1)
+CreateConVar("zshelter_friendly_fire", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Friendly fire", 0, 1)
 CreateConVar("zshelter_start_with_resources", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Start with full resources", 0, 1)
 
 CreateConVar("zshelter_debug_enable_sandbox", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Enable sandbox", 0, 1)
@@ -55,13 +57,43 @@ CreateConVar("zshelter_debug_disable_building_damage", 0, FCVAR_NOTIFY + FCVAR_R
 CreateConVar("zshelter_debug_instant_build", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Instant build stuffs", 0, 1)
 CreateConVar("zshelter_debug_damage_number", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable damage number", 0, 1)
 
+CreateConVar("zshelter_server_category_name", "", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Name for server listing category, leave empty for default one")
+
+if(CLIENT) then
+	CreateConVar("zshelter_enable_hud", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable zombie shelter hud?")
+end
+
+if(GetConVar("zshelter_server_category_name"):GetString() != "") then
+	local str = GetConVar("zshelter_server_category_name"):GetString()
+	local _ok = false
+	for i = 1, #str do -- check for space
+		if(#str != " ") then
+			_ok = true
+			break
+		end
+	end
+	if(_ok) then
+		GM.Name = str
+	end
+end
+
+if(ArcCWInstalled)then
+    -- Broken ass garbage
+    ArcCW.AttachmentBlacklistTable["go_perk_headshot"] = true
+    ArcCW.AttachmentBlacklistTable["go_perk_ace"] = true
+    ArcCW.AttachmentBlacklistTable["go_perk_last"] = true
+    ArcCW.AttachmentBlacklistTable["go_perk_refund"] = true
+end
+
+print("Changed server category name to -->", GM.Name)
+
 file.CreateDir("zombie shelter v2/")
 file.CreateDir("zombie shelter v2/config/")
 file.CreateDir("zombie shelter v2/mapconfig/")
 file.CreateDir("zombie shelter v2/avatars/")
 file.CreateDir("zombie shelter v2/multiplayer/")
 
-ZShelter.GameVersion = "1.0.4"
+ZShelter.GameVersion = "1.0.7"
 ZShelter.ConfigVersion = "1.0.9" -- DANGER, MODIFY THIS WILL RESET CONFIGS
 ZShelter.BasePath = "zombieshelterv2/gamemode/"
 ZShelter.MaximumDifficulty = 9

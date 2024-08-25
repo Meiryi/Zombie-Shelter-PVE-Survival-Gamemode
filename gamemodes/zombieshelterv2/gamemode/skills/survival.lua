@@ -55,12 +55,12 @@ ZShelter.AddSkills(ClassName, "OnHUDPaint",
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
 		player:SetNWFloat("TrapRepairSpeed", player:GetNWFloat("TrapRepairSpeed", 1) + 0.25)
-	end, 4, "fastrepa", 1, "Fast Repair")
+	end, 2, "fastrepa", 1, "Fast Repair")
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
-		player:SetNWFloat("TrapDamageScale", player:GetNWFloat("TrapDamageScale", 1) + 0.25)
-	end, 3, "trapdmg", 1, "Trap Damage Boost")
+		player:SetNWFloat("TrapDamageScale", player:GetNWFloat("TrapDamageScale", 1) + 0.4)
+	end, 2, "trapdmg", 1, "Trap Damage Boost")
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
@@ -101,7 +101,7 @@ ZShelter.AddSkills(ClassName, "OnGatheringResources",
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
-		player:SetNWFloat("TrapHPScale", player:GetNWFloat("TrapHPScale", 1) + 0.15)
+		player:SetNWFloat("TrapHPScale", player:GetNWFloat("TrapHPScale", 1) + 0.35)
 	end, 3, "reinfortrap", 2, "Reinforced Traps")
 
 --[[
@@ -111,6 +111,7 @@ ZShelter.AddSkills(ClassName, nil, nil,
 	end, 4, "", 2, "Reinforced Traps")
 ]]
 
+--[[
 ZShelter.AddSkills(ClassName, "OnBuildingPlaced",
 	function(player, building)
 		if(building.Cate != "Trap") then return end
@@ -120,6 +121,7 @@ ZShelter.AddSkills(ClassName, "OnBuildingPlaced",
 	function(player, current)
 		player.TrapPrebuildAmount = current * 0.5
 	end, 2, "fastdepl", 3, "Fast Deploy")
+]]
 
 ZShelter.AddSkills(ClassName, "OnGatheringResources",
 	function(player, resource, type, amount, full, nocallback)
@@ -171,19 +173,14 @@ ZShelter.AddSkills(ClassName, "OnTrapDetonate",
 	end, 2, "demoexpert", 3, "Demolitions Specialist")
 
 ZShelter.AddSkills(ClassName, "OnRepairingTraps",
-	function(player, trapent, repair)
-		if(player.NextChainRepair && player.NextChainRepair >= 2) then
-			for k,v in pairs(ents.FindInSphere(player:GetPos(), player.TrapRepairRadius || 86)) do
-				if(!v.IsTrap) then continue end
-				v:SetHealth(math.min(v:Health() + 3, v:GetMaxHealth()))
-			end
-			player.NextChainRepair = 1
-			return
+	function(player, trapent)
+		local repair = player:GetNWFloat("TrapRepairSpeed", 1) * 5
+		for k,v in pairs(ents.FindInSphere(player:GetPos(), player.TrapRepairRadius || 86)) do
+			if(!v.IsTrap) then continue end
+			v:SetHealth(math.min(v:Health() + repair, v:GetMaxHealth()))
 		end
-		player.NextChainRepair = player.NextChainRepair + 1
 	end,
 	function(player, current)
-		player.NextChainRepair = 0
 		player.TrapRepairRadius = current * 86
 	end, 2, "cr_survival", 3, "Slick Repairing")
 

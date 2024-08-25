@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "oberon/$0a_hole01"
+	"$alphatest" 1
+	"$translucent" 1
+}

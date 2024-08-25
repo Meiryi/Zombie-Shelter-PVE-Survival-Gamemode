@@ -62,7 +62,10 @@ function ENT:Think()
 				e:SetOrigin(self:GetPos() + Vector(0, 0, 10))
 				util.Effect("HelicopterMegaBomb", e)
 				sound.Play("vj_hlr/hl1_weapon/explosion/explode"..math.random(3, 5)..".wav", self:GetPos() + Vector(0, 0, 15), 100, 100, 1)
-			self:Remove()
+			
+			if(ZShelter.ShouldDetonate(self.Owner, self)) then
+				self:Remove()
+			end
 		end
 	end
 	self:NextThink(CurTime() + 0.05)

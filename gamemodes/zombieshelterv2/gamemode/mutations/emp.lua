@@ -55,7 +55,11 @@ m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 				end
 				for k,v in pairs(ents.FindInSphere(pos, 128)) do
 					if(!v.IsBuilding) then continue end
-					ZShelter.ApplyDamageFast(v, 15, true)
+					if(v.IsTrap) then
+						ZShelter.ApplyDamageFast(v, 1, true, true)
+					else
+						ZShelter.ApplyDamageFast(v, 15, true)
+					end
 				end
 			end)
 		end

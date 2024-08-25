@@ -476,10 +476,17 @@ function ZShelter.BuildMenu()
 						end
 
 					local _text = ZShelter_GetTranslate("#"..y.title)
-					local current, maximum = 0, 1
+					local current, maximum = 0, -1
 					local tw, th, text = ZShelter.CreateLabel(elem, modelViewer:GetWide() + innermargin, dockmargin, ZShelter_GetTranslate("#"..y.title), "ZShelter-MenuTitle", Color(200, 200, 200, 255))
-					if(y.tdata && y.tdata.maxamount) then
-						maximum = y.tdata.maxamount
+					if(y.tdata) then
+						if(y.tdata.maxamount) then
+							maximum = y.tdata.maxamount
+						end
+						if(y.tdata.playercount) then
+							maximum = player.GetCount()
+						end
+					end
+					if(maximum != -1) then
 						local idx = "Build_"..y.title
 						text.Think = function()
 							current = GetGlobalInt(idx)
@@ -541,7 +548,7 @@ function ZShelter.BuildMenu()
 					ui:Remove()
 				end)
 				btn.Paint = function()
-					if(current >= maximum) then
+					if(current >= maximum && maximum != -1) then
 						draw.RoundedBox(0, 0, 0, elem:GetWide(), elem:GetTall(), Color(0, 0, 0, 200))
 						return
 					end

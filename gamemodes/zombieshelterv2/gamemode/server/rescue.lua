@@ -39,7 +39,7 @@ end
 
 hook.Add("PlayerDisconnected", "ZShelter-DisconnectRescueCheck", function(ply)
 	local count = player.GetCount() - 1
-	if(!GetGlobalBool("GameStarted")) then return end
+	if(!GetGlobalBool("GameStarted") || table.Count(ZShelter.RescueList) <= 0) then return end
 	if(count >= table.Count(ZShelter.RescueList)) then
 		ZShelter.StartRescue()
 	end

@@ -48,13 +48,21 @@
 		}
 		4
 		{
+			"name"		"zshelter_build_in_shelter"
+			"text"		"Allow to build inside of shelter"
+			"type"		"CheckBox"
+			"default"	"0"
+			"singleplayer" ""
+		}
+		5
+		{
 			"name"		"zshelter_default_enemy_config"
 			"text"		"Use default enemy config"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
 		}
-		5
+		6
 		{
 			"name"		"zshelter_default_item_config"
 			"text"		"Use default item config"
@@ -62,7 +70,15 @@
 			"default"	"1"
 			"singleplayer" ""
 		}
-		6
+		7
+		{
+			"name"		"zshelter_enable_fog"
+			"text"		"Enable fog (FPS Boost)"
+			"type"		"CheckBox"
+			"default"	"1"
+			"singleplayer" ""
+		}
+		8
 		{
 			"name"		"zshelter_public_lobby"
 			"text"		"Public lobby"
@@ -70,7 +86,7 @@
 			"default"	"1"
 			"singleplayer" ""
 		}
-		7
+		9
 		{
 			"name"		"zshelter_enable_director"
 			"text"		"Enable director system [Beta]"
@@ -78,7 +94,7 @@
 			"default"	"1"
 			"singleplayer" ""
 		}
-		8
+		10
 		{
 			"name"		"zshelter_enable_music"
 			"text"		"Enable music"
@@ -86,7 +102,7 @@
 			"default"	"1"
 			"singleplayer" ""
 		}
-		9
+		11
 		{
 			"name"		"zshelter_snap_to_grid"
 			"text"		"Snap to grid"
@@ -94,7 +110,7 @@
 			"default"	"0"
 			"singleplayer" ""
 		}
-		10
+		12
 		{
 			"name"		"zshelter_snap_to_grid_size"
 			"text"		"Grid size"
@@ -102,7 +118,7 @@
 			"default"	"32"
 			"singleplayer" ""
 		}
-		11
+		13
 		{
 			"name"		"zshelter_friendly_fire"
 			"text"		"Friendly fire"
@@ -110,7 +126,7 @@
 			"default"	"1"
 			"singleplayer" ""
 		}
-		12
+		14
 		{
 			"name"		"zshelter_start_with_resources"
 			"text"		"Start with full resources"
@@ -118,10 +134,26 @@
 			"default"	"0"
 			"singleplayer" ""
 		}
-		13
+		15
 		{
 			"name"		"zshelter_path_validate"
 			"text"		"Redirect enemy if path is blocked"
+			"type"		"CheckBox"
+			"default"	"1"
+			"singleplayer" ""
+		}
+		16
+		{
+			"name"		"zshelter_debug_enable_sandbox"
+			"text"		"Enable sandbox"
+			"type"		"CheckBox"
+			"default"	"0"
+			"singleplayer" ""
+		}
+		17
+		{
+			"name"		"zshelter_enable_hud"
+			"text"		"Enable HP HUD"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""

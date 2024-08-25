@@ -29,16 +29,13 @@ end
 
 function ENT:Think()
 	local owner = self:GetOwner()
-	
-	if(IsValid(owner)) then
-		repair = repair * owner:GetNWFloat("RepairSpeed", 1)
-	end
+	local boost = 1 + (self:GetNWInt("UpgradeCount", 0) * 0.15)
 	local min, max = self:GetPos() + Vector(-self.MaximumDistance, -self.MaximumDistance, -self.MaximumDistance), self:GetPos() + Vector(self.MaximumDistance, self.MaximumDistance, self.MaximumDistance)
 	for k,v in pairs(ents.FindInBox(min, max)) do
 		if(!v.IsBuilding || !v:GetNWBool("Completed") || v:GetNWBool("DurabilitySystem", false)) then continue end
 		if(v:Health() > v:GetMaxHealth() * 1.1 || v == self) then continue end
 		if(v.LastDamageTime && v.LastDamageTime > CurTime()) then continue end
-		local repair = 10
+		local repair = 10 * boost
 		local hp, mhp = v:Health(), v:GetMaxHealth()
 		if(v:GetClass() == "npc_vj_zshelter_repairer") then
 			repair = 5

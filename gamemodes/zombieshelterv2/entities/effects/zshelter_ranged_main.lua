@@ -1,5 +1,6 @@
 function EFFECT:Init(effect_data)
     local pos = effect_data:GetOrigin()
+    self.color = effect_data:GetColor() || Color(119, 52, 235, 125)
     local radius = 5
     self.Owner = effect_data:GetEntity()
     if(!IsValid(self.Owner)) then return end

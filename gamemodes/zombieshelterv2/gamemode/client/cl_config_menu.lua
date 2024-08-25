@@ -72,88 +72,93 @@ local enemyElem = {
 		type = "textentry",
 	},
 	[2] = {
+		hint = "Class for weapon",
+		id = "weaponclass",
+		type = "textentry",
+	},
+	[3] = {
 		hint = "Health for enemy",
 		id = "hp",
 		type = "textentry",
 		format = "int",
 	},
-	[3] = {
+	[4] = {
 		hint = "Health increase per day",
 		id = "hp_boost_day",
 		type = "textentry",
 		format = "int",
 	},
-	[4] = {
+	[5] = {
 		hint = "Attack damage",
 		id = "attack",
 		type = "textentry",
 		format = "int",
 	},
-	[5] = {
+	[6] = {
 		hint = "Chance to spawn",
 		id = "chance",
 		type = "textentry",
 		format = "int",
 	},
-	[6] = {
+	[7] = {
 		hint = "Day for enemy to start spawning",
 		id = "day",
 		type = "textentry",
 		format = "int",
 	},
-	[7] = {
+	[8] = {
 		hint = "Day for enemy to stop spawning (-1 to spawn forever)",
 		id = "end_day",
 		type = "textentry",
 		format = "int",
 	},
-	[8] = {
+	[9] = {
 		hint = "Maximum amount per day (-1 for infinite)",
 		id = "max_amount",
 		type = "textentry",
 		format = "int",
 	},
-	[9] = {
+	[10] = {
 		hint = "Maximum amount alive (-1 for unlimited)",
 		id = "max_exists",
 		type = "textentry",
 		format = "int",
 	},
-	[10] = {
+	[11] = {
 		hint = "Minimum difficulty to spawn (-1 for all difficulty)",
 		id = "min_difficulty",
 		type = "textentry",
 		format = "int",
 	},
-	[11] = {
+	[12] = {
 		hint = "Maximum difficulty to spawn (-1 for all difficulty)",
 		id = "max_difficulty",
 		type = "textentry",
 		format = "int",
 	},
 
-	[12] = {
+	[13] = {
 		hint = "Mutation",
 		id = "mutation",
 		type = "textentry",
 	},
-	[13] = {
+	[14] = {
 		hint = "Color",
 		id = "color",
 		type = "textentry",
 		format = "color",
 	},
-	[14] = {
+	[15] = {
 		hint = "Only spawn at night",
 		id = "night_or_day",
 		type = "button",
 	},
-	[15] = {
+	[16] = {
 		hint = "Do not clear on night",
 		id = "noclear",
 		type = "button",
 	},
-	[16] = {
+	[17] = {
 		hint = "Is treasure area boss",
 		id = "isboss",
 		type = "button",
@@ -212,6 +217,25 @@ local itemElem = {
 	},
 }
 
+local newEnemy = {
+	day = 1,
+	night_or_day = false,
+	class = "npc_vj_zshelter_common_h",
+	hp = 100,
+	noclear = false,
+	attack = 10,
+	mutation = "none",
+	weaponclass = "none",
+	isboss = false,
+	chance = 100,
+	end_day = -1,
+	min_difficulty = -1,
+	max_difficulty = 9,
+	max_exists = -1,
+	max_amount = -1,
+	hp_boost_day = 0,
+	color = Color(255, 255, 255, 255),
+}
 
 local bgmat = Material("zsh/icon/tools.png", "smooth")
 local func = {
@@ -236,7 +260,7 @@ local func = {
 		for k,v in ipairs(enemyElem) do
 			if(v.type == "textentry") then
 				ui.EnemyConfigElems[v.id] = ZShelter.CreateTextEntry(pa, XPos, NextY, wide, tall, "ZShelter-ConfigFont", Color(30, 30, 30, 255), Color(200, 200, 200, 255), v.hint, v.format)
-				NextY = NextY + tall + dockmargin
+				NextY = NextY + tall + innermargin
 			elseif(v.type == "button") then
 				ui.EnemyConfigElems[v.id] = ZShelter.CreateCFGButton(pa, XPos, NextY, wide, tall2, "ZShelter-ConfigFont", Color(200, 200, 200, 255), v.hint, v.format)
 				NextY = NextY + tall2 + dockmargin
@@ -245,6 +269,10 @@ local func = {
 
 		local btn = ZShelter.CreateButton(pa, XPos, NextY, wide, tall2, "Save Current Enemy", "ZShelter-ConfigFont", Color(200, 200, 200, 255), Color(30, 30, 30, 255), function()
 			if(ui.CurrentEnemyIndex == -1) then return end
+			for k,v in pairs(newEnemy) do
+				if(ZShelter.EnemyConfig[ui.CurrentEnemyIndex][k] != nil) then continue end
+				ZShelter.EnemyConfig[ui.CurrentEnemyIndex][k] = v
+			end
 			for k,v in pairs(ZShelter.EnemyConfig[ui.CurrentEnemyIndex]) do
 				if(ui.EnemyConfigElems[k]) then
 					ZShelter.EnemyConfig[ui.CurrentEnemyIndex][k] = ui.EnemyConfigElems[k]:GetVal()
@@ -283,30 +311,16 @@ local func = {
 		NextY = NextY + tall2 + dockmargin
 
 		ZShelter.CreateButton(pa, XPos, NextY, wide, tall2, "Add a new enemy", "ZShelter-ConfigFont", Color(200, 200, 200, 255), Color(30, 30, 30, 255), function()
-			local newEnemy = {
-				day = 1,
-				night_or_day = false,
-				class = "npc_vj_zshelter_common_h",
-				hp = 100,
-				noclear = false,
-				attack = 10,
-				mutation = "none",
-				isboss = false,
-				chance = 100,
-				end_day = -1,
-				min_difficulty = -1,
-				max_difficulty = 9,
-				max_exists = -1,
-				max_amount = -1,
-				hp_boost_day = 0,
-				color = Color(255, 255, 255, 255),
-			}
 			ui.CurrentEnemyIndex = table.insert(ZShelter.EnemyConfig, newEnemy)
 			ui.RefreshEnemyInfo(newEnemy)
 			ui.ReloadEnemyList()
 		end)
 
 		ui.RefreshEnemyInfo = function(v)
+		for key, val in pairs(newEnemy) do
+			if(v[key] != nil) then continue end
+			v[key] = val
+		end
 			for index, var in pairs(v) do
 				if(ui.EnemyConfigElems[index]) then
 					if(index == "color") then
@@ -343,7 +357,7 @@ local func = {
 
 		ui.ReloadEnemyList()
 
-		if(LocalPlayer():IsAdmin()) then
+		if(LocalPlayer():IsAdmin() || LocalPlayer():IsListenServerHost()) then
 			if(GetConVar("zshelter_default_enemy_config"):GetInt() == 1) then
 				ZShelter.CreatePanel(pa, 0, 0, pa:GetWide(), pa:GetTall(), Color(40, 0, 0, 80))
 				local _, _, text = ZShelter.CreateLabel(pa, pa:GetWide() / 2, pa:GetTall() / 2, "You're using default enemy config!", "ZShelter-MenuLarge", Color(200, 200, 200, 255))
@@ -486,7 +500,7 @@ local func = {
 
 		ui.ReloadItemList()
 
-		if(LocalPlayer():IsAdmin()) then
+		if(LocalPlayer():IsAdmin() || LocalPlayer():IsListenServerHost()) then
 			if(GetConVar("zshelter_default_item_config"):GetInt() == 1) then
 				ZShelter.CreatePanel(pa, 0, 0, pa:GetWide(), pa:GetTall(), Color(40, 0, 0, 80))
 				local _, _, text = ZShelter.CreateLabel(pa, pa:GetWide() / 2, pa:GetTall() / 2, "You're using default item config!", "ZShelter-MenuLarge", Color(200, 200, 200, 255))
@@ -533,11 +547,6 @@ local func = {
 				end
 			end
 		end, ScreenScaleH(4))
-		if(!LocalPlayer():IsAdmin()) then
-			ZShelter.CreatePanel(pa, 0, 0, pa:GetWide(), pa:GetTall(), Color(40, 0, 0, 80))
-			local _, _, text = ZShelter.CreateLabel(pa, pa:GetWide() / 2, pa:GetTall() / 2, "You don't have permission to export config!", "ZShelter-MenuLarge", Color(200, 200, 200, 255))
-			text.CentPos()
-		end
 	end,
 }
 

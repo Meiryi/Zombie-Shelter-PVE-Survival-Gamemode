@@ -315,11 +315,11 @@ ZShelter.AddInfo("Reinforced Traps", {
 		["ru"] = "Укреплённые ловушки",
 	},
 	desc = {
-		["en"] = "Increase trap's health, +15% health per upgrade",
-		["tr"] = "Tuzağın sağlığını artırır, yükseltme başına +%15",
-		["zh-TW"] = "增加陷阱的耐久, 每升級一次增加 15%",
-		["zh-CN"] = "增加陷阱的耐久, 每升一级增加 15%",
-		["ru"] = "Увеличивает прочность ловушек, +15% прочности за улучшение",
+		["en"] = "Increase trap's health, +35% health per upgrade",
+		["tr"] = "Tuzağın sağlığını artırır, yükseltme başına +%35",
+		["zh-TW"] = "增加陷阱的耐久, 每升級一次增加 35%",
+		["zh-CN"] = "增加陷阱的耐久, 每升一级增加 35%",
+		["ru"] = "Увеличивает прочность ловушек, +35% прочности за улучшение",
 	}
 })
 ZShelter.AddInfo("Slick Repairing", {

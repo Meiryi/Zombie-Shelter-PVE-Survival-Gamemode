@@ -13,6 +13,10 @@
 	任何形式的编辑是不被允许的 (包括模式的名称), 若有问题请在Steam上联络我
 ]]
 
+function ZShelter.GetPlayerCount() -- Because I used 'player' as a local variable, fuck me
+	return player.GetCount()
+end
+
 function ZShelter.IsRequirementMeet(player, building)
 	if(!building) then return false, false end
 	local woods = player:GetNWInt("Woods", 0)
@@ -24,6 +28,9 @@ function ZShelter.IsRequirementMeet(player, building)
 	local req_powers = math.floor(math.max(building.powers * player:GetNWFloat("PowerCost", 1), 0))
 	if(building.tdata && building.tdata.maxamount) then
 		if(GetGlobalInt("Build_"..building.title, 0) >= building.tdata.maxamount) then return end
+	end
+	if(building.tdata && building.tdata.playercount) then
+		if(GetGlobalInt("Build_"..building.title, 0) >= ZShelter.GetPlayerCount()) then return end
 	end
 	if(GetConVar("zshelter_debug_disable_build_checks"):GetInt() == 1) then return true, false end
 	if(req_powers > power && building.powers > 0) then return false, false end

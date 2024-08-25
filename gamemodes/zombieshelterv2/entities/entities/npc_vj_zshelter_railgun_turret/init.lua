@@ -48,6 +48,7 @@ function ENT:FixYaw(yaw) -- I hate this
 end
 
 function ENT:Think()
+	self.Firerate = 4.5 - (self:GetNWInt("UpgradeCount", 0) * 0.75)
 	self:SetSequence(2)
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
@@ -92,6 +93,11 @@ function ENT:Think()
 
 			self.AimTarget:TakeDamage(100, self, self)
 			self.AimTarget:SetNWInt("ZShelter-BreakTime", CurTime() + 15)
+			self.AimTarget:SetNWFloat("DefenseNerfTime", CurTime() + 8)
+			local e = EffectData()
+				e:SetOrigin(self.AimTarget:GetPos())
+				e:SetEntity(self.AimTarget)
+			util.Effect("zshelter_defnerf", e)
 
 			self.NextShootTime = CurTime() + self.Firerate
 		end
