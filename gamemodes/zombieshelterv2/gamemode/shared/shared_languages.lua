@@ -27,7 +27,7 @@ end
 --[[
 ZShelter.AddTranslate("#",{
 	["en"] = "",
-	["tr"] = "",
+	
 	["ru"] = "",
 	["zh-TW"] = "",
 	["zh-CN"] = "",
@@ -291,7 +291,7 @@ ZShelter.AddTranslate("#CMB Trap", {
 
 ZShelter.AddTranslate("#Gravity Mine", {
 	["en"] = "Gravity Mine",
-	["tr"] = "",
+	["tr"] = "Yer Çekimi Mayını",
 	["ru"] = "",
 	["zh-TW"] = "引力地雷",
 	["zh-CN"] = "引力地雷",
@@ -299,7 +299,7 @@ ZShelter.AddTranslate("#Gravity Mine", {
 
 ZShelter.AddTranslate("Laser Trap", {
 	["en"] = "Laser Trap",
-	["tr"] = "",
+	["tr"] = "Lazer Tuzağı",
 	["ru"] = "",
 	["zh-TW"] = "雷射陷阱",
 	["zh-CN"] = "雷射陷阱",
