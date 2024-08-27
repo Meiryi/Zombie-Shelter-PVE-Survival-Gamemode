@@ -27,7 +27,7 @@ end
 --[[
 ZShelter.AddTranslate("#",{
 	["en"] = "",
-	
+	["tr"] = "",
 	["ru"] = "",
 	["zh-TW"] = "",
 	["zh-CN"] = "",
