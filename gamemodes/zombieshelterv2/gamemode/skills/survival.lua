@@ -91,12 +91,19 @@ ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "cf", 2, "Campfire", {})
 ZShelter.AddSkills(ClassName, "OnGatheringResources",
 	function(player, resource, type, amount, full)
 		local seed = math.random(1, 100)
-		if(seed <= player:GetNWInt("DoubleGatheringChance", 10)) then
+		if(seed <= player:GetNWInt("DoubleGatheringChance", 10) || player.GatheringCount >= 5) then
 			ZShelter.AddResourceToPlayer(player, type, amount)
+			if(full && player:GetNWInt("SK_Resource Transporting", 0) >= 1) then
+				SetGlobalInt(type, math.min(GetGlobalInt(type, 0) + amount, GetGlobalInt("Capacity", 32)))
+			end
+			player.GatheringCount = 0
+		else
+			player.GatheringCount = player.GatheringCount + 1
 		end
 	end,
 	function(player)
 		player:SetNWInt("DoubleGatheringChance", player:GetNWInt("DoubleGatheringChance", 0) + 10)
+		player.GatheringCount = 0
 	end, 2, "advg", 2, "Advanced Gathering")
 
 ZShelter.AddSkills(ClassName, nil, nil,

@@ -107,7 +107,7 @@ hook.Add("Think", "ZShelter-Think", function()
 					ZShelter.HandleWin("#Victory", "#Survived15Day")
 				end
 				if(!GetGlobalBool("Night")) then
-					ZShelter.PlayMusic("sound/shigure/ost_night.mp3")
+					ZShelter.PlayMusic(GetConVarString("zshelter_music_night"))
 					SetGlobalInt("Time", 100 + (GetConVar("zshelter_difficulty"):GetInt() * 5))
 					SetGlobalBool("Night", true)
 					ZShelter.OnNightSwitch()

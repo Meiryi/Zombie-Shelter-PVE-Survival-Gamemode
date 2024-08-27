@@ -464,6 +464,10 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 			ZShelter.AddBait(ent)
 		end
 
+		if(tdata.yawoffset) then
+			ent:SetAngles(ent:GetAngles() + Angle(0, tdata.yawoffset, 0))
+		end
+
 		if(tdata.physcollide) then
 			ZShelter.AddCollisionEntity(ent)
 		end

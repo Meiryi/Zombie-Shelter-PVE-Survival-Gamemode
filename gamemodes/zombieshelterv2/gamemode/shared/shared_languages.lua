@@ -289,6 +289,14 @@ ZShelter.AddTranslate("#CMB Trap", {
 	["zh-CN"] = "冻结地雷",
 })
 
+ZShelter.AddTranslate("#Gravity Mine", {
+	["en"] = "Gravity Mine",
+	["tr"] = "",
+	["ru"] = "",
+	["zh-TW"] = "引力地雷",
+	["zh-CN"] = "引力地雷",
+})
+
 ZShelter.AddTranslate("Laser Trap", {
 	["en"] = "Laser Trap",
 	["tr"] = "",

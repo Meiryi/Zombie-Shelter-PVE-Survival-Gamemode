@@ -56,12 +56,11 @@ function ZShelter.SpawnBonusResource()
 	end
 end
 
-function ZShelter.DebugSpawnResource(player)
+function ZShelter.DebugSpawnResource(player, amount)
 		local pos = player:GetEyeTrace().HitPos
 		local type = resourceToSpawn[math.random(1, #resourceToSpawn)]
 		local max = resourceMaxAmount[type]
 		if(!max) then max = 8 end
-		local amount = math.random(1, max)
 		local res = ents.Create(type)
 			res:SetPos(pos)
 			res:SetAngles(Angle(0, math.random(-180, 180), 0))

@@ -19,7 +19,7 @@ function ENT:FindEnemy()
 	local td = 0
 	local highhp = false
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
-		if(!ZShelter.ValidateEntity(self, v)) then continue end
+		if(!ZShelter.ValidateEntity(self, v) || (v.IsBoss && !v.Awake)) then continue end
 		local h = v:Health()
 		if(h >= 2000) then
 			if(!highhp) then

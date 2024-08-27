@@ -478,10 +478,11 @@ function ZShelter.PaintHUD()
 
 	draw_RoundedBox(padding, padding, startY - (resTall + padding), wide, resTall, Color(30, 30, 30, 200))
 
-	surface_SetDrawColor(255, 255, 255, 255)
+	surface_SetDrawColor(102, 73, 35, 255)
 	surface_SetMaterial(woodmat)
 	surface_DrawTexturedRect(startX + padding, startY - (resTall + padding4x), imagesx, imagesx)
 	draw_DrawText(LocalPlayer():GetNWInt("Woods", 0).." / "..LocalPlayer():GetNWInt("ResourceCapacity", 0), "ZShelter-HUDElemFont", startX + wide * 0.35, startY - (resTall), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+	surface_SetDrawColor(84, 89, 95, 255)
 	surface_SetMaterial(ironmat)
 	surface_DrawTexturedRect(startX + wide / 2, startY - (resTall + padding4x), imagesx, imagesx)
 	draw_DrawText(LocalPlayer():GetNWInt("Irons", 0).." / "..LocalPlayer():GetNWInt("ResourceCapacity", 0), "ZShelter-HUDElemFont", startX + wide * 0.8, startY - (resTall), Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
@@ -648,12 +649,15 @@ hook.Add("HUDPaint", "ZShelter-HUD", function()
 	local dx = centX - _wide / 2
 	local dy = tall + padding3x + spacing
 	local dty = dy + padding3x
+	surface_SetDrawColor(102, 73, 35, 255)
 	surface_DrawTexturedRect(dx + padding, dy, isx, isx)
 	draw_DrawText(GetGlobalInt("Woods", 0).." / "..GetGlobalInt("Capacity"), "ZShelter-HUDFontMedium", dx + _wide * 0.25, dty, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 	surface_SetMaterial(ironmat)
+	surface_SetDrawColor(100, 100, 100, 255)
 	surface_DrawTexturedRect(dx + padding + _wide * 0.34, dy, isx, isx)
 	draw_DrawText(GetGlobalInt("Irons", 0).." / "..GetGlobalInt("Capacity"), "ZShelter-HUDFontMedium", dx + _wide * 0.6, dty, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 	surface_SetMaterial(powermat)
+	surface_SetDrawColor(231, 193, 25, 255)
 	surface_DrawTexturedRect(dx + padding + _wide * 0.67, dy, isx, isx)
 	draw_DrawText(GetGlobalInt("Powers", 0), "ZShelter-HUDFontMedium", dx + _wide * 0.89, dty, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 

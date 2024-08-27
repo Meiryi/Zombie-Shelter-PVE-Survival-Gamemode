@@ -23,7 +23,11 @@ DeriveGamemode("sandbox")
 CreateConVar("zshelter_difficulty", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Difficulty of game", 1, 9)
 
 CreateConVar("zshelter_enable_music", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable music", 0, 1)
-CreateConVar("zshelter_enable_director", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable map director, it dynamicly increases difficulty depends on current situation (Experimental)", 0, 1)
+CreateConVar("zshelter_music_night", "sound/shigure/ost_night.mp3", FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Music to play on night")
+CreateConVar("zshelter_music_countdown", "sound/shigure/ost_start.mp3", FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Music to play on countdown")
+CreateConVar("zshelter_music_horde", "sound/shigure/ost_panic.mp3", FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Music to play on hordes")
+
+CreateConVar("zshelter_enable_director", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable map director, it dynamicly increases difficulty depends on current situation (Experimental)", 0, 1)
 CreateConVar("zshelter_enable_fog", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable fogs (Restart required)", 0, 1)
 CreateConVar("zshelter_build_in_shelter", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Allow players to build inside of shelter", 0, 1)
 
@@ -93,7 +97,7 @@ file.CreateDir("zombie shelter v2/mapconfig/")
 file.CreateDir("zombie shelter v2/avatars/")
 file.CreateDir("zombie shelter v2/multiplayer/")
 
-ZShelter.GameVersion = "1.0.7"
+ZShelter.GameVersion = "1.0.8"
 ZShelter.ConfigVersion = "1.0.9" -- DANGER, MODIFY THIS WILL RESET CONFIGS
 ZShelter.BasePath = "zombieshelterv2/gamemode/"
 ZShelter.MaximumDifficulty = 9

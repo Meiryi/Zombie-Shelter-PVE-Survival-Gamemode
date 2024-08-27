@@ -132,16 +132,16 @@ function ENT:SwitchToKnifeMode()
 	self.AnimTbl_MeleeAttack = {"knife_attack1", "knife_attack2"}
 	self:VJ_ACT_PLAYACTIVITY("scene_knife", true, 8.25, false)
 	self.KnifeMode = true
-	self.BombTime = CurTime() + 30
-	self.HoleTime = CurTime() + 15
-	self.damage = (self.damage || 60) * 2
+	self.BombTime = CurTime() + 25
+	self.HoleTime = CurTime() + 10
+	self.damage = (self.damage || 60) * 1.5
 	self.DamageImmunityTime = CurTime() + 8.5
 end
 
 function ENT:SpawnBombs()
 	local pos = self:GetPos() + Vector(0, 0, 10)
-	local rand = 386
-	for i = 1, 10 do
+	local rand = 512
+	for i = 1, 20 do
 		local bomb = ents.Create("obj_oberon_bomb")
 			bomb:SetPos(pos)
 			bomb:Spawn()
@@ -163,8 +163,8 @@ function ENT:CustomOnThink()
 	end
 
 	if(self.ResetTime) then
-		self.BombTime = CurTime() + 30
-		self.HoleTime = CurTime() + 15
+		self.BombTime = CurTime() + 20
+		self.HoleTime = CurTime() + 5
 		self.ResetTime = false
 	end
 
@@ -218,7 +218,7 @@ function ENT:CustomOnThink()
 			local f = 1 - math.Clamp(dst / maxdst, 0, 1)
 			local vel = (self:GetPos() - v:GetPos())
 			vel:Normalize()
-			v:SetVelocity((vel * 200) * f)
+			v:SetVelocity((vel * 310) * f)
 		end
 	end
 
@@ -258,6 +258,7 @@ end
 
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo)
 	if(self:Health() <= self:GetMaxHealth() * 0.5 && !self.KnifeMode) then
+		self:SetHealth(self:GetMaxHealth() * 0.75)
 		self:SwitchToKnifeMode()
 	end
 	if(self.DamageImmunityTime > CurTime()) then

@@ -28,7 +28,7 @@ function ENT:Think()
 	local vect = self:GetPos() + Vector(0, 0, 5)
 	local c = 0
 	local shooted = false
-	self.Firerate = 0.5 - (self:GetNWInt("UpgradeCount", 0) * 0.035)
+	self.Firerate = 0.5 - (self:GetNWInt("UpgradeCount", 0) * 0.05)
 	for k,v in ipairs(ents.FindInCone(self:GetPos(), vec, self.MaximumDistance, self.Deg)) do
 		if(c >= self.MaxTarget) then break end
 		if(!ZShelter.ValidateEntity(self, v) || !ZShelterVisible_Vec_IgnoreTurret(self, vect, v)) then continue end
