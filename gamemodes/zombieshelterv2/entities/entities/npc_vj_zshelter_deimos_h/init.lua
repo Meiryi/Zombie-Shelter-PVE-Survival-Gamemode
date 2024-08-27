@@ -50,9 +50,9 @@ ENT.RunAwayOnUnknownDamage = true
 ENT.NextRunAwayOnDamageTime = 0
 
 	-- ====== Flinching Code ====== --
-ENT.FlinchChance = 0.05
+ENT.FlinchChance = 0
 ENT.NextMoveAfterFlinchTime = 0
-ENT.CanFlinch = 1
+ENT.CanFlinch = 0
 ENT.AnimTbl_Flinch = {ACT_SMALL_FLINCH}
 ENT.NextFlinchTime = 0.8
 

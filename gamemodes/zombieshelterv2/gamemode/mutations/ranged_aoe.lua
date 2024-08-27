@@ -1,7 +1,7 @@
 local m = {}
 m.Name = "ranged_aoe" -- id to use in config system
 m.Day = 5 -- Day to start apply this mutation
-m.Chance = 2 -- Chance to spawn
+m.Chance = 1 -- Chance to spawn
 m.Difficulty = 8 -- Minimum difficulty to spawn
 m.Color = Color(255, 0, 115, 255)
 

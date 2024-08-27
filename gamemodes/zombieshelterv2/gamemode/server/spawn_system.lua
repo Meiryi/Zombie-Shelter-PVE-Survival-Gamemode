@@ -52,6 +52,16 @@ local dcheck = {
 	Vector(250, 0, 10),
 	Vector(-250, 0, 10),
 }
+
+function vvis(a, b)
+	local tr = {
+		start = a,
+		endpos = b,
+		mask = 16395,
+	}
+	return util.TraceLine(tr).Fraction == 1
+end
+
 function qtrace(a, b)
 	for k,v in pairs(dcheck) do
 		local tr = {
@@ -134,7 +144,7 @@ local safeDistance = 1800
 local maximumDistance = 3072
 function ZShelter.SetupSpawnPoints()
 	if(ZShelter.SpawnPointsInited || !IsValid(ZShelter.Shelter)) then return end
-	if(table.Count(ZShelter.AiNodes)) then
+	if(table.Count(ZShelter.AiNodes) <= 0) then
 		ParseFile()
 	end
 	local st = SysTime()
@@ -172,14 +182,15 @@ function ZShelter.SetupSpawnPoints()
 	for k,v in pairs(ents.FindByClass("info_zshelter_treasure_area")) do
 		table.insert(ZShelter.TreasureArea, v:GetPos())
 	end
-	print("---- Resource Spawn Points ----")
+
+	local __rand = math.random
 	for k,v in pairs(ZShelter.ValidSpawnPointsAll) do
 		table.insert(ZShelter.ResourceSpawnPoint, v)
-		for i = 1, 5 do
-			local rand = v + Vector(math.random(-200, 200), math.random(-200, 200), 0)
-			if(vrespos(rand)) then print("[Resource] Precalc position hitworld!, skipping : ", rand) continue end
+		for i = 1, 3 do
+			local rand = v + Vector(__rand(-200, 200), __rand(-200, 200), 0)
+			if(!vvis(v, rand) || vrespos(rand)) then continue end
 			local result = util.QuickTrace(rand, Vector(0, 0, -512)).HitPos + Vector(0, 0, 5)
-			if(!util.IsInWorld(result)) then print("[Resource] Position OOB!, skipping : ", result) continue end
+			if(!util.IsInWorld(result)) then continue end
 			table.insert(ZShelter.ResourceSpawnPoint, result)
 		end
 	end
@@ -188,7 +199,7 @@ function ZShelter.SetupSpawnPoints()
 end
 
 function ZShelter.BroadcastPoints()
-	local data, len = ZShelter.CompressTable(ZShelter.ValidRaiderSpawnPoints)
+	local data, len = ZShelter.CompressTable(ZShelter.ResourceSpawnPoint)
 	net.Start("ZShelter-SendPoints")
 	net.WriteUInt(len, 32)
 	net.WriteData(data, len)

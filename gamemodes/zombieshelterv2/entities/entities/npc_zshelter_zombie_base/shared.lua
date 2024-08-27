@@ -1,0 +1,8 @@
+ENT.Base 			= "base_ai"
+ENT.Type 			= "ai"
+ENT.PrintName 		= "Zombie Shelter Zombie Base AI"
+ENT.Author 			= "Meiryi"
+ENT.Contact 		= ""
+ENT.Purpose 		= "Fuck VJ Base"
+ENT.Instructions 	= ""
+ENT.Category		= ""

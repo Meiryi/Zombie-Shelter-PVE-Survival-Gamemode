@@ -75,11 +75,11 @@ ZShelter.AddInfo("Crowbar Upgrade", {
 		["ru"] = "Переход на монтировку",
 	},
 	desc = {
-		["en"] = "Upgrades your melee weapon to crowbar (+100% attack speed)",
-		["tr"] = "Yakın dövüş silahınızı levyeye yükseltir (+%100 saldırı hızı)",
-		["zh-TW"] = "將近戰武器替換成鐵鍬 (+100% 攻擊速度)",
-		["zh-CN"] = "将近战武器替换为撬棍 (+10% 攻击速度)",
-		["ru"] = "Переделать оружие ближнего боя в монтировку (+100% к скорости атаки)",
+		["en"] = "Upgrades your melee weapon to crowbar (+60% attack speed)",
+		["tr"] = "Yakın dövüş silahınızı levyeye yükseltir (+%60 saldırı hızı)",
+		["zh-TW"] = "將近戰武器替換成鐵鍬 (+60% 攻擊速度)",
+		["zh-CN"] = "将近战武器替换为撬棍 (+60% 攻击速度)",
+		["ru"] = "Переделать оружие ближнего боя в монтировку (+60% к скорости атаки)",
 	}
 })
 ZShelter.AddInfo("Advanced Gathering", {
@@ -91,11 +91,11 @@ ZShelter.AddInfo("Advanced Gathering", {
 		["ru"] = "Продвинутый сбор",
 	},
 	desc = {
-		["en"] = "Small change to get double amount of resources, +7% per upgrade",
-		["tr"] = "İki kat kaynak alabilmek için küçük bir değişiklik, yükseltme başına +%7",
-		["zh-TW"] = "小機率獲得雙倍資源, 每升級一次增加 7%",
-		["zh-CN"] = "小概率获得双倍资源, 每升一级增加 7%",
-		["ru"] = "Небольшое изменение, позволяющее получать двойные ресурсы, +7% за улучшение",
+		["en"] = "Small change to get double amount of resources, +10% per upgrade",
+		["tr"] = "İki kat kaynak alabilmek için küçük bir değişiklik, yükseltme başına +%10",
+		["zh-TW"] = "小機率獲得雙倍資源, 每升級一次增加 10%",
+		["zh-CN"] = "小概率获得双倍资源, 每升一级增加 10%",
+		["ru"] = "Небольшое изменение, позволяющее получать двойные ресурсы, +10% за улучшение",
 	}
 })
 ZShelter.AddInfo("Chain Gathering", {

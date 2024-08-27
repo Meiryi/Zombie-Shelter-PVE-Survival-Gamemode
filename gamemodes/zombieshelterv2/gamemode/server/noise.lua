@@ -41,7 +41,7 @@ hook.Add("EntityEmitSound", "ZShelter-GetSounds", function(t)
 	SetGlobalFloat("NoiseLevel", math.min(GetGlobalFloat("NoiseLevel", 0) + (1.25 * (1 + vol)) * scale, 100))
 	lastShoottime = CurTime() + 0.1
 	if(GetGlobalFloat("NoiseLevel", 0) >= 100) then
-		ZShelter.PlayMusic("sound/shigure/ost_panic.mp3")
+		ZShelter.PlayMusic(GetConVarString("zshelter_music_horde"))
 		ZShelter.PanicEnemySpawnTime = CurTime() + 4 + (GetConVar("zshelter_difficulty"):GetInt() * 0.55)
 		immunitySounds = SysTime() + 60
 	end

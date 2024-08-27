@@ -536,12 +536,12 @@ local func = {
 				end
 				if(ok) then
 					local ctx1 = util.TableToJSON(ZShelter.ItemConfig)
-					local ctx2 = util.TableToJSON(ZShelter.BuildingConfig)
-					local path = "zombie shelter v2/"..val.."/"
+					local ctx2 = util.TableToJSON(ZShelter.EnemyConfig)
+					local path = "zombie shelter v2/config/"..val.."/"
 					file.CreateDir(path)
 					file.Write(path.."item.txt", ctx1)
 					file.Write(path.."enemy.txt", ctx2)
-					ZShelter.CenterMessage("Config has been saved to [data/zombie shelter v2/"..val.."/]", ui)
+					ZShelter.CenterMessage("Config has been saved to [data/zombie shelter v2/config/"..val.."/]", ui)
 				else
 					ZShelter.CenterMessage("You need at enter atleast one non-space character", ui)
 				end

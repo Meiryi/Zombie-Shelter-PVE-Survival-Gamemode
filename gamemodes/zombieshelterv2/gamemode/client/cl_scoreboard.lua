@@ -132,6 +132,10 @@ function ZShelter.ToggleScoreboard(display)
 				base:DockMargin(0, 0, 0, padding)
 				base.__Color = Color(30, 30, 30, 255)
 				base.Paint = function()
+					if(!IsValid(v)) then
+						draw.RoundedBox(0, 0, 0, base:GetWide(), base:GetTall(), Color(30, 30, 30, 255))
+						return
+					end
 					if(v:Alive()) then
 						draw.RoundedBox(0, 0, 0, base:GetWide(), base:GetTall(), Color(30, 30, 30, 255))
 						base.__Color = Color(30, 30, 30, 255)

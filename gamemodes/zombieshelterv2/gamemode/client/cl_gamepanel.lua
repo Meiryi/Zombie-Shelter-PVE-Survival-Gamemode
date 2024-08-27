@@ -172,6 +172,10 @@ end
 
 local serverlist = {
 	{
+		host = "Hamgungus Zombie Shelter [Custom Enemy & Weapons]",
+		address = "50.109.239.144:27019",
+	},
+	{
 		host = "NPCZ | Shelter",
 		address = "193.243.190.18:27025",
 	},
@@ -226,15 +230,28 @@ local func = {
 				ZShelter-GameUIGameUITitle2x
 				ZShelter-GameUIDescription
 			]]
+			local scroll = ZShelter.CreateScroll(ui, 0, 0, ui:GetWide(), ui:GetTall(), Color(0, 0, 0, 0))
 			local pad1x = ScreenScaleH(4)
 			local pad2x = ScreenScaleH(8)
 			local pad3x = ScreenScaleH(12)
 			local pad4x = ScreenScaleH(30)
-			ZShelter.AddDockLabel(ui, "Zombie Shelter v"..ZShelter.GameVersion, "ZShelter-GameUITitle", pad2x, pad2x, Color(255, 255, 255, 255))
-			ZShelter.AddDockLabel(ui, "- Changes", "ZShelter-GameUIGameUITitle2x", pad3x, pad1x, Color(255, 255, 255, 255))
-			ZShelter.AddDockLabel(ui, "Added a new convar to allow building inside of shelter (zshelter_build_in_shelter)", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
-			ZShelter.AddDockLabel(ui, "- Bug Fixes", "ZShelter-GameUIGameUITitle2x", pad3x, pad1x, Color(255, 255, 255, 255))
-			ZShelter.AddDockLabel(ui, "Fixed music toggling not working", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Zombie Shelter v"..ZShelter.GameVersion, "ZShelter-GameUITitle", pad2x, pad2x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "- Changes", "ZShelter-GameUIGameUITitle2x", pad3x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Config will be exported to 'garrysmod/data/zombie shelter v2/config/' now", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Musics can be changed via these convars", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "    > zshelter_music_night", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "    > zshelter_music_countdown", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "    > zshelter_music_horde", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Increased Advanced Gathering's resource bonus chance from 7% to 10%", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Advanced Gathering guarantee one bonus resource every 6 hit", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Healing Station is now upgradable, +3 HP recovery every upgrade", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Armor Box is now upgradable, +2 Armor recovery every upgrade", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255)) 
+			ZShelter.AddDockLabel(scroll, "- Bug Fixes", "ZShelter-GameUIGameUITitle2x", pad3x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Export config now exports correct enemy config instead of building config", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Corrected crowbar upgrade's description", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Scoreboard no longer creating errors when someone leaved", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Advanced Gathering now works with Resource Transporting", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
+			ZShelter.AddDockLabel(scroll, "Railgun Cannon now face to correct angle when placing it", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
 		end,
 	},
 	[2] = {

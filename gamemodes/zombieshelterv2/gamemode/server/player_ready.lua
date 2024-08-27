@@ -71,7 +71,7 @@ function ZShelter.CheckStart()
 	if(GetGlobalFloat("ReadyTime", -1) == -1 || !GetGlobalBool("RunSequence")) then return end
 	local t = math.max(GetGlobalFloat("ReadyTime", -1) - CurTime(), 0)
 	if(t <= 10) then
-		ZShelter.PlayMusic("sound/shigure/ost_start.mp3")
+		ZShelter.PlayMusic(GetConVarString("zshelter_music_countdown"))
 		if(ZShelter.SpawnPos) then
 			for k,v in pairs(player.GetAll()) do
 				v:SetPos(ZShelter.SpawnPos + Vector(math.random(-128, 128), math.random(-128, 128), 0))
@@ -87,12 +87,12 @@ function ZShelter.CheckStart()
 			local fullres = GetConVar("zshelter_start_with_resources"):GetInt() == 1
 			local resources = math.floor(24 / player.GetCount())
 			local skills = ZShelter.CalcStartSkillPoints(player.GetCount())
+			if(diff >= 9 || fullres) then
+				SetGlobalInt("Woods", GetGlobalInt("Capacity", 0))
+				SetGlobalInt("Irons", GetGlobalInt("Capacity", 0))
+			end
 			for k,v in pairs(player.GetAll()) do
 				v:Freeze(false)
-				if(diff >= 9 || fullres) then
-					v:SetNWInt("Woods", resources)
-					v:SetNWInt("Irons", resources)
-				end
 				v:SetNWInt("SkillPoints", skills)
 			end
 			ZShelter.FilteEnemy()

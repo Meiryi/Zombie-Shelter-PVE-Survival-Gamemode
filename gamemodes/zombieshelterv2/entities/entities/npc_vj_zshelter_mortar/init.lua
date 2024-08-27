@@ -17,12 +17,27 @@ function ENT:RunAI() -- Disable VJ Base's AI
 end
 
 function ENT:FindEnemy()
+	local pos = self:GetPos()
+	local vec = Vector(0, 0, 0)
+	local trg = nil
+	local dst = 0
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
-		if(!ZShelter.ValidateEntity(self, v)) then continue end
-		self.ShootingTarget = v
-		self.AimVec = self.ShootingTarget:GetPos()
-		return
+		if(!ZShelter.ValidateEntity(self, v) || (v.IsBoss && !v.Awake)) then continue end
+		local _dst = self:GetPos():Distance(pos)
+		if(!trg) then
+			trg = v
+			vec = v:GetPos()
+			dst = _dst
+		else
+			if(_dst > dst) then
+				trg = v
+				vec = v:GetPos()
+				dst = _dst
+			end
+		end
 	end
+	self.ShootingTarget = trg
+	self.AimVec = vec
 end
 
 ENT.Shooting = false
