@@ -54,7 +54,7 @@ SWEP.DamageType = DMG_SLASH
 SWEP.Melee2 = true
 SWEP.Melee2Damage = 150
 SWEP.Melee2Range = 50
-SWEP.Melee2Time = 1.23
+SWEP.Melee2Time = 1.15
 SWEP.Melee2AttackTime = 0.17
 
 SWEP.NotForNPCs = false

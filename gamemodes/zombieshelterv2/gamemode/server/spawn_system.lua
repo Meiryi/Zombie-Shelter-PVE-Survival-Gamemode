@@ -258,9 +258,10 @@ function ZShelter.FilteEnemy(ignoreDay)
 		ZShelter.EnemyExistCounter[randIndex] = 0
 		if(v.isboss) then
 			if(v.day > bossday) then
+				local dayhp = ((day - v.day) * v.hp_boost_day)
 				ZShelter.TreasureAreaEnemy = {
 					class = v.class,
-					hp = ((v.hp * diffScale) * plyscale) + (day * v.hp_boost_day),
+					hp = ((v.hp * diffScale) * plyscale) + dayhp,
 					noclear = v.noclear,
 					attack = v.attack,
 					mutation = v.mutation,
@@ -273,9 +274,10 @@ function ZShelter.FilteEnemy(ignoreDay)
 			continue
 		end
 		if(v.night_or_day) then
+			local dayhp = ((day - v.day) * v.hp_boost_day)
 			table.insert(ZShelter.FiltedNightEnemies, {
 				class = v.class,
-				hp = ((v.hp * diffScale) * plyscale) + (day * v.hp_boost_day),
+				hp = ((v.hp * diffScale) * plyscale) + dayhp,
 				attack = v.attack * dmgscale,
 				noclear = v.noclear,
 				chance = v.chance,
@@ -287,9 +289,10 @@ function ZShelter.FilteEnemy(ignoreDay)
 				weaponclass = v.weaponclass,
 			})
 		else
+			local dayhp = ((day - v.day) * v.hp_boost_day)
 			table.insert(ZShelter.FiltedDayEnemies, {
 				class = v.class,
-				hp = ((v.hp * diffScale) * plyscale) + (day * v.hp_boost_day),
+				hp = ((v.hp * diffScale) * plyscale) + dayhp,
 				attack = v.attack * dmgscale,
 				noclear = v.noclear,
 				chance = v.chance,
@@ -712,12 +715,22 @@ hook.Add("ZShelter-EnemyCreated", "ZShelter-ApplyMutation", function(enemy, nigh
 	local mul = 4 + (1 + (diff * 0.15))
 	local tday = m.Day
 	if(!tday) then tday = 0 end
-	if(diff < 9 && day < tday) then return end
-	mul = mul + (day * (0.1 + (diff * 0.05)))
+	if(diff < 9) then
+		if(day < tday) then
+			return
+		end
+	else
+		if(day < 3) then
+			if(day < math.floor(tday) * 0.4) then
+				return
+			end
+		end
+	end
+	mul = mul + (day * (0.1 + (diff * 0.07)))
 	if(diff >= 8) then
 		mul = mul + 8.5 -- maximum troll
 		if(diff >= 9) then
-			mul = mul * 2
+			mul = mul * 2.5
 		end
 	end
 	local seed = math.random(0, 100) - mul

@@ -54,7 +54,7 @@ ZShelter.AddSkills(ClassName, "OnHUDPaint",
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
-		player:SetNWFloat("TrapRepairSpeed", player:GetNWFloat("TrapRepairSpeed", 1) + 0.25)
+		player:SetNWFloat("TrapRepairSpeed", player:GetNWFloat("TrapRepairSpeed", 1) + 1)
 	end, 2, "fastrepa", 1, "Fast Repair")
 
 ZShelter.AddSkills(ClassName, nil, nil,

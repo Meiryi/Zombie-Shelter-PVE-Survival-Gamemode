@@ -7,7 +7,7 @@ ENT.VJ_NPC_Class = {"CLASS_AUTOMATIC_TURRET"}
 ENT.PlayerFriendly = true
 ENT.IsBuilding = true
 ENT.IsVJBaseSNPC_Animal = true
-ENT.MaximumDistance = 700
+ENT.MaximumDistance = 450
 ENT.AimTarget = nil
 
 function ENT:RunAI() -- Disable VJ Base's AI

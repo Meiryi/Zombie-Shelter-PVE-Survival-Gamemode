@@ -25,9 +25,9 @@ function ENT:FindEnemy()
 	end
 end
 
-ENT.Firerate = 3
+ENT.Firerate = 1.5
 ENT.NextShootTime = 0
-ENT.RotateSpeed = 0.3
+ENT.RotateSpeed = 0.5
 ENT.LosAngle = 8
 ENT.CheckValidTime = 0
 
@@ -100,9 +100,9 @@ function ENT:Think()
 				sound.Play("ambient/explosions/explode_9.wav", targetPos, 100, 100, 1)
 
 
-			for k,v in pairs(ents.FindInSphere(targetPos, 200)) do
+			for k,v in pairs(ents.FindInSphere(targetPos, 150)) do
 				if(!ZShelter.ValidateEntity(self, v)) then continue end
-				v:Ignite(15, 0)
+				v:Ignite(5, 0)
 				v.LastIgniteTarget = owner
 			end
 

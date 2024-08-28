@@ -7,7 +7,7 @@ ENT.VJ_NPC_Class = {"CLASS_AUTOMATIC_TURRET"}
 ENT.PlayerFriendly = true
 ENT.IsBuilding = true
 ENT.IsVJBaseSNPC_Animal = true
-ENT.MaximumDistance = 1500
+ENT.MaximumDistance = 2000
 ENT.AimTarget = nil
 ENT.AimOffset = Vector(0, 0, 25)
 

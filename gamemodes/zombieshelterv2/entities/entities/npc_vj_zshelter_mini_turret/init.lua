@@ -15,7 +15,7 @@ ENT.VJC_Data = {
 }
 ENT.VJ_NPC_Class = {"CLASS_AUTOMATIC_TURRET"}
 
-ENT.MaximumDistance = 2048
+ENT.MaximumDistance = 1500
 ENT.AimTarget = nil
 
 function ENT:CustomOnInitialize()

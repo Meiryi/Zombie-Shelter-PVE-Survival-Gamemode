@@ -7,7 +7,7 @@ ENT.VJ_NPC_Class = {"CLASS_AUTOMATIC_TURRET"}
 ENT.PlayerFriendly = true
 ENT.IsBuilding = true
 ENT.IsVJBaseSNPC_Animal = true
-ENT.MaximumDistance = 1500
+ENT.MaximumDistance = 700
 ENT.AimTarget = nil
 
 function ENT:RunAI() -- Disable VJ Base's AI
@@ -25,7 +25,7 @@ function ENT:FindEnemy()
 	end
 end
 
-ENT.Firerate = 3
+ENT.Firerate = 2.25
 ENT.NextShootTime = 0
 ENT.RotateSpeed = 0.3
 ENT.LosAngle = 8
@@ -77,35 +77,25 @@ function ENT:Think()
 		end
 
 		if(self.NextShootTime < CurTime() && !los) then
-			sound.Play("shigure/turretfire.wav", self:GetPos(), 100, 100, 0.75)
-
-			local bullet = {}
-			bullet.Num = 1
-			bullet.Src = barrelPos
-			bullet.Dir = targetPos - barrelPos
-			bullet.Spread = Vector(math.random(-10,10), math.random(-10,10), 0)
-			bullet.Tracer = 1
-			bullet.TracerName = "VJ_HLR_Tracer"
-			bullet.Force = 5
-			bullet.Damage = 12
-			bullet.AmmoType = "SMG1"
-			self:FireBullets(bullet)
-			local owner = self:GetOwner()
-			if(!IsValid(owner)) then
-				owner = self
+			for i = 1, 3 do
+				timer.Simple((i - 1) * 0.1, function()
+					if(!IsValid(self)) then return end
+					sound.Play("weapons/shotgun/shotgun_fire6.wav", self:GetPos(), 100, 100, 0.75)
+					local bullet = {}
+						bullet.Num = 1
+						bullet.Attacker = self
+						bullet.Src = barrelPos
+						bullet.Dir = targetPos - barrelPos
+						bullet.Spread = Vector(math.random(-50, 50), math.random(-50, 50), 0)
+						bullet.Tracer = 1
+						bullet.TracerName = "VJ_HLR_Tracer"
+						bullet.Force = 5
+						bullet.Damage = 12
+						for _ = 1, 8 do
+							self:FireBullets(bullet)
+						end
+				end)
 			end
-			local ef = EffectData()
-				ef:SetOrigin(targetPos)
-				util.Effect("HelicopterMegaBomb", ef)
-				sound.Play("ambient/explosions/explode_9.wav", targetPos, 100, 100, 1)
-
-
-			for k,v in pairs(ents.FindInSphere(targetPos, 200)) do
-				if(!ZShelter.ValidateEntity(self, v)) then continue end
-				v:Ignite(15, 0)
-				v.LastIgniteTarget = owner
-			end
-
 			self.NextShootTime = CurTime() + self.Firerate
 		end
 

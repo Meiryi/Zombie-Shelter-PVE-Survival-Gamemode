@@ -28,9 +28,9 @@ SWEP.ViewModelFOV = 80
 SWEP.Damage = 40
 SWEP.DamageMin = 20
 SWEP.RangeMin = 8
-SWEP.Range = 90
+SWEP.Range = 100
 
-SWEP.Penetration = 10
+SWEP.Penetration = 100
 SWEP.DamageType = DMG_BULLET
 
 SWEP.TracerNum = 1 -- tracer every X

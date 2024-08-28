@@ -556,6 +556,7 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 		 end
 
 		timer.Simple(0.33, function()
+			if(!IsValid(ent)) then return end
 			ZShelter.SyncVariables(ent, ent:GetNWBool("Upgradable", false), ent:GetNWInt("MaxUpgrade", 2), 0, ent:GetNWFloat("AttackScale", 0.25), ent:GetNWFloat("HealthScale", 0.1))
 		end)
 		SetGlobalInt("Powers", GetGlobalInt("Powers", 0) - powers)

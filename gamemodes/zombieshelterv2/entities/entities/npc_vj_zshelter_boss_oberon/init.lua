@@ -141,6 +141,7 @@ end
 function ENT:SpawnBombs()
 	local pos = self:GetPos() + Vector(0, 0, 10)
 	local rand = 512
+	local dmg = 40 * (GetConVar("zshelter_difficulty"):GetInt() * 0.033)
 	for i = 1, 20 do
 		local bomb = ents.Create("obj_oberon_bomb")
 			bomb:SetPos(pos)
@@ -151,6 +152,7 @@ function ENT:SpawnBombs()
 			if(IsValid(phys)) then
 				phys:SetVelocity(Vector(math.random(-rand, rand), math.random(-rand, rand), math.random(850, 1100)))
 			end
+			bomb.damage = dmg
 	end
 end
 
@@ -194,8 +196,9 @@ function ENT:CustomOnThink()
 				if(!IsValid(self)) then return end
 				local diff = GetConVar("zshelter_difficulty"):GetInt()
 				local dmg = 70 * (1 + (diff - 1) * 0.05)
-				for k,v in pairs(ents.FindInSphere(self:GetPos(), 386)) do
+				for k,v in pairs(ents.FindInSphere(self:GetPos(), 400)) do
 					if(v == self) then continue end
+					if(!v.IsBuilding && !v:IsPlayer()) then continue end
 					if(v.IsBuilding) then
 						ZShelter.ApplyDamageFast(v, dmg, true, true)
 					else
@@ -206,8 +209,8 @@ function ENT:CustomOnThink()
 			end)
 		end
 		self.HoleSkill = true
-		self.BombTime = CurTime() + 20
-		self.HoleTime = CurTime() + 60
+		self.BombTime = CurTime() + 25
+		self.HoleTime = CurTime() + 45
 	end
 
 	if(self.HoleSkill) then
@@ -239,7 +242,7 @@ function ENT:CustomOnThink()
 			end)
 		end
 		self.BombSkill = true
-		self.BombTime = CurTime() + 60
+		self.BombTime = CurTime() + 50
 	end
 end
 
@@ -258,7 +261,7 @@ end
 
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo)
 	if(self:Health() <= self:GetMaxHealth() * 0.5 && !self.KnifeMode) then
-		self:SetHealth(self:GetMaxHealth() * 0.75)
+		self:SetHealth(self:GetMaxHealth())
 		self:SwitchToKnifeMode()
 	end
 	if(self.DamageImmunityTime > CurTime()) then

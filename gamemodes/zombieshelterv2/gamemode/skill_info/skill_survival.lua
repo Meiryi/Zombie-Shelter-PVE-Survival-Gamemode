@@ -91,7 +91,7 @@ ZShelter.AddInfo("Advanced Gathering", {
 		["ru"] = "Продвинутый сбор",
 	},
 	desc = {
-		["en"] = "Small change to get double amount of resources, +10% per upgrade",
+		["en"] = "Small chance to get double amount of resources, +10% per upgrade",
 		["tr"] = "İki kat kaynak alabilmek için küçük bir değişiklik, yükseltme başına +%10",
 		["zh-TW"] = "小機率獲得雙倍資源, 每升級一次增加 10%",
 		["zh-CN"] = "小概率获得双倍资源, 每升一级增加 10%",
@@ -123,7 +123,7 @@ ZShelter.AddInfo("Haste", {
 		["ru"] = "Спешка",
 	},
 	desc = {
-		["en"] = "Double gathering speed",
+		["en"] = "Get double amount of resources per hit",
 		["tr"] = "İki kat toplama hızı",
 		["zh-TW"] = "採集速度加倍",
 		["zh-CN"] = "采集速度加倍",
@@ -331,7 +331,7 @@ ZShelter.AddInfo("Slick Repairing", {
 		["ru"] = "Безупречный ремонт",
 	},
 	desc = {
-		["en"] = "Repairs all nearby traps, +86 unit radius",
+		["en"] = "Repairing a trap also repairs nearby traps, +1.5 meters per upgrade",
 		["tr"] = "Yakındaki tüm tuzakları tamir eder, +86 birim alan",
 		["zh-TW"] = "修復附近所有陷阱類建築物, 每升級一次增加 86 單位距離",
 		["zh-CN"] = "修复附近所有陷阱类建筑物, 每升一级增加 86 单位距离",
@@ -347,10 +347,10 @@ ZShelter.AddInfo("Fast Repair", {
 		["ru"] = "Быстрый ремонт",
 	},
 	desc = {
-		["en"] = "Increase trap's repair speed, +25% per upgrade",
-		["tr"] = "Tuzağın tamir hızını artırır, yükseltme başına +%25",
-		["zh-TW"] = "增加陷阱的修補速度, 每升級一次增加 25%",
-		["zh-CN"] = "提高陷阱的修复速度, 每升一级增加 25%",
-		["ru"] = "Увеличивает скорость ремонта ловушек, +25% за улучшение",
+		["en"] = "Increases trap's repair speed, +100% per upgrade",
+		["tr"] = "Tuzağın tamir hızını artırır, yükseltme başına +%100",
+		["zh-TW"] = "增加陷阱的修補速度, 每升級一次增加 100%",
+		["zh-CN"] = "提高陷阱的修复速度, 每升一级增加 100%",
+		["ru"] = "Увеличивает скорость ремонта ловушек, +100% за улучшение",
 	}
 })

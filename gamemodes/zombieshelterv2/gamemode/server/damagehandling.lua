@@ -32,6 +32,11 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		return true
 	end
 
+	if(attacker:GetClass() == "entityflame" && dmginfo:IsDamageType(DMG_BURN) && IsValid(target.LastIgniteTarget)) then
+		dmginfo:SetDamage(3)
+		dmginfo:SetAttacker(target.LastIgniteTarget)
+	end
+
 	local addScale = 1
 
 	if(attacker:GetNWFloat("DamageBuffTime", 0) > CurTime()) then

@@ -87,6 +87,10 @@ function ZShelter.CheckStart()
 			local fullres = GetConVar("zshelter_start_with_resources"):GetInt() == 1
 			local resources = math.floor(24 / player.GetCount())
 			local skills = ZShelter.CalcStartSkillPoints(player.GetCount())
+			if(diff >= 9) then
+				SetGlobalInt("Time", 300)
+				SetGlobalInt("Capacity", 48)
+			end
 			if(diff >= 9 || fullres) then
 				SetGlobalInt("Woods", GetGlobalInt("Capacity", 0))
 				SetGlobalInt("Irons", GetGlobalInt("Capacity", 0))

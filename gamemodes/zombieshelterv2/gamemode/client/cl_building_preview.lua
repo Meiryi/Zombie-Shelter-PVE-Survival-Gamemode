@@ -38,6 +38,9 @@ function ZShelter:CreatePreview(model, offset, cat, index, tdata)
 	ZShelter.PreviewEntity.BuildIndex = index
 	ZShelter.PreviewEntity.yaw = 0
 
+	ZShelter.PreviewEntity.AttackRange = tdata.attackrange || false
+	ZShelter.PreviewEntity.ActiveRange = tdata.activerange || false
+
 	if(tdata.faceforward) then
 		local yaw = math.Round(LocalPlayer():EyeAngles().yaw / 90, 0) * 90
 		if(tdata.faceforward_offset) then
@@ -327,6 +330,7 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 		pos.x = (math.floor(pos.x / gridSize) * gridSize) + offs
 		pos.y = (math.floor(pos.y / gridSize) * gridSize) + offs
 	end
+	ZShelter.PreviewEntity.NoOffsPos = pos
 	ZShelter.PreviewEntity:SetPos(pos + ZShelter.PreviewEntity.Offset)
 	if(!ply:Alive()) then
 		ZShelter.PreviewEntity.Destroy()
@@ -417,4 +421,32 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 	end
 
 	ZShelter.PreviewEntity.CanBuild = canbuild
+end)
+
+local rangemat = Material("arknights/torappu/sprite_attack_range.png", "noclamp")
+local u1, v1, u2, v2 = 0, 0, 1, 1
+local fraction = 0
+local animtime = 2
+local textureSX = 48
+hook.Add("PreDrawOpaqueRenderables", "ZShelter-BuildingPreviewRange", function()
+	if(!IsValid(ZShelter.PreviewEntity) || !ZShelter.PreviewEntity.NoOffsPos) then return end
+	surface.SetMaterial(rangemat)
+	cam.Start3D2D(ZShelter.PreviewEntity.NoOffsPos + Vector(0, 0, 1), Angle(0, 0, 0), 1)
+	surface.SetDrawColor(255, 140, 40, 50)
+	fraction = (SysTime() % animtime) / animtime
+	local rev_fraction = 1 - fraction
+	if(ZShelter.PreviewEntity.AttackRange) then
+		local rg = ZShelter.PreviewEntity.AttackRange * 2
+		local rghalf = rg * 0.5
+		local anim = fraction
+		surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+	end
+	surface.SetDrawColor(64, 204, 255, 255)
+	if(ZShelter.PreviewEntity.ActiveRange) then
+		local rg = ZShelter.PreviewEntity.ActiveRange * 2
+		local rghalf = rg * 0.5
+		local anim = fraction
+		surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+	end
+	cam.End3D2D()
 end)

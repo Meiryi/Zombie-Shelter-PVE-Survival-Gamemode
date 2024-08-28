@@ -119,17 +119,54 @@ function ZShelter.ToggleScoreboard(display)
 			nextX = nextX - (tw + padding3x)
 		end
 
+		local skillList = {}
+		for _,category in pairs(ZShelter.SkillList) do
+			for tier,skdata in pairs(category) do
+				for index,skill in pairs(skdata) do
+					local material = Material("zsh/icon/warning.png")
+					if(ZShelter.SkillDatas[skill.title] && ZShelter.SkillDatas[skill.title].icon) then
+						material = ZShelter.SkillDatas[skill.title].icon
+					end
+					table.insert(skillList, {
+						title = "SK_"..skill.title,
+						material = material,
+					})
+				end 
+			end
+		end
+
 		local listing = ZShelter.CreateScroll(ui.InnerPanel, 0, th + padding3x + ui.Details:GetTall(), ui.InnerPanel:GetWide(),ui.InnerPanel:GetTall() - (th + padding3x + ui.Details:GetTall()), Color(0, 0, 0, 0))
-		
 		local round = ScreenScaleH(4)
+		local baseheight = listing:GetTall() * 0.085
+		local out = ScreenScaleH(1)
+		local out2x = out * 2
+		local tall = (listing:GetTall() * 0.05) + out * 2
+		local sksx = tall - out2x
 		listing.CreatePlayers = function()
 			listing:Clear()
 			local player = player.GetAll()
 			table.sort(player, function(a, b) return a:Frags() > b:Frags() end)
 			for k,v in pairs(player) do
-				local base = ZShelter.CreatePanel(listing, 0 ,0, listing:GetWide(), listing:GetTall() * 0.085, Color(30, 30, 30, 255), round)
-				base:Dock(TOP)
-				base:DockMargin(0, 0, 0, padding)
+				local _base = ZShelter.CreatePanel(listing, 0 ,0, listing:GetWide(), baseheight + tall, Color(20, 20, 20 ,255), round)
+				local hasskill = false
+				local nextX = padding3x
+				for index,skill in ipairs(skillList) do
+					if(v:GetNWInt(skill.title, 0) <= 0 || !skill.material) then continue end
+					local img = ZShelter.CreatePanel(_base, nextX + out, baseheight + out, sksx, sksx, Color(255, 255, 255 ,255)) -- Don't use Material() with DImage since it's costy
+					img.Paint = function()
+						surface.SetDrawColor(255, 255, 255, 255)
+						surface.SetMaterial(skill.material)
+						surface.DrawTexturedRect(0, 0, sksx, sksx)
+					end
+					nextX = nextX + sksx + padding2x
+					hasskill = true
+				end
+				if(!hasskill) then
+					_base:SetTall(baseheight)
+				end
+				_base:Dock(TOP)
+				_base:DockMargin(0, 0, 0, ScreenScaleH(4))
+				local base = ZShelter.CreatePanel(_base, 0 ,0, listing:GetWide(), listing:GetTall() * 0.085, Color(30, 30, 30, 255), round)
 				base.__Color = Color(30, 30, 30, 255)
 				base.Paint = function()
 					if(!IsValid(v)) then
@@ -183,6 +220,16 @@ function ZShelter.ToggleScoreboard(display)
 					local upperLayer = ZShelter.InvisButton(base, 0, 0, base:GetWide(), base:GetTall(), function()
 						gui.OpenURL(profile)
 					end)
+					upperLayer.oPaint = upperLayer.Paint
+					upperLayer.Alpha = 0
+					upperLayer.Paint = function()
+						if(upperLayer:IsHovered()) then
+							upperLayer.Alpha = math.Clamp(upperLayer.Alpha + ZShelter.GetFixedValue(10), 0, 60)
+						else
+							upperLayer.Alpha = math.Clamp(upperLayer.Alpha - ZShelter.GetFixedValue(10), 0, 60)
+						end
+						draw.RoundedBox(0, 0, 0, upperLayer:GetWide(), upperLayer:GetTall(), Color(255, 255, 255, upperLayer.Alpha))
+					end
 					upperLayer.DoRightClick = function()
 						local x, y = input.GetCursorPos()
 						local menu = ZShelter.CustomPopupMenu(base, x, y, ScrW() * 0.1, ScrH() * 0.1, Color(200, 200, 200, 255))

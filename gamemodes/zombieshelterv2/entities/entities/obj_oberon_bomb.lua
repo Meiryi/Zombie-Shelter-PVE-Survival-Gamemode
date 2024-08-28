@@ -17,7 +17,14 @@ if SERVER then
 	end
 
 	function ENT:PhysicsCollide()
-		util.BlastDamage(self, self, self:GetPos(), 100, self.damage)
+		for k,v in ipairs(ents.FindInSphere(self:GetPos(), 150)) do
+			if(!v.IsBuilding && !v:IsPlayer()) then continue end
+			if(v.IsBuilding) then
+				ZShelter.ApplyDamageFast(v, self.damage, true, true)
+			else
+				v:TakeDamage(self.damage, self, self)
+			end
+		end
 		local e = EffectData()
 			e:SetOrigin(self:GetPos())
 			util.Effect("Explosion", e)

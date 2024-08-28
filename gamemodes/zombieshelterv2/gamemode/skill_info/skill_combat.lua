@@ -95,7 +95,7 @@ ZShelter.AddInfo("Looting", {
 		["ru"] = "Добыча",
 	},
 	desc = {
-		["en"] = "Drops resources when killing a enemy, +10% chance per upgrade",
+		["en"] = "Drops resource bag when killing an enemy, +10% chance per upgrade",
 		["tr"] = "Düşman öldürdüğünüzde kaynak düşürür, yükseltme başına +%10",
 		["zh-TW"] = "殺敵時有機率掉落資源, 每升級一次增加 10%",
 		["zh-CN"] = "击杀敌人时有概率掉落资源, 每升一级增加 10%",
@@ -129,11 +129,11 @@ ZShelter.AddInfo("Machete Upgrade", {
 		["ru"] = "Переход на мачете",
 	},
 	desc = {
-		["en"] = "Upgrades your melee weapon to machete (+125% damage)",
-		["tr"] = "Yakın dövüş silahınızı palaya yükseltir (+%125 hasar)",
-		["zh-TW"] = "將近戰武器替換成柴刀 (+125%傷害)",
-		["zh-CN"] = "将近战武器替换为柴刀 (+125%伤害)",
-		["ru"] = "Переделать оружие ближнего боя в мачете (+125% к урону)",
+		["en"] = "Upgrades your melee weapon to machete (+173% damage)",
+		["tr"] = "Yakın dövüş silahınızı palaya yükseltir (+%173 hasar)",
+		["zh-TW"] = "將近戰武器替換成柴刀 (+173%傷害)",
+		["zh-CN"] = "将近战武器替换为柴刀 (+173%伤害)",
+		["ru"] = "Переделать оружие ближнего боя в мачете (+173% к урону)",
 	}
 })
 
@@ -180,7 +180,7 @@ ZShelter.AddInfo("Double Tap", {
 		["ru"] = "Контрольный выстрел",
 	},
 	desc = {
-		["en"] = "20% Chances to deal double damage",
+		["en"] = "20% chance to deal double damage",
 		["tr"] = "İki kat hasar vermek için %20 şans",
 		["zh-TW"] = "20% 機率造成雙倍傷害",
 		["zh-CN"] = "20% 几率造成双倍伤害",
@@ -299,10 +299,10 @@ ZShelter.AddInfo("Damage Amplifier", {
 		["ru"] = "Усилитель урона",
 	},
 	desc = {
-		["en"] = "Increases all nearby player / turret's damage",
+		["en"] = "Increases all nearby player / turret's damage, +15% per upgrade",
 		["tr"] = "Yakındaki tüm oyuncuların ve kulelerin hasarını artırır",
-		["zh-TW"] = "提升附近所有玩家/砲塔的傷害",
-		["zh-CN"] = "提升附近所有玩家/炮塔的伤害",
+		["zh-TW"] = "提升附近所有玩家/砲塔的傷害, 每升一级增加 15%",
+		["zh-CN"] = "提升附近所有玩家/炮塔的伤害, 每升一级增加 15%",
 		["ru"] = "Увеличивает урон всех ближайших игроков / турелей",
 	}
 })
@@ -316,10 +316,10 @@ ZShelter.AddInfo("Vampire", {
 		["ru"] = "Вампир",
 	},
 	desc = {
-		["en"] = "Recovers health by killing enemies",
+		["en"] = "Recover health when killing an enemy, +5 HP per upgrade",
 		["tr"] = "Düşman öldürerek sağlığını geri kazanır",
-		["zh-TW"] = "藉由擊殺敵人回復自身生命值",
-		["zh-CN"] = "击杀敌人后可恢复自身生命值",
+		["zh-TW"] = "擊殺敵人時恢復自身生命值, 每升級一次增加 5",
+		["zh-CN"] = "击杀敌人后可恢复自身生命值, 每升一级增加 5",
 		["ru"] = "Восстанавливает здоровье, убивая врагов",
 	}
 })
@@ -333,7 +333,7 @@ ZShelter.AddInfo("Self Recovering", {
 		["ru"] = "Самовосстановление",
 	},
 	desc = {
-		["en"] = "Recovers health every second",
+		["en"] = "Recovers health every second, +2 HP recovery per upgrade",
 		["tr"] = "Her saniye sağlığı iyileştirir",
 		["zh-TW"] = "每秒鐘回復生命值",
 		["zh-CN"] = "每秒钟回复一定生命值",

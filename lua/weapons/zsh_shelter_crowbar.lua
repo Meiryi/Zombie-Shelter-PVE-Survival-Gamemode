@@ -47,14 +47,14 @@ SWEP.Melee2HitNPCSound = "weapons/zsh/melees/hit2.wav"
 
 SWEP.MeleeDamage = 50
 SWEP.MeleeRange = 50
-SWEP.MeleeTime = 0.415
+SWEP.MeleeTime = 0.4
 SWEP.MeleeAttackTime = 0.13
 SWEP.DamageType = DMG_SLASH
 
 SWEP.Melee2 = true
-SWEP.Melee2Damage = 150
+SWEP.Melee2Damage = 130
 SWEP.Melee2Range = 50
-SWEP.Melee2Time = 1.08
+SWEP.Melee2Time = 0.8
 SWEP.Melee2AttackTime = 0.17
 
 SWEP.NotForNPCs = false

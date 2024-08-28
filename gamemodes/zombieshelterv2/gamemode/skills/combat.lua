@@ -39,10 +39,10 @@ ZShelter.AddSkills(ClassName, nil, nil,
 ZShelter.AddSkills(ClassName, "OnSecondPassed",
 	function(player)
 		if(player:GetNWFloat("Sanity", 100) <= 0) then return end
-		player:SetHealth(math.min(player:Health() + player:GetNWFloat("SelfRecovering", 1), player:GetMaxHealth()))
+		player:SetHealth(math.min(player:Health() + player:GetNWFloat("SelfRecovering", 2), player:GetMaxHealth()))
 	end,
 	function(player)
-		player:SetNWFloat("SelfRecovering", player:GetNWFloat("SelfRecovering", 0) + 1)
+		player:SetNWFloat("SelfRecovering", player:GetNWFloat("SelfRecovering", 0) + 2)
 	end, 2, "sheal", 1, "Self Recovering")
 
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
@@ -167,10 +167,10 @@ ZShelter.AddSkills(ClassName, "OnSecondPassed",
 ZShelter.AddSkills(ClassName, "OnEnemyKilled",
 	function(player, victim, killedbyturrets)
 		if(killedbyturrets) then return end
-		player:SetHealth(math.min(player:Health() + (player:GetNWInt("VampireHeal", 2)), player:GetMaxHealth()))
+		player:SetHealth(math.min(player:Health() + (player:GetNWInt("VampireHeal", 5)), player:GetMaxHealth()))
 	end,
 	function(player)
-		player:SetNWFloat("VampireHeal", player:GetNWFloat("VampireHeal", 0) + 2)
+		player:SetNWFloat("VampireHeal", player:GetNWFloat("VampireHeal", 0) + 5)
 	end, 2, "vamp", 3, "Vampire")
 
 ZShelter.AddSkills(ClassName, nil, nil,

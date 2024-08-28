@@ -51,7 +51,7 @@ function ENT:Think()
 			self.FlameAttached = true
 		end
 		if(self.NextDamageTime < CurTime()) then
-			for k,v in pairs(ents.FindInSphere(self:GetPos(), 100)) do
+			for k,v in pairs(ents.FindInSphere(self:GetPos(), 120)) do
 				if(!ZShelter.ValidateEntity(self, v)) then continue end
 				v:TakeDamage(30, self, self)
 			end

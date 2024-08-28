@@ -18,7 +18,7 @@ m.Variables = {
 	zsh_NextRangedAttack = 0,
 	zsh_NextCheckValidTime = 0,
 	zsh_AimTarget = nil,
-	zsh_MaximumRange = 1800,
+	zsh_MaximumRange = 1000,
 	zsh_DamageInfo = DamageInfo()
 } -- Variables for mutation functions, leave empty for nothing
 

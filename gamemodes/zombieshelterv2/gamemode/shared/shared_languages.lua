@@ -131,7 +131,7 @@ ZShelter.AddTranslate("#Storage", {
 
 ZShelter.AddTranslate("#Public Construction", {
 	["en"] = "Public Construction",
-	["tr"] = "Herkese Açık İnşaat",
+	["tr"] = "Ortak Yapı",
 	["ru"] = "Общ. строительство",
 	["zh-TW"] = "公共建設",
 	["zh-CN"] = "公共设施",
@@ -275,15 +275,15 @@ ZShelter.AddTranslate("#Propeller Trap", {
 
 ZShelter.AddTranslate("#Flame Trap", {
 	["en"] = "Flame Trap",
-	["tr"] = "",
+	["tr"] = "Alev Tuzağı",
 	["ru"] = "Огненная ловушка",
 	["zh-TW"] = "火焰陷阱",
 	["zh-CN"] = "喷火陷阱",
 })
 
 ZShelter.AddTranslate("#CMB Trap", {
-	["en"] = "Cyro Mine",
-	["tr"] = "",
+	["en"] = "Cryo Mine",
+	["tr"] = "Dondurucu Mayın",
 	["ru"] = "",
 	["zh-TW"] = "凍結地雷",
 	["zh-CN"] = "冻结地雷",
@@ -291,7 +291,7 @@ ZShelter.AddTranslate("#CMB Trap", {
 
 ZShelter.AddTranslate("#Gravity Mine", {
 	["en"] = "Gravity Mine",
-	["tr"] = "",
+	["tr"] = "Yer Çekimi Mayını",
 	["ru"] = "",
 	["zh-TW"] = "引力地雷",
 	["zh-CN"] = "引力地雷",
@@ -299,7 +299,7 @@ ZShelter.AddTranslate("#Gravity Mine", {
 
 ZShelter.AddTranslate("Laser Trap", {
 	["en"] = "Laser Trap",
-	["tr"] = "",
+	["tr"] = "Lazer Tuzağı",
 	["ru"] = "",
 	["zh-TW"] = "雷射陷阱",
 	["zh-CN"] = "雷射陷阱",
@@ -351,6 +351,14 @@ ZShelter.AddTranslate("#Blast Turret", {
 	["ru"] = "Взрывная турель",
 	["zh-TW"] = "爆破槍塔",
 	["zh-CN"] = "爆破炮塔",
+})
+
+ZShelter.AddTranslate("#Burst Shotgun Turret", {
+	["en"] = "Burst Shotgun Turret",
+	["tr"] = "Pompalı Taret",
+	["ru"] = "",
+	["zh-TW"] = "連發霰彈槍塔",
+	["zh-CN"] = "连发霰弹炮塔",
 })
 
 ZShelter.AddTranslate("#Enemy Scanner", {
@@ -411,7 +419,7 @@ ZShelter.AddTranslate("#Plasma Turret", {
 
 ZShelter.AddTranslate("#Laser Turret", {
 	["en"] = "Laser Turret",
-	["tr"] = "",
+	["tr"] = "Lazer Tareti",
 	["ru"] = "",
 	["zh-TW"] = "雷射砲塔",
 	["zh-CN"] = "雷射炮塔",
@@ -851,7 +859,7 @@ ZShelter.AddTranslate("#Close", {
 
 ZShelter.AddTranslate("#ShelterNick", {
 	["en"] = "Tier <VAR> Shelter",
-	["tr"] = "<VAR> Seviye Sığınak",
+	["tr"] = "Seviye <VAR> Sığınak",
 	["ru"] = "Убежище <VAR>-го ур.",
 	["zh-TW"] = "<VAR> 級避難所",
 	["zh-CN"] = "<VAR> 级避难所",
@@ -1147,7 +1155,7 @@ ZShelter.AddTranslate("#MVP", {
 
 ZShelter.AddTranslate("#ServerList", {
 	["en"] = "Server List",
-	["tr"] = "",
+	["tr"] = "Sunucu Listesi",
 	["ru"] = "",
 	["zh-TW"] = "伺服器列表",
 	["zh-CN"] = "服务器列表",
@@ -1155,7 +1163,7 @@ ZShelter.AddTranslate("#ServerList", {
 
 ZShelter.AddTranslate("#ServerListHint", {
 	["en"] = "Servers on this list are running Zombie Shelter v2",
-	["tr"] = "",
+	["tr"] = "Bu listedeki sunucular Zombie Shelter v2 çalıştırıyor",
 	["ru"] = "",
 	["zh-TW"] = "在此列表上的伺服器都在運行 Zombie Shelter v2",
 	["zh-CN"] = "在此列表上的服务器都在运行 Zombie Shelter v2",
@@ -1163,7 +1171,7 @@ ZShelter.AddTranslate("#ServerListHint", {
 
 ZShelter.AddTranslate("#ServerListAddr", {
 	["en"] = "Address : <VAR>",
-	["tr"] = "",
+	["tr"] = "IP Adresi : <VAR>",
 	["ru"] = "",
 	["zh-TW"] = "伺服器IP : <VAR>",
 	["zh-CN"] = "服务器IP : <VAR>",
@@ -1171,7 +1179,7 @@ ZShelter.AddTranslate("#ServerListAddr", {
 
 ZShelter.AddTranslate("#ServerListClick", {
 	["en"] = "Click to join",
-	["tr"] = "",
+	["tr"] = "Katılmak için tıkla",
 	["ru"] = "",
 	["zh-TW"] = "點擊加入",
 	["zh-CN"] = "点击加入",
@@ -1179,7 +1187,7 @@ ZShelter.AddTranslate("#ServerListClick", {
 
 ZShelter.AddTranslate("#SpawnPointExtra", {
 	["en"] = "Enemy Spawn Point",
-	["tr"] = "",
+	["tr"] = "Düşman Doğma Noktası",
 	["ru"] = "",
 	["zh-TW"] = "敵人生成點",
 	["zh-CN"] = "敌人生成点",
@@ -1187,7 +1195,7 @@ ZShelter.AddTranslate("#SpawnPointExtra", {
 
 ZShelter.AddTranslate("#SpawnPointExtraDesc", {
 	["en"] = "An extra spawn point for enemy to spawn",
-	["tr"] = "",
+	["tr"] = "Düşmanın doğması için fazladan bir doğma noktası",
 	["ru"] = "",
 	["zh-TW"] = "敵人重生點",
 	["zh-CN"] = "敌人重生点",
@@ -1195,7 +1203,7 @@ ZShelter.AddTranslate("#SpawnPointExtraDesc", {
 
 ZShelter.AddTranslate("#SpawnPointDedicated", {
 	["en"] = "Dedicated Enemy Spawn Point",
-	["tr"] = "",
+	["tr"] = "Özel Düşman Doğma Noktası",
 	["ru"] = "",
 	["zh-TW"] = "固定敵人生成點",
 	["zh-CN"] = "固定敌人生成点",
@@ -1203,7 +1211,7 @@ ZShelter.AddTranslate("#SpawnPointDedicated", {
 
 ZShelter.AddTranslate("#SpawnPointDedicatedDesc", {
 	["en"] = "An DEDICATED spawn point, if you placed any of this enemy will be spawn at this fixed position",
-	["tr"] = "",
+	["tr"] = "ÖZEL bir doğma noktası, eğer bu düşmandan herhangi birini yerleştirirsen, bu sabit konumda doğacak",
 	["ru"] = "",
 	["zh-TW"] = "放置後敵人會被生成在這個固定的位置",
 	["zh-CN"] = "放置后敌人会被生成在这个固定的位置",
