@@ -649,7 +649,7 @@ end
 
 function ZShelter.CalcSpawnTime(day, diff)
 	local scaling = math.max(1 - (0.1 * (player.GetCount() - 1)), 0.25)
-	return math.max(((30 - diff) - (day * (diff * 0.3))) * scaling, 1.5)
+	return math.max(((30 - diff) - (day * (diff * 0.5))) * scaling, 1)
 end
 
 local dayTimer = 0
