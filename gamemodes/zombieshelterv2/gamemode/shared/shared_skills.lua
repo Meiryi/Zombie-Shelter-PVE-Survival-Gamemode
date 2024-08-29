@@ -32,6 +32,7 @@ ZShelter.SkillDatas = {}
 			OnEnemyKilled(player, victim, killedbyturrets)
 			OnRepairBuildings(player, building, buildspeed)
 			OnBuildingPlaced(player, building)
+			OnBuildingTakeDamage(player, building, attacker, damage)
 			OnBuildingDestroyed(player, building, wood, iron, power)
 			OnSkillCalled(player) -- Only available for tier 4 skill
 			OnFireBullets(player, bulletdata)

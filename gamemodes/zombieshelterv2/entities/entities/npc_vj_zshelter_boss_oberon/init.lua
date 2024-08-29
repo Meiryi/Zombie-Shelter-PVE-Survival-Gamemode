@@ -141,7 +141,7 @@ end
 function ENT:SpawnBombs()
 	local pos = self:GetPos() + Vector(0, 0, 10)
 	local rand = 512
-	local dmg = 40 * (GetConVar("zshelter_difficulty"):GetInt() * 0.033)
+	local dmg = 20 * (GetConVar("zshelter_difficulty"):GetInt() * 0.033)
 	for i = 1, 20 do
 		local bomb = ents.Create("obj_oberon_bomb")
 			bomb:SetPos(pos)

@@ -31,6 +31,14 @@ function ZShelter.StunBuilding(building, time, bypass)
 	building:SetNWFloat("StunTime", CurTime() + time)
 end
 
+function ZShelter.ApplyDamageNerf(building, time)
+	building.DamageNerfTime = CurTime() + time
+	local e = EffectData()
+		e:SetOrigin(building:GetPos() + Vector(0, 0, building:OBBMaxs().z + 36))
+		e:SetEntity(building)
+		util.Effect("zshelter_atknerf", e)
+end
+
 function ZShelter.RemoveStun(building)
 	if(GetGlobalInt("Powers", 0) < 0) then return end
 	building:NextThink(CurTime())
@@ -174,6 +182,11 @@ function ZShelter.ApplyDamage(attacker, building, dmginfo)
 	if(IsValid(owner) && owner:IsPlayer()) then
 		local category = building.Cate || "NULL"
 		damage = damage * owner:GetNWFloat("DamageResistance_"..category, 1)
+		if(owner.Callbacks.OnBuildingTakeDamage) then
+			for k,v in pairs(owner.Callbacks.OnBuildingTakeDamage) do
+				v(owner, building, attacker, damage)
+			end
+		end
 	end
 	if(IsValid(attacker)) then
 		if(attacker:IsPlayer() && building:GetNWBool("NoPlayerDamage", false)) then return end
@@ -497,6 +510,10 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 
 		if(tdata.onshelterupgrade) then
 			ent.__ou = tdata.onshelterupgrade
+		end
+
+		if(tdata.ondamaged) then
+			ent.__oda = tdata.ondamaged
 		end
 
 		if(tdata.onuse) then

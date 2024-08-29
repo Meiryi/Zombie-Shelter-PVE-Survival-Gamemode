@@ -53,12 +53,12 @@ m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 					e:SetOrigin(pos + Vector(math.random(-200, 200), math.random(-200, 200), math.random(10, 25)))
 					util.Effect("zshelter_emp", e, true, true)
 				end
-				for k,v in pairs(ents.FindInSphere(pos, 128)) do
+				for k,v in pairs(ents.FindInSphere(pos, 256)) do
 					if(!v.IsBuilding) then continue end
 					if(v.IsTrap) then
 						ZShelter.ApplyDamageFast(v, 1, true, true)
 					else
-						ZShelter.ApplyDamageFast(v, 15, true)
+						ZShelter.ApplyDamageNerf(v, 2)
 					end
 				end
 			end)

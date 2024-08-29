@@ -30,7 +30,7 @@ ENT.NextShootTime = 0
 ENT.RotateSpeed = 0.3
 ENT.LosAngle = 8
 ENT.CheckValidTime = 0
-ENT.DmgAngle = math.cos(math.rad(30))
+ENT.DmgAngle = math.cos(math.rad(50))
 
 function ENT:Think()
 	self.MaximumDistance = 256 + (self:GetNWInt("UpgradeCount", 0) * 64)

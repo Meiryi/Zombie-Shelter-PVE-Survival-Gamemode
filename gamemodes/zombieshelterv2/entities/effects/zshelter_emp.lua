@@ -1,6 +1,6 @@
 function EFFECT:Init(effect_data)
     local pos = effect_data:GetOrigin()
-    local radius = effect_data:GetRadius() or 128
+    local radius = effect_data:GetRadius() or 256
     local emitter = ParticleEmitter(pos)
     local smoke = emitter:Add("effects/spark", pos)
     smoke:SetGravity( Vector(0, 0, 0) )

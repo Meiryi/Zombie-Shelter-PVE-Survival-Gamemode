@@ -164,13 +164,21 @@ end
 	ondestroy(self)
 	onuse(player, self)
 	onshelterupgrade(self)
+	ondamaged(self, attacker)
 
 	thinkfunc(self)
 	thinkinterval = interval of thinking
 ]]
 
 ZShelter.AddBuildItem("Barricade",  "Wooden Wall",  2,  0,  0,  600,  "prop_physics",  "models/galaxy/rust/wood_wall.mdl",  0,  Vector(0, 0, 0), {buildspeed = 1.5})
-ZShelter.AddBuildItem("Barricade",  "Wooden Spike Wall",  3,  1,  0,  750,  "prop_physics",  "models/galaxy/rust/spike_wall.mdl",  0,  Vector(0, 0, 0), {buildspeed = 1.5})
+ZShelter.AddBuildItem("Barricade",  "Wooden Spike Wall",  3,  1,  0,  750,  "prop_physics",  "models/galaxy/rust/spike_wall.mdl",  0,  Vector(0, 0, 0), {
+	buildspeed = 1.5,
+	damage = 15,
+	ondamaged = function(self, attacker, dmginfo)
+		local a = self.Builder || self
+		attacker:TakeDamage(self.damage || 15, a, a)
+	end,
+})
 ZShelter.AddBuildItem("Barricade",  "Wire Fence",  0,  3,  0,  1000,  "prop_physics",  "models/zshelter/shelter_b_wall01.mdl",  0,  Vector(0, 0, 0), {buildspeed = 1.5})
 
 ZShelter.AddBuildItem("Barricade",  "Metal Wall",  2,  3,  0,  850,  "prop_physics",  "models/galaxy/rust/metal_wall.mdl",  1,  Vector(0, 0, 1), {buildspeed = 2})
@@ -223,7 +231,7 @@ ZShelter.AddBuildItem("Barricade",  "Concrete Gate",  4,  12,  2,  4000,  "prop_
 	thinkinterval = 0.05,
 })
 
-ZShelter.AddBuildItem("Barricade",  "Concrete Barricade",  4,  6,  0,  2500,  "prop_physics",  "models/props_phx/construct/concrete_barrier00.mdl",  3,  Vector(0, 0, 0), {buildspeed = 3.5,})
+ZShelter.AddBuildItem("Barricade",  "Concrete Barricade",  4,  6,  0,  3300,  "prop_physics",  "models/props_phx/construct/concrete_barrier00.mdl",  3,  Vector(0, 0, 0), {buildspeed = 3.5,})
 ZShelter.AddBuildItem("Barricade",  "Reinforced Concrete Wall",  4,  6,  0,  5500,  "prop_physics",  "models/shigure/shelter_b_wall03.mdl",  3,  Vector(0, 0, 0), {buildspeed = 5.5})
 
 ZShelter.AddBuildItem("Recovery",  "Healing Station",  5,  5,  0,  250,  "prop_physics",  "models/shigure/medibed.mdl",  0,  Vector(0, 0, 15), {
@@ -502,7 +510,7 @@ ZShelter.AddBuildItem("Turret",  "Mounted Machine Gun",  12,  12,  0,  500,  "np
 		self:SetNWInt("AttackDamage", math.floor(40 * buff))
 	end,
 }, {}, {find = true, day = 1})
-ZShelter.AddBuildItem("Turret",  "Flame Turret",  4,  6,  17,  500,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Flame Turret",  4,  6,  15,  500,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
 	upgrade_attackscale = 0.33,
 	upgrade_healthscale = 0.3,
 	upgradable = true,
@@ -511,6 +519,15 @@ ZShelter.AddBuildItem("Turret",  "Flame Turret",  4,  6,  17,  500,  "npc_vj_zsh
 	insideshelter = true,
 	attackrange = 256,
 })
+ZShelter.AddBuildItem("Turret",  "Burst Shotgun Turret",  7,  6,  15,  525,  "npc_vj_zshelter_burst_turret",  "models/vj_hlr/hl1/sentry.mdl",  1,  Vector(0, 0, 0), {
+	upgradable = true,
+	upgrade_attackscale = 0.25,
+	upgrade_healthscale = 0.10,
+	upgradecount = 3,
+	damage = 5,
+	insideshelter = true,
+	attackrange = 700,
+}, {}, {find = true, day = 2})
 ZShelter.AddBuildItem("Turret",  "Enemy Scanner",  4,  7,  10,  800,  "obj_structure_scanner",  "models/zshelter/obj_decoy01.mdl",  1,  Vector(0, 0, 20), {}, nil, {find = true, day = 1})
 ZShelter.AddBuildItem("Turret",  "Mending Tower",  18,  18,  40,  150,  "npc_vj_zshelter_repairer",  "models/props_lab/reciever_cart.mdl",  1,  Vector(0, 0, 32.5), {
 	upgradable = true,
@@ -531,15 +548,6 @@ ZShelter.AddBuildItem("Turret",  "Blast Turret",  3,  5,  18,  450,  "npc_vj_zsh
 	insideshelter = true,
 	attackrange = 1500,
 }, {})
-ZShelter.AddBuildItem("Turret",  "Burst Shotgun Turret",  8,  6,  18,  500,  "npc_vj_zshelter_burst_turret",  "models/vj_hlr/hl1/sentry.mdl",  2,  Vector(0, 0, 0), {
-	upgradable = true,
-	upgrade_attackscale = 0.25,
-	upgrade_healthscale = 0.10,
-	upgradecount = 3,
-	damage = 6,
-	insideshelter = true,
-	attackrange = 700,
-}, {}, {find = true, day = 3})
 ZShelter.AddBuildItem("Turret",  "Minigun Turret",  7,  8,  25,  500,  "npc_vj_zshelter_minigun_turret",  "models/zshelter/shelter_b_turret_bg01.mdl",  2,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgrade_attackscale = 0.33,

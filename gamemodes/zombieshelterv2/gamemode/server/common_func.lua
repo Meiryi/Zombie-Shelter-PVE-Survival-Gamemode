@@ -131,7 +131,7 @@ function ZShelterVisible_NPC(self, target) -- This is costy
 	if(ret.Fraction != 1) then return false end
 	tr.mask = MASK_SHOT
 	local ent = util.TraceLine(tr).Entity
-	if(IsValid(ent) && !ent.IsTurret) then if(ent.IsBarricade || ent.IsBuilding) then return false end end -- Is blocked by barricades
+	if(IsValid(ent) && !ent.IsTurret) then if(ent.IsBarricade || ent.IsBuilding || ent.IsShelter) then return false end end -- Is blocked by barricades
 	return true
 end
 

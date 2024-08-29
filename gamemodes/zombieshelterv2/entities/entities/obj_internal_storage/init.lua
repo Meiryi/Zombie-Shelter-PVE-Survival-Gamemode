@@ -10,10 +10,18 @@ end
 function ENT:Think()
 	if(!IsValid(self:GetOwner())) then
 		self:Remove()
-		print("Owner is invalid! removing")
 		return
+	else
+		if(self.Position) then
+			self:SetPos(self.Position)
+			self:SetAngles(Angle(0, 0, 0))
+			local phys = self:GetPhysicsObject()
+			if(IsValid(phys)) then
+				phys:EnableMotion(false)
+			end
+		end
 	end
-	self:NextThink(CurTime() + 1)
+	self:NextThink(CurTime() + 0.5)
 	return true
 end
 

@@ -306,3 +306,19 @@ ZShelter.AddInfo("Repair Aura", {
 		["ru"] = "Автоматически чинит все ближайшие строения со скоростью 300%",
 	}
 })
+ZShelter.AddInfo("Damage Reflection", {
+	title = {
+		["en"] = "Damage Reflection",
+		["tr"] = "",
+		["zh-TW"] = "傷害反彈",
+		["zh-CN"] = "伤害反弹",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Reflect damage to attacker, +30% damage per upgrade",
+		["tr"] = "",
+		["zh-TW"] = "反彈傷害至攻擊者, 每升級一次增加 30% 傷害",
+		["zh-CN"] = "反弹伤害至攻击者, 每升级一次增加 30% 伤害",
+		["ru"] = "",
+	}
+})

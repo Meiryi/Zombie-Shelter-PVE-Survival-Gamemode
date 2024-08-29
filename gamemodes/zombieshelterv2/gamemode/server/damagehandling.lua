@@ -102,6 +102,13 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		if(IsValid(wep) && wep.DamageScaling) then
 			dmginfo:SetDamage(damage * wep.DamageScaling)
 		end
+		if(attacker.AttackNerfTime && attacker.AttackNerfTime > CurTime()) then
+			if(!IsValid(wep) || !ZShelter.IsMeleeWeapon(wep:GetClass())) then
+				if(!attacker.LastNerfTargets || !attacker.LastNerfTargets[target:EntIndex()]) then
+					dmginfo:SetDamage(dmginfo:GetDamage() * 0.35)
+				end
+			end
+		end
 		local dmgscale = attacker:GetNWFloat("DamageScale", 1)
 		dmginfo:ScaleDamage(dmgscale)
 		if(attacker.Callbacks.OnDealingDamage) then
@@ -127,6 +134,9 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		local damage = dmginfo:GetDamage()
 		if(attacker.AttackDamage) then
 			damage = attacker.AttackDamage
+		end
+		if(attacker.DamageNerfTime && attacker.DamageNerfTime > CurTime()) then
+			damage = math.max(damage * 0.5, 1)
 		end
 		if(attacker:GetNWBool("DurabilitySystem", false)) then
 			if(!attacker.LastDurabilityCostTime) then
@@ -167,6 +177,9 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 
 	if(!target:GetNWBool("IsBuilding", false)) then return false end
 	if(attacker:IsNPC() || attacker:IsNextBot()) then
+		if(target.__oda) then
+			target.__oda(target, attacker, dmginfo)
+		end
 		ZShelter.ApplyDamage(attacker, target, dmginfo)
 		return true
 	end
@@ -182,7 +195,11 @@ hook.Add( "OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflic
 			v(attacker, npc, npc.AttackedByTurrets)
 		end
 	end
-	attacker:AddFrags(math.max(1, npc:GetMaxHealth() / 65))
+	local score = math.Clamp((npc:GetMaxHealth() / 75), 1, 10)
+	if(npc.AttackedByTurrets) then
+		score = math.max(1, score * 0.33)
+	end
+	attacker:AddFrags(score)
 	SetGlobalInt("TKills", GetGlobalInt("TKills", 0) + 1)
 	attacker:SetNWInt("TKills", attacker:GetNWInt("TKills", 0) + 1)
 end)

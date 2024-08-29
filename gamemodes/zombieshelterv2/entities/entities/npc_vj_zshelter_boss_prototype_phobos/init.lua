@@ -171,7 +171,7 @@ function ENT:ShockWave()
 			if(v.IsBuilding) then
 				ZShelter.ApplyDamageFast(v, dmg, true, true)
 				if(v.IsTurret && diff >= 8) then
-					ZShelter.StunBuilding(v, 6, true)
+					ZShelter.StunBuilding(v, 2, false)
 				end
 			else
 				v:TakeDamage(35, self, self)

@@ -137,6 +137,15 @@ surface.CreateFont("ZShelter-HUDUpgradeDesc", {
 	outline = false,
 })
 
+local nodraw = false
+if(EnhancedCameraTwo) then -- Enhanced Camera 2 compatibilty
+	EnhancedCameraTwo.ORender = EnhancedCameraTwo.ORender || EnhancedCameraTwo.Render
+	function EnhancedCameraTwo:Render()
+		if(nodraw) then return end
+		EnhancedCameraTwo:ORender()
+	end
+end
+
 local attack = Material("zsh/icon/attack.png", "smooth")
 local health_mat = Material("zsh/icon/health.png", "smooth")
 
@@ -307,6 +316,25 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 
 	upgradingEntity = entity
 
+--[[
+	if(IsValid(ZShelter.PreviewEntity)) then
+		nodraw = true
+		local scl = 0.33
+		local w, h = ScrW() * scl, ScrH() * scl
+		local x, y = ScrW(), 0
+		x = x - w
+		render.RenderView({
+			origin = LocalPlayer():GetPos() + Vector(0, 0, 1000),
+			angles = Angle(90, 0, 0),
+			x = x, y = y,
+			w = w, h = h,
+			drawviewmodel = false,
+			viewid = 6,
+		})
+		nodraw = false
+	end
+]]
+
 	ZShelter.ShadowText(ZShelter_GetTranslate("#BuildingHint"), "ZShelter-HUDHint", ScrW() / 2, ScrH() * 0.75, Color(255, 255, 255, hintalpha), Color(0, 0, 0, hintalpha), TEXT_ALIGN_CENTER, 1.5)
 end)
 
@@ -428,7 +456,7 @@ local u1, v1, u2, v2 = 0, 0, 1, 1
 local fraction = 0
 local animtime = 2
 local textureSX = 48
-hook.Add("PreDrawOpaqueRenderables", "ZShelter-BuildingPreviewRange", function()
+hook.Add("PreDrawOpaqueRenderables", "ZShelter-BuildingPreviewRange", function(depth, skybox, skybox3d)
 	if(!IsValid(ZShelter.PreviewEntity) || !ZShelter.PreviewEntity.NoOffsPos) then return end
 	surface.SetMaterial(rangemat)
 	cam.Start3D2D(ZShelter.PreviewEntity.NoOffsPos + Vector(0, 0, 1), Angle(0, 0, 0), 1)

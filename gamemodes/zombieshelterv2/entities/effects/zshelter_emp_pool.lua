@@ -1,7 +1,7 @@
  function EFFECT:Init(effect_data)
     local rad = 256
     local pos = effect_data:GetOrigin()
-    local radius = effect_data:GetRadius() or 256
+    local radius = 256
     local emitter = ParticleEmitter(pos)
     self:SetPos(pos)
 

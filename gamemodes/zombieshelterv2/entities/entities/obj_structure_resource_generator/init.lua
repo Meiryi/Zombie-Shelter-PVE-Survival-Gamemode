@@ -34,6 +34,12 @@ function ENT:Think()
 		SetGlobalInt("Woods", math.min(GetGlobalInt("Woods", 0) + self:GetNWInt("ProvideAmount", 4), GetGlobalInt("Capacity", 32)))
 		SetGlobalInt("Irons", math.min(GetGlobalInt("Irons", 0) + self:GetNWInt("ProvideAmount", 4), GetGlobalInt("Capacity", 32)))
 		self:SetNWInt("NextProvideTime", CurTime() + 30)
+
+		if(IsValid(self.Builder) && self.Builder:IsPlayer()) then
+			self.Builder:AddFrags(self:GetNWInt("ProvideAmount", self.BaseResources))
+			self.Builder:SetNWInt("TWoods", self.Builder:GetNWInt("TWoods", 0) + self:GetNWInt("ProvideAmount", self.BaseResources))
+			self.Builder:SetNWInt("TIrons", self.Builder:GetNWInt("TIrons", 0) + self:GetNWInt("ProvideAmount", self.BaseResources))
+		end
 		self.CurTime = CurTime() + 30
 	end
 	self:NextThink(CurTime() + 1)

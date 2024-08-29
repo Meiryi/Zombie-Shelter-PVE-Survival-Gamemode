@@ -124,6 +124,7 @@ function ZShelter.InitShelter()
 				storageEnt:SetCollisionGroup(2)
 				storageEnt:SetCollisionBounds(mins, maxs)
 				storageEnt:PhysicsInitBox(mins, maxs)
+				storageEnt.Position = v
 		end
 
 		local phys = shelter:GetPhysicsObject()

@@ -96,14 +96,14 @@ ZShelter.AddSkills(ClassName, nil, nil,
 
 ZShelter.AddSkills(ClassName, "OnRepairBuildings",
 	function(player, building, buildspeed)
-		local repair = 15 * player:GetNWFloat("CRepairSpeed", 1)
-		for k,v in pairs(ents.FindInSphere(player:GetPos(), player:GetNWFloat("AutoRepairRadius", 0))) do
+		local repair = 45 * player:GetNWFloat("CRepairSpeed", 1)
+		for k,v in pairs(ents.FindInSphere(player:GetPos(), player:GetNWFloat("CRepairRange", 86))) do
 			if(!v.IsBuilding || v == building) then continue end
 			ZShelter.BuildSystemNoScale(player, v, 20)
 		end
 	end,
 	function(player)
-		player:SetNWFloat("CRepairRange", player:GetNWFloat("CRepairRange", 64) + 64)
+		player:SetNWFloat("CRepairRange", player:GetNWFloat("CRepairRange", 0) + 86)
 		player:SetNWFloat("CRepairSpeed", player:GetNWFloat("CRepairSpeed", 0.8) + 0.2)
 	end, 2, "cpar", 3, "Chain Repair")
 
@@ -155,6 +155,16 @@ ZShelter.AddSkills(ClassName, "OnBuildingDestroyed",
 	function(player)
 		player:SetNWFloat("SDDamage", player:GetNWFloat("SDDamage", 0.5) + 0.5)
 	end, 2, "sdr", 3, "Self Destruction")
+
+ZShelter.AddSkills(ClassName, "OnBuildingTakeDamage",
+	function(player, building, attacker, damage)
+		if(attacker:IsPlayer()) then return end
+		local dmg = damage * player:GetNWFloat("DRDamage", 0.3)
+		attacker:TakeDamage(dmg, player, player)
+	end,
+	function(player)
+		player:SetNWFloat("DRDamage", player:GetNWFloat("DRDamage", 0) + 0.3)
+	end, 2, "thorns", 3, "Damage Reflection")
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)

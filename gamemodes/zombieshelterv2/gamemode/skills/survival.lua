@@ -156,7 +156,7 @@ ZShelter.AddSkills(ClassName, "OnGatheringResources",
 		local current = GetGlobalInt(type, 0)
 		local capacity = GetGlobalInt("Capacity", 16)
 		if(current >= capacity) then return end
-		player:AddFrags(amount * 3)
+		player:AddFrags(amount * 4)
 		SetGlobalInt(type, math.min(current + amount, capacity))
 
 		resource.Amount = resource.Amount - 1
@@ -181,7 +181,7 @@ ZShelter.AddSkills(ClassName, "OnTrapDetonate",
 
 ZShelter.AddSkills(ClassName, "OnRepairingTraps",
 	function(player, trapent)
-		local repair = player:GetNWFloat("TrapRepairSpeed", 1) * 5
+		local repair = player:GetNWFloat("TrapRepairSpeed", 1) * 6
 		for k,v in pairs(ents.FindInSphere(player:GetPos(), player.TrapRepairRadius || 86)) do
 			if(!v.IsTrap) then continue end
 			v:SetHealth(math.min(v:Health() + repair, v:GetMaxHealth()))

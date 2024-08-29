@@ -88,8 +88,8 @@ function ZShelter.CheckStart()
 			local resources = math.floor(24 / player.GetCount())
 			local skills = ZShelter.CalcStartSkillPoints(player.GetCount())
 			if(diff >= 9) then
-				SetGlobalInt("Time", 300)
-				SetGlobalInt("Capacity", 48)
+				SetGlobalInt("Time", 270)
+				SetGlobalInt("Capacity", 40)
 			end
 			if(diff >= 9 || fullres) then
 				SetGlobalInt("Woods", GetGlobalInt("Capacity", 0))
