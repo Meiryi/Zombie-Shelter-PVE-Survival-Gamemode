@@ -307,18 +307,18 @@ ZShelter.AddInfo("Repair Aura", {
 	}
 })
 ZShelter.AddInfo("Damage Reflection", {
-	title = {
-		["en"] = "Damage Reflection",
-		["tr"] = "",
-		["zh-TW"] = "傷害反彈",
-		["zh-CN"] = "伤害反弹",
-		["ru"] = "",
-	},
-	desc = {
-		["en"] = "Reflect damage to attacker, +30% damage per upgrade",
-		["tr"] = "",
-		["zh-TW"] = "反彈傷害至攻擊者, 每升級一次增加 30% 傷害",
-		["zh-CN"] = "反弹伤害至攻击者, 每升级一次增加 30% 伤害",
-		["ru"] = "",
-	}
+    title = {
+        ["en"] = "Damage Reflection",
+        ["tr"] = "Hasar Yansıtma",
+        ["zh-TW"] = "傷害反彈",
+        ["zh-CN"] = "伤害反弹",
+        ["ru"] = "",
+    },
+    desc = {
+        ["en"] = "Reflects damage when turret is being attacked\n+25% Damage to attacker per upgrade\n+5 Damage to all nearby enemies per upgrade",
+        ["tr"] = "",
+        ["zh-TW"] = "槍塔會反彈傷害至攻擊者\n每升級一次增加 25%對攻擊者的傷害",
+        ["zh-CN"] = "枪塔会反弹伤害至攻击者\n每升级一次增加 25%对攻击者的伤害",
+        ["ru"] = "",
+    }
 })

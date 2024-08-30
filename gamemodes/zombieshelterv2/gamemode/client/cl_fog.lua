@@ -65,7 +65,7 @@ hook.Add("PreDrawOpaqueRenderables", "ZShelter-Fogs", function(isDrawingDepth, i
 		end
 		nodrawProcess = SysTime() + 0.1
 	end
-	if(enablefog) then
+	if(enablefog && !ZShelter_StopFog) then
 		local view = render.GetViewSetup()
 		local lookdir = view.angles
 		local lookpos = view.origin
@@ -77,7 +77,7 @@ hook.Add("PreDrawOpaqueRenderables", "ZShelter-Fogs", function(isDrawingDepth, i
 end)
 
 hook.Add("SetupWorldFog", "fpsfog_fog", function()
-	if(!enablefog) then return end
+	if(!enablefog || ZShelter_StopFog) then return end
 	render.FogMode(1)
 	render.FogColor(ZShelter.FogColor.r, ZShelter.FogColor.g, ZShelter.FogColor.b)
 	render.FogMaxDensity(1)

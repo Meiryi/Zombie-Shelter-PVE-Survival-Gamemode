@@ -200,7 +200,7 @@ ZShelter.AddSkills(ClassName, "OnSkillCalled",
 		sound.Play("shigure/stunwave.wav", e:GetOrigin(), 120, 100, 3)
 		for k,v in pairs(ents.FindInSphere(player:GetPos(), 400)) do
 			if(!ZShelter.ValidateEntity(player, v)) then continue end
-			v:NextThink(CurTime() + 10)
+			v:NextThink(CurTime() + 25)
 			local e = EffectData()
 				e:SetEntity(v)
 				e:SetMagnitude(5)

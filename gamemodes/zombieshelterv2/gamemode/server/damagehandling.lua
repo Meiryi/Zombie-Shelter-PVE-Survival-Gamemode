@@ -198,6 +198,8 @@ hook.Add( "OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflic
 	local score = math.Clamp((npc:GetMaxHealth() / 75), 1, 10)
 	if(npc.AttackedByTurrets) then
 		score = math.max(1, score * 0.33)
+	else
+		score = score * 2
 	end
 	attacker:AddFrags(score)
 	SetGlobalInt("TKills", GetGlobalInt("TKills", 0) + 1)

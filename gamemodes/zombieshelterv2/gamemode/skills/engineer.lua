@@ -158,13 +158,22 @@ ZShelter.AddSkills(ClassName, "OnBuildingDestroyed",
 
 ZShelter.AddSkills(ClassName, "OnBuildingTakeDamage",
 	function(player, building, attacker, damage)
-		if(attacker:IsPlayer()) then return end
-		local dmg = damage * player:GetNWFloat("DRDamage", 0.3)
-		attacker:TakeDamage(dmg, player, player)
+		if(!building.IsTurret) then return end
+		if(attacker:IsPlayer() && GetConVar("zshelter_friendly_fire"):GetInt() == 0) then return end -- :trollface:
+		local dmg = player:GetNWFloat("DRDamage", 5)
+		local dmgscale = player:GetNWInt("DRDamageScale", 0.25) * damage
+		attacker:TakeDamage(dmgscale, player, player)
+		if(building.LastAOEDamageTime && building.LastAOEDamageTime > CurTime()) then return end
+		for k,v in ipairs(ents.FindInSphere(building:GetPos(), 64)) do
+			if(!ZShelter.ValidateTarget(v) || v == attacker) then continue end
+			v:TakeDamage(dmg, player, player)
+		end
+		building.LastAOEDamageTime = CurTime() + 1
 	end,
 	function(player)
-		player:SetNWFloat("DRDamage", player:GetNWFloat("DRDamage", 0) + 0.3)
-	end, 2, "thorns", 3, "Damage Reflection")
+		player:SetNWFloat("DRDamage", player:GetNWFloat("DRDamage", 0) + 5)
+		player:SetNWFloat("DRDamageScale", player:GetNWFloat("DRDamageScale", 0) + 0.25)
+	end, 3, "thorns", 3, "Damage Reflection")
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)

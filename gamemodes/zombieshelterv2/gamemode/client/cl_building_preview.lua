@@ -137,11 +137,11 @@ surface.CreateFont("ZShelter-HUDUpgradeDesc", {
 	outline = false,
 })
 
-local nodraw = false
+ZShelter_NoDraw = false
 if(EnhancedCameraTwo) then -- Enhanced Camera 2 compatibilty
 	EnhancedCameraTwo.ORender = EnhancedCameraTwo.ORender || EnhancedCameraTwo.Render
 	function EnhancedCameraTwo:Render()
-		if(nodraw) then return end
+		if(ZShelter_NoDraw) then return end
 		EnhancedCameraTwo:ORender()
 	end
 end
@@ -316,25 +316,26 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 
 	upgradingEntity = entity
 
---[[
-	if(IsValid(ZShelter.PreviewEntity)) then
-		nodraw = true
-		local scl = 0.33
-		local w, h = ScrW() * scl, ScrH() * scl
-		local x, y = ScrW(), 0
-		x = x - w
-		render.RenderView({
-			origin = LocalPlayer():GetPos() + Vector(0, 0, 1000),
-			angles = Angle(90, 0, 0),
-			x = x, y = y,
-			w = w, h = h,
-			drawviewmodel = false,
-			viewid = 6,
-		})
-		nodraw = false
+	--[[
+	if(IsValid(ZShelter.PreviewEntity) && (ZShelter.PreviewEntity.AttackRange || ZShelter.PreviewEntity.ActiveRange)) then
+		if(ZShelter.PreviewEntity.NoOffsPos) then
+			local scl = 0.25
+			local w, h = ScrW() * scl, ScrH() * scl
+			local x, y = ScrW() - w, 0
+			ZShelter_NoDraw = true
+			ZShelter_StopFog = true
+			render.RenderView({
+				origin = ZShelter.PreviewEntity.NoOffsPos + Vector(0, 0, 2000),
+				angles = Angle(90, 0, 0),
+				x = x, y = y,
+				w = w, h = h,
+				drawviewmodel = false,
+			})
+			ZShelter_NoDraw = false
+			ZShelter_StopFog = false
+		end
 	end
-]]
-
+	]]
 	ZShelter.ShadowText(ZShelter_GetTranslate("#BuildingHint"), "ZShelter-HUDHint", ScrW() / 2, ScrH() * 0.75, Color(255, 255, 255, hintalpha), Color(0, 0, 0, hintalpha), TEXT_ALIGN_CENTER, 1.5)
 end)
 
@@ -452,29 +453,47 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 end)
 
 local rangemat = Material("arknights/torappu/sprite_attack_range.png", "noclamp")
-local u1, v1, u2, v2 = 0, 0, 1, 1
 local fraction = 0
 local animtime = 2
 local textureSX = 48
 hook.Add("PreDrawOpaqueRenderables", "ZShelter-BuildingPreviewRange", function(depth, skybox, skybox3d)
 	if(!IsValid(ZShelter.PreviewEntity) || !ZShelter.PreviewEntity.NoOffsPos) then return end
-	surface.SetMaterial(rangemat)
-	cam.Start3D2D(ZShelter.PreviewEntity.NoOffsPos + Vector(0, 0, 1), Angle(0, 0, 0), 1)
-	surface.SetDrawColor(255, 140, 40, 50)
+
+		surface.SetMaterial(rangemat)
+		cam.Start3D2D(ZShelter.PreviewEntity.NoOffsPos + Vector(0, 0, 1), Angle(0, 0, 0), 1)
+		surface.SetDrawColor(255, 140, 40, 50)
+		fraction = (SysTime() % animtime) / animtime
+		local rev_fraction = 1 - fraction
+		if(ZShelter.PreviewEntity.AttackRange) then
+			local rg = ZShelter.PreviewEntity.AttackRange * 2
+			local rghalf = rg * 0.5
+			local anim = fraction
+			surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+		end
+		surface.SetDrawColor(64, 204, 255, 255)
+		if(ZShelter.PreviewEntity.ActiveRange) then
+			local rg = ZShelter.PreviewEntity.ActiveRange * 2
+			local rghalf = rg * 0.5
+			local anim = fraction
+			surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+		end
+		cam.End3D2D()
+
+	--[[
+	render.SetColorMaterial()
 	fraction = (SysTime() % animtime) / animtime
 	local rev_fraction = 1 - fraction
 	if(ZShelter.PreviewEntity.AttackRange) then
 		local rg = ZShelter.PreviewEntity.AttackRange * 2
 		local rghalf = rg * 0.5
 		local anim = fraction
-		surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+		render.DrawBox(ZShelter.PreviewEntity.NoOffsPos, Angle(0, 0, 0), -Vector(rghalf, rghalf, 0), Vector(rghalf, rghalf, 1), Color(255, 140, 40, 35))
 	end
-	surface.SetDrawColor(64, 204, 255, 255)
 	if(ZShelter.PreviewEntity.ActiveRange) then
 		local rg = ZShelter.PreviewEntity.ActiveRange * 2
 		local rghalf = rg * 0.5
 		local anim = fraction
-		surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+		render.DrawBox(ZShelter.PreviewEntity.NoOffsPos, Angle(0, 0, 0), -Vector(rghalf, rghalf, 0), Vector(rghalf, rghalf, 1), Color(64, 204, 255, 85))
 	end
-	cam.End3D2D()
+	]]
 end)

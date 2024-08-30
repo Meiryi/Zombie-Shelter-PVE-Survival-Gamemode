@@ -34,26 +34,7 @@ AddCSLuaFile("shared.lua")
 local safeCtrlS = false
 
 function ZShelter.ResetServer()
-	SetGlobalInt("Day", 1)
-	SetGlobalBool("Night", false)
-	SetGlobalBool("Rescuing", false)
-	SetGlobalBool("ReadyState", true)
-	SetGlobalBool("RunSequence", true)
-	SetGlobalInt("Time", 240)
-	SetGlobalInt("Woods", 0)
-	SetGlobalInt("Irons", 0)
-	SetGlobalInt("Capacity", 32)
-	SetGlobalInt("Powers", 0)
-	SetGlobalInt("KillCount", 0)
-	SetGlobalInt("ShelterLevel", 0)
-	SetGlobalFloat("NoiseLevel", 0)
-	SetGlobalFloat("ReadyTime", -1)
-	SetGlobalBool("GameStarted", false)
-	SetGlobalEntity("ShelterEntity", nil)
-	ZShelter.ClearEnemies()
-	game.CleanUpMap(false, {"env_fire", "entityflame", "_firesmoke"})
-
-	ZShelter.ForceReset()
+	game.ConsoleCommand("changelevel "..game.GetMap().."\n")
 end
 
 if(!safeCtrlS || !ZShelter.VarInited) then

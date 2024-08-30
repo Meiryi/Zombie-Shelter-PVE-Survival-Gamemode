@@ -155,11 +155,11 @@ ZShelter.AddInfo("Stunwave", {
 		["ru"] = "Оглушительная волна",
 	},
 	desc = {
-		["en"] = "Stuns all nearby enemies for 10 seconds",
-		["tr"] = "Yakındaki tüm düşmanları 10 saniye boyunca sersemletir",
-		["zh-TW"] = "暈眩附近的敵人10秒",
-		["zh-CN"] = "晕眩附近的敌人10秒",
-		["ru"] = "Оглушает всех врагов поблизости на 10 секунд",
+		["en"] = "Stuns all nearby enemies for 25 seconds",
+		["tr"] = "Yakındaki tüm düşmanları 25 saniye boyunca sersemletir",
+		["zh-TW"] = "暈眩附近的敵人25秒",
+		["zh-CN"] = "晕眩附近的敌人25秒",
+		["ru"] = "Оглушает всех врагов поблизости на 25 секунд",
 	}
 })
 ZShelter.AddInfo("Cloaking", {

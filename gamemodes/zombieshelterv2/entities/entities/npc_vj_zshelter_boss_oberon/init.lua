@@ -214,14 +214,14 @@ function ENT:CustomOnThink()
 	end
 
 	if(self.HoleSkill) then
-		local maxdst = 3072
+		local maxdst = 1500
 		for k,v in ipairs(player.GetAll()) do
 			local dst = v:GetPos():Distance(self:GetPos())
 			if(dst > maxdst) then continue end
 			local f = 1 - math.Clamp(dst / maxdst, 0, 1)
 			local vel = (self:GetPos() - v:GetPos())
 			vel:Normalize()
-			v:SetVelocity((vel * 310) * f)
+			v:SetVelocity((vel * 220) * f)
 		end
 	end
 
