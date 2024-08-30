@@ -21,6 +21,8 @@ util.AddNetworkString("ZShelter-SyncVote")
 
 ZShelter.CurrentVotes = {}
 ZShelter.CurrentDiffVotes = {}
+ZShelter.CurrentRTV = {}
+ZShelter.VoteStarted = false
 
 ZShelter.MapLists = {}
 ZShelter.Maps = {}
@@ -59,6 +61,8 @@ end)
 
 local runtimer = true
 function ZShelter.BroadcastEnd(victory, text, reason)
+	if(ZShelter.VoteStarted) then return end
+	ZShelter.VoteStarted = true
 	ZShelter.VotePlayers = player.GetCount()
 	ZShelter.VotedPlayers = 0
 	if(!text) then
@@ -151,3 +155,17 @@ function ZShelter.BroadcastEnd(victory, text, reason)
 		end)
 	end
 end
+
+hook.Add("PlayerSay", "ZSheler_RockTheVote", function(ply, text)
+	local count = math.Round(player.GetCount() * 0.5, 0)
+	if(text == "rtv") then
+		if(!ZShelter.CurrentRTV[ply:SteamID64()]) then
+			ZShelter.CurrentRTV[ply:SteamID64()] = true
+		end
+		local rtvcount = table.Count(ZShelter.CurrentRTV)
+		PrintMessage(HUD_PRINTTALK, ply:Nick().." Wants to change the map ["..rtvcount.."/"..count.."], say 'rtv' to skip the current map")
+		if(rtvcount >= count) then
+			ZShelter.BroadcastEnd(true, "Skip the current map", "The players has spoken!")
+		end
+	end
+end)
