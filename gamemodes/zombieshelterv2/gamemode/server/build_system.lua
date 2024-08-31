@@ -484,6 +484,10 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 		if(tdata.physcollide) then
 			ZShelter.AddCollisionEntity(ent)
 		end
+		
+		if(tdata.manual) then
+			ent:SetNWBool("HasManualControl", true)
+		end
 
 		if(tdata.thinkfunc) then
 			local interval = 1

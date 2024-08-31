@@ -374,3 +374,20 @@ ZShelter.AddInfo("Grenade Stunning", {
 		["ru"] = "Гранаты могут оглушать врагов, +2,5 сек. за улучшение",
 	}
 })
+
+ZShelter.AddInfo("Damage Reflecting", {
+	title = {
+		["en"] = "Damage Reflecting",
+		["tr"] = "",
+		["zh-TW"] = "傷害反彈",
+		["zh-CN"] = "伤害反弹",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Reflecting all incoming damage, +50% damage per upgrade",
+		["tr"] = "",
+		["zh-TW"] = "反彈所有受到的傷害, 每升級一次增加 50%",
+		["zh-CN"] = "反弹所有受到的伤害, 每升级一次增加 50%",
+		["ru"] = "",
+	}
+})

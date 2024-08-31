@@ -153,6 +153,7 @@ local woods, irons, powers = Material("zsh/icon/woods_white.png", "smooth"), Mat
 
 local upgradeHoldTime = 0
 local waitforrelease = false
+local middledown = false
 local upgradingEntity = nil
 local hintalpha = 0
 local texture = Material("zsh/icon/footer.png", "smooth")
@@ -207,7 +208,14 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 			surface_SetDrawColor(255, 255, 255, 45)
 			surface_SetMaterial(texture)
 			surface_DrawTexturedRect(x, y, w, imgsx)
-			surface_DrawTexturedRect(x, (y + h + ScreenScaleH(18)) - imgsx, w, imgsx)
+			surface_DrawTexturedRect(x, (y + h + ScreenScaleH(18))  - imgsx, w, imgsx)
+		else
+			if(entity:GetNWBool("HasManualControl")) then
+				ZShelter.ShadowText(ZShelter_GetTranslate("#ManualControl"), "ZShelter-HUDHintSmall", ScrW() *0.5, ScrH() * 0.55, Color(220, 220, 220, 255), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, 1)
+				if(input.IsMouseDown(109) && !middledown) then
+					ZShelter.StartControlMortar(entity)
+				end
+			end
 		end
 		local drawY = y + h * 0.775
 		draw_DrawText(name, "ZShelter-HUDHint", ScrW() / 2, y + h * 0.125, Color(220, 220, 220, 255), TEXT_ALIGN_CENTER)
@@ -314,6 +322,7 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 		upgradeHoldTime = CurTime()
 	end
 
+	middledown = input.IsMouseDown(109)
 	upgradingEntity = entity
 
 	--[[

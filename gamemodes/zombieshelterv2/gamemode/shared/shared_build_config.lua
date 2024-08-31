@@ -176,7 +176,7 @@ ZShelter.AddBuildItem("Barricade",  "Wooden Spike Wall",  3,  1,  0,  750,  "pro
 	damage = 12,
 	ondamaged = function(self, attacker, dmginfo)
 		local a = self.Builder || self
-		attacker:TakeDamage(self.damage || 15, a, a)
+		ZShelter.DealNoScaleDamage(a, attacker, self.AttackDamage)
 	end,
 })
 ZShelter.AddBuildItem("Barricade",  "Wire Fence",  0,  3,  0,  1000,  "prop_physics",  "models/zshelter/shelter_b_wall01.mdl",  0,  Vector(0, 0, 0), {buildspeed = 1.5})
@@ -580,6 +580,7 @@ ZShelter.AddBuildItem("Turret",  "Mortar Cannon",  16,  16,  35,  500,  "npc_vj_
 	damage = 70,
 	insideshelter = true,
 	attackrange = 3072,
+	manual = true,
 }, {})
 ZShelter.AddBuildItem("Turret",  "Plasma Turret",  16,  18,  30,  700,  "npc_vj_zshelter_plasma_turret",  "models/zshelter/shelter_b_laser_tower.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
@@ -616,6 +617,7 @@ ZShelter.AddBuildItem("Turret",  "Combine Mortar Cannon",  24,  24,  50,  450,  
 	damage = 300,
 	attackrange = 4096,
 	insideshelter = true,
+	manual = true,
 }, nil, {find = true, day = 7})
 
 function ZShelter:SetupIngredients()

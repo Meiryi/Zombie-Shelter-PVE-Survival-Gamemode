@@ -16,28 +16,6 @@ ENT.CurrentUser = nil
 ENT.UnMountTime = 0
 ENT.MountTime = 0
 
-function ENT:UnMount()
-	if(self.UnMountTime > CurTime()) then return end
-	self.MountTime = CurTime() + 1
-	if(IsValid(self.CurrentUser)) then
-		self.CurrentUser:SetNWEntity("ZShelter_MortarController", self.CurrentUser)
-		ZShelterSetController(self.CurrentUser, false)
-	end
-	self.CurrentUser = nil
-	self.ManuallyControlling = false
-	self:SetNWEntity("ZShelter_Controller", self)
-end
-
-function ENT:Mount(user)
-	if(self.MountTime > CurTime()) then return end
-	self.UnMountTime = CurTime() + 1
-	self.CurrentUser = user
-	self.ManuallyControlling = true
-	self:SetNWEntity("ZShelter_Controller", user)
-	ZShelterSetController(user, true)
-end
-
-
 function ENT:RunAI() -- Disable VJ Base's AI
 	return
 end
@@ -79,14 +57,14 @@ ENT.MaxShot = 4
 ENT.CurrentShot = 0
 ENT.RotateSpeed = 0.125
 
-ENT.NextFire_Manual = 0
-ENT.Height = Vector(0, 0, 1200)
-ENT.ManualAttacker = nil
+ENT.NextManualFireTime = 0
+ENT.ManualFireRate = 6.35
+ENT.CurrentAttacker = nil
 
 function ENT:FireMissile()
 	local owner = self
-	if(IsValid(self.ManualAttacker)) then
-		owner = self.ManualAttacker
+	if(IsValid(self.CurrentAttacker)) then
+		owner = self.CurrentAttacker
 	end
 	local pos = self:GetBonePosition(1)
 	local missile = ents.Create("obj_mortar_missile")
@@ -99,12 +77,43 @@ function ENT:FireMissile()
 		missile:SetAngles(Angle(90, 0, 0))
 end
 
+function ENT:ManualControlling()
+	return IsValid(self.CurrentController)
+end
+
+function ENT:RunControllerCode()
+	if(IsValid(self.CurrentController)) then
+		if(!self.CurrentController:Alive()) then
+			ZShelter.UnSetControllingMortar(self.CurrentController, self)
+			return
+		end
+		self.CurrentController:SetPos(self:GetPos())
+	end
+end
+
+function ENT:ShootManual(ply, vec)
+	if(self.Shooting || self.NextManualFireTime > CurTime()) then return end
+	self.ManualFireRate = 6.35 - (self:GetNWInt("UpgradeCount", 0) * 0.125)
+	self.AimVec = vec
+	self.CurrentAttacker = ply
+	self.ShootingTarget = nil
+	self.Shooting = true
+	self.CurrentShot = 0
+
+	self.NextManualFireTime = CurTime() + self.ManualFireRate
+	return true
+end
+
 function ENT:Think()
 	self.MaxShot = 4 + math.floor(self:GetNWInt("UpgradeCount", 0) * 0.5)
 	self.ShootingInterval = 0.8 - (self:GetNWInt("UpgradeCount", 0) * 0.05)
 	local rotate = self:GetBoneController(1)
+	local manual = self:ManualControlling()
+	if(manual) then
+		self:RunControllerCode()
+	end
 	if(!self.Shooting) then
-		if(!self.ManuallyControlling) then
+		if(!manual) then
 			if(!IsValid(self.ShootingTarget) || self.AimVec == Vector(0, 0, 0)) then
 				local newAngle = LerpAngle(0.3, Angle(rotate, 0, 0), Angle(0, 0, 0))
 				self:SetBoneController(1, newAngle.p)
@@ -121,43 +130,12 @@ function ENT:Think()
 					end
 				end
 			end
+			self.CurrentAttacker = nil
 		else
-			local newAngle = LerpAngle(self.RotateSpeed, Angle(rotate, 0, 0), Angle(90, 0, 0))
+			local newAngle = LerpAngle(0.33, Angle(rotate, 0, 0), Angle(90, 0, 0))
 			self:SetBoneController(1, newAngle.p)
-			if(!IsValid(self.CurrentUser) || !self.CurrentUser:Alive()) then
-				self:UnMount()
-				self:SetNWEntity("ZShelter_Controller", self)
-			else
-				self.CurrentUser:SetPos(self:GetPos())
-				if(self.CurrentUser:KeyDown(32)) then
-					self:UnMount()
-					return
-				end
-				if(self.CurrentUser:KeyDown(1)) then
-					local pos = self:GetPos() + self.Height
-					local tr = {
-						start = pos,
-						endpos = pos + self.CurrentUser:EyeAngles():Forward() * 32767,
-						mask = MASK_SHOT,
-						filter = self,
-					}
-					local vec = util.TraceLine(tr).HitPos
-					self.AimVec = vec
-					if(!self.Shooting) then
-						self.ShootingTarget = nil
-						self.ManualAttacker = self.CurrentUser
-						self.Shooting = true
-					end
-				end
-				self:SetNWEntity("ZShelter_Controller", self.CurrentUser)
-			end
-			self:NextThink(CurTime() + 0.05)
-			return true
 		end
 	else
-		if(self.ManuallyControlling && IsValid(self.CurrentUser)) then
-			self.CurrentUser:SetPos(self:GetPos())
-		end
 		if(self.MaxShot > self.CurrentShot) then
 			if(self.NextShooting < CurTime()) then
 				self:FireMissile()
@@ -165,10 +143,9 @@ function ENT:Think()
 				self.CurrentShot = self.CurrentShot + 1
 				self.NextShooting = CurTime() + self.ShootingInterval
 			end
-			self.NextFire_Manual = CurTime() + 2
 		else
-			if(self.NextShooting < CurTime()) then
-				if(!self.ManuallyControlling) then
+			if(!manual) then
+				if(self.NextShooting < CurTime()) then
 					local newAngle = LerpAngle(self.RotateSpeed, Angle(rotate, 0, 0), Angle(0, 0, 0))
 					self:SetBoneController(1, newAngle.p)
 					if(rotate <= 1) then
@@ -177,26 +154,20 @@ function ENT:Think()
 						self.CurrentShot = 0
 						self.Shooting = false
 					end
-					self.ManualAttacker = nil
-				else
-					if(self.NextFire_Manual < CurTime()) then
-						self.CurrentShot = 0
-						self.Shooting = false
-					end
+				end
+			else
+				if(self.NextManualFireTime < CurTime()) then
+					self.Shooting = false
 				end
 			end
 		end
 	end
-
 	self:NextThink(CurTime() + 0.1)
 	return true
 end
 
-function ENT:Use(user)
-	if(!user:IsPlayer() || IsValid(self.CurrentUser) || user == self.CurrentUser || !self:GetNWBool("Completed")) then return end
-	self:Mount(user)
-end
-
 function ENT:OnRemove()
-	self:UnMount()
+	if(IsValid(self.CurrentController)) then
+		ZShelter.UnSetControllingMortar(self.CurrentController, self)
+	end
 end

@@ -136,6 +136,7 @@ function ZShelter.Director_SpawnHighHPEnemy()
 end
 
 hook.Add("ZShelter-SecondPassed", "ZShelter-RunMapDirector", function()
+	--[[
 	if(GetConVar("zshelter_enable_director"):GetInt() != 1 || !GetGlobalBool("Night")) then return end
 	if(!ZShelter.Director.FirstHitOccurred) then
 		if(ZShelter.Director.ExpectedFirstHitOccurrTime < CurTime()) then
@@ -178,4 +179,5 @@ hook.Add("ZShelter-SecondPassed", "ZShelter-RunMapDirector", function()
 			ZShelter.Director.NextCheck = CurTime() + GetConVar("zshelter_director_check_interval"):GetInt()
 		end
 	end
+	]]
 end)

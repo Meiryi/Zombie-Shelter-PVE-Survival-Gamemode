@@ -15,10 +15,18 @@
 
 util.AddNetworkString("ZShelter-DamageNumber")
 
+function ZShelter.DealNoScaleDamage(attacker, victim, damage)
+	local dmginfo = DamageInfo()
+		dmginfo:SetDamage(damage)
+		dmginfo:SetAttacker(attacker)
+		dmginfo:SetInflictor(attacker)
+		dmginfo:SetDamageCustom(8)
+	victim:TakeDamageInfo(dmginfo)
+end
+
 hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo)
 	local attacker = dmginfo:GetAttacker()
 	local damage = dmginfo:GetDamage()
-
 	if(!IsValid(attacker) || !IsValid(target)) then return false end	
 
 	target.AttackedByTurrets = false
@@ -73,7 +81,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	if(attacker.IsBuilding && target:IsPlayer()) then return true end
 
 	if(attacker:IsNPC() && !attacker.IsBuilding) then
-		if(attacker.damage) then
+		if(attacker.damage && attacker.damage != -1) then
 			dmginfo:SetDamage(attacker.damage)
 			damage = dmginfo:GetDamage()
 		end
@@ -98,9 +106,13 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	-- Player to anything (exlcuding turrets)
 
 	if(attacker:IsPlayer() && !target.IsBuilding) then
-		local wep = attacker:GetActiveWeapon()
-		if(IsValid(wep) && wep.DamageScaling) then
-			dmginfo:SetDamage(damage * wep.DamageScaling)
+		if(dmginfo:GetDamageCustom() != 8) then
+			local wep = attacker:GetActiveWeapon()
+			if(IsValid(wep) && wep.DamageScaling) then
+				dmginfo:SetDamage(damage * wep.DamageScaling)
+			end
+			local dmgscale = attacker:GetNWFloat("DamageScale", 1)
+			dmginfo:ScaleDamage(dmgscale)
 		end
 		if(attacker.AttackNerfTime && attacker.AttackNerfTime > CurTime()) then
 			if(!IsValid(wep) || !ZShelter.IsMeleeWeapon(wep:GetClass())) then
@@ -109,8 +121,6 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 				end
 			end
 		end
-		local dmgscale = attacker:GetNWFloat("DamageScale", 1)
-		dmginfo:ScaleDamage(dmgscale)
 		if(attacker.Callbacks.OnDealingDamage) then
 			for k,v in pairs(attacker.Callbacks.OnDealingDamage) do
 				v(attacker, target, dmginfo)
@@ -124,6 +134,11 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	if(target:IsPlayer() && !attacker.IsBuilding) then
 		local dmgscale = target:GetNWFloat("DamageResistance", 1)
 		dmginfo:SetDamage(dmginfo:GetDamage() / dmgscale)
+		if(target.Callbacks.OnTakingDamage) then
+			for k,v in pairs(target.Callbacks.OnTakingDamage) do
+				v(attacker, target, dmginfo)
+			end
+		end
 		return
 	end
 

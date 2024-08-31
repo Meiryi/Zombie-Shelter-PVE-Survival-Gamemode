@@ -1217,11 +1217,17 @@ ZShelter.AddTranslate("#SpawnPointDedicatedDesc", {
 	["zh-CN"] = "放置后敌人会被生成在这个固定的位置",
 })
 
+ZShelter.AddTranslate("#ManualControl", {
+    ["en"] = "Press middle mouse to control",
+    ["tr"] = "Kontrol etmek için fare tekerleğini kullanın",
+    ["ru"] = "",
+    ["zh-TW"] = "點擊滑鼠中鍵控制",
+    ["zh-CN"] = "点击滑鼠中键控制",
+})
+
 local TemporaryUnsupportedLanguage = {
 
 }
-
--- Bruh someone ran the formatted on this
 
 function ZShelter_GetTranslate_Var(input, int)
 	local language = GetConVar("gmod_language"):GetString()

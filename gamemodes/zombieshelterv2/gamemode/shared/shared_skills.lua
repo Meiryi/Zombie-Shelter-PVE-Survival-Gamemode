@@ -28,6 +28,7 @@ ZShelter.SkillDatas = {}
 			OnSecondPassed(player)
 			OnGiveMelee(player)
 			OnDealingDamage(attacker, victim, dmginfo)
+			OnTakingDamage(attacker, victim, dmginfo)
 			OnGatheringResources(player, resource, type, amount, full, nocallback)
 			OnEnemyKilled(player, victim, killedbyturrets)
 			OnRepairBuildings(player, building, buildspeed)

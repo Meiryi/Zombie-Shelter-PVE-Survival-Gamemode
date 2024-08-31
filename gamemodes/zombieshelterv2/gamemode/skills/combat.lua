@@ -107,19 +107,21 @@ ZShelter.AddSkills(ClassName, nil, nil,
 		player:SetNWFloat("oDamageScale", player:GetNWFloat("DamageScale", 1))
 	end, 2, "dmgboost", 2, "Damage Boostx1")
 
+ZShelter.AddSkills(ClassName, "OnTakingDamage",
+	function(attacker, target, dmginfo)
+		ZShelter.DealNoScaleDamage(target, attacker, dmginfo:GetDamage() * target:GetNWFloat("DamageRef", 0.5))
+	end,
+	function(player, current)
+		player:SetNWFloat("DamageRef", player:GetNWFloat("DamageRef", 0) + 0.5)
+	end, 2, "thorns_combat", 2, "Damage Reflecting")
+
 ZShelter.AddSkills(ClassName, "OnDealingDamage",
 	function(attacker, victim, dmginfo)
-		if(!attacker.NextApplyTime) then
-			attacker.NextApplyTime = CurTime() + 0.2
-		else
-			if(attacker.NextApplyTime > CurTime()) then
-				return
-			end
-		end
+		if(attacker.NextDTApplyTime && attacker.NextDTApplyTime > CurTime()) then return end
 		local seed = math.random(1, 100)
 		if(seed <= 20) then
-			victim:TakeDamageInfo(dmginfo)
-			attacker.NextApplyTime = CurTime() + 0.2
+			victim:TakeDamage(dmginfo:GetDamage(), attacker, attacker)
+			attacker.NextDTApplyTime = CurTime() + 0.2
 		end
 	end, nil, 1, "dtap", 3, "Double Tap")
 
@@ -132,6 +134,12 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 				victim:ClearGoal()
 			end
 			attacker:EmitSound("shigure/stun_impact2.wav")
+		else
+			victim:NextThink(CurTime() + 0.2)
+			if(SERVER) then
+				victim:ClearGoal()
+			end
+			attacker:EmitSound("shigure/stun_impact1.wav")
 		end
 	end, nil, 1, "mstun", 3, "Melee Stunning")
 
