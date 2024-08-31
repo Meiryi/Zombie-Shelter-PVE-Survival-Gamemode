@@ -519,12 +519,12 @@ ZShelter.AddBuildItem("Turret",  "Burst Shotgun Turret",  4,  6,  15,  525,  "np
 	insideshelter = true,
 	attackrange = 700,
 }, {}, {find = true, day = 2})
-ZShelter.AddBuildItem("Turret",  "Flame Turret",  6,  6,  15,  650,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Flame Turret",  6,  6,  15,  670,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
 	upgrade_attackscale = 0.33,
 	upgrade_healthscale = 0.3,
 	upgradable = true,
 	upgradecount = 2,
-	damage = 4,
+	damage = 7,
 	insideshelter = true,
 	attackrange = 360,
 })
@@ -562,13 +562,13 @@ ZShelter.AddBuildItem("Turret",  "Pusher Tower",  10, 12,  35,  500,  "obj_struc
 	insideshelter = true,
 	activerange = 256,
 }, nil, {find = true, day = 4})
-ZShelter.AddBuildItem("Turret",  "Railgun Cannon",  8,  11,  40,  700,  "npc_vj_zshelter_railgun_turret",  "models/vj_hlr/hl1/alien_cannon.mdl",  2,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Railgun Cannon",  8,  11,  40,  750,  "npc_vj_zshelter_railgun_turret",  "models/vj_hlr/hl1/alien_cannon.mdl",  2,  Vector(0, 0, 0), {
 	upgradable = true,
-	upgrade_attackscale = 0.15,
+	upgrade_attackscale = 0.2,
 	upgrade_healthscale = 0.1,
 	upgradecount = 2,
 	yawoffset = -90,
-	damage = 200,
+	damage = 250,
 	insideshelter = true,
 	attackrange = 2000,
 }, nil, {find = true, day = 4})

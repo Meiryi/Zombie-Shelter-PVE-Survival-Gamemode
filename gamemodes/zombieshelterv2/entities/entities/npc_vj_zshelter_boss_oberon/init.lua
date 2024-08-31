@@ -209,19 +209,19 @@ function ENT:CustomOnThink()
 			end)
 		end
 		self.HoleSkill = true
-		self.BombTime = CurTime() + 25
+		self.BombTime = CurTime() + 15
 		self.HoleTime = CurTime() + 45
 	end
 
 	if(self.HoleSkill) then
-		local maxdst = 1500
+		local maxdst = 2500
 		for k,v in ipairs(player.GetAll()) do
 			local dst = v:GetPos():Distance(self:GetPos())
 			if(dst > maxdst) then continue end
 			local f = 1 - math.Clamp(dst / maxdst, 0, 1)
 			local vel = (self:GetPos() - v:GetPos())
 			vel:Normalize()
-			v:SetVelocity((vel * 220) * f)
+			v:SetVelocity((vel * 270) * f)
 		end
 	end
 
@@ -242,7 +242,7 @@ function ENT:CustomOnThink()
 			end)
 		end
 		self.BombSkill = true
-		self.BombTime = CurTime() + 50
+		self.BombTime = CurTime() + 45
 	end
 end
 

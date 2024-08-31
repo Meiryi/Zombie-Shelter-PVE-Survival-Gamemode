@@ -12,6 +12,7 @@ ENT.AimTarget = nil
 
 ENT.NextManualFireTime = 0
 ENT.ManualFireRate = 3
+ENT.NextFireTime = 0
 
 function ENT:RunAI() -- Disable VJ Base's AI
 	return

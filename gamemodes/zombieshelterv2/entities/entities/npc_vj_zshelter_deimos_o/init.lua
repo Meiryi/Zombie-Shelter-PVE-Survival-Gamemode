@@ -4,7 +4,7 @@ include('shared.lua')
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 ENT.Model = {"models/cso_zbs/monsters/deimos_zombi_origin.mdl"}
-ENT.StartHealth = 100
+ENT.StartHealth = 500
 ENT.HullType = HULL_HUMAN
 ENT.MovementType = VJ_MOVETYPE_GROUND
 

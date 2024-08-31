@@ -32,9 +32,9 @@ function ENT:Think()
 			e:SetOrigin(self:GetPos())
 			e:SetAngles(self:GetAngles() - Angle(0, 180, 0))
 			util.Effect("zshelter_pushing", e)
-			self.NextPush = CurTime() + 8
+			self.NextPush = CurTime() + 6
 		end
 	end
-	self:NextThink(CurTime() + 0.2)
+	self:NextThink(CurTime() + 0.1)
 	return true
 end

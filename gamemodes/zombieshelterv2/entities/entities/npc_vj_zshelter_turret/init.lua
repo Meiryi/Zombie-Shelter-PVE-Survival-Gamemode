@@ -36,7 +36,7 @@ end
 
 ENT.Firerate = 0.25
 ENT.NextShootTime = 0
-ENT.RotateSpeed = 0.45
+ENT.RotateSpeed = 0.2
 ENT.LosAngle = 8
 ENT.CheckValidTime = 0
 
@@ -44,7 +44,9 @@ function ENT:Think()
 	self.Firerate = 0.25 - (self:GetNWInt("UpgradeCount", 0) * 0.015)
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
-		self:NextThink(CurTime() + 0.33)
+		if(!IsValid(self.AimTarget)) then
+			self:NextThink(CurTime() + 0.2)
+		end
 		return true
 	else
 		local spos = self:GetPos()

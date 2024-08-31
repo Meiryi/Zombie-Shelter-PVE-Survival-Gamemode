@@ -20,7 +20,7 @@ function ENT:FindEnemy()
 	local vec = self:GetPos() + Vector(0, 0, self.AimOffset)
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 		if(!ZShelter.ValidateEntity(self, v)) then continue end
-		if(!ZShelterVisible_Vec(self, vec, v)) then continue end
+		if(!ZShelterVisible_Vec_IgnoreTurret(self, vec, v)) then continue end
 		if(!IsValid(target)) then
 			target = v
 			self.AimTarget = v
@@ -48,14 +48,15 @@ function ENT:FixYaw(yaw) -- I hate this
 end
 
 function ENT:Think()
-	self.Firerate = 4.5 - (self:GetNWInt("UpgradeCount", 0) * 0.75)
+	local upgrade = self:GetNWInt("UpgradeCount", 0)
+	self.Firerate = 4.5 - (upgrade * 1)
 	self:SetSequence(2)
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
 	else
 		local vec = self:GetPos() + Vector(0, 0, self.AimOffset)
 		if(self.CheckValidTime < CurTime()) then
-			if(!ZShelterVisible_Vec(self, vec, self.AimTarget) || !ZShelter.ValidateTarget(self.AimTarget)) then
+			if(!ZShelterVisible_Vec_IgnoreTurret(self, vec, self.AimTarget) || !ZShelter.ValidateTarget(self.AimTarget)) then
 				self.AimTarget = nil
 				return
 			end
@@ -83,14 +84,35 @@ function ENT:Think()
 
 		if(self.NextShootTime < CurTime() && !los) then
 			self:EmitSound("vj_hlr/hl1_npc/xencannon/fire.wav", 100, 100, 2)
-
-			local elec = EffectData()
-				elec:SetStart(self:GetPos())
-				elec:SetOrigin(targetPos)
-				elec:SetEntity(self)
-				elec:SetAttachment(1)
-				util.Effect("VJ_HLR_XenCannon_Beam", elec)
-
+			if(upgrade >= 2) then
+				sound.Play("npc/scanner/scanner_electric1.wav", self:GetPos(), 100, 100, 1)
+				local owner = self:GetOwner()
+				if(!IsValid(owner)) then owner = self end
+				for k,v in ipairs(ents.FindInSphere(targetPos, 70)) do
+					if(!ZShelter.ValidateTarget(v) || v == self.AimTarget || v.IsBuilding) then continue end
+					v:SetNWInt("ZShelter-BreakTime", CurTime() + 15)
+					v:SetNWFloat("DefenseNerfTime", CurTime() + 8)
+					local e = EffectData()
+						e:SetOrigin(v:GetPos())
+						e:SetEntity(v)
+					util.Effect("zshelter_defnerf", e)
+				end
+				self.AimTarget:NextThink(CurTime() + 0.65)
+				if(self.AimTarget.ClearGoal) then
+					self.AimTarget:ClearGoal()
+				end
+				local elec = EffectData()
+					elec:SetStart(targetPos)
+					elec:SetOrigin(self:GetAttachment(1).Pos)
+					util.Effect("zshelter_railgun", elec)
+			else
+				local elec = EffectData()
+					elec:SetStart(self:GetPos())
+					elec:SetOrigin(targetPos)
+					elec:SetEntity(self)
+					elec:SetAttachment(1)
+					util.Effect("VJ_HLR_XenCannon_Beam", elec)
+			end
 			self.AimTarget:TakeDamage(100, self, self)
 			self.AimTarget:SetNWInt("ZShelter-BreakTime", CurTime() + 15)
 			self.AimTarget:SetNWFloat("DefenseNerfTime", CurTime() + 8)

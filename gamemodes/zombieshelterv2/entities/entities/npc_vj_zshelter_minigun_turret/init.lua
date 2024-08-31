@@ -51,15 +51,13 @@ function ENT:RunSequence(sequence)
 end
 
 function ENT:Think()
+	self.Firerate = 0.08 - (self:GetNWInt("UpgradeCount", 0) * 0.005)
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
-		if(self.InstantSwitch) then
-			self.InstantSwitch = false
-			self:NextThink(CurTime() + 0.08)
-			return true
+		if(!IsValid(self.AimTarget)) then
+			self:RunSequence(7)
+			self:NextThink(CurTime() + 0.33)
 		end
-		self:RunSequence(7)
-		self:NextThink(CurTime() + 0.33)
 		return true
 	else
 		local vec = self:GetPos() + Vector(0, 0, 20)
@@ -103,7 +101,7 @@ function ENT:Think()
 			bullet.Num = 1
 			bullet.Src = barrelPos
 			bullet.Dir = targetPos - barrelPos
-			bullet.Spread = Vector(math.random(-10,10), math.random(-10,10), 0)
+			bullet.Spread = Vector(math.random(-20,20), math.random(-20,20), 0)
 			bullet.Tracer = 1
 			bullet.TracerName = "VJ_HLR_Tracer"
 			bullet.Force = 5
@@ -115,6 +113,6 @@ function ENT:Think()
 		end
 
 	end
-	self:NextThink(CurTime() + 0.025)
+	self:NextThink(CurTime() + 0.02)
 	return true
 end
