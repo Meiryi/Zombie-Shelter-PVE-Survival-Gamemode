@@ -428,7 +428,7 @@ ZShelter.AddTranslate("#Laser Turret", {
 ZShelter.AddTranslate("#Gauss Turret", {
     ["en"] = "Gauss Turret",
     ["tr"] = "Gaus Tareti",
-    ["ru"] = "",
+    ["ru"] = "Турель Гаусса",
     ["zh-TW"] = "高斯炮",
     ["zh-CN"] = "高斯炮",
 })
@@ -1236,7 +1236,7 @@ ZShelter.AddTranslate("#ManualControl", {
 ZShelter.AddTranslate("#EnemyList", {
     ["en"] = "Enemies",
     ["tr"] = "Düşmanlar",
-    ["ru"] = "",
+    ["ru"] = "Враги",
     ["zh-TW"] = "敵人列表",
     ["zh-CN"] = "敌人列表",
 })
@@ -1244,7 +1244,7 @@ ZShelter.AddTranslate("#EnemyList", {
 ZShelter.AddTranslate("#EnemyListTitle", {
     ["en"] = "Enemies on <VAR> difficulty",
     ["tr"] = "<VAR> zorluğunda düşmanlar",
-    ["ru"] = "",
+    ["ru"] = "Враги на сложности «<VAR>»",
     ["zh-TW"] = "會出現在<VAR>難度的敵人",
     ["zh-CN"] = "会出现在<VAR>难度的敌人",
 })
@@ -1252,7 +1252,7 @@ ZShelter.AddTranslate("#EnemyListTitle", {
 ZShelter.AddTranslate("#EnemyListHPBoost", {
     ["en"] = "[Day x <VAR>]",
     ["tr"] = "[Gün Sayısı x <VAR>]",
-    ["ru"] = "",
+    ["ru"] = "[Число дней x <VAR>]",
     ["zh-TW"] = "[天數 x <VAR>]",
     ["zh-CN"] = "[天数 x <VAR>]",
 })
