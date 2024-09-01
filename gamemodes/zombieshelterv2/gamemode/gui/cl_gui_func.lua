@@ -47,6 +47,20 @@ function ZShelter.CreateFrame(parent, x, y, w, h, color)
     return panel
 end
 
+function ZShelter.CreatePanelMat(parent, x, y, w, h, mat, color)
+    local panel = vgui.Create("DPanel", parent)
+        panel:SetPos(x, y)
+        panel:SetSize(w, h)
+        panel.Paint2x = function() end
+        panel.Paint = function()
+            surface.SetDrawColor(color.r, color.g, color.b, color.a)
+            surface.SetMaterial(mat)
+            surface.DrawTexturedRect(0, 0, w, h)
+            panel.Paint2x()
+        end
+    return panel
+end
+
 function ZShelter.CreatePanel(parent, x, y, w, h, color, r)
     r = r || 0
     local panel = vgui.Create("DPanel", parent)

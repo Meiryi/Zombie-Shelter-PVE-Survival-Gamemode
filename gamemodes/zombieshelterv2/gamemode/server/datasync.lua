@@ -41,9 +41,12 @@ end
 
 function ZShelter.SyncAllEnemy()
 	local data, len = ZShelter.CompressTable(ZShelter.EnemyConfig)
+	local data1, len1 = ZShelter.CompressTable(ZShelter.EnemyList)
 	net.Start("ZShelter-SyncEnemy")
 	net.WriteUInt(len, 32)
 	net.WriteData(data, len)
+	net.WriteUInt(len1, 32)
+	net.WriteData(data1, len1)
 	net.Broadcast()
 end
 
@@ -57,9 +60,12 @@ end
 
 function ZShelter.SyncPlayerEnemy(player)
 	local data, len = ZShelter.CompressTable(ZShelter.EnemyConfig)
+	local data1, len1 = ZShelter.CompressTable(ZShelter.EnemyList)
 	net.Start("ZShelter-SyncEnemy")
 	net.WriteUInt(len, 32)
 	net.WriteData(data, len)
+	net.WriteUInt(len1, 32)
+	net.WriteData(data1, len1)
 	net.Send(player)
 end
 

@@ -117,13 +117,15 @@ ZShelter.AddSkills(ClassName, "OnTakingDamage",
 
 ZShelter.AddSkills(ClassName, "OnDealingDamage",
 	function(attacker, victim, dmginfo)
-		if(attacker.NextDTApplyTime && attacker.NextDTApplyTime > CurTime()) then return end
 		local seed = math.random(1, 100)
-		if(seed <= 20) then
-			victim:TakeDamage(dmginfo:GetDamage(), attacker, attacker)
+		if(seed <= attacker:GetNWFloat("DTChance", 25)) then
+			ZShelter.DealNoScaleDamage(attacker, victim, dmginfo:GetDamage())
 			attacker.NextDTApplyTime = CurTime() + 0.2
 		end
-	end, nil, 1, "dtap", 3, "Double Tap")
+	end,
+	function(player, current)
+		player:SetNWFloat("DTChance", player:GetNWFloat("DTChance", 0) + 25)
+	end, 2, "dtap", 3, "Double Tap")
 
 ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)

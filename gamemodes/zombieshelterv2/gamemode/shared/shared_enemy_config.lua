@@ -14,6 +14,8 @@
 ]]
 
 ZShelter.EnemyConfig = {}
+ZShelter.EnemyList = ZShelter.EnemyList || {}
+ZShelter.Initialized = ZShelter.Initialized || false
 
 function ZShelter.AddEnemy(day, night_or_day, isboss, noclear, class, mutation, chance, attack, hp, end_day, maxamount, hp_boost_day, color, max_exists, min_difficulty, max_difficulty, weaponclass)
 	if(!max_exists) then max_exists = -1 end
@@ -61,12 +63,12 @@ function ZShelter.CreateDefaultEnemies()
 
 	ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 40, 6500, 6, 1, 20, Color(255, 255, 255, 255), -1, -1, -1)
 
-	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_pycho", "none", 100, 15, 200, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
-	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_pycho", "none", 100, 25, 200, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
+	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 15, 200, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
+	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 25, 200, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
 	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_deimos_o", "none", 30, 35, 1500, 8, -1, 0, Color(255, 255, 255, 255), 1, -1, -1)
 
-	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_hooker", "none", 100, 15, 200, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
-	ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_hooker", "none", 100, 25, 200, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
+	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 15, 200, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
+	ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 25, 200, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
 	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_dog", "none", 100, 20, 120, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
 	ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_dog", "none", 100, 30, 120, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
 	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_boomer_h", "none", 100, 35, 95, -1, -1, 5, Color(255, 255, 255, 255), -1, -1, -1)
@@ -119,8 +121,8 @@ function ZShelter.CreateDefaultEnemies()
 		npc_vj_zshelter_deimos_h
 		npc_vj_zshelter_deimos_o
 
-		npc_vj_zshelter_pycho
-		npc_vj_zshelter_hooker
+		npc_vj_zshelter_psycho_h
+		npc_vj_zshelter_psycho_o
 		npc_vj_zshelter_dog
 
 		npc_vj_zshelter_boomer_o
@@ -152,10 +154,10 @@ function ZShelter.CreateDefaultEnemies()
 	-- Normal
 	CurMinDifficulty, CurMaxDifficulty = 2, 2
 
-	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_pycho", "none", 100, 10, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_pycho", "none", 100, 10, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 10, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 10, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 200, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 200, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 240, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
@@ -173,10 +175,10 @@ function ZShelter.CreateDefaultEnemies()
 	ZShelter.AddEnemy(4, true, false, false, "npc_vj_zshelter_light_h", "none", 100, 11, 100, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_light_o", "none", 100, 11, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_light_o", "none", 100, 11, 120, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_pycho", "none", 100, 12, 140, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_pycho", "none", 100, 12, 140, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 150, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 150, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 140, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 140, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 150, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 150, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 270, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 270, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 300, -1, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
@@ -202,7 +204,7 @@ function ZShelter.CreateDefaultEnemies()
 	-- Insane
 	CurMinDifficulty, CurMaxDifficulty = 5, 5
 	ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_deimos_h", "none", 100, 15, 1500, 8, 2, 0, Color(255, 255, 255, 255), 2, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(10, false, true, true, "npc_vj_zshelter_boss_prototype_phobos", "none", 100, 35, 7500, -1, -1, 100, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(7, false, true, true, "npc_vj_zshelter_boss_prototype_phobos", "none", 100, 35, 7500, -1, -1, 100, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_deimos_h", "none", 35, 15, 1500, -1, -1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
 
 	-- Nightmare
@@ -216,10 +218,10 @@ function ZShelter.CreateDefaultEnemies()
 	ZShelter.AddEnemy(4, true, false, false, "npc_vj_zshelter_light_h", "none", 100, 13, 110, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_light_o", "none", 100, 13, 140, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_light_o", "none", 100, 13, 140, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_pycho", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_pycho", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 330, -1, -1, 5, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 330, -1, -1, 5, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(7, false, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 300, -1, -1, 5, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
@@ -253,10 +255,10 @@ function ZShelter.CreateDefaultEnemies()
 	ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_light_h", "none", 100, 13, 110, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(3, false, false, false, "npc_vj_zshelter_light_o", "none", 100, 13, 140, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_light_o", "none", 100, 13, 140, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(4, false, false, false, "npc_vj_zshelter_pycho", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(4, true, false, false, "npc_vj_zshelter_pycho", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(4, false, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(4, true, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 150, -1, -1, 2, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 400, -1, -1, 5, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 400, -1, -1, 5, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 400, -1, -1, 5, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
@@ -290,10 +292,10 @@ function ZShelter.CreateDefaultEnemies()
 	ZShelter.AddEnemy(2, true, false, false, "npc_vj_zshelter_light_h", "none", 100, 13, 110, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(2, false, false, false, "npc_vj_zshelter_light_o", "none", 100, 13, 140, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(2, true, false, false, "npc_vj_zshelter_light_o", "none", 100, 13, 140, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(3, false, false, false, "npc_vj_zshelter_pycho", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_pycho", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(3, false, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-	ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_hooker", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(3, false, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(3, false, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+	ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 	ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
@@ -391,4 +393,63 @@ else
 	else
 		ZShelter.CheckLocalEnemyConfig()
 	end
+end
+
+if(SERVER) then
+	ZShelter.EnemyList = {}
+	function ZShelter.BuildEnemyList()
+		--[[
+			day = day,
+			night_or_day = night_or_day, -- true = night, false = day
+			class = class,
+			hp = hp,
+			noclear = noclear,
+			attack = attack,
+			mutation = mutation,
+			weaponclass = weaponclass,
+			isboss = isboss, -- Boss for treasure area
+			min_difficulty = min_difficulty,
+			max_difficulty = max_difficulty,
+			chance = chance, -- 1 ~ 100
+			end_day = end_day, -- Leave -1 to spawn everyday
+			max_amount = maxamount, -- Means how much this enemy can be spawn, leave -1 for no limit
+			hp_boost_day = hp_boost_day,
+			color = color,
+			max_exists = max_exists,
+		]]
+		for k,v in pairs(ZShelter.EnemyConfig) do
+			local mdl = ""
+			local e = ents.Create(v.class)
+			if(!IsValid(e)) then print("!!!!!!!!!!!!!!! invalid enemy? !!!!!!!!!!!!!!!") continue end
+				e:Spawn()
+				mdl = e:GetModel()
+				e:Remove()
+			if(mdl == "") then continue end
+			table.insert(ZShelter.EnemyList, {
+				day = v.day,
+				end_day = v.end_day,
+				color = v.color,
+				class = v.class,
+				model = mdl,
+				min_diff = v.min_difficulty,
+				max_diff = v.max_difficulty,
+				damage = v.attack,
+				night = v.night_or_day,
+				max_amount = v.max_amount,
+				max_exists = v.max_exists,
+				treasureboss = v.isboss,
+				chance = v.chance,
+				hp = v.hp,
+				hp_boost_day = v.hp_boost_day,
+			})
+		end
+	end
+	if(ZShelter.Initialized) then -- For debugging
+		ZShelter.BuildEnemyList()
+	end
+	ZShelter.Initialized = true
+
+	hook.Add("InitPostEntity", "ZShelter-BuildEnemyList", function()
+		ZShelter.BuildEnemyList()
+	end)
 end

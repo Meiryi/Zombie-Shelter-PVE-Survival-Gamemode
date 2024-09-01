@@ -1,15 +1,12 @@
- function EFFECT:Init(effect_data)
-    self.Origin = effect_data:GetOrigin()
-    self.Target = effect_data:GetEntity()
-    self.TargetPos = effect_data:GetStart()
+EFFECT.FX = {}
 
+function EFFECT:Init(effect_data)
+   self.Origin = effect_data:GetOrigin() + VectorRand(-2, 2)
+   self.TargetPos = effect_data:GetStart() + VectorRand(-6, 6)
     self.Offset = self.TargetPos - self.Origin
-    self.CurTime = 0.625
-    self.DamageApplied = false
-    self.DamageTime = CurTime() + 0.125
+    self.CurTime = 0.45
     self.KillTime = CurTime() + self.CurTime
     self:SetPos(self.TargetPos)
-
     self:SetRenderBoundsWS(self.TargetPos, self.Origin)
 end
 
@@ -20,10 +17,12 @@ function EFFECT:Think()
     return true
 end
 
-local mat = Material("zsh/mutations/beam.png")
+local mat = Material("effects/tool_tracer")
+local mat2 = Material("effects/bloodstream")
 function EFFECT:Render()
-    local fraction_offs = 1 - math.Clamp(((self.KillTime - 0.5) - CurTime()) / 0.125, 0, 1)
     local alpha = 255 * math.Clamp((self.KillTime - CurTime()) / self.CurTime, 0, 1)
     render.SetMaterial(mat)
-    render.DrawBeam(self.Origin, self.Origin + (self.Offset * fraction_offs), 3, 1, 1, Color(255, 255, 255, alpha))
+    render.DrawBeam(self.Origin, self.TargetPos, 20, math.Rand(0, 0.5), math.Rand(0.5, 1), Color(255, 180, 50, alpha * 0.25))
+    render.SetMaterial(mat2)
+    render.DrawBeam(self.Origin, self.TargetPos, 7, math.Rand(0, 0.25), math.Rand(0.75, 1), Color(255, 255, 255, alpha))
 end

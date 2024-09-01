@@ -37,11 +37,21 @@ net.Receive("ZShelter-SyncBuildings", function()
 	end
 end)
 
+local opened = false
 net.Receive("ZShelter-SyncEnemy", function()
-	local len = net.ReadUInt(32)
-	local data = net.ReadData(len)
-	local tab = util.JSONToTable(util.Decompress(data))
-	ZShelter.EnemyConfig = tab
+	local len1 = net.ReadUInt(32)
+	local data1 = net.ReadData(len1)
+	local len2 = net.ReadUInt(32)
+	local data2 = net.ReadData(len2)
+	local tab1 = util.JSONToTable(util.Decompress(data1))
+	local tab2 = util.JSONToTable(util.Decompress(data2))
+	ZShelter.EnemyConfig = tab1
+	ZShelter.EnemyList = tab2
+
+	if(!opened) then
+		ZShelter.ShouldOpenPanel()
+		opened = true
+	end
 end)
 
 net.Receive("ZShelter-SyncItem", function()
@@ -78,5 +88,4 @@ end
 hook.Add("InitPostEntity", "ZShelter-InitPlayer", function()
 	net.Start("ZShelter-SyncConfig")
 	net.SendToServer()
-	ZShelter.ShouldOpenPanel()
 end)

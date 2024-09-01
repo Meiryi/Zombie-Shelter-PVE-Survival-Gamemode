@@ -67,7 +67,7 @@ ENT.Skill_Time = 8.0
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-	timer.Simple(0.0, function() self:EmitSound("shigure/zombie_attack1.wav", 1556, 100, 1, CHAN_STATIC) end)
+	timer.Simple(0.0, function() if(!IsValid(self)) then return end self:EmitSound("shigure/zombie_attack1.wav", 1556, 100, 1, CHAN_STATIC) end)
 	self:SetCollisionBounds(Vector(15, 15, 80), Vector(-15, -15, 0))
 end
 

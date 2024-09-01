@@ -19,10 +19,9 @@ function ENT:Initialize()
 	self.ReachZ = self.StartZAxis + 3600
 	util.SpriteTrail(self, 0, Color(255, 255, 255, 255), false, 15, 1, 0.1, 1, "trails/smoke")
 end
-ENT.FlySpeed = 100
+ENT.FlySpeed = 150
 
 function ENT:Think()
-
 	if(self.FallbackTime < CurTime()) then
 		self:Remove()
 		return
@@ -39,7 +38,7 @@ function ENT:Think()
 		end
 	else
 		self:SetPos(Vector(self.TargetPos.x, self.TargetPos.y, pos.z - self.FlySpeed))
-		if(pos:Distance(self.TargetPos) < 128) then
+		if(pos:Distance(self.TargetPos) < self.FlySpeed * 1.5) then
 			sound.Play("ambient/explosions/explode_"..math.random(1, 3)..".wav", pos, 80, 100, 1)
 			local effectdata = EffectData()
 				effectdata:SetOrigin(self.TargetPos)
@@ -56,8 +55,13 @@ function ENT:Think()
 					if(v == owner || v.IsBuilding) then continue end
 					if(v:IsPlayer()) then continue end
 					if(!v:IsNPC() && !v:IsNextBot()) then continue end
-					v:TakeDamageInfo(dmginfo)
+					if(self.Controlled && IsValid(owner)) then
+						ZShelter.DealNoScaleDamage(owner, v, self.Damage)
+					else
+						v:TakeDamageInfo(dmginfo)
+					end
 				end
+
 			self:Remove()
 		end
 	end

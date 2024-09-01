@@ -63,8 +63,10 @@ ENT.CurrentAttacker = nil
 
 function ENT:FireMissile()
 	local owner = self
+	local controlled = false
 	if(IsValid(self.CurrentAttacker)) then
 		owner = self.CurrentAttacker
+		controlled = true
 	end
 	local pos = self:GetBonePosition(1)
 	local missile = ents.Create("obj_mortar_missile")
@@ -74,7 +76,9 @@ function ENT:FireMissile()
 		missile.TargetPos = self.AimVec
 		missile.StartZAxis = pos.z
 		missile:Spawn()
+		missile.Damage = self.AttackDamage || 50
 		missile:SetAngles(Angle(90, 0, 0))
+		missile.Controlled = controlled
 end
 
 function ENT:ManualControlling()
