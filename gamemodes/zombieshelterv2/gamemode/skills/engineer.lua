@@ -141,11 +141,11 @@ ZShelter.AddSkills(ClassName, "ShouldUseStorage",
 
 ZShelter.AddSkills(ClassName, "OnBuildingDestroyed",
 	function(player, building, wood, iron, power)
-		if(!building.IsTurret) then return end
+		if(!building.IsTurret || !building:GetNWBool("Completed")) then return end
 		local damage = math.min((building:GetMaxHealth() * 0.5), 300) * player:GetNWFloat("SDDamage", 1)
 		for k,v in pairs(ents.FindInSphere(building:GetPos(), 128)) do
 			if(!ZShelter.ValidateEntity(building, v)) then continue end
-			v:TakeDamage(damage, building.Builder, building.Builder)
+			ZShelter.DealNoScaleDamage(player, v, damage)
 		end
 		local e = EffectData()
 			e:SetOrigin(building:GetPos())

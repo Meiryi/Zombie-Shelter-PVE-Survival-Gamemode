@@ -12,9 +12,9 @@ ENT.AimTarget = nil
 ENT.NextPush = 0
 
 function ENT:FindEnemy()
-	for k,v in pairs(ents.FindInCone(self:GetPos(), (self:GetAngles() - Angle(0, 180, 0)):Forward(), 256, 0.707)) do
+	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 		if(v == self) then continue end
-		if(!ZShelter.ValidateEntity(self, v)) then continue end
+		if(!ZShelter.ValidateEntity(self, v) && v:GetClass() != "npc_grenade_frag") then continue end -- Omega trolling
 		if(!v:Visible(self)) then continue end
 		return true
 	end
@@ -23,7 +23,7 @@ end
 function ENT:Think()
 	if(self.NextPush < CurTime()) then
 		if(self:FindEnemy()) then
-			for k,v in pairs(ents.FindInCone(self:GetPos(), (self:GetAngles() - Angle(0, 180, 0)):Forward(), 300, 0.707)) do
+			for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 				if(v == self) then continue end
 				if(!ZShelter.ValidateEntity(self, v)) then continue end
 				v:SetVelocity((self:GetAngles() - Angle(7, 180, 0)):Forward() * 2048)

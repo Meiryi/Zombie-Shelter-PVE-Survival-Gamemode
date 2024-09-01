@@ -557,14 +557,14 @@ ZShelter.AddBuildItem("Turret",  "Minigun Turret",  7,  8,  25,  500,  "npc_vj_z
 	insideshelter = true,
 	attackrange = 1500,
 }, {})
-ZShelter.AddBuildItem("Turret",  "Pusher Tower",  10, 12,  35,  500,  "obj_structure_pusher",  "models/props_combine/combine_light001b.mdl",  2,  Vector(0, 0, 20), {
-	damage = 1,
+ZShelter.AddBuildItem("Turret",  "Pusher Tower",  10, 12,  15,  500,  "obj_structure_pusher",  "models/props_combine/combine_light001b.mdl",  2,  Vector(0, 0, 20), {
+	damage = 0,
 	insideshelter = true,
 	activerange = 256,
 }, nil, {find = true, day = 4})
-ZShelter.AddBuildItem("Turret",  "Railgun Cannon",  8,  11,  40,  750,  "npc_vj_zshelter_railgun_turret",  "models/vj_hlr/hl1/alien_cannon.mdl",  2,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Railgun Cannon",  8,  11,  30,  750,  "npc_vj_zshelter_railgun_turret",  "models/vj_hlr/hl1/alien_cannon.mdl",  2,  Vector(0, 0, 0), {
 	upgradable = true,
-	upgrade_attackscale = 0.2,
+	upgrade_attackscale = 0.4,
 	upgrade_healthscale = 0.1,
 	upgradecount = 2,
 	yawoffset = -90,
@@ -582,7 +582,7 @@ ZShelter.AddBuildItem("Turret",  "Mortar Cannon",  16,  16,  35,  500,  "npc_vj_
 	attackrange = 3072,
 	manual = true,
 }, {})
-ZShelter.AddBuildItem("Turret",  "Plasma Turret",  16,  18,  30,  700,  "npc_vj_zshelter_plasma_turret",  "models/zshelter/shelter_b_laser_tower.mdl",  3,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Plasma Turret",  16,  18,  25,  700,  "npc_vj_zshelter_plasma_turret",  "models/zshelter/shelter_b_laser_tower.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgradecount = 3,
 	upgrade_attackscale = 0.35,
@@ -591,7 +591,7 @@ ZShelter.AddBuildItem("Turret",  "Plasma Turret",  16,  18,  30,  700,  "npc_vj_
 	insideshelter = true,
 	attackrange = 2500,
 }, {})
-ZShelter.AddBuildItem("Turret",  "Electric Defense Tower",  18,  20,  40,  1500,  "npc_vj_zshelter_electric_defense",  "models/zshelter/shelter_b_electric_defense.mdl",  3,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Electric Defense Tower",  18,  20,  30,  1500,  "npc_vj_zshelter_electric_defense",  "models/zshelter/shelter_b_electric_defense.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgrade_attackscale = 0.1,
 	upgrade_healthscale = 0.25,
@@ -609,6 +609,15 @@ ZShelter.AddBuildItem("Turret",  "Laser Turret",  20,  20,  35,  400,  "npc_vj_z
 	insideshelter = true,
 	attackrange = 3000,
 }, {})
+ZShelter.AddBuildItem("Turret",  "Gauss Turret",  24,  22,  35,  400,  "npc_vj_zshelter_combine_turret",  "models/combine_turrets/floor_turret.mdl",  3,  Vector(0, 0, 0), {
+	upgradable = true,
+	upgradecount = 1,
+	upgrade_attackscale = 0.33,
+	upgrade_healthscale = 0.5,
+	damage = 40,
+	attackrange = 900,
+	insideshelter = true,
+}, nil, {find = true, day = 5})
 ZShelter.AddBuildItem("Turret",  "Combine Mortar Cannon",  24,  24,  50,  450,  "npc_vj_zshelter_combine_mortar",  "models/props_combine/combine_mortar01a.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgradecount = 2,

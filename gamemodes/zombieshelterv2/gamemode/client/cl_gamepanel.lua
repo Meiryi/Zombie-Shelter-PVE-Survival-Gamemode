@@ -133,6 +133,7 @@ ZShelter.Names = {}
 ZShelter.QueuedAvatarID = {}
 ZShelter.QueuedAvatarDownload = {}
 ZShelter.PlayerLists = {}
+
 function ZShelter.HTTPFetchStatistics()
 	HTTP({
 		failed = function(reason)
@@ -222,7 +223,7 @@ local nextfetchtime = 0
 local fade = Material("zsh/icon/fade.png")
 local steammat = Material("zsh/icon/steam.png", "smooth")
 local func = {
-	[1] = {
+	{
 		title = "Updates",
 		func = function(ui)
 			--[[
@@ -254,7 +255,125 @@ local func = {
 			ZShelter.AddDockLabel(scroll, "Railgun Cannon now face to correct angle when placing it", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
 		end,
 	},
-	[2] = {
+	{
+		title = "EnemyList",
+		func = function(ui)
+			local sidePanel = ZShelter.CreateScroll(ui, 0, 0, ui:GetWide() * 0.2, ui:GetTall(), Color(0, 0, 0, 0))
+			local sidepadding = ScreenScaleH(4)
+			local sidepadding2x = sidepadding * 2
+			local colorwide = ScreenScaleH(2)
+			local gap = ScreenScaleH(2)
+			local gap1x = ScreenScaleH(1)
+			local textpadding = ScreenScaleH(12)
+			local height = (ui:GetTall() / ZShelter.MaximumDifficulty) - gap
+			local container = ZShelter.CreatePanelContainer(ui, sidePanel:GetWide(), 0, ui:GetWide() - sidePanel:GetWide(), ui:GetTall(), Color(20, 20, 20, 255))
+			local hpmat = Material("zsh/icon/health.png", "smooth")
+			local atkmat = Material("zsh/icon/attack.png", "smooth")
+			local skmat = Material("zsh/icon/skull_full.png", "smooth")
+			local daycountmat = Material("zsh/icon/day_count.png", "smooth")
+			local daymat = Material("zsh/icon/day.png", "smooth")
+			local nightmat = Material("zsh/icon/night.png", "smooth")
+			for i = 1, ZShelter.MaximumDifficulty do
+				local diffpanel = ZShelter.CreateScroll(container, 0, 0, container:GetWide(), container:GetTall(), Color(0, 0, 0, 0))
+				local list = {}
+				local bosses = {}
+				for k,v in ipairs(ZShelter.EnemyList) do
+					if((v.min_diff > i || v.max_diff < i)) then continue end
+					if(v.treasureboss) then
+						table.insert(bosses, v)
+					else
+						table.insert(list, v)
+					end
+				end
+				table.sort(list, function(a, b) return a.day < b.day end)
+				table.sort(bosses, function(a, b) return a.day < b.day end)
+				local final = table.Add(bosses, list)
+				for k,v in ipairs(final) do
+					--if((v.min_diff > i || v.max_diff < i)) then continue end
+					local base = ZShelter.CreatePanel(diffpanel, 0, 0, container:GetWide(), container:GetTall() * 0.2, Color(35, 35, 35, 255))
+						base:DockMargin(0, gap, 0, 0)
+						base:Dock(TOP)
+						local tw, th, title = ZShelter.CreateLabel(base, sidepadding + base:GetTall(), sidepadding, v.class, "ZShelter-SummeryButton", Color(255, 255, 255, 255))
+						local icon = vgui.Create("SpawnIcon", base)
+							icon:SetSize(base:GetTall(), base:GetTall())
+							icon:SetModel(v.model)
+							icon.Think = function() end
+							local sx = ScreenScaleH(14)
+							local basex = base:GetTall() + sidepadding
+							local basey = base:GetTall() - (sx + sidepadding)
+							local dx = base:GetWide() - (base:GetTall() + sidepadding)
+							if(v.end_day != -1) then
+								local day = ZShelter.CreatePanelMat(base, dx, sidepadding, base:GetTall() - sidepadding2x, base:GetTall() - sidepadding2x, daycountmat, Color(255, 255, 255, 255))
+								local x, y = day:GetWide() * 0.5, day:GetTall() * 0.35
+								day.Paint2x = function()
+									draw.DrawText(v.end_day, "ZShelter-GameUITitle", x, y, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
+								end
+								dx = dx - base:GetTall() + gap
+							end
+							local day = ZShelter.CreatePanelMat(base, dx, sidepadding, base:GetTall() - sidepadding2x, base:GetTall() - sidepadding2x, daycountmat, Color(255, 255, 255, 255))
+							local x, y = day:GetWide() * 0.5, day:GetTall() * 0.35
+							day.Paint2x = function()
+								draw.DrawText(v.day, "ZShelter-GameUITitle", x, y, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
+							end
+							local icony = basey - sx - gap * 2
+							if(v.treasureboss) then
+								ZShelter.CreatePanelMat(base, basex, icony, sx, sx, skmat, Color(255, 255, 255, 255))
+							else
+								if(v.night) then
+									ZShelter.CreatePanelMat(base, basex, icony, sx, sx, nightmat, Color(255, 255, 255, 255))
+								else
+									ZShelter.CreatePanelMat(base, basex, icony, sx, sx, daymat, Color(255, 255, 255, 255))
+								end
+							end
+							ZShelter.CreatePanelMat(base, basex, basey, sx, sx, hpmat, Color(255, 255, 255, 255))
+							local _x = basex + sx + gap
+							local _y = basey + sx * 0.5
+							local tw, th, text = ZShelter.CreateLabel(base, _x, _y, v.hp, "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+							if(v.hp_boost_day > 0) then
+								text:Remove()
+								tw, th, text = ZShelter.CreateLabel(base, _x, _y, v.hp.." + "..ZShelter_GetTranslate_Var("#EnemyListHPBoost", v.hp_boost_day), "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+							end
+							text.CentVer()
+							_x = _x + tw + sidepadding
+							ZShelter.CreatePanelMat(base, _x, basey, sx, sx, atkmat, Color(255, 255, 255, 255))
+							_x = _x + sx + gap
+							local tw, th, text = ZShelter.CreateLabel(base, _x, _y, v.damage, "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+							text.CentVer()
+				end
+
+				container.AddPanel(diffpanel)
+				if(i == 1) then
+					container.CurrentPanel = diffpanel
+				end
+
+				local panel = ZShelter.CreatePanel(sidePanel, 0, 0, sidePanel:GetWide(), height, Color(25, 25, 25, 255))
+					panel:Dock(TOP)
+					panel:DockMargin(0, 0, 0, gap)
+					panel.AvatarLayer = ZShelter.CreatePanel(panel, 0, 0, panel:GetWide(), panel:GetTall(), Color(0, 0, 0, 0))
+					local _, _, dif = ZShelter.CreateLabel(panel, sidepadding, panel:GetTall() / 2, ZShelter_GetTranslate("#Dif"..i), "ZShelter-SummeryButton", Color(255, 255, 255, 255))
+					dif:CentVer()
+					local color = ZShelter.GetDiffColor(i)
+					local wide = 0
+					local btn = ZShelter.InvisButton(panel, 0, 0, panel:GetWide(), panel:GetTall(), function()
+						container.CurrentPanel = diffpanel
+					end)
+					panel.Paint = function()
+						draw.RoundedBox(0, 0, 0, panel:GetWide(), panel:GetTall(), Color(30, 30, 30, 255))
+						draw.RoundedBox(0, 0, 0, colorwide, panel:GetTall(), color)
+						if(btn:IsHovered() || selectedDiff == i) then
+							wide = math.Clamp(wide + ZShelter.GetFixedValue((panel:GetWide() - wide) * 0.15), 0, panel:GetWide())
+						else
+							wide = math.Clamp(wide - ZShelter.GetFixedValue(wide * 0.15), 0, panel:GetWide())
+						end
+						surface.SetDrawColor(color.r, color.g, color.b, 80)
+						surface.SetMaterial(fade)
+						surface.DrawTexturedRect(0, 0, wide, panel:GetTall())
+					end
+				end
+
+		end,
+	},
+	{
 		title = "Statistics",
 		func = function(ui)
 			local sidePanel = ZShelter.CreateScroll(ui, 0, 0, ui:GetWide() * 0.2, ui:GetTall(), Color(0, 0, 0, 0))
@@ -327,7 +446,7 @@ local func = {
 				end
 			end
 
-			for i = 1, ZShelter.MaximumDifficulty do
+		for i = 1, ZShelter.MaximumDifficulty do
 			local panel = ZShelter.CreatePanel(sidePanel, 0, 0, sidePanel:GetWide(), height, Color(25, 25, 25, 255))
 				panel:Dock(TOP)
 				panel:DockMargin(0, 0, 0, gap)
@@ -359,7 +478,7 @@ local func = {
 			end
 		end,
 	},
-	[3] = {
+	{
 		title = "Looking2play",
 		allowfunc = true,
 		clickfunc = function(ui)
@@ -502,7 +621,7 @@ local func = {
 			end
 		end,
 	},
-	[4] = {
+	{
 		title = "ServerList",
 		func = function(ui)
 			local sidepadding = ScreenScaleH(4)
@@ -537,7 +656,7 @@ local func = {
 				end
 		end,
 	},
-	[5] = {
+	{
 		title = "Discord",
 		clickfunc = function()
 			gui.OpenURL("https://discord.gg/XMZQpDavbU")
@@ -575,7 +694,10 @@ function ZShelter.GameUI()
 			local panel = ZShelter.CreatePanel(ui.Container, 0, 0, ui.Container:GetWide(), ui.Container:GetTall(), Color(0, 0, 0, 0))
 
 			if(v.func) then
-				v.func(panel)
+				local success, err = pcall(function() v.func(panel) end)
+				if(!success) then
+					Error(err)
+				end
 			end
 			ui.Container.AddPanel(panel)
 			local alpha = 0

@@ -113,17 +113,17 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 			end
 			local dmgscale = attacker:GetNWFloat("DamageScale", 1)
 			dmginfo:ScaleDamage(dmgscale)
+			if(attacker.Callbacks.OnDealingDamage) then
+				for k,v in pairs(attacker.Callbacks.OnDealingDamage) do
+					v(attacker, target, dmginfo)
+				end
+			end
 		end
 		if(attacker.AttackNerfTime && attacker.AttackNerfTime > CurTime()) then
 			if(!IsValid(wep) || !ZShelter.IsMeleeWeapon(wep:GetClass())) then
 				if(!attacker.LastNerfTargets || !attacker.LastNerfTargets[target:EntIndex()]) then
 					dmginfo:SetDamage(dmginfo:GetDamage() * 0.35)
 				end
-			end
-		end
-		if(attacker.Callbacks.OnDealingDamage) then
-			for k,v in pairs(attacker.Callbacks.OnDealingDamage) do
-				v(attacker, target, dmginfo)
 			end
 		end
 		return
@@ -175,6 +175,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		dmginfo:SetAttacker(player)
 		dmginfo:SetInflictor(player)
 		dmginfo:SetDamage(damage * (dmgscale * addScale))
+		attacker:SetNWInt("ZShelter_DamageDealt", attacker:GetNWInt("ZShelter_DamageDealt", 0) + dmginfo:GetDamage())
 		if(attacker.IsTurret) then
 			target.AttackedByTurrets = true
 			target.AttackerTurret = attacker
@@ -204,6 +205,9 @@ hook.Add( "OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflic
 	if(!IsValid(npc)) then return end
 	npc:SetCollisionGroup(10)
 	npc:SetCollisionBounds(Vector(0, 0, 0), Vector(0, 0, 0)) -- So it doesn't block turret's bullet + melees
+	if(npc.AttackedByTurrets && IsValid(npc.AttackerTurret)) then
+		npc.AttackerTurret:SetNWInt("ZShelter_KillCount", npc.AttackerTurret:GetNWInt("ZShelter_KillCount", 0) + 1)
+	end
 	if(!attacker:IsPlayer()) then return end
 	if(attacker.Callbacks.OnEnemyKilled) then
 		for k,v in pairs(attacker.Callbacks.OnEnemyKilled) do

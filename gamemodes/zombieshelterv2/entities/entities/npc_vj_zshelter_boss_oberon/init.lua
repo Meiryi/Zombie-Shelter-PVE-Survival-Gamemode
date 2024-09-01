@@ -121,7 +121,7 @@ ENT.BombSkill = false
 ENT.KnifeSwitching = false
 
 function ENT:CustomOnInitialize()
-	timer.Simple(0.0, function() self:EmitSound("zshelter/bosses/oberon/appear.wav", 1556, 100, 1, CHAN_STATIC) end)
+	timer.Simple(0.0, function() if(!IsValid(self)) then return end self:EmitSound("zshelter/bosses/oberon/appear.wav", 1556, 100, 1, CHAN_STATIC) end)
 end
 
 function ENT:SwitchToKnifeMode()

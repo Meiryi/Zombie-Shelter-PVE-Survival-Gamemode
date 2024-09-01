@@ -148,6 +148,7 @@ end
 
 local attack = Material("zsh/icon/attack.png", "smooth")
 local health_mat = Material("zsh/icon/health.png", "smooth")
+local kill = Material("zsh/icon/skull.png")
 
 local woods, irons, powers = Material("zsh/icon/woods_white.png", "smooth"), Material("zsh/icon/irons_white.png", "smooth"), Material("zsh/icon/powers_white.png", "smooth")
 
@@ -194,10 +195,29 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 		local completed = entity:GetNWBool("Completed", false)
 		local w, h = ScreenScaleH(185), ScreenScaleH(50)
 		local imgsx = ScreenScaleH(2)
-		local x, y =  ScrW() / 2 - w / 2, ScrH() * 0.6
+		local x, y =  ScrW() / 2 - w / 2, ScrH() * 0.635
 		local hpbar = ScreenScaleH(6)
 		local side = ScreenScaleH(10)
 		local startX, maxW = x + side, w - (side * 2)
+		local damage, kills = math.floor(entity:GetNWInt("ZShelter_DamageDealt", 0)), entity:GetNWInt("ZShelter_KillCount", 0)
+
+		if(damage > 0 || kills > 0) then
+			local dmginfow, dmginfoh = ScreenScaleH(185), ScreenScaleH(18)
+			local textpadding = ScreenScaleH(3)
+			local basey = y - (dmginfoh + imgsx)
+			local sx = ScreenScaleH(16)
+			local textxpadding = sx * 0.5
+			local sidepadding = ScreenScaleH(8)
+			draw_RoundedBox(0, x, basey, dmginfow, dmginfoh, Color(0, 0, 0, 100))
+			basey = basey + ScreenScaleH(1)
+			surface_SetDrawColor(255, 255, 255, 255)
+			surface_SetMaterial(attack)
+			surface_DrawTexturedRect(x + sidepadding, basey, sx, sx)
+			draw_DrawText(damage, "ZShelter-HUDUpgradeDesc", x + w * 0.25 + textxpadding, basey + textpadding, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+			surface_SetMaterial(kill)
+			surface_DrawTexturedRect(x + w * 0.5 + sidepadding, basey, sx, sx)
+			draw_DrawText(kills, "ZShelter-HUDUpgradeDesc", x + w * 0.75 + textxpadding, basey + textpadding, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+		end
 
 		if(entity:GetNWBool("Upgradable", false)) then
 			name = name.." [+"..entity:GetNWInt("UpgradeCount", 0).."]"

@@ -425,6 +425,14 @@ ZShelter.AddTranslate("#Laser Turret", {
 	["zh-CN"] = "雷射炮塔",
 })
 
+ZShelter.AddTranslate("#Gauss Turret", {
+    ["en"] = "Gauss Turret",
+    ["tr"] = "Gaus Tareti",
+    ["ru"] = "",
+    ["zh-TW"] = "高斯炮",
+    ["zh-CN"] = "高斯炮",
+})
+
 ZShelter.AddTranslate("#Combine Mortar Cannon", {
 	["en"] = "Combine Mortar Cannon",
 	["tr"] = "Combine Havan Topu",
@@ -1223,6 +1231,30 @@ ZShelter.AddTranslate("#ManualControl", {
     ["ru"] = "Нажмите СКМ для управления",
     ["zh-TW"] = "點擊滑鼠中鍵控制",
     ["zh-CN"] = "点击滑鼠中键控制",
+})
+
+ZShelter.AddTranslate("#EnemyList", {
+    ["en"] = "Enemies",
+    ["tr"] = "Düşmanlar",
+    ["ru"] = "",
+    ["zh-TW"] = "敵人列表",
+    ["zh-CN"] = "敌人列表",
+})
+
+ZShelter.AddTranslate("#EnemyListTitle", {
+    ["en"] = "Enemies on <VAR> difficulty",
+    ["tr"] = "<VAR> zorluğunda düşmanlar",
+    ["ru"] = "",
+    ["zh-TW"] = "會出現在<VAR>難度的敵人",
+    ["zh-CN"] = "会出现在<VAR>难度的敌人",
+})
+
+ZShelter.AddTranslate("#EnemyListHPBoost", {
+    ["en"] = "[Day x <VAR>]",
+    ["tr"] = "[Gün Sayısı x <VAR>]",
+    ["ru"] = "",
+    ["zh-TW"] = "[天數 x <VAR>]",
+    ["zh-CN"] = "[天数 x <VAR>]",
 })
 
 local TemporaryUnsupportedLanguage = {

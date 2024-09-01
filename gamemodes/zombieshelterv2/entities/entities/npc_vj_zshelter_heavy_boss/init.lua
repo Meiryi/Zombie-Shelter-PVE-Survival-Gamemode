@@ -56,7 +56,7 @@ ENT.DeathSoundPitch1 = 100
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-	timer.Simple(0.0, function() self:EmitSound("shigure/zombie_attack2.wav", 1556, 100, 1, CHAN_STATIC) end)
+	timer.Simple(0.0, function() if(!IsValid(self)) then return end self:EmitSound("shigure/zombie_attack2.wav", 1556, 100, 1, CHAN_STATIC) end)
 	self:SetCollisionBounds(Vector(-30, -30, 0), Vector(30, 30, 80))
 end
 
