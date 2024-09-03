@@ -130,6 +130,7 @@ end
 	yawoffset = Yaw offset when placed this building
 	activerange = Minimum range of this turret to be active, used for displaying range in building preview
 	attackrange = Minimum attack of this turret to be active, used for displaying range in building preview
+	notarget = won't be targeted by zombies
 
 	maxamount = Maximum amount of this building
 	bait = Creates a bait entity so enemy will attack this building
@@ -519,16 +520,18 @@ ZShelter.AddBuildItem("Turret",  "Burst Shotgun Turret",  4,  6,  15,  525,  "np
 	insideshelter = true,
 	attackrange = 700,
 }, {}, {find = true, day = 2})
-ZShelter.AddBuildItem("Turret",  "Flame Turret",  6,  6,  15,  670,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
-	upgrade_attackscale = 0.33,
+ZShelter.AddBuildItem("Turret",  "Flame Turret",  6,  6,  15,  600,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
+	upgrade_attackscale = 0.42,
 	upgrade_healthscale = 0.3,
 	upgradable = true,
 	upgradecount = 2,
-	damage = 7,
+	damage = 5,
 	insideshelter = true,
 	attackrange = 360,
 })
-ZShelter.AddBuildItem("Turret",  "Enemy Scanner",  4,  7,  10,  800,  "obj_structure_scanner",  "models/zshelter/obj_decoy01.mdl",  1,  Vector(0, 0, 20), {}, nil, {find = true, day = 1})
+ZShelter.AddBuildItem("Turret",  "Enemy Scanner",  4,  7,  10,  800,  "obj_structure_scanner",  "models/zshelter/obj_decoy01.mdl",  1,  Vector(0, 0, 20), {
+	notarget = true,
+}, nil, {find = true, day = 1})
 ZShelter.AddBuildItem("Turret",  "Mending Tower",  18,  18,  40,  150,  "npc_vj_zshelter_repairer",  "models/props_lab/reciever_cart.mdl",  1,  Vector(0, 0, 32.5), {
 	upgradable = true,
 	upgrade_attackscale = 0,
@@ -538,6 +541,7 @@ ZShelter.AddBuildItem("Turret",  "Mending Tower",  18,  18,  40,  150,  "npc_vj_
 	noowner = true,
 	insideshelter = true,
 	activerange = 250,
+	notarget = true,
 }, {}, {find = true, day = 1})
 ZShelter.AddBuildItem("Turret",  "Blast Turret",  3,  5,  18,  450,  "npc_vj_zshelter_blast_turret",  "models/vj_hlr/hl1/sentry.mdl",  2,  Vector(0, 0, 0), {
 	upgradable = true,

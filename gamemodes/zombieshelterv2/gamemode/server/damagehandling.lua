@@ -201,7 +201,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	end
 end)
 
-hook.Add( "OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflictor)
+hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflictor)
 	if(!IsValid(npc)) then return end
 	npc:SetCollisionGroup(10)
 	npc:SetCollisionBounds(Vector(0, 0, 0), Vector(0, 0, 0)) -- So it doesn't block turret's bullet + melees

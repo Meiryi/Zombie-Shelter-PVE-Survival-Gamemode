@@ -25,7 +25,7 @@
 		1
 		{
 			"name"		"zshelter_difficulty"
-			"text"		"#zshelter.cvar.difficulty_hint"
+			"text"		"Game Difficulty [1~9] (1=Easy, 2=Normal, 3=Hard, 4=Expert, 5=Insane, 6=Nightmare, 7=Apocalypse, 8=Apocalypse+, 9=Hell)"
 			"type"		"Numeric"
 			"default"	"1"
 			"singleplayer" ""
@@ -33,7 +33,7 @@
 		2
 		{
 			"name"		"zshelter_config_name"
-			"text"		"#zshelter.cvar.config_name_hint"
+			"text"		"Name of the config, leave empty if you're going to use local/default config"
 			"type"		"Text"
 			"default"	""
 			"singleplayer" ""
@@ -41,7 +41,7 @@
 		3
 		{
 			"name"		"zshelter_endless"
-			"text"		"#zshelter.cvar.endless_mode"
+			"text"		"Endless"
 			"type"		"CheckBox"
 			"default"	"0"
 			"singleplayer" ""
@@ -49,7 +49,7 @@
 		4
 		{
 			"name"		"zshelter_build_in_shelter"
-			"text"		"#zshelter.cvar.build_shelter"
+			"text"		"Allow to build inside of shelter"
 			"type"		"CheckBox"
 			"default"	"0"
 			"singleplayer" ""
@@ -57,7 +57,7 @@
 		5
 		{
 			"name"		"zshelter_default_enemy_config"
-			"text"		"#zshelter.cvar.default_enemies"
+			"text"		"Use default enemy config"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
@@ -65,7 +65,7 @@
 		6
 		{
 			"name"		"zshelter_default_item_config"
-			"text"		"#zshelter.cvar.default_items"
+			"text"		"Use default item config"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
@@ -73,7 +73,7 @@
 		7
 		{
 			"name"		"zshelter_enable_fog"
-			"text"		"#zshelter.cvar.fog"
+			"text"		"Enable fog (FPS Boost)"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
@@ -81,7 +81,7 @@
 		8
 		{
 			"name"		"zshelter_public_lobby"
-			"text"		"#zshelter.cvar.open_join"
+			"text"		"Public lobby"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
@@ -89,7 +89,7 @@
 		9
 		{
 			"name"		"zshelter_enable_director"
-			"text"		"#zshelter.cvar.ai_director"
+			"text"		"Enable director system [Beta]"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
@@ -97,7 +97,7 @@
 		10
 		{
 			"name"		"zshelter_enable_music"
-			"text"		"#zshelter.cvar.music"
+			"text"		"Enable music"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
@@ -105,7 +105,7 @@
 		11
 		{
 			"name"		"zshelter_snap_to_grid"
-			"text"		"#zshelter.cvar.snap_building"
+			"text"		"Snap to grid"
 			"type"		"CheckBox"
 			"default"	"0"
 			"singleplayer" ""
@@ -113,7 +113,7 @@
 		12
 		{
 			"name"		"zshelter_snap_to_grid_size"
-			"text"		"#zshelter.cvar.grid_size"
+			"text"		"Grid size"
 			"type"		"Numeric"
 			"default"	"32"
 			"singleplayer" ""
@@ -121,7 +121,7 @@
 		13
 		{
 			"name"		"zshelter_friendly_fire"
-			"text"		"#zshelter.cvar.tk_mode"
+			"text"		"Friendly fire"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
@@ -129,7 +129,7 @@
 		14
 		{
 			"name"		"zshelter_start_with_resources"
-			"text"		"#zshelter.cvar.full_resources"
+			"text"		"Start with full resources"
 			"type"		"CheckBox"
 			"default"	"0"
 			"singleplayer" ""
@@ -137,7 +137,7 @@
 		15
 		{
 			"name"		"zshelter_path_validate"
-			"text"		"#zshelter.cvar.use_other_path"
+			"text"		"Redirect enemy if path is blocked"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""
@@ -145,7 +145,7 @@
 		16
 		{
 			"name"		"zshelter_debug_enable_sandbox"
-			"text"		"#zshelter.cvar.sandbox_mode"
+			"text"		"Enable sandbox"
 			"type"		"CheckBox"
 			"default"	"0"
 			"singleplayer" ""
@@ -153,7 +153,7 @@
 		17
 		{
 			"name"		"zshelter_enable_hud"
-			"text"		"#zshelter.cvar.health_show"
+			"text"		"Enable HP HUD"
 			"type"		"CheckBox"
 			"default"	"1"
 			"singleplayer" ""

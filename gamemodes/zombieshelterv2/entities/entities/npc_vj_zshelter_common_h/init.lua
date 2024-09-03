@@ -66,18 +66,10 @@ function ENT:CustomOnInitialize()
 	self:SetCollisionBounds(Vector(12, 12, 65), Vector(-12, -12, 0))
 end
 
-function ENT:CustomOnThink()
-	if self.AnimTbl_Run then
-		self.IsRun = true
-	elseif self.AnimTbl_Walk then
-		self.IsWalk = true
-	end
-end
-
 function ENT:MultipleMeleeAttacks()
-	if self.IsRun == true then
+	if self.AnimTbl_Run[1] == ACT_RUN then
 		self.AnimTbl_MeleeAttack = {ACT_MELEE_ATTACK1}
-	elseif self.IsWalk == true then
+	else
 		self.AnimTbl_MeleeAttack = {ACT_MELEE_ATTACK2}
 	end
 	self.TimeUntilMeleeAttackDamage = 0.1

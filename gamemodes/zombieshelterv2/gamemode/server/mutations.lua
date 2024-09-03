@@ -56,8 +56,13 @@ end
 
 hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
 	if(ent.IsVJBaseSNPC) then
+		timer.Simple(0, function()
+			if(!IsValid(ent) || ent.IsBuilding) then return end
+			ent:SetCollisionGroup(19)
+		end)
     	ent.PriorToKilled = VJ_PriorToKilled
     	ent.LastValidTime = 0
+    	--[[
     	ent.OverrideMove = function(self, finv)
     		if(ent.IsBuilding) then return end
     		if(self:Health() <= 0) then return end
@@ -99,6 +104,7 @@ hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
     		end
     		self.NextCheckStuckTime = CurTime() + 0.33
     	end
+    	]]
     end
 	ent.DeathCorpseCollisionType = 0
 	ent.AllowPrintingInChat = false -- Disable following crap

@@ -1,58 +1,107 @@
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 
-ENT.Model = "models/cso_zbs/monsters/zombi_origin.mdl"
-ENT.VJ_NPC_Class = {"CLASS_AUTOMATIC_TURRET"}
+ENT.Model = {"models/cso_zbs/monsters/zombi_origin.mdl"}
+ENT.StartHealth = 100
+ENT.HullType = HULL_HUMAN
+ENT.MovementType = VJ_MOVETYPE_GROUND
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"}
+ENT.HasMeleeAttack = true
 ENT.AnimTbl_MeleeAttack = {ACT_MELEE_ATTACK1}
+ENT.MeleeAttackDistance = 32
+ENT.MeleeAttackDamageDistance = 85
+ENT.MeleeAttackDamageAngleRadius = 100
+ENT.MeleeAttackDamage = 13
+ENT.FootStepTimeWalk = 0.5
+ENT.HasDeathRagdoll = false
+ENT.HasDeathAnimation = true
+ENT.HasExtraMeleeAttackSounds = true
 ENT.AnimTbl_Death = {ACT_DIESIMPLE}
+ENT.DeathAnimationTime = 2.5
+ENT.NextMeleeAttackTime = 1
+ENT.TimeUntilMeleeAttackDamage = 0.1
+
+	-- ====== Control Variables ====== --
+ENT.FindEnemy_UseSphere = false
+ENT.FindEnemy_CanSeeThroughWalls = false
+
+	-- ====== Bleed & Blood Variables ====== --
+ENT.Bleeds = true -- Does the SNPC bleed? (Blood decal, particle, etc.)
+ENT.BloodColor = "Red"
+ENT.HasBloodParticle = true
+ENT.HasBloodDecal = false
+ENT.HasBloodPool = true
+ENT.BloodPoolSize = "Normal"
+
+	-- ====== Movement & Idle Variables ====== --
 ENT.AnimTbl_IdleStand = {ACT_IDLE}
 ENT.AnimTbl_Walk = {ACT_WALK}
 ENT.AnimTbl_Run = {ACT_RUN}
 
-ENT.Health = 150
+	-- ====== Run Away On Unknown Damage Variables ====== --
+ENT.RunAwayOnUnknownDamage = true
+ENT.NextRunAwayOnDamageTime = 0
 
+	-- ====== Flinching Code ====== --
+ENT.FlinchChance = 0.2
+ENT.NextMoveAfterFlinchTime = 0
+ENT.CanFlinch = 0
+ENT.AnimTbl_Flinch = {ACT_SMALL_FLINCH}
+ENT.NextFlinchTime = 1
+
+	-- ====== Sound File Paths ====== --
 ENT.SoundTbl_MeleeAttackExtra = {"zshelter/zombies/hit1.wav","zshelter/zombies/hit2.wav","zshelter/zombies/hit3.wav"}
 ENT.SoundTbl_Death = {"zshelter/zombies/zbs_death_1.wav"}
+ENT.DeathSoundPitch1 = 100
 
-ENT.Dead = false
+ENT.IsRun = false
+ENT.IsWalk = false
+ENT.CurrentEnemy = nil
 
-ENT.Running = true
-ENT.TargetEnemy = nil
-ENT.NextFindEnemyTime = 0
-ENT.DeathAnimationTime = 3
+ENT.NextAnyMeleeAttack = 0
+ENT.PropCheckTraceLineLength = 0
 
-ENT.GetPathTime = 0
+ENT.MoveWhileAttacking = true
 
-local schedule = ai_schedule.New("PathFinder")
-	schedule:EngTask("TASK_GET_PATH_TO_LASTPOSITION", 0)
-	schedule:EngTask("TASK_RUN_PATH", 0)
-	schedule:EngTask("TASK_FACE_TARGET", 0)
+local schrun = ai_schedule.New("Chase1")
+	schrun:EngTask("TASK_GET_PATH_TO_LASTPOSITION", 0)
+	schrun:EngTask("TASK_RUN_PATH", 0)
 
-	schedule.CanBeInterrupted = true
+local defIdleTbl = {ACT_IDLE}
+local defScaredStandTbl = {ACT_COWER}
+local defShootVec = Vector(0, 0, 55)
 
-local sch_findenemy = ai_schedule.New("GetPathToEnemy")
-	sch_findenemy:EngTask("TASK_GET_PATH_TO_LASTPOSITION", 0)
+function VJ_PICK(values)
+	if istable(values) then
+		return values[math.random(1, #values)] || false
+	end
+	return values || false
+end
 
-local sch_walktoenemy = ai_schedule.New("WalkPathToEnemy")
-	sch_walktoenemy:EngTask("TASK_WALK_PATH", 0)
+function ENT:IsScheduleFinished(schedule)
+	return self.CurrentTaskComplete && (!self.CurrentTaskID or self.CurrentTaskID >= schedule:NumTasks())
+end
 
-local sch_runtoenemy = ai_schedule.New("RunPathToEnemy")
-	sch_runtoenemy:EngTask("TASK_RUN_PATH", 0)
-	sch_runtoenemy:EngTask("TASK_WAIT_FOR_MOVEMENT", 0)
+function ENT:RunAI(strExp) -- Called from the engine every 0.1 seconds
+	self:Think(true)
+	self:SetMovementActivity(VJ_PICK(self.AnimTbl_Run))
+	self:MaintainActivity()
+end
 
 local vec000 = Vector(0, 0, 0)
 local function isenemy(ent)
-	return !ent:IsPlayer() && !ent.IsTurret
+	return !ent:IsPlayer() && !ent.IsTurret && !ent.IsShelter
 end
 
-function ENT:CustomOnInitialize() end
+function ENT:MoveToEnemy()
+	self:StartSchedule(schrun)
+end
 
-function ENT:RunSequence(act)
-	local seq = self:SelectWeightedSequence(act)
-	self:ResetSequence(seq)
-	self:ResetSequenceInfo()
-	self:SetCycle(0)
+function ENT:SelectSchedule()
+	return
 end
 
 function ENT:FindEnemy()
@@ -60,7 +109,7 @@ function ENT:FindEnemy()
 	local pos = self:GetPos()
 	local enemy = nil
 	for _, ent in ipairs(ents.GetAll()) do
-		if(isenemy(ent)) then continue end
+		if(isenemy(ent) || ent.NoTarget || self:IsUnreachable(ent)) then continue end
 		local _dst = ent:GetPos():Distance(pos)
 		if(dst == -1) then
 			dst = _dst
@@ -73,90 +122,204 @@ function ENT:FindEnemy()
 		end
 	end
 	if(IsValid(enemy)) then
+		self.CurrentEnemy = enemy
 		self:SetEnemy(enemy)
+		self:SetTarget(enemy)
 		self:SetLastPosition(enemy:GetPos())
 	end
 end
 
-function ENT:PickElem(t)
-	if(istable(t)) then
-		return t[math.random(1, #t)]
+local props = {
+	prop_physics = true,
+	prop_physics_multiplayer = true,
+	prop_physics_respawnable = true,
+}
+
+function ENT:DoPropCheck()
+	if(self.NextPropCheck && self.NextPropCheck > CurTime()) then return end
+	self.NextPropCheck = CurTime() + 0.25
+	local pos = self:GetPos() + Vector(0, 0, self:OBBMaxs().z * 0.5)
+	local tr = {
+		start = pos,
+		endpos = pos + self:GetForward() * self.PropCheckTraceLineLength,
+		filter = self,
+		ignoreworld = true,
+	}
+	local ent = util.TraceLine(tr).Entity
+	if(IsValid(ent)) then
+		return props[ent:GetClass()] || ent.IsPlayerBarricade, ent
 	else
-		return t
+		return false
 	end
 end
 
-function ENT:Initialize()
-	self:SetModel(self.Model)
-	self:SetMoveType(MOVETYPE_STEP)
-	self:SetNavType(NAV_GROUND)
-	self:PhysicsInit(SOLID_BBOX)
-	self:SetSolid(SOLID_BBOX)
-	self:SetHullType(HULL_HUMAN)
-	self:SetHullSizeNormal()
-	self:SetSolid(SOLID_BBOX)
-	self:AddSolidFlags(FSOLID_NOT_STANDABLE)
-	self:SetNavType(NAV_GROUND)
-	self:SetMoveType(MOVETYPE_STEP)
-	self:SetMaxYawSpeed(2048)
-	self:SetNPCState(NPC_STATE_ALERT)
+function ENT:PostInitialize()
+	self:CapabilitiesClear()
 	self:CapabilitiesAdd(CAP_MOVE_GROUND)
-	self:SetCollisionBounds(Vector(-16, -16, 0), Vector(16, 16, 76))
-	self:CustomOnInitialize()
 end
 
-function ENT:SelectSchedule()
-	if(self.Dead) then return end
-	if(IsValid(self:GetEnemy())) then
-		self:SetLastPosition(self:GetEnemy():GetPos())
+local math_cos = math.cos
+local math_rad = math.rad
+function ENT:MeleeAttackCode(prop)
+	local origin = self:GetMeleeAttackDamageOrigin()
+	local hit = false
+	local pos = self:GetPos()
+	local dmg = self.MeleeAttackDamage
+	local propdamaged = false
+	for _, v in ipairs(ents.FindInSphere(self:GetMeleeAttackDamageOrigin(), self.MeleeAttackDamageDistance)) do
+		if(!v:IsPlayer() && !v.IsBuilding) then continue end
+		local vpos = v:GetPos()
+		if(self:GetSightDirection():Dot((Vector(vpos.x, vpos.y, 0) - Vector(pos.x, pos.y, 0)):GetNormalized()) < math_cos(math_rad(self.MeleeAttackDamageAngleRadius))) then continue end
+		v:TakeDamage(dmg, self, self)
+		if(v == prop) then
+			propdamaged = true
+		end
+		hit = true
 	end
-	self:StartSchedule(schedule)
---[[
-	if(IsValid(self:GetEnemy())) then
-		if(self.GetPathTime < CurTime()) then
-			if(self:GetCurWaypointPos() == vec000) then
-				
-			else
-				self:StartSchedule(sch_runtoenemy)
+	if(!propdamaged && IsValid(prop)) then
+		prop:TakeDamage(dmg, self, self)
+	end
+	if(hit) then
+		self:PlaySoundSystem("MeleeAttack")
+	end
+end
+
+ENT.FindEnemyTime = 0
+ENT.NextChaseTime = 0
+ENT.LastTarget = nil
+ENT.LastTargetPosition = Vector(0, 0, 0)
+ENT.PostInit = false
+ENT.StuckTimer = 0
+ENT.InvalidTime = 0
+ENT.InvalidCount = 0
+
+function ENT:Think(fromengine)
+	if(!fromengine || self.Dead) then return end
+	if(!self.PostInit) then
+		self:PostInitialize()
+		self.PostInit = true
+	end
+	self:CustomOnThink()
+	local curTime = CurTime()
+	if(self.FindEnemyTime < curTime) then
+		self:FindEnemy()
+		self.FindEnemyTime = curTime + 2
+	end
+	if(self.StuckTimer < curTime) then
+		if(!self:IsMoving()) then
+			local tr = {
+				start = self:GetPos(),
+				endpos = self:GetPos(),
+				mins = self:OBBMins(),
+				maxs = self:OBBMaxs(),
+				filter = self,
+			}
+			local ret = util.TraceHull(tr).Entity
+			if(IsValid(ret.Entity) && !ret.Entity.IsBuilding) then
+				self:SetAngles(Angle(0, math.random(-180, 180), 0))
+				self:VJ_ACT_PLAYACTIVITY(self.AnimTbl_Run, true, 0.5, true, self.MeleeAttackAnimationDelay)
+				self.LastStuckTime = curTime + 3
 			end
-			print(self:GetCurWaypointPos())
-			self.GetPathTime = CurTime() + 1
+		end
+		self.StuckTimer = curTime + 1
+	end
+	self:SetEnemy(self.CurrentEnemy)
+	local enemy = self:GetEnemy()
+	if(IsValid(enemy)) then
+		if(self.NextChaseTime < curTime) then -- Only re-chase if enemy or enemy position changed
+			self.PropCheckTraceLineLength = self:OBBMins():Distance(self:OBBMaxs())
+			if(self.LastTarget != enemy || self.LastTargetPosition != enemy:GetPos()) then
+				--self:VJ_TASK_GOTO_TARGET()
+				self:MoveToEnemy()
+				self.LastTargetPosition = enemy:GetPos()
+				self.LastTarget = enemy
+			else
+				if(self:GetCurWaypointPos() == vec000) then
+					--self:VJ_TASK_GOTO_TARGET()
+					self:MoveToEnemy()
+					self.LastTargetPosition = enemy:GetPos()
+					self.LastTarget = enemy
+				end
+			end
+			self.NextChaseTime = curTime + 0.6
+		end
+		local spos, epos = self:GetPos(), enemy:GetPos()
+		local blockedByProp, PropEnt = self:DoPropCheck()
+		if(!blockedByProp) then PropEnt = nil end
+		self:MultipleMeleeAttacks()
+		if((self.NextAnyMeleeAttack < curTime && (spos:Distance(epos) <= self.MeleeAttackDamageDistance || blockedByProp))) then
+			if(!self.DisableMeleeAttackAnimation) then
+				local anim = VJ_PICK(self.AnimTbl_MeleeAttack)
+				local v1 = self:VJ_ACT_PLAYACTIVITY(anim, false, 0, true, self.MeleeAttackAnimationDelay)
+				self.CurrentAttackAnimation = anim
+				self.CurrentAttackAnimationDuration = v1
+				v1 = v1 * 0.5
+				self.StuckTimer = curTime + v1
+				self.NextChaseTime = curTime + v1
+				if(!blockedByProp) then
+					local angle = (epos - spos):Angle()
+					self:SetAngles(Angle(0, angle.y, 0))
+				end
+			end
+			self:CustomOnMeleeAttack_BeforeStartTimer()
+			timer.Simple(self.TimeUntilMeleeAttackDamage / self:GetPlaybackRate(), function()
+				if(!IsValid(self)) then return end
+				self:MeleeAttackCode(PropEnt)
+			end)
+			self.NextAnyMeleeAttack = curTime + self.NextMeleeAttackTime
+			self.StuckTimer = curTime + self.NextMeleeAttackTime
 		end
 	end
-]]
 end
 
-function ENT:Think()
-	if(self.Dead) then return end
-	if(self.NextFindEnemyTime < CurTime()) then
-		self:FindEnemy()
-		self.NextFindEnemyTime = CurTime() + 1.5
+function ENT:OnTaskFailed(failCode, failString)
+	if(failCode == 11) then -- Pathing is fucked
+		local target = self.CurrentEnemy
+		if(IsValid(target)) then
+			self:RememberUnreachable(target, 5)
+		end
 	end
 end
 
-function ENT:DoKilled()
-	local anim = self:PickElem(self.AnimTbl_Death)
+function ENT:OverrideMove()
+	if(self.Dead) then return end
+	if(self:GetActivity() == self.CurrentAttackAnimation && self.MoveWhileAttacking) then
+		self:SetLocalVelocity(self:GetMoveVelocity() + self:GetAngles():Forward() * 300)
+	end
+end
+function ENT:OverrideMoveFacing() end
+
+function ENT:DoKilled(dmginfo)
+	hook.Run("OnNPCKilled", self, dmginfo:GetAttacker(), dmginfo:GetInflictor())
 	self:SetCollisionGroup(10)
-	self:SetHealth(-1)
+	self.RunAI = function() end -- Remove the functions so VJ Base won't do weird shit (e.g fuck with prop's collision)
+	self.Think = function() end
+	self.SelectSchedule = function() end
+	self:PlaySoundSystem("Death")
+	self:ClearSchedule()
 	self:StopMoving()
 	self.Dead = true
-	if(anim) then
-		self:RunSequence(anim)
-	end
-	VJ_EmitSound(self, self.SoundTbl_Death, 100, 100)
-	timer.Simple(self.DeathAnimationTime || 1, function()
-		if(!IsValid(self)) then return end
+	self:SetHealth(0)
+	self:SetUpGibesOnDeath(dmginfo, 0)
+	if(self.HasDeathAnimation) then
+		local time = self.DeathAnimationTime || 1
+		local act = VJ_PICK(self.AnimTbl_Death)
+		self:ResetIdealActivity(act)
+		self:SetActivity(act)
+		timer.Simple(time, function()
+			if(!IsValid(self)) then return end
+			self:Remove()
+		end)
+	else
 		self:Remove()
-	end)
+	end
 end
 
 function ENT:OnTakeDamage(dmginfo)
-	if(self.Dead) then return end
-	local hp = self:Health()
 	local damage = dmginfo:GetDamage()
-	if(hp < damage) then
-		self:DoKilled()
-	else
-		self:SetHealth(hp - damage)
+	if(self:Health() <= damage) then
+		self:DoKilled(dmginfo)
 	end
+	self:SetHealth(self:Health() - damage)
+	return damage
 end

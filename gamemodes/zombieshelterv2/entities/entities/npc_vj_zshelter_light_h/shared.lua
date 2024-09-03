@@ -1,4 +1,4 @@
-ENT.Base 			= "npc_vj_creature_base"
+ENT.Base 			= "npc_zshelter_zombie_base"
 ENT.Type 			= "ai"
 ENT.PrintName 		= "Light Zombie"
 ENT.Author 			= ""

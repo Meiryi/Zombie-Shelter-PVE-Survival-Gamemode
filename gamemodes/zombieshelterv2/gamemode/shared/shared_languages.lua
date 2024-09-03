@@ -36,7 +36,7 @@ ZShelter.AddTranslate("#",{
 ZShelter.AddTranslate("#SkillPTS", {
 	["en"] = "Skill menu - [N] | Remaining points : ",
 	["tr"] = "Yetenek menüsü - [N] | Kalan puan : ",
-	["ru"] = "Меню навыков - [N] | Осталось очков: ",
+	["ru"] = "Меню навыков - [N] | Осталось очков : ",
 	["zh-TW"] = "技能樹 - [N] | 剩餘點數 : ",
 	["zh-CN"] = "技能树 - [N] | 剩余点数: ",
 })
@@ -284,7 +284,7 @@ ZShelter.AddTranslate("#Flame Trap", {
 ZShelter.AddTranslate("#CMB Trap", {
 	["en"] = "Cryo Mine",
 	["tr"] = "Dondurucu Mayın",
-	["ru"] = "Криомина",
+	["ru"] = "",
 	["zh-TW"] = "凍結地雷",
 	["zh-CN"] = "冻结地雷",
 })
@@ -292,7 +292,7 @@ ZShelter.AddTranslate("#CMB Trap", {
 ZShelter.AddTranslate("#Gravity Mine", {
 	["en"] = "Gravity Mine",
 	["tr"] = "Yer Çekimi Mayını",
-	["ru"] = "Гравитационная мина",
+	["ru"] = "",
 	["zh-TW"] = "引力地雷",
 	["zh-CN"] = "引力地雷",
 })
@@ -300,7 +300,7 @@ ZShelter.AddTranslate("#Gravity Mine", {
 ZShelter.AddTranslate("Laser Trap", {
 	["en"] = "Laser Trap",
 	["tr"] = "Lazer Tuzağı",
-	["ru"] = "Лазерная ловушка",
+	["ru"] = "",
 	["zh-TW"] = "雷射陷阱",
 	["zh-CN"] = "雷射陷阱",
 })
@@ -356,7 +356,7 @@ ZShelter.AddTranslate("#Blast Turret", {
 ZShelter.AddTranslate("#Burst Shotgun Turret", {
 	["en"] = "Burst Shotgun Turret",
 	["tr"] = "Pompalı Taret",
-	["ru"] = "Турель-дробовик",
+	["ru"] = "",
 	["zh-TW"] = "連發霰彈槍塔",
 	["zh-CN"] = "连发霰弹炮塔",
 })
@@ -420,7 +420,7 @@ ZShelter.AddTranslate("#Plasma Turret", {
 ZShelter.AddTranslate("#Laser Turret", {
 	["en"] = "Laser Turret",
 	["tr"] = "Lazer Tareti",
-	["ru"] = "Лазерная турель",
+	["ru"] = "",
 	["zh-TW"] = "雷射砲塔",
 	["zh-CN"] = "雷射炮塔",
 })
@@ -428,7 +428,7 @@ ZShelter.AddTranslate("#Laser Turret", {
 ZShelter.AddTranslate("#Gauss Turret", {
     ["en"] = "Gauss Turret",
     ["tr"] = "Gaus Tareti",
-    ["ru"] = "Турель Гаусса",
+    ["ru"] = "",
     ["zh-TW"] = "高斯炮",
     ["zh-CN"] = "高斯炮",
 })
@@ -732,7 +732,7 @@ ZShelter.AddTranslate("#SummeryStats", {
 ZShelter.AddTranslate("#TotalPlayTime", {
 	["en"] = "Total Playtime : <VAR>",
 	["tr"] = "Toplam Oynama Süresi: <VAR>",
-	["ru"] = "Общее время игры: <VAR>",
+	["ru"] = "Общее время игры : <VAR>",
 	["zh-TW"] = "總遊玩時間 : <VAR>",
 	["zh-CN"] = "总游玩时间: <VAR>",
 })
@@ -1020,7 +1020,7 @@ ZShelter.AddTranslate("#WinFailRatio", {
 ZShelter.AddTranslate("#OnlinePlayers", {
 	["en"] = "Online Players : <VAR>",
 	["tr"] = "Çevrim İçi Oyuncu: <VAR>",
-	["ru"] = "Игроков в игре: <VAR>",
+	["ru"] = "Игроков в игре : <VAR>",
 	["zh-TW"] = "在線玩家 : <VAR>",
 	["zh-CN"] = "在线玩家 : <VAR>",
 })
@@ -1164,7 +1164,7 @@ ZShelter.AddTranslate("#MVP", {
 ZShelter.AddTranslate("#ServerList", {
 	["en"] = "Server List",
 	["tr"] = "Sunucu Listesi",
-	["ru"] = "Список серверов",
+	["ru"] = "",
 	["zh-TW"] = "伺服器列表",
 	["zh-CN"] = "服务器列表",
 })
@@ -1172,7 +1172,7 @@ ZShelter.AddTranslate("#ServerList", {
 ZShelter.AddTranslate("#ServerListHint", {
 	["en"] = "Servers on this list are running Zombie Shelter v2",
 	["tr"] = "Bu listedeki sunucular Zombie Shelter v2 çalıştırıyor",
-	["ru"] = "Серверы в этом списке запущены в режиме Zombie Shelter 2",
+	["ru"] = "",
 	["zh-TW"] = "在此列表上的伺服器都在運行 Zombie Shelter v2",
 	["zh-CN"] = "在此列表上的服务器都在运行 Zombie Shelter v2",
 })
@@ -1180,7 +1180,7 @@ ZShelter.AddTranslate("#ServerListHint", {
 ZShelter.AddTranslate("#ServerListAddr", {
 	["en"] = "Address : <VAR>",
 	["tr"] = "IP Adresi : <VAR>",
-	["ru"] = "IP-адрес: <VAR>",
+	["ru"] = "",
 	["zh-TW"] = "伺服器IP : <VAR>",
 	["zh-CN"] = "服务器IP : <VAR>",
 })
@@ -1188,7 +1188,7 @@ ZShelter.AddTranslate("#ServerListAddr", {
 ZShelter.AddTranslate("#ServerListClick", {
 	["en"] = "Click to join",
 	["tr"] = "Katılmak için tıkla",
-	["ru"] = "Нажмите для присоединения",
+	["ru"] = "",
 	["zh-TW"] = "點擊加入",
 	["zh-CN"] = "点击加入",
 })
@@ -1196,7 +1196,7 @@ ZShelter.AddTranslate("#ServerListClick", {
 ZShelter.AddTranslate("#SpawnPointExtra", {
 	["en"] = "Enemy Spawn Point",
 	["tr"] = "Düşman Doğma Noktası",
-	["ru"] = "Точка появления врагов",
+	["ru"] = "",
 	["zh-TW"] = "敵人生成點",
 	["zh-CN"] = "敌人生成点",
 })
@@ -1204,7 +1204,7 @@ ZShelter.AddTranslate("#SpawnPointExtra", {
 ZShelter.AddTranslate("#SpawnPointExtraDesc", {
 	["en"] = "An extra spawn point for enemy to spawn",
 	["tr"] = "Düşmanın doğması için fazladan bir doğma noktası",
-	["ru"] = "Дополнительная точка появления для врагов",
+	["ru"] = "",
 	["zh-TW"] = "敵人重生點",
 	["zh-CN"] = "敌人重生点",
 })
@@ -1212,7 +1212,7 @@ ZShelter.AddTranslate("#SpawnPointExtraDesc", {
 ZShelter.AddTranslate("#SpawnPointDedicated", {
 	["en"] = "Dedicated Enemy Spawn Point",
 	["tr"] = "Özel Düşman Doğma Noktası",
-	["ru"] = "Точка появления выделенных врагов",
+	["ru"] = "",
 	["zh-TW"] = "固定敵人生成點",
 	["zh-CN"] = "固定敌人生成点",
 })
@@ -1220,7 +1220,7 @@ ZShelter.AddTranslate("#SpawnPointDedicated", {
 ZShelter.AddTranslate("#SpawnPointDedicatedDesc", {
 	["en"] = "An DEDICATED spawn point, if you placed any of this enemy will be spawn at this fixed position",
 	["tr"] = "ÖZEL bir doğma noktası, eğer bu düşmandan herhangi birini yerleştirirsen, bu sabit konumda doğacak",
-	["ru"] = "ВЫДЕЛЕННАЯ точка появления, если вы разместите любого из врагов, то они будут появляться в этом фиксированном месте",
+	["ru"] = "",
 	["zh-TW"] = "放置後敵人會被生成在這個固定的位置",
 	["zh-CN"] = "放置后敌人会被生成在这个固定的位置",
 })
@@ -1228,7 +1228,7 @@ ZShelter.AddTranslate("#SpawnPointDedicatedDesc", {
 ZShelter.AddTranslate("#ManualControl", {
     ["en"] = "Press middle mouse to control",
     ["tr"] = "Kontrol etmek için fare tekerleğini kullanın",
-    ["ru"] = "Нажмите СКМ для управления",
+    ["ru"] = "",
     ["zh-TW"] = "點擊滑鼠中鍵控制",
     ["zh-CN"] = "点击滑鼠中键控制",
 })
@@ -1236,7 +1236,7 @@ ZShelter.AddTranslate("#ManualControl", {
 ZShelter.AddTranslate("#EnemyList", {
     ["en"] = "Enemies",
     ["tr"] = "Düşmanlar",
-    ["ru"] = "Враги",
+    ["ru"] = "",
     ["zh-TW"] = "敵人列表",
     ["zh-CN"] = "敌人列表",
 })
@@ -1244,7 +1244,7 @@ ZShelter.AddTranslate("#EnemyList", {
 ZShelter.AddTranslate("#EnemyListTitle", {
     ["en"] = "Enemies on <VAR> difficulty",
     ["tr"] = "<VAR> zorluğunda düşmanlar",
-    ["ru"] = "Враги на сложности «<VAR>»",
+    ["ru"] = "",
     ["zh-TW"] = "會出現在<VAR>難度的敵人",
     ["zh-CN"] = "会出现在<VAR>难度的敌人",
 })
@@ -1252,7 +1252,7 @@ ZShelter.AddTranslate("#EnemyListTitle", {
 ZShelter.AddTranslate("#EnemyListHPBoost", {
     ["en"] = "[Day x <VAR>]",
     ["tr"] = "[Gün Sayısı x <VAR>]",
-    ["ru"] = "[Число дней x <VAR>]",
+    ["ru"] = "",
     ["zh-TW"] = "[天數 x <VAR>]",
     ["zh-CN"] = "[天数 x <VAR>]",
 })

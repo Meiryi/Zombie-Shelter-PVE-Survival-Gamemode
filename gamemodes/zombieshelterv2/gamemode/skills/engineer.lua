@@ -158,8 +158,7 @@ ZShelter.AddSkills(ClassName, "OnBuildingDestroyed",
 
 ZShelter.AddSkills(ClassName, "OnBuildingTakeDamage",
 	function(player, building, attacker, damage)
-		if(!building.IsTurret) then return end
-		if(attacker:IsPlayer() && GetConVar("zshelter_friendly_fire"):GetInt() == 0) then return end -- :trollface:
+		if(!building.IsTurret || attacker:IsPlayer()) then return end
 		local dmg = player:GetNWFloat("DRDamage", 5)
 		local dmgscale = player:GetNWInt("DRDamageScale", 0.25) * damage
 		attacker:TakeDamage(dmgscale, player, player)

@@ -374,8 +374,10 @@ function ZShelter.SpawnDayEnemies()
 			end
 
 			if(!night) then
-				enemy.AnimTbl_Walk = {ACT_WALK}
-				enemy.AnimTbl_Run = {ACT_WALK}
+
+					enemy.AnimTbl_Walk = {ACT_WALK}
+					enemy.AnimTbl_Run = {ACT_WALK}
+
 			end
 			
 		hook.Run("ZShelter-EnemyCreated", enemy, false)

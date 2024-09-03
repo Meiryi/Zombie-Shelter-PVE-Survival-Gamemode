@@ -174,7 +174,7 @@ end
 local serverlist = {
 	{
 		host = "Hamgungus Zombie Shelter [Custom Enemy & Weapons]",
-		address = "50.109.239.144:27019",
+		address = "45.45.238.187:27015",
 	},
 	{
 		host = "NPCZ | Shelter",

@@ -68,9 +68,9 @@ function ENT:CustomOnThink()
 end
 
 function ENT:MultipleMeleeAttacks()
-	if self.IsRun == true then
+	if self.AnimTbl_Run[1] == ACT_RUN then
 		self.AnimTbl_MeleeAttack = {ACT_MELEE_ATTACK1}
-	elseif self.IsWalk == true then
+	else
 		self.AnimTbl_MeleeAttack = {ACT_MELEE_ATTACK2}
 	end
 	self.TimeUntilMeleeAttackDamage = 0.1

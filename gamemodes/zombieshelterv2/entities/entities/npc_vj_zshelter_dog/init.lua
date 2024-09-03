@@ -85,6 +85,28 @@ function ENT:CustomOnInitialize()
 	self:SetCollisionBounds(Vector(12, 12, 65), Vector(-12, -12, 0))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+ENT.NextLeapATime = 0
+function ENT:CustomOnThink()
+	local enemy = self:GetTarget()
+	if(IsValid(enemy) && enemy:Visible(enemy)) then
+		if(self.NextLeapATime < CurTime()) then
+			local angle = (enemy:GetPos() - self:GetPos()):Angle()
+			self:EmitSound("zshelter/zombies/zombiedog_skill1.wav")
+			timer.Simple(self.TimeUntilLeapAttackVelocity, function()
+				local vel = (angle:Forward() * 3000)
+				vel.z = 0
+				self:SetVelocity(vel + Vector(0, 0, self.LeapAttackVelocityUp))
+			end)
+			for k,v in ipairs(self.LeapAttackExtraTimers) do
+				timer.Simple(v, function()
+					if(!IsValid(self) || !self.LeapDamageCode) then return end
+					self:LeapDamageCode()
+				end)
+			end
+			self.NextLeapATime = CurTime() + self.NextLeapAttackTime
+		end
+	end
+end
 
 function ENT:CustomOnMeleeAttack_BeforeStartTimer()
 	self.AnimTbl_MeleeAttack = {ACT_RUN_HURT}
@@ -96,10 +118,10 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer()
 end
 
 function ENT:MultipleMeleeAttacks()
-	if self.IsRun == true then
-		self.AnimTbl_MeleeAttack = {ACT_MELEE_ATTACK1}
-	elseif self.IsWalk == true then
-		self.AnimTbl_MeleeAttack = {ACT_MELEE_ATTACK2}
+	if self.AnimTbl_Run[1] == ACT_RUN then
+		self.AnimTbl_MeleeAttack = {ACT_RUN_HURT}
+	else
+		self.AnimTbl_MeleeAttack = {ACT_WALK_HURT}
 	end
 	self.TimeUntilMeleeAttackDamage = 0.1
 end

@@ -184,7 +184,7 @@ ZShelter.AddInfo("Double Tap", {
         ["tr"] = "Her yükseltmede iki kat hasar verme şansınızı +%25 artırın",
         ["zh-TW"] = "每升級一次增加 25% 機率造成雙倍傷害",
         ["zh-CN"] = "每升级一次增加 25% 机率造成双倍伤害",
-        ["ru"] = "+25% шанс нанести двойной урон за каждое улучшение",
+        ["ru"] = "",
     }
 })
 
@@ -381,13 +381,13 @@ ZShelter.AddInfo("Damage Reflecting", {
         ["tr"] = "Hasar Yansıtma",
         ["zh-TW"] = "傷害反彈",
         ["zh-CN"] = "伤害反弹",
-        ["ru"] = "Отражение урона",
+        ["ru"] = "",
     },
     desc = {
         ["en"] = "Reflecting all incoming damage, +50% damage per upgrade",
         ["tr"] = "Alınan tüm hasarı yansıtır, yükseltme başına +%50 hasar",
         ["zh-TW"] = "反彈所有受到的傷害, 每升級一次增加 50%",
         ["zh-CN"] = "反弹所有受到的伤害, 每升级一次增加 50%",
-        ["ru"] = "Отражает весь полученный урон, +50% урона за улучшение",
+        ["ru"] = "",
     }
 })

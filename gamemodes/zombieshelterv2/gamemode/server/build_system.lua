@@ -414,6 +414,10 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 			ent:SetOwner(ply)
 		end
 
+		if(tdata.notarget) then
+			ent.NoTarget = true
+		end
+
 		if(tdata.forcemodel) then
 			ent:SetModel(data.model)
 		end
