@@ -40,6 +40,8 @@ function ZShelter:CreatePreview(model, offset, cat, index, tdata)
 
 	ZShelter.PreviewEntity.AttackRange = tdata.attackrange || false
 	ZShelter.PreviewEntity.ActiveRange = tdata.activerange || false
+	ZShelter.PreviewEntity.CircleRange = tdata.circlerange || false
+	ZShelter.PreviewEntity.BuildCircle = true
 
 	if(tdata.faceforward) then
 		local yaw = math.Round(LocalPlayer():EyeAngles().yaw / 90, 0) * 90
@@ -485,26 +487,84 @@ local rangemat = Material("arknights/torappu/sprite_attack_range.png", "noclamp"
 local fraction = 0
 local animtime = 2
 local textureSX = 48
+local attackcircle = {}
+local activecircle = {}
 hook.Add("PreDrawOpaqueRenderables", "ZShelter-BuildingPreviewRange", function(depth, skybox, skybox3d)
 	if(!IsValid(ZShelter.PreviewEntity) || !ZShelter.PreviewEntity.NoOffsPos) then return end
-
+	if(ZShelter.PreviewEntity.CircleRange && ZShelter.PreviewEntity.BuildCircle) then
+		if(ZShelter.PreviewEntity.AttackRange) then
+			attackcircle = ZShelter.BuildCircle(0, 0, ZShelter.PreviewEntity.AttackRange)
+		end
+		if(ZShelter.PreviewEntity.ActiveRange) then
+			activecircle = ZShelter.BuildCircle(0, 0, ZShelter.PreviewEntity.ActiveRange)
+		end
+		ZShelter.PreviewEntity.BuildCircle = false
+	end
+	local circle = ZShelter.PreviewEntity.CircleRange
 		surface.SetMaterial(rangemat)
 		cam.Start3D2D(ZShelter.PreviewEntity.NoOffsPos + Vector(0, 0, 1), Angle(0, 0, 0), 1)
 		surface.SetDrawColor(255, 140, 40, 50)
 		fraction = (SysTime() % animtime) / animtime
 		local rev_fraction = 1 - fraction
-		if(ZShelter.PreviewEntity.AttackRange) then
-			local rg = ZShelter.PreviewEntity.AttackRange * 2
-			local rghalf = rg * 0.5
-			local anim = fraction
-			surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
-		end
-		surface.SetDrawColor(64, 204, 255, 255)
-		if(ZShelter.PreviewEntity.ActiveRange) then
-			local rg = ZShelter.PreviewEntity.ActiveRange * 2
-			local rghalf = rg * 0.5
-			local anim = fraction
-			surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+		if(!circle) then
+			if(ZShelter.PreviewEntity.AttackRange) then
+				local rg = ZShelter.PreviewEntity.AttackRange * 2
+				local rghalf = rg * 0.5
+				local anim = fraction
+				surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+			end
+			surface.SetDrawColor(64, 204, 255, 255)
+			if(ZShelter.PreviewEntity.ActiveRange) then
+				local rg = ZShelter.PreviewEntity.ActiveRange * 2
+				local rghalf = rg * 0.5
+				local anim = fraction
+				surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+			end
+		else
+			if(ZShelter.PreviewEntity.AttackRange) then
+				local rg = ZShelter.PreviewEntity.AttackRange * 2
+				local rghalf = rg * 0.5
+				local anim = fraction
+
+		        render.ClearStencil()
+		        render.SetStencilEnable(true)
+		        render.SetStencilTestMask(0xFF)
+		        render.SetStencilWriteMask(0xFF)
+		        render.SetStencilReferenceValue(0x01)
+		        render.SetStencilCompareFunction(STENCIL_NEVER)
+		        render.SetStencilFailOperation(STENCIL_REPLACE)
+		        render.SetStencilZFailOperation(STENCIL_REPLACE)
+		        draw.NoTexture()
+		        surface.DrawPoly(attackcircle)
+		        render.SetStencilCompareFunction(STENCIL_EQUAL)
+		        render.SetStencilFailOperation(STENCIL_KEEP)
+		        render.SetStencilZFailOperation(STENCIL_KEEP)
+		        surface.SetMaterial(rangemat)
+		        surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+		        render.SetStencilEnable(false)
+			end
+			surface.SetDrawColor(64, 204, 255, 255)
+			if(ZShelter.PreviewEntity.ActiveRange) then
+				local rg = ZShelter.PreviewEntity.ActiveRange * 2
+				local rghalf = rg * 0.5
+				local anim = fraction
+
+		        render.ClearStencil()
+		        render.SetStencilEnable(true)
+		        render.SetStencilTestMask(0xFF)
+		        render.SetStencilWriteMask(0xFF)
+		        render.SetStencilReferenceValue(0x01)
+		        render.SetStencilCompareFunction(STENCIL_NEVER)
+		        render.SetStencilFailOperation(STENCIL_REPLACE)
+		        render.SetStencilZFailOperation(STENCIL_REPLACE)
+		        surface.DrawPoly(activecircle)
+		        render.SetStencilCompareFunction(STENCIL_EQUAL)
+		        render.SetStencilFailOperation(STENCIL_KEEP)
+		        render.SetStencilZFailOperation(STENCIL_KEEP)
+		        surface.SetMaterial(rangemat)
+		        surface.DrawTexturedRectUV(-rghalf, -rghalf, rg, rg, anim, anim, (rg / textureSX) + anim, (rg / textureSX) + anim)
+		        render.SetStencilEnable(false)
+			end
 		end
 		cam.End3D2D()
 

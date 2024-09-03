@@ -52,7 +52,7 @@ function ENT:Think()
 		local angle = ((self.AimTarget:GetPos() + self.AimTarget:OBBCenter()) - self:GetPos()):Angle().y
 
 		self:SetAngles(LerpAngle(self.RotateSpeed, Angle(0, self:EyeAngles().y, 0), Angle(0, angle, 0)))
-
+		
 		if(self.NextShootTime < CurTime() && !los) then
 			local fx = ents.Create("obj_firegun_flame")
 				fx:SetPos(self:GetBonePosition(2))
@@ -63,13 +63,19 @@ function ENT:Think()
 				dmginfo:SetDamage(3)
 				dmginfo:SetAttacker(self)
 				dmginfo:SetInflictor(self)
+			local targethit = false
 			for k,v in pairs(ents.FindInCone(self:GetPos(), self:EyeAngles():Forward(), self.MaximumDistance, self.DmgAngle)) do
 				if(v == self || v:IsPlayer() || v.IsBuilding) then continue end
 				if(!v:IsNPC() && !v:IsNextBot()) then continue end
 				v:TakeDamageInfo(dmginfo)
+				if(v == self.AimTarget) then
+					targethit = true
+				end
+			end
+			if(!targethit) then
+				self.AimTarget:TakeDamage(3, self, self)
 			end
 		end
-
 	end
 
 	self:NextThink(CurTime() + 0.115)

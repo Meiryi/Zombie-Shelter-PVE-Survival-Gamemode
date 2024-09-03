@@ -167,7 +167,7 @@ ZShelter.AddTranslate("#Wooden Wall", {
 
 ZShelter.AddTranslate("#Wooden Spike Wall", {
 	["en"] = "Wooden Spike Wall",
-	["en"] = "Mur en Bois à Pointes",
+	["fr"] = "Mur en Bois à Pointes",
 	["ru"] = "Деревянная стена с колышками",
 	["tr"] = "Dikenli Ahşap Duvar",
 	["zh-TW"] = "木製尖刺",
@@ -221,7 +221,7 @@ ZShelter.AddTranslate("#Metal Barricade", {
 
 ZShelter.AddTranslate("#Concrete Wall", {
 	["en"] = "Concrete Wall",
-	["en"] = "Mur en Béton",
+	["fr"] = "Mur en Béton",
 	["tr"] = "Beton Duvar",
 	["ru"] = "Бетонная стена",
 	["zh-TW"] = "水泥牆",

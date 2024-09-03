@@ -24,7 +24,7 @@ function ENT:Initialize()
 end
 
 function ENT:FindEnemy()
-	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
+	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance * 0.5)) do
 		if(!ZShelter.ValidateEntity(self, v)) then continue end
 		self.AimTarget = v
 		return
@@ -40,7 +40,6 @@ function ENT:Think()
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
 	else
-
 		for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 			if(!ZShelter.ValidateEntity(self, v)) then continue end
 			v:NextThink(CurTime() + 10)

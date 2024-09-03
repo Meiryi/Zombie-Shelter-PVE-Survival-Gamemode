@@ -171,7 +171,6 @@ function ZShelter.ApplyDamage(attacker, building, dmginfo)
 	if(IsValid(attacker) && !attacker:IsPlayer()) then
 		ZShelter.Director_AddDamage(building, dmginfo:GetDamage())
 	end
-	if(GetConVar("zshelter_debug_disable_building_damage"):GetInt() == 1) then return end
 	if(building:GetNWBool("DurabilitySystem", false)) then
 		if(!IsValid(attacker) || (IsValid(attacker) && !attacker:IsPlayer())) then return end
 	end
@@ -188,6 +187,7 @@ function ZShelter.ApplyDamage(attacker, building, dmginfo)
 			end
 		end
 	end
+	if(GetConVar("zshelter_debug_disable_building_damage"):GetInt() == 1) then return end
 	if(IsValid(attacker)) then
 		if(attacker:IsPlayer() && building:GetNWBool("NoPlayerDamage", false)) then return end
 		if(attacker:IsPlayer()) then

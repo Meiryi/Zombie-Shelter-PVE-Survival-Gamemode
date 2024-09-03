@@ -130,6 +130,7 @@ end
 	yawoffset = Yaw offset when placed this building
 	activerange = Minimum range of this turret to be active, used for displaying range in building preview
 	attackrange = Minimum attack of this turret to be active, used for displaying range in building preview
+	circlerange = Shows the range with circle
 	notarget = won't be targeted by zombies
 
 	maxamount = Maximum amount of this building
@@ -176,7 +177,8 @@ ZShelter.AddBuildItem("Barricade",  "Wooden Spike Wall",  3,  1,  0,  750,  "pro
 	buildspeed = 1.5,
 	damage = 12,
 	ondamaged = function(self, attacker, dmginfo)
-		local a = self.Builder || self
+		local a = self.Builder
+		if(!IsValid(a)) then a = self end
 		ZShelter.DealNoScaleDamage(a, attacker, self.AttackDamage)
 	end,
 })
@@ -408,7 +410,7 @@ ZShelter.AddBuildItem("Trap",  "Freeze Bomb",  1,  3,  0,  155,  "npc_vj_zshelte
 	damage = 5,
 	forceowner = true,
 	insideshelter = true,
-	activerange = 200,
+	activerange = 100,
 	attackrange = 200,
 })
 ZShelter.AddBuildItem("Trap",  "Spike Trap",  3,  5,  10,  150,  "npc_vj_zshelter_spike_trap",  "models/zshelter/shelter_b_thron01.mdl",  1,  Vector(0, 0, 0), {
@@ -531,6 +533,8 @@ ZShelter.AddBuildItem("Turret",  "Flame Turret",  6,  6,  15,  600,  "npc_vj_zsh
 })
 ZShelter.AddBuildItem("Turret",  "Enemy Scanner",  4,  7,  10,  800,  "obj_structure_scanner",  "models/zshelter/obj_decoy01.mdl",  1,  Vector(0, 0, 20), {
 	notarget = true,
+	circlerange = true,
+	attackrange = 400,
 }, nil, {find = true, day = 1})
 ZShelter.AddBuildItem("Turret",  "Mending Tower",  18,  18,  40,  150,  "npc_vj_zshelter_repairer",  "models/props_lab/reciever_cart.mdl",  1,  Vector(0, 0, 32.5), {
 	upgradable = true,

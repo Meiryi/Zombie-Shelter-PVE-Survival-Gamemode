@@ -161,11 +161,11 @@ ZShelter.AddSkills(ClassName, "OnBuildingTakeDamage",
 		if(!building.IsTurret || attacker:IsPlayer()) then return end
 		local dmg = player:GetNWFloat("DRDamage", 5)
 		local dmgscale = player:GetNWInt("DRDamageScale", 0.25) * damage
-		attacker:TakeDamage(dmgscale, player, player)
+		ZShelter.DealNoScaleDamage(player, attacker, dmgscale)
 		if(building.LastAOEDamageTime && building.LastAOEDamageTime > CurTime()) then return end
 		for k,v in ipairs(ents.FindInSphere(building:GetPos(), 64)) do
-			if(!ZShelter.ValidateTarget(v) || v == attacker) then continue end
-			v:TakeDamage(dmg, player, player)
+			if(!ZShelter.ValidateTarget(v) || v == attacker || v.IsBuilding) then continue end
+			ZShelter.DealNoScaleDamage(player, v, dmg)
 		end
 		building.LastAOEDamageTime = CurTime() + 1
 	end,

@@ -59,6 +59,7 @@ function ENT:Think()
 				dmginfo:SetDamage(1)
 				dmginfo:SetAttacker(self)
 				dmginfo:SetInflictor(self)
+			local targethit = false
 			for k,v in pairs(ents.FindInCone(self:GetPos(), self:GetAimVector(), self.MaximumDistance, self.DmgAngle)) do
 				if(v == self || v:IsPlayer() || v.IsBuilding) then continue end
 				if(!v:IsNPC() && !v:IsNextBot()) then continue end
@@ -75,6 +76,12 @@ function ENT:Think()
 					end
 					v:SetMoveVelocity(v:GetMoveVelocity() * 0.7)
 				end
+				if(v == self.AimTarget) then
+					targethit = true
+				end
+			end
+			if(!targethit) then
+				self.AimTarget:TakeDamage(1, self, self)
 			end
 		end
 

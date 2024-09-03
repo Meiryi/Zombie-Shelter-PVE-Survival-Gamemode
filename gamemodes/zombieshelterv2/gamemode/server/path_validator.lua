@@ -16,16 +16,18 @@
 ZShelter.RecordedPosition = ZShelter.RecordedPosition || {}
 ZShelter.PathBlockedCount = 0
 ZShelter.NextValidateTime = 0
+ZShelter.PathValidTime = 0
 
 local run = true
 
 function ZShelter.RestorePaths()
 	game.ConsoleCommand("ai_clear_bad_links\n")
+	ZShelter.PathValidTime = ZShelter.PathValidTime + 30
 end
 
 function ZShelter.ShelterUnreachable()
 	ZShelter.PathBlockedCount = ZShelter.PathBlockedCount + 1
-	if(ZShelter.PathBlockedCount < 24) then return end
+	if(ZShelter.PathBlockedCount < 16) then return end
 	ZShelter.RestorePaths()
 	for k,v in pairs(ents.FindByClass("logic_zshelter_path_tester")) do
 		v:Remove()

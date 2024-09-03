@@ -14,7 +14,11 @@
 ]]
 
 function ZShelter.CostSanity(player, amount)
-	if(player:GetNWFloat("SanityCostImmunityTime", 0) > CurTime() || GetConVar("zshelter_debug_disable_sanity"):GetInt() == 1 || ZShelter.UnsupportedMap || !GetGlobalBool("GameStarted")) then return end
+	if(GetConVar("zshelter_debug_disable_sanity"):GetInt() == 1) then
+		player:SetNWFloat("Sanity", 100)
+		return
+	end
+	if(player:GetNWFloat("SanityCostImmunityTime", 0) > CurTime() || ZShelter.UnsupportedMap || !GetGlobalBool("GameStarted")) then return end
 	if(GetGlobalBool("Night")) then amount = amount * 2 end
 	player:SetNWFloat("Sanity", math.max(player:GetNWFloat("Sanity", 100) - amount, 0))
 end

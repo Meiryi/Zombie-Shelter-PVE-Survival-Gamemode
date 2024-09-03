@@ -113,7 +113,8 @@ function ENT:FindEnemy()
 	local pos = self:GetPos()
 	local enemy = nil
 	for _, ent in ipairs(ents.GetAll()) do
-		if(isenemy(ent) || ent.NoTarget || self:IsUnreachable(ent)) then continue end
+		if(ZShelter.PathValidTime < CurTime() && self:IsUnreachable(ent)) then continue end
+		if(isenemy(ent) || ent.NoTarget) then continue end
 		local _dst = ent:GetPos():Distance(pos)
 		if(dst == -1) then
 			dst = _dst
