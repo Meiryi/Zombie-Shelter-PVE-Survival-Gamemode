@@ -19,7 +19,7 @@ net.Receive("ZShelter-UpgradeShelter", function(len, ply)
 	local level = net.ReadInt(32)
 	local data = ZShelter.ShelterUpgrade[level]
 	if(!data || !ZShelter.Shelter) then return end
-	local scaling = 1 + (math.max(player.GetCount() - 1, 0) * 0.4)
+	local scaling = 1 + (math.max(player.GetCount() - 1, 0) * 0.65)
 	if(!ZShelter.CanUpgradeShelter(level, math.floor(data.woods * scaling), math.floor(data.irons * scaling), data.powers, data.required_building)) then return end
 	ZShelter.Shelter:SetMaxHealth(math.floor(ZShelter.Shelter:GetMaxHealth() * 1.8))
 	ZShelter.Shelter:SetNWBool("Completed", false)
