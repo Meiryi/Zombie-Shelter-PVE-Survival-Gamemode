@@ -56,10 +56,6 @@ end
 
 hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
 	if(ent.IsVJBaseSNPC) then
-		timer.Simple(0, function()
-			if(!IsValid(ent) || ent.IsBuilding) then return end
-			ent:SetCollisionGroup(19)
-		end)
     	ent.PriorToKilled = VJ_PriorToKilled
     	ent.LastValidTime = 0
     	--[[

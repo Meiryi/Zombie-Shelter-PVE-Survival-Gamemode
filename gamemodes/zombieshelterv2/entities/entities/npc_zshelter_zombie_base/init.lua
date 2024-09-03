@@ -2,7 +2,7 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 
 ENT.Model = {"models/cso_zbs/monsters/zombi_origin.mdl"}
-ENT.StartHealth = 100
+ENT.StartHealth = 1000
 ENT.HullType = HULL_HUMAN
 ENT.MovementType = VJ_MOVETYPE_GROUND
 
@@ -70,6 +70,10 @@ local schrun = ai_schedule.New("Chase1")
 	schrun:EngTask("TASK_GET_PATH_TO_LASTPOSITION", 0)
 	schrun:EngTask("TASK_RUN_PATH", 0)
 
+local schrand = ai_schedule.New("Rand1")
+	schrand:EngTask("TASK_GET_PATH_TO_RANDOM_NODE", 2048)
+	schrand:EngTask("TASK_RUN_PATH", 0)
+
 local defIdleTbl = {ACT_IDLE}
 local defScaredStandTbl = {ACT_COWER}
 local defShootVec = Vector(0, 0, 55)
@@ -85,10 +89,10 @@ function ENT:IsScheduleFinished(schedule)
 	return self.CurrentTaskComplete && (!self.CurrentTaskID or self.CurrentTaskID >= schedule:NumTasks())
 end
 
-function ENT:RunAI(strExp) -- Called from the engine every 0.1 seconds
+function ENT:RunAI(strExp)
 	self:Think(true)
-	self:SetMovementActivity(VJ_PICK(self.AnimTbl_Run))
 	self:MaintainActivity()
+	self:SetMovementActivity(VJ_PICK(self.AnimTbl_Run))
 end
 
 local vec000 = Vector(0, 0, 0)
@@ -143,6 +147,7 @@ function ENT:DoPropCheck()
 		start = pos,
 		endpos = pos + self:GetForward() * self.PropCheckTraceLineLength,
 		filter = self,
+		collisiongroup = 2,
 		ignoreworld = true,
 	}
 	local ent = util.TraceLine(tr).Entity
@@ -165,14 +170,19 @@ function ENT:MeleeAttackCode(prop)
 	local hit = false
 	local pos = self:GetPos()
 	local dmg = self.MeleeAttackDamage
+	local barricadeHit = false
 	local propdamaged = false
 	for _, v in ipairs(ents.FindInSphere(self:GetMeleeAttackDamageOrigin(), self.MeleeAttackDamageDistance)) do
 		if(!v:IsPlayer() && !v.IsBuilding) then continue end
+		if(v.IsPlayerBarricade && barricadeHit) then continue end
 		local vpos = v:GetPos()
 		if(self:GetSightDirection():Dot((Vector(vpos.x, vpos.y, 0) - Vector(pos.x, pos.y, 0)):GetNormalized()) < math_cos(math_rad(self.MeleeAttackDamageAngleRadius))) then continue end
 		v:TakeDamage(dmg, self, self)
 		if(v == prop) then
 			propdamaged = true
+		end
+		if(v.IsPlayerBarricade) then
+			barricadeHit = true
 		end
 		hit = true
 	end
@@ -192,6 +202,7 @@ ENT.PostInit = false
 ENT.StuckTimer = 0
 ENT.InvalidTime = 0
 ENT.InvalidCount = 0
+ENT.NextRedecidePathTime = 0
 
 function ENT:Think(fromengine)
 	if(!fromengine || self.Dead) then return end
@@ -217,8 +228,10 @@ function ENT:Think(fromengine)
 			local ret = util.TraceHull(tr).Entity
 			if(IsValid(ret.Entity) && !ret.Entity.IsBuilding) then
 				self:SetAngles(Angle(0, math.random(-180, 180), 0))
-				self:VJ_ACT_PLAYACTIVITY(self.AnimTbl_Run, true, 0.5, true, self.MeleeAttackAnimationDelay)
+				self:SetLocalVelocity(self:GetMoveVelocity() + self:GetAngles():Forward() * 1500)
+				self:VJ_ACT_PLAYACTIVITY(self.AnimTbl_Run, true, 0.5, false, 0)
 				self.LastStuckTime = curTime + 3
+				self.NextChaseTime = curTime + 0.55
 			end
 		end
 		self.StuckTimer = curTime + 1
@@ -245,7 +258,9 @@ function ENT:Think(fromengine)
 		end
 		local spos, epos = self:GetPos(), enemy:GetPos()
 		local blockedByProp, PropEnt = self:DoPropCheck()
-		if(!blockedByProp) then PropEnt = nil end
+		if(!blockedByProp) then
+			PropEnt = nil
+		end
 		self:MultipleMeleeAttacks()
 		if((self.NextAnyMeleeAttack < curTime && (spos:Distance(epos) <= self.MeleeAttackDamageDistance || blockedByProp))) then
 			if(!self.DisableMeleeAttackAnimation) then
@@ -277,6 +292,18 @@ function ENT:OnTaskFailed(failCode, failString)
 		local target = self.CurrentEnemy
 		if(IsValid(target)) then
 			self:RememberUnreachable(target, 5)
+		end
+	else
+		if(failCode == 13) then
+			if(self.NextRedecidePathTime < CurTime()) then
+				local target = self.CurrentEnemy
+				if(IsValid(target) && self:DoPropCheck()) then
+					self:RememberUnreachable(target, 3)
+					self:StartSchedule(schrand)
+					self.NextChaseTime = CurTime() + 2
+				end
+				self.NextRedecidePathTime = CurTime() + 1
+			end
 		end
 	end
 end
@@ -316,6 +343,7 @@ function ENT:DoKilled(dmginfo)
 end
 
 function ENT:OnTakeDamage(dmginfo)
+	if(self.Dead) then return end
 	local damage = dmginfo:GetDamage()
 	if(self:Health() <= damage) then
 		self:DoKilled(dmginfo)
