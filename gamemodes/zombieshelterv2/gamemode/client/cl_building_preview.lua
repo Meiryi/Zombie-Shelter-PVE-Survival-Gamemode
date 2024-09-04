@@ -232,7 +232,7 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 			surface_DrawTexturedRect(x, y, w, imgsx)
 			surface_DrawTexturedRect(x, (y + h + ScreenScaleH(18))  - imgsx, w, imgsx)
 		else
-			if(entity:GetNWBool("HasManualControl")) then
+			if(entity:GetNWBool("HasManualControl") && LocalPlayer():GetPos():Distance(entity:GetPos()) < 186) then
 				ZShelter.ShadowText(ZShelter_GetTranslate("#ManualControl"), "ZShelter-HUDHintSmall", ScrW() *0.5, ScrH() * 0.55, Color(220, 220, 220, 255), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, 1)
 				if(input.IsMouseDown(109) && !middledown) then
 					ZShelter.StartControlMortar(entity)

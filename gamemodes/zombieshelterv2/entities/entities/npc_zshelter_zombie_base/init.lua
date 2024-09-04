@@ -57,8 +57,7 @@ ENT.SoundTbl_MeleeAttackExtra = {"zshelter/zombies/hit1.wav","zshelter/zombies/h
 ENT.SoundTbl_Death = {"zshelter/zombies/zbs_death_1.wav"}
 ENT.DeathSoundPitch1 = 100
 
-ENT.IsRun = false
-ENT.IsWalk = false
+ENT.IsDefaultBase = true
 ENT.CurrentEnemy = nil
 
 ENT.NextAnyMeleeAttack = 0

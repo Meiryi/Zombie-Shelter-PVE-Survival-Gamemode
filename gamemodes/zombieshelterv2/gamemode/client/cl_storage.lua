@@ -108,7 +108,7 @@ function ZShelter.OpenStorageUI()
 	local closemat = Material("zsh/worktable/twitter.png", "smooth")
 
 	local w, h = ScreenScaleH(36), ScreenScaleH(16)
-	local btn = ZShelter.CreateButton(nil, ScrW() / 2 - w / 2, ui:GetTall() + ui:GetY() + dock, w, h, "Close", "ZShelter-HUDFontSmall", Color(255, 255, 255, 255), Color(0, 0, 0, 160), function()
+	local btn = ZShelter.CreateButton(nil, ScrW() / 2 - w / 2, ui:GetTall() + ui:GetY() + dock, w, h, ZShelter_GetTranslate("#Close"), "ZShelter-HUDFontSmall", Color(255, 255, 255, 255), Color(0, 0, 0, 160), function()
 		ui:Remove()
 	end, dock)
 	btn.Think = function()

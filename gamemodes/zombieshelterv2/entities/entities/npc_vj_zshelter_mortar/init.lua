@@ -91,7 +91,7 @@ function ENT:RunControllerCode()
 			ZShelter.UnSetControllingMortar(self.CurrentController, self)
 			return
 		end
-		self.CurrentController:SetPos(self:GetPos())
+		--self.CurrentController:SetPos(self:GetPos())
 	end
 end
 

@@ -55,52 +55,30 @@ function ZShelter.ApplyMutation(ent, mutation)
 end
 
 hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
-	if(ent.IsVJBaseSNPC) then
-    	ent.PriorToKilled = VJ_PriorToKilled
-    	ent.LastValidTime = 0
-    	--[[
+	if(ent.IsVJBaseSNPC && !ent.IsBuilding && !ent.IsDefaultBase) then
+		ent.StuckTimer = 0
     	ent.OverrideMove = function(self, finv)
-    		if(ent.IsBuilding) then return end
-    		if(self:Health() <= 0) then return end
-    		if(self:GetGoalPos() == Vector(0, 0, 0) && IsValid(self:GetEnemy()) && (self.LastValidTime && (CurTime() - self.LastValidTime) > 0.33) && IsValid(ZShelter.Shelter)) then
-    			self:SetEnemy(ZShelter.Shelter)
-    			self:NavSetGoalPos(ZShelter.Shelter:GetPos())
-    			self.LastValidTime = CurTime() + 3
-    		else
-    			if(self.LastValidTime < CurTime()) then
-    				self.LastValidTime = CurTime()
-    			end
-    		end
-    		if(self:GetMoveVelocity():Length2D() <= 0) then
-    			if(self.UnStuckTime && self.UnStuckTime < CurTime()) then
-	    			local vel = Angle(0, math.random(-180, 180), 0):Forward()
-	    			self:SetMoveVelocity(vel * 64)
-	    			self:SetLocalVelocity(vel * 550)
-    				self.UnStuckTime = CurTime() + 0.5
-    			end
-    		else
-    			self.UnStuckTime = CurTime() + 0.25
-    		end
-    		if((self.NextCheckStuckTime && self.NextCheckStuckTime > CurTime()) || (self.LastStuckTime && self.LastStuckTime > CurTime())) then return end
-    		local mins, maxs = self:GetCollisionBounds()
-    		local tr = {
-    			start = self:GetPos(),
-    			endpos = self:GetPos(),
-    			filter = self,
-    			mins = mins,
-    			maxs = maxs,
-    			mask = MASK_SHOT,
-    		}
-    		local ret = util.TraceHull(tr)
-    		if(IsValid(ret.Entity)) then
-    			if(ret.Entity.IsBuilding && !ret.Entity.IsTurret && !ret.Entity.IsTrap && !ret.Entity:GetNWBool("IsResource", false) && !ret.Entity.IgnoreCollision) then
-    				ret.Entity:SetCollisionGroup(0) -- Fuck VJ Base again
-    			end
-    			self.LastStuckTime = CurTime() + 5
-    		end
-    		self.NextCheckStuckTime = CurTime() + 0.33
-    	end
-    	]]
+			if(ent.StuckTimer < CurTime()) then
+				if(!self:IsMoving()) then
+					local tr = {
+						start = ent:GetPos(),
+						endpos = ent:GetPos(),
+						mins = ent:OBBMins(),
+						maxs = ent:OBBMaxs(),
+						filter = ent,
+					}
+					local ret = util.TraceHull(tr).Entity
+					if(IsValid(ret.Entity) && !ret.Entity.IsBuilding) then
+						ent:SetAngles(Angle(0, math.random(-180, 180), 0))
+						ent:SetLocalVelocity(ent:GetMoveVelocity() + ent:GetAngles():Forward() * 1500)
+						ent:VJ_ACT_PLAYACTIVITY(ent.AnimTbl_Run, true, 0.25, false, 0)
+						ent.LastStuckTime = CurTime() + 3
+						ent.NextChaseTime = CurTime() + 0.55
+					end
+				end
+				ent.StuckTimer = CurTime() + 1
+	    	end
+	    end
     end
 	ent.DeathCorpseCollisionType = 0
 	ent.AllowPrintingInChat = false -- Disable following crap
