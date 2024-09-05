@@ -265,6 +265,7 @@ local func = {
 			local sidePanel = ZShelter.CreateScroll(ui, 0, 0, ui:GetWide() * 0.2, ui:GetTall(), Color(0, 0, 0, 0))
 			local sidepadding = ScreenScaleH(4)
 			local sidepadding2x = sidepadding * 2
+			local selectedDiff = 1
 			local colorwide = ScreenScaleH(2)
 			local gap = ScreenScaleH(2)
 			local gap1x = ScreenScaleH(1)
@@ -360,6 +361,7 @@ local func = {
 					local wide = 0
 					local btn = ZShelter.InvisButton(panel, 0, 0, panel:GetWide(), panel:GetTall(), function()
 						container.CurrentPanel = diffpanel
+						selectedDiff = i
 					end)
 					panel.Paint = function()
 						draw.RoundedBox(0, 0, 0, panel:GetWide(), panel:GetTall(), Color(30, 30, 30, 255))
@@ -692,7 +694,7 @@ function ZShelter.GameUI()
 			surface.DrawTexturedRect(_half, _half, half, half)
 		end
 		local gap = ScreenScaleH(1)
-		local wide = ui:GetWide() * 0.15
+		local wide = ui:GetWide() * 0.135
 		local nextX = 0
 		for k,v in ipairs(func) do
 			local panel = ZShelter.CreatePanel(ui.Container, 0, 0, ui.Container:GetWide(), ui.Container:GetTall(), Color(0, 0, 0, 0))
