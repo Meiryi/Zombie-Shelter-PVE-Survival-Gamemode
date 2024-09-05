@@ -109,7 +109,7 @@ function ENT:Think()
 			if(attch) then
 				barrelPos = attch.Pos
 			end
-			sound.Play("shigure/laserturret.wav", self:GetPos(), 100, 100, 0.85)
+			sound.Play("shigure/laserturret.wav", self:GetPos(), 100, 100, 0.75)
 			local e = EffectData()
 				e:SetOrigin(barrelPos)
 				e:SetStart(targetPos)
