@@ -25,12 +25,12 @@
 
 ZShelter.Lang = {}
 
-function ZShelter.AddTranslate(index, tab)
+function ZShelter.L(index, tab)
 	ZShelter.Lang[index] = tab
 end
 
 --[[
-ZShelter.AddTranslate("#",{
+ZShelter.L("#",{
 	["en"] = "",
 	["fr"] = "",
 	["tr"] = "",
@@ -39,7 +39,7 @@ ZShelter.AddTranslate("#",{
 	["zh-CN"] = "",
 })
 ]]
-ZShelter.AddTranslate("#SkillPTS", {
+ZShelter.L("#SkillPTS", {
 	["en"] = "Skill menu - [N] | Remaining points : ",
 	["fr"] = "Menu des compétences - [N] | Points restants : ",
 	["tr"] = "Yetenek menüsü - [N] | Kalan puan : ",
@@ -48,7 +48,7 @@ ZShelter.AddTranslate("#SkillPTS", {
 	["zh-CN"] = "技能树 - [N] | 剩余点数: ",
 })
 
-ZShelter.AddTranslate("#GameStartAfter", {
+ZShelter.L("#GameStartAfter", {
 	["en"] = "Game will start after <VAR> seconds",
 	["fr"] = "La partie commence dans <VAR> secondes",
 	["tr"] = "Oyun <VAR> saniye sonra başlayacak",
@@ -57,7 +57,7 @@ ZShelter.AddTranslate("#GameStartAfter", {
 	["zh-CN"] = "游戏将在 <VAR> 秒后开始",
 })
 
-ZShelter.AddTranslate("#RespawnAfter", {
+ZShelter.L("#RespawnAfter", {
 	["en"] = "Respawn after <VAR> seconds",
 	["fr"] = "Réapparition dans <VAR> secondes",
 	["tr"] = "<VAR> saniye sonra yeniden canlanılacak",
@@ -66,7 +66,7 @@ ZShelter.AddTranslate("#RespawnAfter", {
 	["zh-CN"] = "将在 <VAR> 秒后重生",
 })
 
-ZShelter.AddTranslate("#BuildingHint", {
+ZShelter.L("#BuildingHint", {
 	["en"] = "[Left Click] Build   |  [R] Rotate  |   [Right Click] Cancel",
 	["fr"] = "[Clic Gauche] Construire | [R] Pivoter | [Clic droit] Annuler",
 	["tr"] = "[Sol Tık] İnşa Et   |  [R] Döndür  |   [Sağ Tık] İptal",
@@ -75,16 +75,16 @@ ZShelter.AddTranslate("#BuildingHint", {
 	["zh-CN"] = "[左键] 建造  |  [R] 旋转  |  [右键] 取消",
 })
 
-ZShelter.AddTranslate("#BuildHints", {
+ZShelter.L("#BuildHints", {
 	["en"] = "[B] Build Menu  |  [F2] Game Menu  |  [F6] Config Menu",
 	["fr"] = "[B] Menu de Construction | [F2] Menu du Jeu | [F6] Menu de Configuration",
-	["tr"] = "[B] İnşa Menüsü  |  [F2] Oyun Menüsü  |  [F6] Konfigürasyon Menüsü",
+	["tr"] = "[B] Yapı Menüsü  |  [F2] Oyun Menüsü  |  [F6] Konfig Menüsü",
 	["ru"] = "[B] Постройки  |  [F2] Меню игры  |  [F6] Конфигурация",
 	["zh-TW"] = "[B] 建造清單  |  [F2] 遊戲介面 |  [F6] 設定介面",
 	["zh-CN"] = "[B] 建造菜单  |  [F2] 模式菜单 |  [F6] 设置菜单",
 })
 
-ZShelter.AddTranslate("#Shelter", {
+ZShelter.L("#Shelter", {
 	["en"] = "Shelter",
 	["fr"] = "Abri",
 	["tr"] = "Sığınak",
@@ -93,7 +93,7 @@ ZShelter.AddTranslate("#Shelter", {
 	["zh-CN"] = "避难所",
 })
 
-ZShelter.AddTranslate("#Barricade", {
+ZShelter.L("#Barricade", {
 	["en"] = "Barricade",
 	["fr"] = "Barricade",
 	["tr"] = "Barikat",
@@ -102,7 +102,7 @@ ZShelter.AddTranslate("#Barricade", {
 	["zh-CN"] = "障碍物",
 })
 
-ZShelter.AddTranslate("#Trap", {
+ZShelter.L("#Trap", {
 	["en"] = "Trap",
 	["fr"] = "Piège",
 	["tr"] = "Tuzak",
@@ -111,7 +111,7 @@ ZShelter.AddTranslate("#Trap", {
 	["zh-CN"] = "陷阱",
 })
 
-ZShelter.AddTranslate("#Turret", {
+ZShelter.L("#Turret", {
 	["en"] = "Turret",
 	["fr"] = "Tourelle",
 	["tr"] = "Taret",
@@ -120,7 +120,7 @@ ZShelter.AddTranslate("#Turret", {
 	["zh-CN"] = "炮塔",
 })
 
-ZShelter.AddTranslate("#Generator", {
+ZShelter.L("#Generator", {
 	["en"] = "Generator",
 	["fr"] = "Générateur",
 	["tr"] = "Jeneratör",
@@ -129,7 +129,7 @@ ZShelter.AddTranslate("#Generator", {
 	["zh-CN"] = "发电机",
 })
 
-ZShelter.AddTranslate("#Recovery", {
+ZShelter.L("#Recovery", {
 	["en"] = "Recovery",
 	["fr"] = "Ravitaillement",
 	["tr"] = "İyileşme",
@@ -138,7 +138,7 @@ ZShelter.AddTranslate("#Recovery", {
 	["zh-CN"] = "回复设施",
 })
 
-ZShelter.AddTranslate("#Storage", {
+ZShelter.L("#Storage", {
 	["en"] = "Storage",
 	["fr"] = "Stockage",
 	["tr"] = "Depo",
@@ -147,7 +147,7 @@ ZShelter.AddTranslate("#Storage", {
 	["zh-CN"] = "仓库",
 })
 
-ZShelter.AddTranslate("#Public Construction", {
+ZShelter.L("#Public Construction", {
 	["en"] = "Public Construction",
 	["fr"] = "Construction Public",
 	["tr"] = "Ortak Yapı",
@@ -156,7 +156,7 @@ ZShelter.AddTranslate("#Public Construction", {
 	["zh-CN"] = "公共设施",
 })
 
-ZShelter.AddTranslate("#Wooden Wall", {
+ZShelter.L("#Wooden Wall", {
 	["en"] = "Wooden Wall",
 	["fr"] = "Mur en Bois",
 	["tr"] = "Ahşap Duvar",
@@ -165,7 +165,7 @@ ZShelter.AddTranslate("#Wooden Wall", {
 	["zh-CN"] = "木制墙壁",
 })
 
-ZShelter.AddTranslate("#Wooden Spike Wall", {
+ZShelter.L("#Wooden Spike Wall", {
 	["en"] = "Wooden Spike Wall",
 	["fr"] = "Mur en Bois à Pointes",
 	["ru"] = "Деревянная стена с колышками",
@@ -174,7 +174,7 @@ ZShelter.AddTranslate("#Wooden Spike Wall", {
 	["zh-CN"] = "木制尖刺",
 })
 
-ZShelter.AddTranslate("#Wire Fence", {
+ZShelter.L("#Wire Fence", {
 	["en"] = "Wire Fence",
 	["fr"] = "Clôture en Fil de Fer",
 	["tr"] = "Tel Çit",
@@ -183,7 +183,7 @@ ZShelter.AddTranslate("#Wire Fence", {
 	["zh-CN"] = "铁丝网",
 })
 
-ZShelter.AddTranslate("#Metal Wall", {
+ZShelter.L("#Metal Wall", {
 	["en"] = "Metal Wall",
 	["fr"] = "Mur en Métal",
 	["tr"] = "Metal Duvar",
@@ -192,7 +192,7 @@ ZShelter.AddTranslate("#Metal Wall", {
 	["zh-CN"] = "铁制墙壁",
 })
 
-ZShelter.AddTranslate("#Reinforced Wire Fence", {
+ZShelter.L("#Reinforced Wire Fence", {
 	["en"] = "Reinforced Wire Fence",
 	["fr"] = "Clôture en Fil de Fer Renforcé",
 	["tr"] = "Güçlendirilmiş Tel Çit",
@@ -201,7 +201,7 @@ ZShelter.AddTranslate("#Reinforced Wire Fence", {
 	["zh-CN"] = "强化铁丝网",
 })
 
-ZShelter.AddTranslate("#Metal Gate", {
+ZShelter.L("#Metal Gate", {
 	["en"] = "Metal Gate",
 	["fr"] = "Portail en Métal",
 	["tr"] = "Metal Geçit",
@@ -210,7 +210,7 @@ ZShelter.AddTranslate("#Metal Gate", {
 	["zh-CN"] = "铁丝门",
 })
 
-ZShelter.AddTranslate("#Metal Barricade", {
+ZShelter.L("#Metal Barricade", {
 	["en"] = "Metal Barricade",
 	["fr"] = "Barricade en Métal",
 	["tr"] = "Metal Barikat",
@@ -219,7 +219,7 @@ ZShelter.AddTranslate("#Metal Barricade", {
 	["zh-CN"] = "铁制路障",
 })
 
-ZShelter.AddTranslate("#Concrete Wall", {
+ZShelter.L("#Concrete Wall", {
 	["en"] = "Concrete Wall",
 	["fr"] = "Mur en Béton",
 	["tr"] = "Beton Duvar",
@@ -228,7 +228,7 @@ ZShelter.AddTranslate("#Concrete Wall", {
 	["zh-CN"] = "水泥墙",
 })
 
-ZShelter.AddTranslate("#Concrete Gate", {
+ZShelter.L("#Concrete Gate", {
 	["en"] = "Concrete Gate",
 	["fr"] = "Portail en Béton",
 	["tr"] = "Beton Geçit",
@@ -237,7 +237,7 @@ ZShelter.AddTranslate("#Concrete Gate", {
 	["zh-CN"] = "钢制铁门",
 })
 
-ZShelter.AddTranslate("#Reinforced Concrete Wall", {
+ZShelter.L("#Reinforced Concrete Wall", {
 	["en"] = "Reinforced Concrete Wall",
 	["fr"] = "Mur en Béton Armé",
 	["tr"] = "Güçlendirilmiş Beton Duvar",
@@ -246,7 +246,7 @@ ZShelter.AddTranslate("#Reinforced Concrete Wall", {
 	["zh-CN"] = "强化水泥墙",
 })
 
-ZShelter.AddTranslate("#Concrete Barricade", {
+ZShelter.L("#Concrete Barricade", {
 	["en"] = "Concrete Barricade",
 	["fr"] = "Barricade en Béton",
 	["tr"] = "Beton Barikat",
@@ -255,7 +255,7 @@ ZShelter.AddTranslate("#Concrete Barricade", {
 	["zh-CN"] = "水泥路障",
 })
 
-ZShelter.AddTranslate("#Landmine", {
+ZShelter.L("#Landmine", {
 	["en"] = "Landmine",
 	["fr"] = "Mine",
 	["tr"] = "Mayın",
@@ -264,7 +264,7 @@ ZShelter.AddTranslate("#Landmine", {
 	["zh-CN"] = "地雷",
 })
 
-ZShelter.AddTranslate("#Razorwire", {
+ZShelter.L("#Razorwire", {
 	["en"] = "Razorwire",
 	["fr"] = "Barbelé",
 	["tr"] = "Dikenli Tel",
@@ -273,16 +273,16 @@ ZShelter.AddTranslate("#Razorwire", {
 	["zh-CN"] = "铁丝网",
 })
 
-ZShelter.AddTranslate("#Claymore", {
+ZShelter.L("#Claymore", {
 	["en"] = "Claymore",
 	["fr"] = "Claymore",
-	["tr"] = "Kılıç",
+	["tr"] = "AP Mayını",
 	["ru"] = "Противопехотная мина",
 	["zh-TW"] = "闊刀地雷",
 	["zh-CN"] = "阔剑地雷",
 })
 
-ZShelter.AddTranslate("#Freeze Bomb", {
+ZShelter.L("#Freeze Bomb", {
 	["en"] = "Freeze Bomb",
 	["fr"] = "Bombe Givrante",
 	["tr"] = "Dondurucu Bomba",
@@ -291,7 +291,7 @@ ZShelter.AddTranslate("#Freeze Bomb", {
 	["zh-CN"] = "冷冻炸弹",
 })
 
-ZShelter.AddTranslate("#Spike Trap", {
+ZShelter.L("#Spike Trap", {
 	["en"] = "Spike Trap",
 	["fr"] = "Piège à Pointes",
 	["tr"] = "Dikenli Tuzak",
@@ -300,7 +300,7 @@ ZShelter.AddTranslate("#Spike Trap", {
 	["zh-CN"] = "尖刺陷阱",
 })
 
-ZShelter.AddTranslate("#Propeller Trap", {
+ZShelter.L("#Propeller Trap", {
 	["en"] = "Propeller Trap",
 	["fr"] = "Piège à Hélice",
 	["tr"] = "Pervane Tuzağı",
@@ -309,7 +309,7 @@ ZShelter.AddTranslate("#Propeller Trap", {
 	["zh-CN"] = "锯刃陷阱",
 })
 
-ZShelter.AddTranslate("#Flame Trap", {
+ZShelter.L("#Flame Trap", {
 	["en"] = "Flame Trap",
 	["fr"] = "Mine Incendiaire",
 	["tr"] = "Alev Tuzağı",
@@ -318,7 +318,7 @@ ZShelter.AddTranslate("#Flame Trap", {
 	["zh-CN"] = "喷火陷阱",
 })
 
-ZShelter.AddTranslate("#CMB Trap", {
+ZShelter.L("#CMB Trap", {
 	["en"] = "Cryo Mine",
 	["fr"] = "Mine Cryogénique",
 	["tr"] = "Dondurucu Mayın",
@@ -327,7 +327,7 @@ ZShelter.AddTranslate("#CMB Trap", {
 	["zh-CN"] = "冻结地雷",
 })
 
-ZShelter.AddTranslate("#Gravity Mine", {
+ZShelter.L("#Gravity Mine", {
 	["en"] = "Gravity Mine",
 	["fr"] = "Mine Magnétique",
 	["tr"] = "Yer Çekimi Mayını",
@@ -336,7 +336,7 @@ ZShelter.AddTranslate("#Gravity Mine", {
 	["zh-CN"] = "引力地雷",
 })
 
-ZShelter.AddTranslate("Laser Trap", {
+ZShelter.L("Laser Trap", {
 	["en"] = "Laser Trap",
 	["fr"] = "Piège Laser",
 	["tr"] = "Lazer Tuzağı",
@@ -345,7 +345,7 @@ ZShelter.AddTranslate("Laser Trap", {
 	["zh-CN"] = "雷射陷阱",
 })
 
-ZShelter.AddTranslate("#Basic Turret", {
+ZShelter.L("#Basic Turret", {
 	["en"] = "Basic Turret",
 	["fr"] = "Tourelle Basique",
 	["tr"] = "Temel Taret",
@@ -354,7 +354,7 @@ ZShelter.AddTranslate("#Basic Turret", {
 	["zh-CN"] = "炮塔",
 })
 
-ZShelter.AddTranslate("#Mounted Machine Gun", {
+ZShelter.L("#Mounted Machine Gun", {
 	["en"] = "Mounted Machine Gun",
 	["fr"] = "Mitrailleuse Montée",
 	["tr"] = "Monteli Makineli Tüfek",
@@ -363,7 +363,7 @@ ZShelter.AddTranslate("#Mounted Machine Gun", {
 	["zh-CN"] = "固定式炮塔",
 })
 
-ZShelter.AddTranslate("#Freeze Turret", {
+ZShelter.L("#Freeze Turret", {
 	["en"] = "Freeze Turret",
 	["fr"] = "Tourelle Givrante",
 	["tr"] = "Dondurucu Taret",
@@ -372,7 +372,7 @@ ZShelter.AddTranslate("#Freeze Turret", {
 	["zh-CN"] = "冷冻炮塔",
 })
 
-ZShelter.AddTranslate("#Mending Tower", {
+ZShelter.L("#Mending Tower", {
 	["en"] = "Mending Tower",
 	["fr"] = "Tour de Réparation",
 	["tr"] = "Tamir Kulesi",
@@ -381,7 +381,7 @@ ZShelter.AddTranslate("#Mending Tower", {
 	["zh-CN"] = "建筑修复器",
 })
 
-ZShelter.AddTranslate("#Flame Turret", {
+ZShelter.L("#Flame Turret", {
 	["en"] = "Flame Turret",
 	["fr"] = "Tourelle Lance-Flamme",
 	["tr"] = "Alev Tareti",
@@ -390,7 +390,7 @@ ZShelter.AddTranslate("#Flame Turret", {
 	["zh-CN"] = "喷火炮塔",
 })
 
-ZShelter.AddTranslate("#Blast Turret", {
+ZShelter.L("#Blast Turret", {
 	["en"] = "Blast Turret",
 	["fr"] = "Tourelle Explosive",
 	["tr"] = "Bomba Tareti",
@@ -399,7 +399,7 @@ ZShelter.AddTranslate("#Blast Turret", {
 	["zh-CN"] = "爆破炮塔",
 })
 
-ZShelter.AddTranslate("#Burst Shotgun Turret", {
+ZShelter.L("#Burst Shotgun Turret", {
 	["en"] = "Burst Shotgun Turret",
 	["fr"] = "Tourelle à Rafales",
 	["tr"] = "Pompalı Taret",
@@ -408,7 +408,7 @@ ZShelter.AddTranslate("#Burst Shotgun Turret", {
 	["zh-CN"] = "连发霰弹炮塔",
 })
 
-ZShelter.AddTranslate("#Enemy Scanner", {
+ZShelter.L("#Enemy Scanner", {
 	["en"] = "Enemy Scanner",
 	["fr"] = "Scanner d'Ennemis",
 	["tr"] = "Düşman Tarayıcı",
@@ -417,7 +417,7 @@ ZShelter.AddTranslate("#Enemy Scanner", {
 	["zh-CN"] = "扫描器",
 })
 
-ZShelter.AddTranslate("#Minigun Turret", {
+ZShelter.L("#Minigun Turret", {
 	["en"] = "Minigun Turret",
 	["fr"] = "Tourelle Minigun",
 	["tr"] = "Minigun Tareti",
@@ -426,7 +426,7 @@ ZShelter.AddTranslate("#Minigun Turret", {
 	["zh-CN"] = "机关枪炮塔",
 })
 
-ZShelter.AddTranslate("#Pusher Tower", {
+ZShelter.L("#Pusher Tower", {
 	["en"] = "Pusher Tower",
 	["fr"] = "Tourelle Répulsive",
 	["tr"] = "İtici Kule",
@@ -435,7 +435,7 @@ ZShelter.AddTranslate("#Pusher Tower", {
 	["zh-CN"] = "位移炮塔",
 })
 
-ZShelter.AddTranslate("#Railgun Cannon", {
+ZShelter.L("#Railgun Cannon", {
 	["en"] = "Railgun Cannon",
 	["fr"] = "Canon Électromagnétique",
 	["tr"] = "Elektromanyetik Top",
@@ -444,7 +444,7 @@ ZShelter.AddTranslate("#Railgun Cannon", {
 	["zh-CN"] = "电磁炮",
 })
 
-ZShelter.AddTranslate("#Electric Defense Tower", {
+ZShelter.L("#Electric Defense Tower", {
 	["en"] = "Electric Defense Tower",
 	["fr"] = "Tour Tesla",
 	["tr"] = "Elektrikli Savunma Kulesi",
@@ -453,7 +453,7 @@ ZShelter.AddTranslate("#Electric Defense Tower", {
 	["zh-CN"] = "电磁防御塔",
 })
 
-ZShelter.AddTranslate("#Mortar Cannon", {
+ZShelter.L("#Mortar Cannon", {
 	["en"] = "Mortar Cannon",
 	["fr"] = "Mortier",
 	["tr"] = "Havan Topu",
@@ -462,7 +462,7 @@ ZShelter.AddTranslate("#Mortar Cannon", {
 	["zh-CN"] = "迫击炮",
 })
 
-ZShelter.AddTranslate("#Plasma Turret", {
+ZShelter.L("#Plasma Turret", {
 	["en"] = "Plasma Turret",
 	["fr"] = "Tourelle Plasma",
 	["tr"] = "Plazma Tareti",
@@ -471,7 +471,7 @@ ZShelter.AddTranslate("#Plasma Turret", {
 	["zh-CN"] = "等离子体炮塔",
 })
 
-ZShelter.AddTranslate("#Laser Turret", {
+ZShelter.L("#Laser Turret", {
 	["en"] = "Laser Turret",
 	["fr"] = "Tourelle Laser",
 	["tr"] = "Lazer Tareti",
@@ -480,7 +480,7 @@ ZShelter.AddTranslate("#Laser Turret", {
 	["zh-CN"] = "雷射炮塔",
 })
 
-ZShelter.AddTranslate("#Gauss Turret", {
+ZShelter.L("#Gauss Turret", {
     ["en"] = "Gauss Turret",
 	["fr"] = "Tourelle Gauss",
     ["tr"] = "Gaus Tareti",
@@ -489,16 +489,16 @@ ZShelter.AddTranslate("#Gauss Turret", {
     ["zh-CN"] = "高斯炮",
 })
 
-ZShelter.AddTranslate("#Laser Minigun Turret", {
+ZShelter.L("#Laser Minigun Turret", {
     ["en"] = "Laser Minigun Turret",
 	["fr"] = "",
-    ["tr"] = "",
+    ["tr"] = "Lazer Minigun Taret",
     ["ru"] = "",
     ["zh-TW"] = "雷射機槍塔",
     ["zh-CN"] = "雷射机枪炮塔",
 })
 
-ZShelter.AddTranslate("#Combine Mortar Cannon", {
+ZShelter.L("#Combine Mortar Cannon", {
 	["en"] = "Combine Mortar Cannon",
 	["fr"] = "Mortier du Cartel",
 	["tr"] = "Combine Havan Topu",
@@ -507,7 +507,7 @@ ZShelter.AddTranslate("#Combine Mortar Cannon", {
 	["zh-CN"] = "联合军迫击炮",
 })
 
-ZShelter.AddTranslate("#Basic Generator", {
+ZShelter.L("#Basic Generator", {
 	["en"] = "Basic Generator",
 	["fr"] = "Générateur Basique",
 	["tr"] = "Temel Seviye Jeneratör",
@@ -516,7 +516,7 @@ ZShelter.AddTranslate("#Basic Generator", {
 	["zh-CN"] = "小型发电机",
 })
 
-ZShelter.AddTranslate("#Medium Generator", {
+ZShelter.L("#Medium Generator", {
 	["en"] = "Medium Generator",
 	["fr"] = "Générateur Moyen",
 	["tr"] = "Orta Seviye Jeneratör",
@@ -525,7 +525,7 @@ ZShelter.AddTranslate("#Medium Generator", {
 	["zh-CN"] = "中型发电机",
 })
 
-ZShelter.AddTranslate("#Large Generator", {
+ZShelter.L("#Large Generator", {
 	["en"] = "Large Generator",
 	["fr"] = "Grand Générateur",
 	["tr"] = "Gelişmiş Jeneratör",
@@ -534,7 +534,7 @@ ZShelter.AddTranslate("#Large Generator", {
 	["zh-CN"] = "大型发电机",
 })
 
-ZShelter.AddTranslate("#Mega Generator", {
+ZShelter.L("#Mega Generator", {
 	["en"] = "Mega Generator",
 	["fr"] = "Méga Générateur",
 	["tr"] = "Mega Jeneratör",
@@ -543,7 +543,7 @@ ZShelter.AddTranslate("#Mega Generator", {
 	["zh-CN"] = "超大型发电机",
 })
 
-ZShelter.AddTranslate("#Resource Generator", {
+ZShelter.L("#Resource Generator", {
 	["en"] = "Resource Generator",
 	["fr"] = "Générateur de Ressources",
 	["tr"] = "Kaynak Jeneratörü",
@@ -552,7 +552,7 @@ ZShelter.AddTranslate("#Resource Generator", {
 	["zh-CN"] = "资源生成器",
 })
 
-ZShelter.AddTranslate("#Healing Station", {
+ZShelter.L("#Healing Station", {
 	["en"] = "Healing Station",
 	["fr"] = "Station de Soins",
 	["tr"] = "Sağlık İstasyonu",
@@ -561,7 +561,7 @@ ZShelter.AddTranslate("#Healing Station", {
 	["zh-CN"] = "医疗站",
 })
 
-ZShelter.AddTranslate("#Armor Box", {
+ZShelter.L("#Armor Box", {
 	["en"] = "Armor Box",
 	["fr"] = "Boîte d'Armure",
 	["tr"] = "Zırh Kutusu",
@@ -570,7 +570,7 @@ ZShelter.AddTranslate("#Armor Box", {
 	["zh-CN"] = "护甲箱",
 })
 
-ZShelter.AddTranslate("#Campfire", {
+ZShelter.L("#Campfire", {
 	["en"] = "Campfire",
 	["fr"] = "Feu de Camp",
 	["tr"] = "Kamp Ateşi",
@@ -579,7 +579,7 @@ ZShelter.AddTranslate("#Campfire", {
 	["zh-CN"] = "营火",
 })
 
-ZShelter.AddTranslate("#Basic Storage", {
+ZShelter.L("#Basic Storage", {
 	["en"] = "Basic Storage",
 	["fr"] = "Stockage Basique",
 	["tr"] = "Temel Seviye Depo",
@@ -588,7 +588,7 @@ ZShelter.AddTranslate("#Basic Storage", {
 	["zh-CN"] = "小型仓库",
 })
 
-ZShelter.AddTranslate("#Medium Storage", {
+ZShelter.L("#Medium Storage", {
 	["en"] = "Medium Storage",
 	["fr"] = "Stockage Moyen",
 	["tr"] = "Orta Seviye Depo",
@@ -597,7 +597,7 @@ ZShelter.AddTranslate("#Medium Storage", {
 	["zh-CN"] = "中型仓库",
 })
 
-ZShelter.AddTranslate("#Large Storage", {
+ZShelter.L("#Large Storage", {
 	["en"] = "Large Storage",
 	["fr"] = "Grand Stockage",
 	["tr"] = "Gelişmiş Depo",
@@ -606,7 +606,7 @@ ZShelter.AddTranslate("#Large Storage", {
 	["zh-CN"] = "大型仓库",
 })
 
-ZShelter.AddTranslate("#Worktable", {
+ZShelter.L("#Worktable", {
 	["en"] = "Worktable",
 	["fr"] = "Établi",
 	["tr"] = "Çalışma Masası",
@@ -615,7 +615,7 @@ ZShelter.AddTranslate("#Worktable", {
 	["zh-CN"] = "工作台",
 })
 
-ZShelter.AddTranslate("#Ammo Supply Crate", {
+ZShelter.L("#Ammo Supply Crate", {
 	["en"] = "Ammo Supply Crate",
 	["fr"] = "Caisse de Munitions",
 	["tr"] = "Cephane İkmal Sandığı",
@@ -624,7 +624,7 @@ ZShelter.AddTranslate("#Ammo Supply Crate", {
 	["zh-CN"] = "弹药补给箱",
 })
 
-ZShelter.AddTranslate("#Cement Mixer", {
+ZShelter.L("#Cement Mixer", {
 	["en"] = "Cement Mixer",
 	["fr"] = "Centrale à Béton",
 	["tr"] = "Beton Karıştırıcı",
@@ -633,7 +633,7 @@ ZShelter.AddTranslate("#Cement Mixer", {
 	["zh-CN"] = "水泥搅拌机",
 })
 
-ZShelter.AddTranslate("#Comm Tower", {
+ZShelter.L("#Comm Tower", {
 	["en"] = "Comm Tower",
 	["fr"] = "Tour Radio",
 	["tr"] = "İletişim Kulesi",
@@ -642,7 +642,7 @@ ZShelter.AddTranslate("#Comm Tower", {
 	["zh-CN"] = "通讯塔",
 })
 
-ZShelter.AddTranslate("#Ready", {
+ZShelter.L("#Ready", {
 	["en"] = "Ready",
 	["fr"] = "Prêt",
 	["tr"] = "Hazır",
@@ -651,7 +651,7 @@ ZShelter.AddTranslate("#Ready", {
 	["zh-CN"] = "准备",
 })
 
-ZShelter.AddTranslate("#Not Ready", {
+ZShelter.L("#Not Ready", {
 	["en"] = "Not Ready",
 	["fr"] = "En Attente",
 	["tr"] = "Hazır Değil",
@@ -660,7 +660,7 @@ ZShelter.AddTranslate("#Not Ready", {
 	["zh-CN"] = "未准备",
 })
 
-ZShelter.AddTranslate("#ReadyHint", {
+ZShelter.L("#ReadyHint", {
 	["en"] = "Press F4 to ready",
 	["fr"] = "Appuyez sur F4 pour vous mettre prêt",
 	["tr"] = "Hazır olmak için F4'e basın",
@@ -669,7 +669,7 @@ ZShelter.AddTranslate("#ReadyHint", {
 	["zh-CN"] = "F4 - 准备",
 })
 
-ZShelter.AddTranslate("#Map", {
+ZShelter.L("#Map", {
 	["en"] = "Map",
 	["fr"] = "Carte",
 	["tr"] = "Harita",
@@ -678,7 +678,7 @@ ZShelter.AddTranslate("#Map", {
 	["zh-CN"] = "地图",
 })
 
-ZShelter.AddTranslate("#Dif1", {
+ZShelter.L("#Dif1", {
 	["en"] = "Easy",
 	["fr"] = "Facile",
 	["tr"] = "Kolay",
@@ -687,7 +687,7 @@ ZShelter.AddTranslate("#Dif1", {
 	["zh-CN"] = "简单",
 })
 
-ZShelter.AddTranslate("#Dif2", {
+ZShelter.L("#Dif2", {
 	["en"] = "Normal",
 	["fr"] = "Normale",
 	["tr"] = "Normal",
@@ -696,7 +696,7 @@ ZShelter.AddTranslate("#Dif2", {
 	["zh-CN"] = "普通",
 })
 
-ZShelter.AddTranslate("#Dif3", {
+ZShelter.L("#Dif3", {
 	["en"] = "Hard",
 	["fr"] = "Difficile",
 	["tr"] = "Zor",
@@ -705,7 +705,7 @@ ZShelter.AddTranslate("#Dif3", {
 	["zh-CN"] = "困难",
 })
 
-ZShelter.AddTranslate("#Dif4", {
+ZShelter.L("#Dif4", {
 	["en"] = "Expert",
 	["fr"] = "Expert",
 	["tr"] = "Uzman",
@@ -714,7 +714,7 @@ ZShelter.AddTranslate("#Dif4", {
 	["zh-CN"] = "专家",
 })
 
-ZShelter.AddTranslate("#Dif5", {
+ZShelter.L("#Dif5", {
 	["en"] = "Insane",
 	["fr"] = "Extrême",
 	["tr"] = "Deli",
@@ -723,7 +723,7 @@ ZShelter.AddTranslate("#Dif5", {
 	["zh-CN"] = "疯狂",
 })
 
-ZShelter.AddTranslate("#Dif6", {
+ZShelter.L("#Dif6", {
 	["en"] = "Nightmare",
 	["fr"] = "Cauchemar",
 	["tr"] = "Kâbus",
@@ -732,7 +732,7 @@ ZShelter.AddTranslate("#Dif6", {
 	["zh-CN"] = "噩梦",
 })
 
-ZShelter.AddTranslate("#Dif7", {
+ZShelter.L("#Dif7", {
 	["en"] = "Apocalypse",
 	["fr"] = "Apocalypse",
 	["tr"] = "Kıyamet",
@@ -741,7 +741,7 @@ ZShelter.AddTranslate("#Dif7", {
 	["zh-CN"] = "天启",
 })
 
-ZShelter.AddTranslate("#Dif8", {
+ZShelter.L("#Dif8", {
 	["en"] = "Apocalypse+",
 	["fr"] = "Apocalypse+",
 	["tr"] = "Kıyamet+",
@@ -750,7 +750,7 @@ ZShelter.AddTranslate("#Dif8", {
 	["zh-CN"] = "天启+",
 })
 
-ZShelter.AddTranslate("#Dif9", {
+ZShelter.L("#Dif9", {
 	["en"] = "Hell",
 	["fr"] = "Enfer",
 	["tr"] = "Cehennem",
@@ -759,7 +759,7 @@ ZShelter.AddTranslate("#Dif9", {
 	["zh-CN"] = "地狱",
 })
 
-ZShelter.AddTranslate("#Woods", {
+ZShelter.L("#Woods", {
 	["en"] = "Woods",
 	["fr"] = "Bois",
 	["tr"] = "Ahşap",
@@ -768,7 +768,7 @@ ZShelter.AddTranslate("#Woods", {
 	["zh-CN"] = "木材",
 })
 
-ZShelter.AddTranslate("#Irons", {
+ZShelter.L("#Irons", {
 	["en"] = "Irons",
 	["fr"] = "Fers",
 	["tr"] = "Demir",
@@ -777,7 +777,7 @@ ZShelter.AddTranslate("#Irons", {
 	["zh-CN"] = "钢材",
 })
 
-ZShelter.AddTranslate("#Contribute", {
+ZShelter.L("#Contribute", {
 	["en"] = "Contribute",
 	["fr"] = "Contribution",
 	["tr"] = "Katkı",
@@ -786,7 +786,7 @@ ZShelter.AddTranslate("#Contribute", {
 	["zh-CN"] = "贡献度",
 })
 
-ZShelter.AddTranslate("#Deaths", {
+ZShelter.L("#Deaths", {
 	["en"] = "Deaths",
 	["fr"] = "Morts",
 	["tr"] = "Ölüm",
@@ -795,7 +795,7 @@ ZShelter.AddTranslate("#Deaths", {
 	["zh-CN"] = "死亡",
 })
 
-ZShelter.AddTranslate("#Name", {
+ZShelter.L("#Name", {
 	["en"] = "Name",
 	["fr"] = "Nom",
 	["tr"] = "Ad",
@@ -804,7 +804,7 @@ ZShelter.AddTranslate("#Name", {
 	["zh-CN"] = "名称",
 })
 
-ZShelter.AddTranslate("#TK", {
+ZShelter.L("#TK", {
 	["en"] = "TK",
 	["fr"] = "TK",
 	["tr"] = "TÖ",
@@ -813,7 +813,7 @@ ZShelter.AddTranslate("#TK", {
 	["zh-CN"] = "误伤",
 })
 
-ZShelter.AddTranslate("#CommHint", {
+ZShelter.L("#CommHint", {
 	["en"] = "Comm Tower can be used now!",
 	["fr"] = "La Tour Radio peut être utilisée maintenant !",
 	["tr"] = "İletişim kulesi şimdi kullanılabilir!",
@@ -822,7 +822,7 @@ ZShelter.AddTranslate("#CommHint", {
 	["zh-CN"] = "可以使用通讯塔了!",
 })
 
-ZShelter.AddTranslate("#SummeryStats", {
+ZShelter.L("#SummeryStats", {
 	["en"] = "Stats",
 	["fr"] = "Statistiques",
 	["tr"] = "İstatistik",
@@ -831,7 +831,7 @@ ZShelter.AddTranslate("#SummeryStats", {
 	["zh-CN"] = "总结",
 })
 
-ZShelter.AddTranslate("#TotalPlayTime", {
+ZShelter.L("#TotalPlayTime", {
 	["en"] = "Total Playtime : <VAR>",
 	["fr"] = "Durée de la partie : <VAR>",
 	["tr"] = "Toplam Oynama Süresi: <VAR>",
@@ -840,7 +840,7 @@ ZShelter.AddTranslate("#TotalPlayTime", {
 	["zh-CN"] = "总游玩时间: <VAR>",
 })
 
-ZShelter.AddTranslate("#TotalKills", {
+ZShelter.L("#TotalKills", {
 	["en"] = "Total Enemy Killed",
 	["fr"] = "Ennemis Tués",
 	["tr"] = "Toplam Öldürülen Düşman",
@@ -849,7 +849,7 @@ ZShelter.AddTranslate("#TotalKills", {
 	["zh-CN"] = "总击杀数",
 })
 
-ZShelter.AddTranslate("#TotalWoods", {
+ZShelter.L("#TotalWoods", {
 	["en"] = "Total Woods Gathered",
 	["fr"] = "Bois collectés",
 	["tr"] = "Toplam Biriktirilen Ahşap",
@@ -858,7 +858,7 @@ ZShelter.AddTranslate("#TotalWoods", {
 	["zh-CN"] = "总木材采集数",
 })
 
-ZShelter.AddTranslate("#TotalIrons", {
+ZShelter.L("#TotalIrons", {
 	["en"] = "Total Irons Gathered",
 	["fr"] = "Fers collectés",
 	["tr"] = "Toplam Biriktirilen Demir",
@@ -867,7 +867,7 @@ ZShelter.AddTranslate("#TotalIrons", {
 	["zh-CN"] = "总钢材采集数",
 })
 
-ZShelter.AddTranslate("#TotalBuilds", {
+ZShelter.L("#TotalBuilds", {
 	["en"] = "Total Structure Built",
 	["fr"] = "Structure Construite",
 	["tr"] = "Toplam İnşa Edilen Yapı",
@@ -876,7 +876,7 @@ ZShelter.AddTranslate("#TotalBuilds", {
 	["zh-CN"] = "总建造数",
 })
 
-ZShelter.AddTranslate("#PublicStorageHint", {
+ZShelter.L("#PublicStorageHint", {
 	["en"] = "Resources in storage",
 	["fr"] = "Ressources en Stock",
 	["tr"] = "Kaynaklar deponda",
@@ -885,7 +885,7 @@ ZShelter.AddTranslate("#PublicStorageHint", {
 	["zh-CN"] = "仓库资源",
 })
 
-ZShelter.AddTranslate("#PersonalStorageHint", {
+ZShelter.L("#PersonalStorageHint", {
 	["en"] = "Resources in backpack",
 	["fr"] = "Ressources dans le sac à dos",
 	["tr"] = "Kaynaklar sırt çantanda",
@@ -894,7 +894,7 @@ ZShelter.AddTranslate("#PersonalStorageHint", {
 	["zh-CN"] = "背包资源",
 })
 
-ZShelter.AddTranslate("#UpgradeHint", {
+ZShelter.L("#UpgradeHint", {
 	["en"] = "Hold E to upgrade",
 	["fr"] = "Restez appuyé sur E pour améliorer",
 	["tr"] = "Geliştirmek için E'ye basılı tut",
@@ -903,7 +903,7 @@ ZShelter.AddTranslate("#UpgradeHint", {
 	["zh-CN"] = "按住使用键升级",
 })
 
-ZShelter.AddTranslate("#Combat", {
+ZShelter.L("#Combat", {
 	["en"] = "Combat",
 	["fr"] = "Combat",
 	["tr"] = "Savaş",
@@ -912,7 +912,7 @@ ZShelter.AddTranslate("#Combat", {
 	["zh-CN"] = "战斗",
 })
 
-ZShelter.AddTranslate("#Survival", {
+ZShelter.L("#Survival", {
 	["en"] = "Survival",
 	["fr"] = "Survie",
 	["tr"] = "Hayatta Kalma",
@@ -921,7 +921,7 @@ ZShelter.AddTranslate("#Survival", {
 	["zh-CN"] = "生存",
 })
 
-ZShelter.AddTranslate("#Engineer", {
+ZShelter.L("#Engineer", {
 	["en"] = "Engineer",
 	["fr"] = "Ingénierie",
 	["tr"] = "Mühendislik",
@@ -930,7 +930,7 @@ ZShelter.AddTranslate("#Engineer", {
 	["zh-CN"] = "工程师",
 })
 
-ZShelter.AddTranslate("#Pistol", {
+ZShelter.L("#Pistol", {
 	["en"] = "Pistol",
 	["fr"] = "Pistolet",
 	["tr"] = "Tabanca",
@@ -939,7 +939,7 @@ ZShelter.AddTranslate("#Pistol", {
 	["zh-CN"] = "手枪",
 })
 
-ZShelter.AddTranslate("#SMG", {
+ZShelter.L("#SMG", {
 	["en"] = "SMG",
 	["fr"] = "SMG",
 	["tr"] = "SMG",
@@ -948,7 +948,7 @@ ZShelter.AddTranslate("#SMG", {
 	["zh-CN"] = "冲锋枪",
 })
 
-ZShelter.AddTranslate("#Shotgun", {
+ZShelter.L("#Shotgun", {
 	["en"] = "Shotgun",
 	["fr"] = "Fusil à Pompe",
 	["tr"] = "Pompalı Tüfek",
@@ -957,7 +957,7 @@ ZShelter.AddTranslate("#Shotgun", {
 	["zh-CN"] = "霰弹枪",
 })
 
-ZShelter.AddTranslate("#Rifle", {
+ZShelter.L("#Rifle", {
 	["en"] = "Rifle",
 	["fr"] = "Fusil",
 	["tr"] = "Tüfek",
@@ -966,7 +966,7 @@ ZShelter.AddTranslate("#Rifle", {
 	["zh-CN"] = "步枪",
 })
 
-ZShelter.AddTranslate("#Heavy", {
+ZShelter.L("#Heavy", {
 	["en"] = "Heavy",
 	["fr"] = "Arme Lourde",
 	["tr"] = "Ağır",
@@ -975,7 +975,7 @@ ZShelter.AddTranslate("#Heavy", {
 	["zh-CN"] = "重型武器",
 })
 
-ZShelter.AddTranslate("#Close", {
+ZShelter.L("#Close", {
 	["en"] = "Close",
 	["fr"] = "Fermer",
 	["tr"] = "Kapat",
@@ -984,7 +984,7 @@ ZShelter.AddTranslate("#Close", {
 	["zh-CN"] = "关闭",
 })
 
-ZShelter.AddTranslate("#ShelterNick", {
+ZShelter.L("#ShelterNick", {
 	["en"] = "Tier <VAR> Shelter",
 	["fr"] = "Abri Niveau <VAR>",
 	["tr"] = "Seviye <VAR> Sığınak",
@@ -993,7 +993,7 @@ ZShelter.AddTranslate("#ShelterNick", {
 	["zh-CN"] = "<VAR> 级避难所",
 })
 
-ZShelter.AddTranslate("#ShelterPos", {
+ZShelter.L("#ShelterPos", {
 	["en"] = "Shelter Spawn Point",
 	["fr"] = "Point d'Apparitions de l'Abri",
 	["tr"] = "Sığınak Canlanma Noktası",
@@ -1002,7 +1002,7 @@ ZShelter.AddTranslate("#ShelterPos", {
 	["zh-CN"] = "避难所生成点",
 })
 
-ZShelter.AddTranslate("#ShelterDesc", {
+ZShelter.L("#ShelterDesc", {
 	["en"] = "Position for shelter to spawn, require at least one to make the game playable",
 	["fr"] = "Emplacement pour la création de l'abri, il est nécessaire d'en avoir un pour que le jeu soit jouable.",
 	["tr"] = "Canlanmak için sığınak pozisyonu, oyunun oynanabilmesi için en az bir tane gerekli",
@@ -1011,7 +1011,7 @@ ZShelter.AddTranslate("#ShelterDesc", {
 	["zh-CN"] = "至少需要有一个避难所生成点才可进行游玩",
 })
 
-ZShelter.AddTranslate("#BarricadePos", {
+ZShelter.L("#BarricadePos", {
 	["en"] = "Barricades",
 	["fr"] = "Barricades",
 	["tr"] = "Barikatlar",
@@ -1020,7 +1020,7 @@ ZShelter.AddTranslate("#BarricadePos", {
 	["zh-CN"] = "障碍物",
 })
 
-ZShelter.AddTranslate("#BarricadeDesc", {
+ZShelter.L("#BarricadeDesc", {
 	["en"] = "A big container used to block player's path",
 	["fr"] = "Un grand conteneur utilisé pour bloquer le passage des joueurs",
 	["tr"] = "Oyuncuyu engellemek için büyük bir konteyner",
@@ -1029,7 +1029,7 @@ ZShelter.AddTranslate("#BarricadeDesc", {
 	["zh-CN"] = "用于拦截玩家路线的红色集装箱",
 })
 
-ZShelter.AddTranslate("#TreasurePos", {
+ZShelter.L("#TreasurePos", {
 	["en"] = "Treasure Area",
 	["fr"] = "Zone de Trésor",
 	["tr"] = "Hazine Alanı",
@@ -1038,7 +1038,7 @@ ZShelter.AddTranslate("#TreasurePos", {
 	["zh-CN"] = "资源集中区",
 })
 
-ZShelter.AddTranslate("#TreasureDesc", {
+ZShelter.L("#TreasureDesc", {
 	["en"] = "Area that spawns a boss and alot of resources everyday",
 	["fr"] = "Une zone qui fait apparaître un boss et beaucoup de ressources tous les jours",
 	["tr"] = "Her gün patron oluşturan ve birçok kaynak üreten bir alan",
@@ -1047,7 +1047,7 @@ ZShelter.AddTranslate("#TreasureDesc", {
 	["zh-CN"] = "一个资源较集中的区域, 每天会生成一个BOSS",
 })
 
-ZShelter.AddTranslate("#BonusPos", {
+ZShelter.L("#BonusPos", {
 	["en"] = "Resource Bonus Area",
 	["fr"] = "Zone de Ressources Bonus",
 	["tr"] = "Kaynak Bonusu Alanı",
@@ -1056,7 +1056,7 @@ ZShelter.AddTranslate("#BonusPos", {
 	["zh-CN"] = "奖励资源区",
 })
 
-ZShelter.AddTranslate("#BonusDesc", {
+ZShelter.L("#BonusDesc", {
 	["en"] = "An area that spawns extra resources without bosses",
 	["fr"] = "Une zone qui fait apparaître des ressources supplémentaires sans boss.",
 	["tr"] = "Patron oluşturmadan fazladan kaynak üreten bir alan",
@@ -1065,7 +1065,7 @@ ZShelter.AddTranslate("#BonusDesc", {
 	["zh-CN"] = "会生成较多资源的区域",
 })
 
-ZShelter.AddTranslate("#FinishSettings", {
+ZShelter.L("#FinishSettings", {
 	["en"] = "Save map config",
 	["fr"] = "Sauvegarder la configuration de la carte",
 	["tr"] = "Harita konfigürasyonunu kaydet",
@@ -1074,7 +1074,7 @@ ZShelter.AddTranslate("#FinishSettings", {
 	["zh-CN"] = "保存地图设置",
 })
 
-ZShelter.AddTranslate("#UnsupportedMap1", {
+ZShelter.L("#UnsupportedMap1", {
 	["en"] = "Unsupported Map!",
 	["fr"] = "Carte non supportée !",
 	["tr"] = "Desteklenmeyen Harita!",
@@ -1083,7 +1083,7 @@ ZShelter.AddTranslate("#UnsupportedMap1", {
 	["zh-CN"] = "不支持的地图!",
 })
 
-ZShelter.AddTranslate("#UnsupportedMapEditMode", {
+ZShelter.L("#UnsupportedMapEditMode", {
 	["en"] = "Press F3 to enter edit mode!",
 	["fr"] = "Appuyez sur F3 pour passer en mode édition !",
 	["tr"] = "Düzenleme moduna girmek için F3'e bas!",
@@ -1092,7 +1092,7 @@ ZShelter.AddTranslate("#UnsupportedMapEditMode", {
 	["zh-CN"] = "按下F3进入地图编辑模式",
 })
 
-ZShelter.AddTranslate("#EditModeHint", {
+ZShelter.L("#EditModeHint", {
 	["en"] = "Press G to open settings menu",
 	["fr"] = "Appuyez sur G pour ouvrir le menu des paramètres",
 	["tr"] = "Ayarlar menüsünü açmak için G'ye bas",
@@ -1101,7 +1101,7 @@ ZShelter.AddTranslate("#EditModeHint", {
 	["zh-CN"] = "按下G打开设定菜单",
 })
 
-ZShelter.AddTranslate("#EditModeHintPlace", {
+ZShelter.L("#EditModeHintPlace", {
 	["en"] = "Left Click - Continue | Right Click - Cancel | R - Rotate",
 	["fr"] = "Clic gauche - Continuer | Clic droit - Annuler | R -  Pivoter",
 	["tr"] = "Sol Tık - Devam | Sağ Tık - İptal | R - Döndür",
@@ -1110,7 +1110,7 @@ ZShelter.AddTranslate("#EditModeHintPlace", {
 	["zh-CN"] = "左键 - 确定 | 右键 - 取消 | R - 旋转",
 })
 
-ZShelter.AddTranslate("#EditModeHintAim", {
+ZShelter.L("#EditModeHintAim", {
 	["en"] = "Right Click - Remove",
 	["fr"] = "Clic droit - Supprimer",
 	["tr"] = "Sağ Tık - Kaldır",
@@ -1119,7 +1119,7 @@ ZShelter.AddTranslate("#EditModeHintAim", {
 	["zh-CN"] = "右鍵 - 移除",
 })
 
-ZShelter.AddTranslate("#AvgFail", {
+ZShelter.L("#AvgFail", {
 	["en"] = "Average fail on <VAR> difficulty",
 	["fr"] = "Moyenne d'échecs en difficulté <VAR>.",
 	["tr"] = "<VAR> zorluğunda ortalama başarısızlık",
@@ -1128,7 +1128,7 @@ ZShelter.AddTranslate("#AvgFail", {
 	["zh-CN"] = "在<VAR>难度上的平均失败点",
 })
 
-ZShelter.AddTranslate("#TotalPlayed", {
+ZShelter.L("#TotalPlayed", {
 	["en"] = "<VAR> Plays recorded",
 	["fr"] = "Joueurs enregistrés: <VAR>",
 	["tr"] = "Toplam Oynanma: <VAR>",
@@ -1137,7 +1137,7 @@ ZShelter.AddTranslate("#TotalPlayed", {
 	["zh-CN"] = "<VAR> 已记录的游玩记录",
 })
 
-ZShelter.AddTranslate("#TotalFailed", {
+ZShelter.L("#TotalFailed", {
 	["en"] = "<VAR> Failed",
 	["fr"] = "<VAR> Échec",
 	["tr"] = "<VAR> Başarısız Oldu",
@@ -1146,7 +1146,7 @@ ZShelter.AddTranslate("#TotalFailed", {
 	["zh-CN"] = "<VAR> 失败",
 })
 
-ZShelter.AddTranslate("#WinFailRatio", {
+ZShelter.L("#WinFailRatio", {
 	["en"] = "Win/Fail Ratio : <VAR>",
 	["fr"] = "Taux de victoire/échec : <VAR>",
 	["tr"] = "Kazanma/Yenilgi Oranı: <VAR>",
@@ -1155,7 +1155,7 @@ ZShelter.AddTranslate("#WinFailRatio", {
 	["zh-CN"] = "输赢比 : <VAR>",
 })
 
-ZShelter.AddTranslate("#OnlinePlayers", {
+ZShelter.L("#OnlinePlayers", {
 	["en"] = "Online Players : <VAR>",
 	["fr"] = "Joueurs en ligne: <VAR>",
 	["tr"] = "Çevrim İçi Oyuncu: <VAR>",
@@ -1164,7 +1164,7 @@ ZShelter.AddTranslate("#OnlinePlayers", {
 	["zh-CN"] = "在线玩家 : <VAR>",
 })
 
-ZShelter.AddTranslate("#Fetching", {
+ZShelter.L("#Fetching", {
 	["en"] = "Fetching..",
 	["fr"] = "Récupération..",
 	["tr"] = "Getiriliyor..",
@@ -1173,7 +1173,7 @@ ZShelter.AddTranslate("#Fetching", {
 	["zh-CN"] = "载入中..",
 })
 
-ZShelter.AddTranslate("#FindOtherPlayer", {
+ZShelter.L("#FindOtherPlayer", {
 	["en"] = "Look for other players to play with!",
 	["fr"] = "Trouvez d'autres joueurs avec qui jouer !",
 	["tr"] = "Oynamak için oyuncu ara!",
@@ -1182,7 +1182,7 @@ ZShelter.AddTranslate("#FindOtherPlayer", {
 	["zh-CN"] = "寻找其他玩家一起游玩!",
 })
 
-ZShelter.AddTranslate("#NDay", {
+ZShelter.L("#NDay", {
 	["en"] = "Day <VAR>",
 	["fr"] = "Jour <VAR>",
 	["tr"] = "Gün <VAR>",
@@ -1191,7 +1191,7 @@ ZShelter.AddTranslate("#NDay", {
 	["zh-CN"] = "第<VAR>天",
 })
 
-ZShelter.AddTranslate("#ConnectionHint", {
+ZShelter.L("#ConnectionHint", {
 	["en"] = "Connection might take a while, please be patient",
 	["fr"] = "La connexion peut prendre un certain temps, veuillez patienter",
 	["tr"] = "Bağlanmak biraz sürebilir, lütfen sabırlı olun",
@@ -1200,7 +1200,7 @@ ZShelter.AddTranslate("#ConnectionHint", {
 	["zh-CN"] = "连接需要一些时间, 请耐心等候",
 })
 
-ZShelter.AddTranslate("#Updates", {
+ZShelter.L("#Updates", {
 	["en"] = "Updates",
 	["fr"] = "Mises à Jour",
 	["tr"] = "Güncellemeler",
@@ -1209,7 +1209,7 @@ ZShelter.AddTranslate("#Updates", {
 	["zh-CN"] = "内容更新",
 })
 
-ZShelter.AddTranslate("#Statistics", {
+ZShelter.L("#Statistics", {
 	["en"] = "Statistics",
 	["fr"] = "Statistiques",
 	["tr"] = "İstatistik",
@@ -1218,7 +1218,7 @@ ZShelter.AddTranslate("#Statistics", {
 	["zh-CN"] = "统计",
 })
 
-ZShelter.AddTranslate("#Looking2play", {
+ZShelter.L("#Looking2play", {
 	["en"] = "Looking to play",
 	["fr"] = "Joueurs",
 	["tr"] = "Oyun oynamak istiyor",
@@ -1227,7 +1227,7 @@ ZShelter.AddTranslate("#Looking2play", {
 	["zh-CN"] = "寻找游戏",
 })
 
-ZShelter.AddTranslate("#LocalSv", {
+ZShelter.L("#LocalSv", {
 	["en"] = "Local Server",
 	["fr"] = "Serveur Local",
 	["tr"] = "Yerel Sunucu",
@@ -1236,7 +1236,7 @@ ZShelter.AddTranslate("#LocalSv", {
 	["zh-CN"] = "本地服务器",
 })
 
-ZShelter.AddTranslate("#Summery", {
+ZShelter.L("#Summery", {
 	["en"] = "Summary",
 	["fr"] = "Sommaire",
 	["tr"] = "Özet",
@@ -1245,7 +1245,7 @@ ZShelter.AddTranslate("#Summery", {
 	["zh-CN"] = "总结",
 })
 
-ZShelter.AddTranslate("#MapVote", {
+ZShelter.L("#MapVote", {
 	["en"] = "Map Vote",
 	["fr"] = "Vote de la Carte",
 	["tr"] = "Harita Oylama",
@@ -1254,7 +1254,7 @@ ZShelter.AddTranslate("#MapVote", {
 	["zh-CN"] = "地图投票",
 })
 
-ZShelter.AddTranslate("#Defeat", {
+ZShelter.L("#Defeat", {
 	["en"] = "Defeat!",
 	["fr"] = "Défaite !",
 	["tr"] = "Mağlubiyet!",
@@ -1263,7 +1263,7 @@ ZShelter.AddTranslate("#Defeat", {
 	["zh-CN"] = "失败!",
 })
 
-ZShelter.AddTranslate("#ShelterDestroyed", {
+ZShelter.L("#ShelterDestroyed", {
 	["en"] = "Shelter has been destroyed!",
 	["fr"] = "L'Abri a été détruit !",
 	["tr"] = "Sığınak yok edildi!",
@@ -1272,7 +1272,7 @@ ZShelter.AddTranslate("#ShelterDestroyed", {
 	["zh-CN"] = "避难所被摧毁了!",
 })
 
-ZShelter.AddTranslate("#Victory", {
+ZShelter.L("#Victory", {
 	["en"] = "Victory!",
 	["fr"] = "Victoire !",
 	["tr"] = "Galibiyet!",
@@ -1281,7 +1281,7 @@ ZShelter.AddTranslate("#Victory", {
 	["zh-CN"] = "胜利!",
 })
 
-ZShelter.AddTranslate("#Survived30Day", {
+ZShelter.L("#Survived30Day", {
 	["en"] = "Successfully survived to day 30",
 	["fr"] = "Vous avez survécu jusqu'au 30ème jour",
 	["tr"] = "Başarıyla 30. güne kadar hayatta kalındı",
@@ -1290,7 +1290,7 @@ ZShelter.AddTranslate("#Survived30Day", {
 	["zh-CN"] = "成功生存到第30天",
 })
 
-ZShelter.AddTranslate("#Survived15Day", {
+ZShelter.L("#Survived15Day", {
 	["en"] = "Successfully survived to day 15",
 	["fr"] = "Vous avez survécu jusqu'au 15ème jour",
 	["tr"] = "Başarıyla 15. güne kadar hayatta kalındı",
@@ -1299,7 +1299,7 @@ ZShelter.AddTranslate("#Survived15Day", {
 	["zh-CN"] = "成功生存到第15天",
 })
 
-ZShelter.AddTranslate("#PTS", {
+ZShelter.L("#PTS", {
 	["en"] = "<VAR> pts",
 	["fr"] = "<VAR> points",
 	["tr"] = "<VAR> puan",
@@ -1308,7 +1308,7 @@ ZShelter.AddTranslate("#PTS", {
 	["zh-CN"] = "<VAR> 贡献点",
 })
 
-ZShelter.AddTranslate("#MVP", {
+ZShelter.L("#MVP", {
 	["en"] = "[MVP] <VAR>",
 	["fr"] = "[MJ] <VAR>",
 	["tr"] = "[EDO] <VAR>",
@@ -1317,7 +1317,7 @@ ZShelter.AddTranslate("#MVP", {
 	["zh-CN"] = "[MVP] <VAR>",
 })
 
-ZShelter.AddTranslate("#ServerList", {
+ZShelter.L("#ServerList", {
 	["en"] = "Server List",
 	["fr"] = "Serveurs",
 	["tr"] = "Sunucu Listesi",
@@ -1326,7 +1326,7 @@ ZShelter.AddTranslate("#ServerList", {
 	["zh-CN"] = "服务器列表",
 })
 
-ZShelter.AddTranslate("#ServerListHint", {
+ZShelter.L("#ServerListHint", {
 	["en"] = "Servers on this list are running Zombie Shelter v2",
 	["fr"] = "Les serveurs de cette liste hébergent la v2 de Zombie Shelter.",
 	["tr"] = "Bu listedeki sunucular Zombie Shelter v2 çalıştırıyor",
@@ -1335,7 +1335,7 @@ ZShelter.AddTranslate("#ServerListHint", {
 	["zh-CN"] = "在此列表上的服务器都在运行 Zombie Shelter v2",
 })
 
-ZShelter.AddTranslate("#ServerListAddr", {
+ZShelter.L("#ServerListAddr", {
 	["en"] = "Address : <VAR>",
 	["fr"] = "Adresse IP: <VAR>",
 	["tr"] = "IP Adresi : <VAR>",
@@ -1344,7 +1344,7 @@ ZShelter.AddTranslate("#ServerListAddr", {
 	["zh-CN"] = "服务器IP : <VAR>",
 })
 
-ZShelter.AddTranslate("#ServerListClick", {
+ZShelter.L("#ServerListClick", {
 	["en"] = "Click to join",
 	["fr"] = "Cliquez pour rejoindre",
 	["tr"] = "Katılmak için tıkla",
@@ -1353,7 +1353,7 @@ ZShelter.AddTranslate("#ServerListClick", {
 	["zh-CN"] = "点击加入",
 })
 
-ZShelter.AddTranslate("#SpawnPointExtra", {
+ZShelter.L("#SpawnPointExtra", {
 	["en"] = "Enemy Spawn Point",
 	["fr"] = "Point d'Apparition des Ennemis",
 	["tr"] = "Düşman Doğma Noktası",
@@ -1362,7 +1362,7 @@ ZShelter.AddTranslate("#SpawnPointExtra", {
 	["zh-CN"] = "敌人生成点",
 })
 
-ZShelter.AddTranslate("#SpawnPointExtraDesc", {
+ZShelter.L("#SpawnPointExtraDesc", {
 	["en"] = "An extra spawn point for enemy to spawn",
 	["fr"] = "Point d'apparition supplémentaire pour les ennemis",
 	["tr"] = "Düşmanın doğması için fazladan bir doğma noktası",
@@ -1371,7 +1371,7 @@ ZShelter.AddTranslate("#SpawnPointExtraDesc", {
 	["zh-CN"] = "敌人重生点",
 })
 
-ZShelter.AddTranslate("#SpawnPointDedicated", {
+ZShelter.L("#SpawnPointDedicated", {
 	["en"] = "Dedicated Enemy Spawn Point",
 	["fr"] = "Point d'Apparitions Dédié aux Ennemis",
 	["tr"] = "Özel Düşman Doğma Noktası",
@@ -1380,7 +1380,7 @@ ZShelter.AddTranslate("#SpawnPointDedicated", {
 	["zh-CN"] = "固定敌人生成点",
 })
 
-ZShelter.AddTranslate("#SpawnPointDedicatedDesc", {
+ZShelter.L("#SpawnPointDedicatedDesc", {
 	["en"] = "An DEDICATED spawn point, if you placed any of this enemy will be spawn at this fixed position",
 	["fr"] = "Point d'apparition DÉDIÉ, si vous en placez un les ennemis apparaîtront à cette position fixe.",
 	["tr"] = "ÖZEL bir doğma noktası, eğer bu düşmandan herhangi birini yerleştirirsen, bu sabit konumda doğacak",
@@ -1389,7 +1389,7 @@ ZShelter.AddTranslate("#SpawnPointDedicatedDesc", {
 	["zh-CN"] = "放置后敌人会被生成在这个固定的位置",
 })
 
-ZShelter.AddTranslate("#ManualControl", {
+ZShelter.L("#ManualControl", {
     ["en"] = "Press middle mouse to control",
 	["fr"] = "Appuyer sur la molette de la souris pour contrôler",
     ["tr"] = "Kontrol etmek için fare tekerleğini kullanın",
@@ -1398,7 +1398,7 @@ ZShelter.AddTranslate("#ManualControl", {
     ["zh-CN"] = "点击滑鼠中键控制",
 })
 
-ZShelter.AddTranslate("#EnemyList", {
+ZShelter.L("#EnemyList", {
     ["en"] = "Enemies",
 	["fr"] = "Ennemis",
     ["tr"] = "Düşmanlar",
@@ -1407,7 +1407,7 @@ ZShelter.AddTranslate("#EnemyList", {
     ["zh-CN"] = "敌人列表",
 })
 
-ZShelter.AddTranslate("#EnemyListTitle", {
+ZShelter.L("#EnemyListTitle", {
     ["en"] = "Enemies on <VAR> difficulty",
 	["fr"] = "Ennemis en difficulté <VAR>",
     ["tr"] = "<VAR> zorluğunda düşmanlar",
@@ -1416,7 +1416,7 @@ ZShelter.AddTranslate("#EnemyListTitle", {
     ["zh-CN"] = "会出现在<VAR>难度的敌人",
 })
 
-ZShelter.AddTranslate("#EnemyListHPBoost", {
+ZShelter.L("#EnemyListHPBoost", {
     ["en"] = "[Day x <VAR>]",
 	["fr"] = "[Jour x <VAR>]",
     ["tr"] = "[Gün Sayısı x <VAR>]",
