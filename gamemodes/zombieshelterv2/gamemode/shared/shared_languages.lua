@@ -78,7 +78,7 @@ ZShelter.L("#BuildingHint", {
 ZShelter.L("#BuildHints", {
 	["en"] = "[B] Build Menu  |  [F2] Game Menu  |  [F6] Config Menu",
 	["fr"] = "[B] Menu de Construction | [F2] Menu du Jeu | [F6] Menu de Configuration",
-	["tr"] = "[B] İnşa Menüsü  |  [F2] Oyun Menüsü  |  [F6] Konfigürasyon Menüsü",
+	["tr"] = "[B] Yapı Menüsü  |  [F2] Oyun Menüsü  |  [F6] Konfig Menüsü",
 	["ru"] = "[B] Постройки  |  [F2] Меню игры  |  [F6] Конфигурация",
 	["zh-TW"] = "[B] 建造清單  |  [F2] 遊戲介面 |  [F6] 設定介面",
 	["zh-CN"] = "[B] 建造菜单  |  [F2] 模式菜单 |  [F6] 设置菜单",
@@ -276,7 +276,7 @@ ZShelter.L("#Razorwire", {
 ZShelter.L("#Claymore", {
 	["en"] = "Claymore",
 	["fr"] = "Claymore",
-	["tr"] = "Kılıç",
+	["tr"] = "AP Mayını",
 	["ru"] = "Противопехотная мина",
 	["zh-TW"] = "闊刀地雷",
 	["zh-CN"] = "阔剑地雷",
@@ -492,7 +492,7 @@ ZShelter.L("#Gauss Turret", {
 ZShelter.L("#Laser Minigun Turret", {
     ["en"] = "Laser Minigun Turret",
 	["fr"] = "",
-    ["tr"] = "",
+    ["tr"] = "Lazer Minigun Taret",
     ["ru"] = "",
     ["zh-TW"] = "雷射機槍塔",
     ["zh-CN"] = "雷射机枪炮塔",
