@@ -207,7 +207,7 @@ ZShelter.AddInfo("Claymore", {
 	title = {
 		["en"] = "Claymore",
 		["fr"] = "Claymore",
-		["tr"] = "Kılıç",
+		["tr"] = "AP Mayını",
 		["zh-TW"] = "闊刀地雷",
 		["zh-CN"] = "阔剑地雷",
 		["ru"] = "Противопехотная мина",
@@ -215,7 +215,7 @@ ZShelter.AddInfo("Claymore", {
 	desc = {
 		["en"] = "Allows you to build claymore",
 		["fr"] = "Vous permet de construire des claymore",
-		["tr"] = "Kılıç üretmenize olanak sağlar",
+		["tr"] = "APM üretmenize olanak sağlar",
 		["zh-TW"] = "可建造闊刀地雷",
 		["zh-CN"] = "可建造阔剑地雷",
 		["ru"] = "Позволяет строить противопехотную мину",
