@@ -489,6 +489,15 @@ ZShelter.AddTranslate("#Gauss Turret", {
     ["zh-CN"] = "高斯炮",
 })
 
+ZShelter.AddTranslate("#Laser Minigun Turret", {
+    ["en"] = "Laser Minigun Turret",
+	["fr"] = "",
+    ["tr"] = "",
+    ["ru"] = "",
+    ["zh-TW"] = "雷射機槍塔",
+    ["zh-CN"] = "雷射机枪炮塔",
+})
+
 ZShelter.AddTranslate("#Combine Mortar Cannon", {
 	["en"] = "Combine Mortar Cannon",
 	["fr"] = "Mortier du Cartel",

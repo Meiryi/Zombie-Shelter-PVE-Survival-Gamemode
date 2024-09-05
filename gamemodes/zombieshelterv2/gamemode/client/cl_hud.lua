@@ -418,31 +418,25 @@ function ZShelter.PaintHUD()
 	local resWide, resTall = wide, tall * 0.35 
 	local ply, pos = LocalPlayer(), LocalPlayer():GetPos()
 
-	if(nextCheckTime < SysTime()) then
-		shouldDraw = GetConVar("zshelter_display_name"):GetInt() == 1 -- This is expensive, don't run it every frame
-		nextCheckTime = SysTime() + 1
+	for k,v in ipairs(player.GetAll()) do
+		if(!v:Alive() || v == ply) then continue end
+		if(!v.nameAlpha) then
+			v.nameAlpha = 0
+		end
+		local opos = v:GetPos()
+		if(v:IsDormant() || pos:Distance(opos) > 2048) then
+			if(v.nameAlpha > 35) then
+				v.nameAlpha = math_Clamp(v.nameAlpha - ZShelter.GetFixedValue(8), 35, 255)
+			end
+		else
+			if(v.nameAlpha < 255) then
+				v.nameAlpha = math_Clamp(v.nameAlpha + ZShelter.GetFixedValue(15), 0, 255)
+			end
+		end
+		local pos = (opos + Vector(0, 0, 8 + v:OBBMaxs().z)):ToScreen()
+		draw_DrawText(v:Nick(), "ZShelter-HUDNameTag", pos.x, pos.y, Color(255, 255, 255, v.nameAlpha), TEXT_ALIGN_CENTER)
 	end
 
-	if(shouldDraw) then
-		for k,v in ipairs(player.GetAll()) do
-			if(!v:Alive() || v == ply) then continue end
-			if(!v.nameAlpha) then
-				v.nameAlpha = 0
-			end
-			local opos = v:GetPos()
-			if(v:IsDormant() || pos:Distance(opos) > 2048) then
-				if(v.nameAlpha > 35) then
-					v.nameAlpha = math_Clamp(v.nameAlpha - ZShelter.GetFixedValue(8), 35, 255)
-				end
-			else
-				if(v.nameAlpha < 255) then
-					v.nameAlpha = math_Clamp(v.nameAlpha + ZShelter.GetFixedValue(15), 0, 255)
-				end
-			end
-			local pos = (opos + Vector(0, 0, 8 + v:OBBMaxs().z)):ToScreen()
-			draw_DrawText(v:Nick(), "ZShelter-HUDNameTag", pos.x, pos.y, Color(255, 255, 255, v.nameAlpha), TEXT_ALIGN_CENTER)
-		end
-	end
 
 	if(!GetGlobalBool("GameStarted") && GetGlobalFloat("ReadyTime", -1) > CurTime()) then
 		local t = math.floor(math.max(GetGlobalFloat("ReadyTime", -1) - CurTime(), 0))

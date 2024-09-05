@@ -1,0 +1,23 @@
+VertexLitGeneric
+{
+	$basetexture "models/zshelter/turret_laser/diff"
+	$bumpmap "models/zshelter/turret_laser/normal"
+	$surfaceprop Metal
+
+	$envmap "env_cubemap"
+	$normalmapalphaenvmapmask 1
+	$envmaptint "[0.70 0.70 0.70]"
+	$envmapfresnel 0.34
+	$envmaplightscale 1
+	$envmaplightscaleminmax "[0 1]"
+	$envmapanisotropy 1
+	$envmapanisotropyscale 0.05
+
+	$phong 1
+	$phongexponenttexture "models/zshelter/turret_laser/phong"
+	$phongfresnelranges "[0.06 0.41 3]"
+	$phongboost 2
+
+	//$ambientoccltexture "[your ambient occlusion here]"
+	$ambientocclusion 0
+}

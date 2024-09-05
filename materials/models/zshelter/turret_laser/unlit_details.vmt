@@ -1,0 +1,5 @@
+UnLitGeneric
+{
+	$basetexture "models/zshelter/turret_laser/unlit_details"
+	$surfaceprop Metal
+}
