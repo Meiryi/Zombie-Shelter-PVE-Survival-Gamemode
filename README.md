@@ -1,5 +1,5 @@
 # Workshop
-https://steamcommunity.com/sharedfiles/filedetails/comments/3300404406
+https://steamcommunity.com/sharedfiles/filedetails/?id=3313743318
 
 # Discord
 https://discord.gg/XMZQpDavbU
