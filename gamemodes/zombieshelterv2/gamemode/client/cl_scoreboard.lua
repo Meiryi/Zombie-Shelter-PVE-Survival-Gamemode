@@ -220,7 +220,7 @@ function ZShelter.ToggleScoreboard(display)
 				end
 					local _, _, tx = ZShelter.CreateLabel(base, avatar:GetX() + avatar:GetTall() + padding2x, base:GetTall() * 0.5,  v:Nick(), "ZShelter-ScoreboardDetailsFont2x", Color(255, 255, 255, 255))
 					tx:CentVer()
-					if(currentRank > 0) then
+					if(currentRank > 0 && ZShelter.EnableRanks) then
 						tx:Remove()
 						_, tx_tall, tx = ZShelter.CreateLabel(base, avatar:GetX() + avatar:GetTall() + padding2x, out, v:Nick(), "ZShelter-ScoreboardDetailsFont2x", Color(255, 255, 255, 255))
 						stars(base, avatar:GetX() + avatar:GetTall() + gap, base:GetTall() - starSize + out, starSize, 0, currentRank)

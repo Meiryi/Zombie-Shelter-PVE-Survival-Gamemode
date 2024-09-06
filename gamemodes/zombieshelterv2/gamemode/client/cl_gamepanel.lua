@@ -127,6 +127,7 @@ local devs_steamid = {
 	["76561198329144374"] = true,
 }
 
+ZShelter.EnableRanks = false
 ZShelter.ConnectAddress = ZShelter.ConnectAddress || "NULL"
 ZShelter.GameStatistics = {}
 ZShelter.Names = {}
@@ -818,8 +819,8 @@ function ZShelter.GameUI()
 		local wide = ui:GetWide() * 0.135
 		local nextX = 0
 		for k,v in ipairs(func) do
+			if(!ZShelter.EnableRanks && k == 1) then continue end
 			local panel = ZShelter.CreatePanel(ui.Container, 0, 0, ui.Container:GetWide(), ui.Container:GetTall(), Color(0, 0, 0, 0))
-
 			if(v.func) then
 				local success, err = pcall(function() v.func(panel) end)
 				if(!success) then
@@ -843,9 +844,16 @@ function ZShelter.GameUI()
 					end
 				end
 			end)
-			if(k == 1) then
-				ui.Container.CurrentPanel = panel
-				btn.DoClick()
+			if(!ZShelter.EnableRanks) then
+				if(k == 3) then
+					ui.Container.CurrentPanel = panel
+					btn.DoClick()
+				end
+			else
+				if(k == 1) then
+					ui.Container.CurrentPanel = panel
+					btn.DoClick()
+				end
 			end
 			btn.Think = function()
 				if(ui.Container.CurrentPanel == panel) then
