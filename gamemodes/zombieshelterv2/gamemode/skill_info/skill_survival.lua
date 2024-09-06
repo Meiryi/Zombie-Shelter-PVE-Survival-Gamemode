@@ -207,7 +207,7 @@ ZShelter.AddInfo("Claymore", {
 	title = {
 		["en"] = "Claymore",
 		["fr"] = "Claymore",
-		["tr"] = "AP Mayını",
+		["tr"] = "Kılıç",
 		["zh-TW"] = "闊刀地雷",
 		["zh-CN"] = "阔剑地雷",
 		["ru"] = "Противопехотная мина",

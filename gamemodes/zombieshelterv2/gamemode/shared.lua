@@ -96,6 +96,8 @@ file.CreateDir("zombie shelter v2/config/")
 file.CreateDir("zombie shelter v2/mapconfig/")
 file.CreateDir("zombie shelter v2/avatars/")
 file.CreateDir("zombie shelter v2/multiplayer/")
+file.CreateDir("zombie shelter v2/exps/")
+file.CreateDir("zombie shelter v2/leaderboard/")
 
 ZShelter.GameVersion = "1.1.0"
 ZShelter.ConfigVersion = "1.0.9" -- DANGER, MODIFY THIS WILL RESET CONFIGS

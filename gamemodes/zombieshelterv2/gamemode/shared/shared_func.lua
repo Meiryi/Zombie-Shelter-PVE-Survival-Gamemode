@@ -150,3 +150,42 @@ function ZShelter.CompressTable(tab)
 	local len = string.len(data)
 	return data, len
 end
+
+function ZShelter.DecompressTable(compressedData)
+	if(!compressedData) then return false end
+	local decompressed = util.Decompress(compressedData)
+	if(!decompressed) then return false end
+	local content = util.JSONToTable(decompressed)
+	if(!content) then return false end
+	return content
+end
+
+function ZShelter.CalculateDayEXPMultiplier(day, difficulty)
+	local multiplier = math.Clamp((day) / 3, 0, 1)
+	if(day > 3) then
+		multiplier = 1 + ((day - 3) * (0.0025 * math.max(difficulty - 2, 0)))
+	end
+	return multiplier
+end
+
+function ZShelter.CalculateEXPMultiplier(day, difficulty)
+	local day_multiplier = ZShelter.CalculateDayEXPMultiplier(day, difficulty)
+	local difficulty_multiplier = 0
+	if(difficulty <= 3) then
+		difficulty_multiplier = 0.25 + (difficulty * 0.25)
+	else
+		difficulty_multiplier = 1 + ((difficulty - 3) * 0.115)
+		if(difficulty >= ZShelter.MaximumDifficulty) then
+			difficulty_multiplier = 2
+		end
+	end
+	return difficulty_multiplier * day_multiplier
+end
+
+function ZShelter.CalculateEXPGain(day, difficulty)
+	local baseEXP = 20
+	local baseMultiplier = 1 + (math.max(day - 2, 0) * 0.05)
+	local difficultyMultiplier = math.max(1, 0.6 + (difficulty * 0.15))
+	baseEXP = baseEXP * (baseMultiplier * difficultyMultiplier)
+	return math.floor(baseEXP)
+end

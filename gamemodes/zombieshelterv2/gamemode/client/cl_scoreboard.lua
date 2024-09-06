@@ -137,11 +137,27 @@ function ZShelter.ToggleScoreboard(display)
 
 		local listing = ZShelter.CreateScroll(ui.InnerPanel, 0, th + padding3x + ui.Details:GetTall(), ui.InnerPanel:GetWide(),ui.InnerPanel:GetTall() - (th + padding3x + ui.Details:GetTall()), Color(0, 0, 0, 0))
 		local round = ScreenScaleH(4)
-		local baseheight = listing:GetTall() * 0.085
+		local baseheight = listing:GetTall() * 0.1
 		local out = ScreenScaleH(1)
+		local gap = ScreenScaleH(2)
 		local out2x = out * 2
 		local tall = (listing:GetTall() * 0.05) + out * 2
 		local sksx = tall - out2x
+		local starmat = Material("zsh/icon/star.png", "smooth")
+		local starSize = ScreenScaleH(12)
+		local function stars(parent, x, y, size, margin, rank)
+			if(rank <= 0) then return end
+			local currentXPosition = x
+			for i = 1, rank do
+				local star = ZShelter.CreatePanel(parent, currentXPosition, y, size, size, Color(0, 0, 0, 0))
+				star.Paint = function()
+					surface.SetDrawColor(255, 255, 255, 255)
+					surface.SetMaterial(starmat)
+					surface.DrawTexturedRect(0, 0, size, size)
+				end
+				currentXPosition = currentXPosition + (size + margin)
+			end
+		end
 		listing.CreatePlayers = function()
 			listing:Clear()
 			local player = player.GetAll()
@@ -166,7 +182,10 @@ function ZShelter.ToggleScoreboard(display)
 				end
 				_base:Dock(TOP)
 				_base:DockMargin(0, 0, 0, ScreenScaleH(4))
-				local base = ZShelter.CreatePanel(_base, 0 ,0, listing:GetWide(), listing:GetTall() * 0.085, Color(30, 30, 30, 255), round)
+				local currentRank, currentLevel, currentEXP, nextRequirement = ZShelter.CalculateRank(v:GetNWInt("ZShelterEXP", 0))
+				local LevelTitle = ZShelter.GetLevelTitle(currentLevel)
+				local LevelColor = ZShelter.GetLevelColor(currentLevel)
+				local base = ZShelter.CreatePanel(_base, 0 ,0, listing:GetWide(), baseheight, Color(30, 30, 30, 255), round)
 				base.__Color = Color(30, 30, 30, 255)
 				base.Paint = function()
 					if(!IsValid(v)) then
@@ -180,6 +199,7 @@ function ZShelter.ToggleScoreboard(display)
 						draw.RoundedBox(0, 0, 0, base:GetWide(), base:GetTall(), Color(100, 30, 30, 255))
 						base.__Color = Color(100, 30, 30, 255)
 					end
+					draw.RoundedBox(0, 0, 0, padding, base:GetTall(), LevelColor)
 				end
 				local avatar = base:Add("AvatarImage")
 					avatar:SetPos(padding3x, 0)
@@ -200,6 +220,11 @@ function ZShelter.ToggleScoreboard(display)
 				end
 					local _, _, tx = ZShelter.CreateLabel(base, avatar:GetX() + avatar:GetTall() + padding2x, base:GetTall() * 0.5,  v:Nick(), "ZShelter-ScoreboardDetailsFont2x", Color(255, 255, 255, 255))
 					tx:CentVer()
+					if(currentRank > 0) then
+						tx:Remove()
+						_, tx_tall, tx = ZShelter.CreateLabel(base, avatar:GetX() + avatar:GetTall() + padding2x, out, v:Nick(), "ZShelter-ScoreboardDetailsFont2x", Color(255, 255, 255, 255))
+						stars(base, avatar:GetX() + avatar:GetTall() + gap, base:GetTall() - starSize + out, starSize, 0, currentRank)
+					end
 					tx.NextUpdate = 0
 					tx.Think = function()
 						if(tx.NextUpdate > SysTime() || !IsValid(v)) then return end
