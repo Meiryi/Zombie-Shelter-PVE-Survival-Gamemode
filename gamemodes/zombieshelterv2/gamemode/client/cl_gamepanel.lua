@@ -133,6 +133,7 @@ ZShelter.Names = {}
 ZShelter.QueuedAvatarID = {}
 ZShelter.QueuedAvatarDownload = {}
 ZShelter.PlayerLists = {}
+ZShelter.Leaderboard = ZShelter.Leaderboard || {}
 
 function ZShelter.HTTPFetchStatistics()
 	HTTP({
@@ -226,7 +227,127 @@ end
 local nextfetchtime = 0
 local fade = Material("zsh/icon/fade.png")
 local steammat = Material("zsh/icon/steam.png", "smooth")
+local starmat = Material("zsh/icon/star.png", "smooth")
 local func = {
+	{
+		title = "Ranks",
+		func = function(ui)
+			local function stars(parent, x, y, size, margin, rank)
+				if(rank <= 0) then return end
+				local currentXPosition = x
+				for i = 1, rank do
+					local star = ZShelter.CreatePanel(parent, currentXPosition, y, size, size, Color(0, 0, 0, 0))
+					star.Paint = function()
+						surface.SetDrawColor(255, 255, 255, 255)
+						surface.SetMaterial(starmat)
+						surface.DrawTexturedRect(0, 0, size, size)
+					end
+					currentXPosition = currentXPosition + (size + margin)
+				end
+			end
+			local size = ScreenScaleH(70)
+			local sidepadding = ScreenScaleH(4)
+			local colorwide = ScreenScaleH(2)
+			local gap = ScreenScaleH(2)
+			local gap1x = ScreenScaleH(1)
+			local textpadding = ScreenScaleH(12)
+			local playerAvatar = ZShelter.CircleAvatar(ui, textpadding, textpadding, size, size, LocalPlayer(), 186)
+			local currentRank, currentLevel, currentEXP, nextRequirement = ZShelter.CalculateRank(LocalPlayer():GetNWInt("ZShelterEXP", 0))
+			local title = "["..ZShelter.GetLevelTitle(currentLevel).."] "
+			local text_w, text_h, text_1 = ZShelter.CreateLabel(ui, playerAvatar:GetX() + playerAvatar:GetWide() + sidepadding * 2, playerAvatar:GetY() + sidepadding * 2, title, "ZShelter-GameUITitle", ZShelter.GetLevelColor(currentLevel))
+			local text_w, text_h, text = ZShelter.CreateLabel(ui, playerAvatar:GetX() + playerAvatar:GetWide() + sidepadding * 2 + text_w, playerAvatar:GetY() + sidepadding * 2, LocalPlayer():Nick(), "ZShelter-GameUITitle", Color(255, 255, 255, 255))
+			local starSize = ScreenScaleH(16)
+			stars(ui, text_1:GetX() + gap, text:GetY() + text_h, starSize, 0, currentRank)
+			local levelFraction = 0
+			if(currentEXP != 0) then
+				levelFraction = currentEXP / nextRequirement
+			end
+			local barwide = ui:GetWide() - ((textpadding * 2) + playerAvatar:GetX() + playerAvatar:GetWide())
+			local barX = playerAvatar:GetX() + playerAvatar:GetWide() + textpadding
+			local barY = text:GetY() + text_h + textpadding * 1.5
+			local bar_background = ZShelter.CreatePanel(ui, barX, barY, barwide, sidepadding, Color(10, 10, 10, 255))
+			local bar_exp = ZShelter.CreatePanel(ui, barX, barY, barwide * levelFraction, sidepadding, Color(70, 255, 70, 255))
+			local y = bar_exp:GetY() + bar_exp:GetTall() + gap
+			local textwide, texttall, text = ZShelter.CreateLabel(ui, barX, y, 0, "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+			local textwide, texttall, text = ZShelter.CreateLabel(ui, barX + bar_background:GetWide(), y, nextRequirement, "ZShelter-GameUIDescription", Color(255, 255, 255, 255)) 
+			text:SetX(text:GetX() - textwide)
+			local multiplier = math.Round(ZShelter.CalculateEXPMultiplier(GetGlobalInt("Day", 1), GetConVar("zshelter_difficulty"):GetInt()), 2)
+			local multiplierColor = Color(255, 255, 255, 255)
+			if(multiplier > 1) then
+				multiplierColor = Color(100, 255, 100, 255)
+			else
+				multiplierColor = Color(255, 100, 100, 255)
+			end
+			local textwide, texttall, text = ZShelter.CreateLabel(ui, barX, y + texttall, "x "..multiplier, "ZShelter-GameUIDescription", multiplierColor) 
+			local textwide, texttall, text = ZShelter.CreateLabel(ui, barX + bar_exp:GetWide(), y - (bar_exp:GetTall() + textpadding + gap), currentEXP, "ZShelter-GameUIStatisticTextSmall", Color(255, 255, 255, 255))
+			text.CentHor()
+			local scl = 0.3
+			local scroll = ZShelter.CreateScroll(ui, sidepadding, ui:GetTall() * scl + sidepadding, ui:GetWide() - (sidepadding * 2), ui:GetTall() * (1 - scl) - (sidepadding * 2), Color(25, 25, 25, 255))
+			scroll.RefreshLeaderboard = function()
+				scroll:Clear()
+				local starSize = ScreenScaleH(12)
+				for k,v in ipairs(ZShelter.Leaderboard) do
+					local panel = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.15, Color(20, 20, 20, 255))
+						panel:Dock(TOP)
+						panel:DockMargin(0, 0, 0, gap)
+						local avatar = ZShelter.CreateImage(panel, 0, 0, panel:GetTall(), panel:GetTall(), "zsh/icon/emptyframe.png", Color(255, 255, 255, 255))
+						avatar.NextCheck = 0
+						avatar.Path = "data/zombie shelter v2/avatars/"..v.steamid..".png"
+						avatar.Think = function()
+							if(avatar.NextCheck > SysTime()) then return end
+							if(file.Exists(avatar.Path, "GAME")) then
+								avatar:SetImage(avatar.Path)
+								avatar.Think = nil
+							else
+								if(!ZShelter.QueuedAvatarID[v.steamid]) then
+									ZShelter.QueuedAvatarID[v.steamid] = true
+									ZShelter.QueuedAvatarDownload[v.steamid] = true
+								end
+							end
+							avatar.NextCheck = SysTime() + 0.33
+						end
+						local currentRank, currentLevel, currentEXP, nextRequirement = ZShelter.CalculateRank(v.exp)
+						local nick, check = ZShelter.GetName(v.steamid)
+						local text_wide, text_tall, title = ZShelter.CreateLabel(panel, gap + avatar:GetWide(), gap, "["..ZShelter.GetLevelTitle(currentLevel).."] ", "ZShelter-GameUIGameUITitle2x", ZShelter.GetLevelColor(currentLevel))
+						local text_wide, text_tall, nick = ZShelter.CreateLabel(panel, gap + avatar:GetWide() + text_wide, gap, nick, "ZShelter-GameUIGameUITitle2x", Color(255, 255, 255, 255))
+						stars(panel, gap + avatar:GetWide()	, nick:GetY() + text_tall + gap, starSize, 0, currentRank)
+						if(check) then
+							nick.NextCheck = 0
+							nick.Think = function()
+								if(nick.NextCheck > SysTime()) then return end
+								if(ZShelter.Names[v.steamid]) then
+									nick.UpdateText(ZShelter.Names[v.steamid])
+									nick.Think = nil
+								end
+								nick.NextCheck = SysTime() + 0.25
+							end
+						end
+						local text_wide, text_tall, exp = ZShelter.CreateLabel(panel, panel:GetWide(), panel:GetTall() * 0.5, v.exp.." EXP", "ZShelter-GameUIGameUITitle2x", Color(255, 255, 255, 255))
+						exp.CentVer()
+						exp:SetX(exp:GetX() - (text_wide + sidepadding))
+						local button = ZShelter.InvisButton(panel, 0, 0, panel:GetWide(), panel:GetTall(), function()
+							gui.OpenURL("https://steamcommunity.com/profiles/"..v.steamid)
+						end)
+						button.Alpha = 0
+						button.Paint = function()
+							if(button:IsHovered()) then
+								button.Alpha = math.Clamp(button.Alpha + ZShelter.GetFixedValue(2), 0, 20)
+							else
+								button.Alpha = math.Clamp(button.Alpha - ZShelter.GetFixedValue(2), 0, 20)
+							end
+							draw.RoundedBox(0, 0, 0, button:GetWide(), button:GetTall(), Color(255, 255, 255, button.Alpha))
+						end
+				end
+			end
+			ui.NextReloadTime = 0
+			ui.Think = function()
+				if(#ZShelter.Leaderboard > 0 || ui.NextReloadTime > SysTime()) then return end
+				scroll.RefreshLeaderboard()
+				ui.NextReloadTime = SysTime() + 1
+			end
+			scroll.RefreshLeaderboard()
+		end,
+	},
 	{
 		title = "Updates",
 		func = function(ui)
@@ -512,7 +633,7 @@ local func = {
 				if(count <= 0) then return end
 				for k,v in pairs(data) do
 					if(!v.lastonline || !v.host || !v.map || !v.address || !v.day) then continue end
-					local base = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.15, Color(25, 25, 25, 255))
+					local base = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.125, Color(25, 25, 25, 255))
 						base:Dock(TOP)
 						base:DockMargin(0, 0, 0, gap)
 						local nick, check = ZShelter.GetName(k)
@@ -639,7 +760,7 @@ local func = {
 			local top_padding = th + textpadding * 2
 			local scroll = ZShelter.CreateScroll(ui, sidepadding, top_padding + sidepadding, ui:GetWide() - sidepadding * 2, (ui:GetTall() - top_padding) - sidepadding * 2, Color(30, 30, 30, 255))
 				for k,v in pairs(serverlist) do
-					local base = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.185, Color(25, 25, 25, 255))
+					local base = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.15, Color(25, 25, 25, 255))
 						base:Dock(TOP)
 						base:DockMargin(0, 0, 0, gap)
 						local tw, th, hostname = ZShelter.CreateLabel(base, sidepadding, gap, v.host, "ZShelter-GameUITitle", Color(255, 255, 255, 255))
@@ -677,7 +798,7 @@ function ZShelter.GameUI()
 		return
 	end
 	local currentTab = nil
-	local scl = 0.15
+	local scl = 0.1
 	local ui = ZShelter.CreatePanel(nil, ScrW() * scl, ScrH() * scl, ScrW() * (1 - scl * 2), ScrH() * (1 - scl * 2), Color(35, 35, 35, 255))
 		ui:MakePopup()
 		local headerHeight = ui:GetTall() * 0.08
@@ -722,7 +843,7 @@ function ZShelter.GameUI()
 					end
 				end
 			end)
-			if(k == 2) then
+			if(k == 1) then
 				ui.Container.CurrentPanel = panel
 				btn.DoClick()
 			end

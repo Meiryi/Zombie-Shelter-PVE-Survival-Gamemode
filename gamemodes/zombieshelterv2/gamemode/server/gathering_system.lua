@@ -36,7 +36,7 @@ function ZShelter.GatheringSystem(player, resource, nocallback)
 	local full = current >= capacity
 
 	if(!full) then
-		player:AddFrags(add * 4)
+		player:AddFrags(add * 2)
 	end
 
 	SetGlobalInt("T"..type, GetGlobalInt("T"..type, 0) + add)

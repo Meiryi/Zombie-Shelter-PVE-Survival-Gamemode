@@ -216,7 +216,7 @@ hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflict
 	end
 	local score = math.Clamp((npc:GetMaxHealth() / 100), 1, 10)
 	if(npc.AttackedByTurrets) then
-		score = math.max(1, score * 0.15)
+		score = math.min(math.max(1, score * 0.15), 3)
 	else
 		score = score * 2
 	end
