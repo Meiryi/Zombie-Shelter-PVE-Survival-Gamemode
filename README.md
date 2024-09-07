@@ -5,7 +5,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3313743318
 https://discord.gg/XMZQpDavbU
 
 # Questions?
-Check Zombie Shelter Wiki](https://github.com/Meiryi/Zombie-Shelter-Wiki/wiki)
+Check [Zombie Shelter Wiki](https://github.com/Meiryi/Zombie-Shelter-Wiki/wiki)
 
 # Want To Provide Localization?
 List of localization files
