@@ -5,16 +5,14 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3313743318
 https://discord.gg/XMZQpDavbU
 
 # Questions?
-Check [Zombie Shelter Wiki](https://github.com/Meiryi/Zombie-Shelter-Wiki/wiki)
+Check Zombie Shelter Wiki](https://github.com/Meiryi/Zombie-Shelter-Wiki/wiki)
 
 # Want To Provide Localization?
 List of localization files
 
-* gamemodes/zombieshelterv2/gamemode/shared/shared_languages.lua
-* gamemodes/zombieshelterv2/gamemode/skill_info/skill_combat.lua
-* gamemodes/zombieshelterv2/gamemode/skill_info/skill_engineer.lua
-* gamemodes/zombieshelterv2/gamemode/skill_info/skill_survival.lua
-* resource/localization/en/zshelter_server_settings.properties
+* [shared_languages.lua](https://github.com/Meiryi/Zombie-Shelter-PVE-Survival-Gamemode/blob/0069509780fd387704638ba6235ccac67fff6c4d/gamemodes/zombieshelterv2/gamemode/shared/shared_languages.lua)
+* [skill_info](https://github.com/Meiryi/Zombie-Shelter-PVE-Survival-Gamemode/tree/0069509780fd387704638ba6235ccac67fff6c4d/gamemodes/zombieshelterv2/gamemode/skill_info)
+* [zshelter_server_settings.properties](https://github.com/Meiryi/Zombie-Shelter-PVE-Survival-Gamemode/blob/0069509780fd387704638ba6235ccac67fff6c4d/resource/localization/en/zshelter_server_settings.properties)
 
 Create a separate file for zshelter_server_settings.properties file. The file name is your language code. For example, for English it is named "en", for French "fr". Check other files in the same path for more context.
 
