@@ -68,7 +68,7 @@ ZShelter.L("#RespawnAfter", {
 
 ZShelter.L("#BuildingHint", {
 	["en"] = "[Left Click] Build   |  [R] Rotate  |   [Right Click] Cancel",
-	["fr"] = "[Clic Gauche] Construire | [R] Pivoter | [Clic droit] Annuler",
+	["fr"] = "[B] Construction | [F2] Menu | [F6] Configuration",
 	["tr"] = "[Sol Tık] İnşa Et   |  [R] Döndür  |   [Sağ Tık] İptal",
 	["ru"] = "[ЛКМ] Построить   |  [R] Вращать  |   [ПКМ] Отмена",
 	["zh-TW"] = "[左鍵] 建造  |  [R] 旋轉  |  [右鍵] 取消",
@@ -77,7 +77,7 @@ ZShelter.L("#BuildingHint", {
 
 ZShelter.L("#BuildHints", {
 	["en"] = "[B] Build Menu  |  [F2] Game Menu  |  [F6] Config Menu",
-	["fr"] = "[B] Construction | [F2] Menu | [F6] Configuration",
+	["fr"] = "[B] Menu de Construction | [F2] Menu du Jeu | [F6] Menu de Configuration",
 	["tr"] = "[B] Yapı Menüsü  |  [F2] Oyun Menüsü  |  [F6] Konfig Menüsü",
 	["ru"] = "[B] Постройки  |  [F2] Меню игры  |  [F6] Конфигурация",
 	["zh-TW"] = "[B] 建造清單  |  [F2] 遊戲介面 |  [F6] 設定介面",
