@@ -54,7 +54,7 @@ function ZShelter.GetLevelColor(level)
 end
 
 ZShelter.LevelTitles = {
-	[0] = "Begineer",
+	[0] = "Beginner",
 	[1] = "Rookie",
 	[2] = "Novice",
 	[3] = "Apprentice",

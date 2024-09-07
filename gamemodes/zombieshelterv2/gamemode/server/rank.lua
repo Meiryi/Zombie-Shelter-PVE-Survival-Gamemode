@@ -3,6 +3,7 @@ util.AddNetworkString("ZShelter_SyncEXP")
 util.AddNetworkString("ZShelter_SyncLeaderboard")
 
 function ZShelter.BroadcastPlayerEXP(player, exp, difficulty, day)
+	player:SetNWInt("ZShelterEXP", exp)
 	net.Start("ZShelter_SyncEXP")
 	net.WriteEntity(player)
 	net.WriteInt(exp, 32)
