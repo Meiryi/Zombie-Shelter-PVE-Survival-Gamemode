@@ -8,8 +8,6 @@ https://discord.gg/XMZQpDavbU
 Check [Zombie Shelter Wiki](https://github.com/Meiryi/Zombie-Shelter-Wiki/wiki)
 
 # Want To Provide Localization?
-List of localization files
-
 * [shared_languages.lua](https://github.com/Meiryi/Zombie-Shelter-PVE-Survival-Gamemode/blob/0069509780fd387704638ba6235ccac67fff6c4d/gamemodes/zombieshelterv2/gamemode/shared/shared_languages.lua)
 * [skill_info](https://github.com/Meiryi/Zombie-Shelter-PVE-Survival-Gamemode/tree/0069509780fd387704638ba6235ccac67fff6c4d/gamemodes/zombieshelterv2/gamemode/skill_info)
 * [zshelter_server_settings.properties](https://github.com/Meiryi/Zombie-Shelter-PVE-Survival-Gamemode/blob/0069509780fd387704638ba6235ccac67fff6c4d/resource/localization/en/zshelter_server_settings.properties)
