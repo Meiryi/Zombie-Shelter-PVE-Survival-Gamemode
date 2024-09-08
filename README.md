@@ -20,4 +20,5 @@ Create a separate file for [zshelter_server_settings.properties](https://github.
 * BlueBerry - Russian Localization
 * Tora - Turkish Localization
 * MisterClems - French Localization
+* JOSMRZ - Vietnamese Localization
 * We Is Heroes - Playtest, and provided alot of ideas for skills
