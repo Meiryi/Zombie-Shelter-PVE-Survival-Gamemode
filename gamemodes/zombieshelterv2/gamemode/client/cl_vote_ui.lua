@@ -395,6 +395,7 @@ function ZShelter.VoteUI(victory, text, reason)
 	if(IsValid(ZShelter.EndUI)) then
 		ZShelter.EndUI:Remove()
 	end
+	ZShelter.ClearMenus()
 	ZShelter.CountDown = SysTime() + 34
 	local color = Color(30, 30, 30, 0)
 	if(!victory) then

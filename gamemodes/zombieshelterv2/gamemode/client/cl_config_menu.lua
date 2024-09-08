@@ -557,6 +557,7 @@ function ZShelter.ConfigMenu()
 		end
 		return
 	end
+	ZShelter.ClearMenus()
 	local sx = ScreenScaleH(300)
 	local ui = ZShelter.CreateFrame(nil, 0, 0, ScrW(), ScrH(), Color(0, 0, 0, 120))
 	ui:MakePopup()
@@ -610,4 +611,5 @@ function ZShelter.ConfigMenu()
 	end
 
 	ZShelter.CFGMenu = ui
+	ZShelter.AddMenu(ui)
 end

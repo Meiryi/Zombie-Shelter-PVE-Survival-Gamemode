@@ -2,7 +2,7 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 
 ENT.Model = {"models/cso_zbs/monsters/zombi_origin.mdl"}
-ENT.StartHealth = 1000
+ENT.StartHealth = 100
 ENT.HullType = HULL_HUMAN
 ENT.MovementType = VJ_MOVETYPE_GROUND
 
@@ -278,7 +278,7 @@ function ENT:Think(fromengine)
 			end
 			self:CustomOnMeleeAttack_BeforeStartTimer()
 			timer.Simple(self.TimeUntilMeleeAttackDamage / self:GetPlaybackRate(), function()
-				if(!IsValid(self)) then return end
+				if(!IsValid(self) || self.Dead) then return end
 				self:MeleeAttackCode(PropEnt)
 			end)
 			self.NextAnyMeleeAttack = curTime + self.NextMeleeAttackTime

@@ -13,6 +13,7 @@
 	任何形式的编辑是不被允许的 (包括模式的名称), 若有问题请在Steam上联络我
 ]]
 
+ZShelter.Menus = {}
 ZShelter.KeyStates = {}
 ZShelter.ChatOpened = false
 
@@ -23,6 +24,21 @@ local keys = {
 	["Ready"] = 95,
 	["GameUI"] = 93,
 }
+
+function ZShelter.ClearMenus()
+	for k,v in pairs(ZShelter.Menus) do
+		if(!IsValid(v)) then
+			table.remove(ZShelter.Menus, k)
+		else
+			v:Remove()
+			table.remove(ZShelter.Menus, k)
+		end
+	end
+end
+
+function ZShelter.AddMenu(ui)
+	table.insert(ZShelter.Menus, ui)
+end
 
 hook.Add("Think", "ZShelter-KeyPressHandler", function()
 	if(gui.IsConsoleVisible() || ZShelter.BlockMenu || ZShelter.ChatOpened) then return end

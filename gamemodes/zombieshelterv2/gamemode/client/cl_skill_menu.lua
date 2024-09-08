@@ -77,12 +77,7 @@ function ZShelter.SkillMenu()
 		ZShelter.SkillUI:Remove()
 		return
 	end
-	if(IsValid(ZShelter.BuildUI)) then
-		ZShelter.BuildUI:Remove()
-	end
-	if(IsValid(ZShelter.CFGMenu)) then
-		return
-	end
+	ZShelter.ClearMenus()
 	local ui = ZShelter.CreatePanel(nil, 0, 0, ScrW(), ScrH(), Color(0, 0, 0, 120))
 	ui:MakePopup()
 	ui:Center()
@@ -292,4 +287,5 @@ function ZShelter.SkillMenu()
 	end
 
 	ZShelter.SkillUI = ui
+	ZShelter.AddMenu(ui)
 end

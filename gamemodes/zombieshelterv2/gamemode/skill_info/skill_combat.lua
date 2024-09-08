@@ -514,22 +514,22 @@ ZShelter.AddInfo("Grenade Stunning", {
 ZShelter.AddInfo("Damage Reflecting", {
     title = {
         ["en"] = "Damage Reflecting",
-	["fr"] = "Réflexion des Dégâts",
+		["fr"] = "Réflexion des Dégâts",
         ["tr"] = "Hasar Yansıtma",
 		["vi"] = "Phản Sát Thương",
         ["zh-TW"] = "傷害反彈",
         ["zh-CN"] = "伤害反弹",
         ["ru"] = "",
-	["de"] = "Schadensablenkung",
+		["de"] = "Schadensablenkung",
     },
     desc = {
         ["en"] = "Reflecting all incoming damage, +50% damage per upgrade",
-	["fr"] = "Renvoie tous les dégâts subis, +50% de dégâts par amélioration",
+		["fr"] = "Renvoie tous les dégâts subis, +50% de dégâts par amélioration",
         ["tr"] = "Alınan tüm hasarı yansıtır, yükseltme başına +%50 hasar",
 		["vi"] = "Phản sát thương đến từ tất cả các nguồn, +50% sát thương mỗi lần nâng cấp",
         ["zh-TW"] = "反彈所有受到的傷害, 每升級一次增加 50%",
         ["zh-CN"] = "反弹所有受到的伤害, 每升级一次增加 50%",
         ["ru"] = "",
-	["de"] = "Lenkt jeden eingehenden Schaden ab, +50% Schaden pro Upgrade",
+		["de"] = "Lenkt jeden eingehenden Schaden ab, +50% Schaden pro Upgrade",
     }
 })

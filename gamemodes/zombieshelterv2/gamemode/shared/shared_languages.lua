@@ -154,7 +154,7 @@ ZShelter.L("#Turret", {
 	["fr"] = "Tourelle",
 	["tr"] = "Taret",
 	["ru"] = "Турели",
-	["vi"] "Tháp Pháo",
+	["vi"] = "Tháp Pháo",
 	["zh-TW"] = "砲塔",
 	["zh-CN"] = "炮塔",
 })
@@ -1124,7 +1124,7 @@ ZShelter.L("#ShelterNick", {
 	["fr"] = "Abri Niveau <VAR>",
 	["tr"] = "Seviye <VAR> Sığınak",
 	["ru"] = "Убежище <VAR>-го ур.",
-	["vi"] = "Nơi Trú Ẩn Cấp <Var>",
+	["vi"] = "Nơi Trú Ẩn Cấp <VAR>",
 	["zh-TW"] = "<VAR> 級避難所",
 	["zh-CN"] = "<VAR> 级避难所",
 })
@@ -1294,7 +1294,7 @@ ZShelter.L("#TotalFailed", {
 	["fr"] = "<VAR> Échec",
 	["tr"] = "<VAR> Başarısız Oldu",
 	["ru"] = "из которых <VAR> проиграны",
-	["vi"] = "<Var> Thất Bại",
+	["vi"] = "<VAR> Thất Bại",
 	["zh-TW"] = "<VAR> 失敗",
 	["zh-CN"] = "<VAR> 失败",
 })
@@ -1304,7 +1304,7 @@ ZShelter.L("#WinFailRatio", {
 	["fr"] = "Taux de victoire/échec : <VAR>",
 	["tr"] = "Kazanma/Yenilgi Oranı: <VAR>",
 	["ru"] = "Соотн. побед/поражений: <VAR>",
-	["vi"] = "Tỷ Lệ Thắng/Thất Bại : <Var>",
+	["vi"] = "Tỷ Lệ Thắng/Thất Bại : <VAR>",
 	["zh-TW"] = "勝利/失敗比例 : <VAR>",
 	["zh-CN"] = "输赢比 : <VAR>",
 })
@@ -1314,7 +1314,7 @@ ZShelter.L("#OnlinePlayers", {
 	["fr"] = "Joueurs en ligne: <VAR>",
 	["tr"] = "Çevrim İçi Oyuncu: <VAR>",
 	["ru"] = "Игроков в игре : <VAR>",
-	["vi"] = "Người Chơi Trực Tuyến : <Var>",
+	["vi"] = "Người Chơi Trực Tuyến : <VAR>",
 	["zh-TW"] = "在線玩家 : <VAR>",
 	["zh-CN"] = "在线玩家 : <VAR>",
 })
@@ -1514,7 +1514,7 @@ ZShelter.L("#ServerListAddr", {
 	["fr"] = "Adresse IP: <VAR>",
 	["tr"] = "IP Adresi : <VAR>",
 	["ru"] = "",
-	["vi"] = "Địa Chỉ : <Var>",
+	["vi"] = "Địa Chỉ : <VAR>",
 	["zh-TW"] = "伺服器IP : <VAR>",
 	["zh-CN"] = "服务器IP : <VAR>",
 })

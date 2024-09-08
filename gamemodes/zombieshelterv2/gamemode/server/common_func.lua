@@ -95,7 +95,16 @@ function ZShelterVisible_Vec(self, vec, target)
 	}
 	local ret = util.TraceLine(tr)
 	local ent = ret.Entity
-	return ret.Fraction == 1 || target == ent || (!ret.HitWorld && IsValid(ent) && !ZShelter_IsProp(ent:GetClass()) && !ent:IsPlayer()  && !ent.IsBuilding && target.LastStuckTime && target.LastStuckTime > CurTime()) || (IsValid(ent) && ZShelter_WhiteListedEntity[ent:GetClass()]) -- This is terrible
+	if(IsValid(ent)) then
+		local mins, maxs = ent:GetCollisionBounds()
+		mins.z = 0
+		maxs.z = 0
+		local dst = mins:Distance(maxs)
+		if(ent.IsPlayerBarricade) then return end
+		return ent:GetPos():Distance(tr.endpos) <= dst || (IsValid(ent) && ZShelter_WhiteListedEntity[ent:GetClass()])
+	else
+		return ret.Fraction == 1
+	end
 end
 
 function ZShelterVisible_Vec_IgnoreTurret(self, vec, target)
@@ -107,7 +116,16 @@ function ZShelterVisible_Vec_IgnoreTurret(self, vec, target)
 	}
 	local ret = util.TraceLine(tr)
 	local ent = ret.Entity
-	return ret.Fraction == 1 || target == ent || (!ret.HitWorld && IsValid(ent) && !ZShelter_IsProp(ent:GetClass()) && !ent:IsPlayer() && !ent.IsBuilding && target.LastStuckTime && target.LastStuckTime > CurTime()) || (IsValid(ent) && (ZShelter_WhiteListedEntity[ent:GetClass()])) -- This is terrible
+	if(IsValid(ent)) then
+		local mins, maxs = ent:GetCollisionBounds()
+		mins.z = 0
+		maxs.z = 0
+		local dst = mins:Distance(maxs)
+		if(ent.IsPlayerBarricade) then return end
+		return ent:GetPos():Distance(tr.endpos) <= dst || (IsValid(ent) && ZShelter_WhiteListedEntity[ent:GetClass()])
+	else
+		return ret.Fraction == 1
+	end
 end
 
 function ZShelterVisible_VecExtra(self, vec, target, ignore)
