@@ -276,6 +276,15 @@ if(SERVER) then
 	for x,y in pairs(fn) do
 		include("addons/"..y)
 	end
+	local fn = file.Find(ZShelter.BasePath.."/addons_client/*", "LUA")
+	for x,y in pairs(fn) do
+		AddCSLuaFile("addons_client/"..y)
+	end
+else
+	local fn = file.Find(ZShelter.BasePath.."/addons_client/*", "LUA")
+	for x,y in pairs(fn) do
+		include("addons_client/"..y)
+	end
 end
 
 RunConsoleCommand("gmod_mcore_test", "1")

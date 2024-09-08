@@ -121,9 +121,9 @@ net.Receive("ZShelter-Ready", function(len, ply)
 end)
 
 hook.Add("PlayerDisconnected", "ZShelter-DisconnectCheck", function(ply)
-	if(!GetGlobalBool("ReadyState")) then return end
-	ZShelter.ShouldStart(player.GetCount())
 	if(player.GetCount() <= 1) then
 		ZShelter.ResetServer()
 	end
+	if(!GetGlobalBool("ReadyState")) then return end
+	ZShelter.ShouldStart(player.GetCount())
 end)

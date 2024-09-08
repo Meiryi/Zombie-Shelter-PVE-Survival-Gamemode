@@ -36,18 +36,42 @@ end
 
 --[[
 ZShelter.L("#",{
+	["bg"] = "",
+	["cs"] = "",
+	["da"] = "",
+	["de"] = "",
+	["el"] = "",
 	["en"] = "",
+	["en-PT"] = "",
+	["es-ES"] = "",
+	["et"] = "",
+	["fi"] = "",
 	["fr"] = "",
+	["he"] = "",
+	["hr"] = "",
+	["hu"] = "",
+	["it"] = "",
+	["ja"] = "",
+	["ko"] = "",
+	["lt"] = "",
+	["nl"] = "",
+	["no"] = "",
+	["pt-BR"] = "",
+	["pt-PT"] = "",
+  ["ru"] = "",
+	["sk"] = "",
+	["sv-SE"] = "",
+	["th"] = "",
 	["tr"] = "",
-	["ru"] = "",
+	["uk"] = "",
 	["vi"] = "",
-	["zh-TW"] = "",
 	["zh-CN"] = "",
+	["zh-TW"] = "",	
 })
 ]]
 ZShelter.L("#SkillPTS", {
 	["en"] = "Skill menu - [N] | Remaining points : ",
-	["fr"] = "Menu des compétences - [N] | Points restants : ",
+	["fr"] = "Compétences - [N] | Points restants : ",
 	["tr"] = "Yetenek menüsü - [N] | Kalan puan : ",
 	["ru"] = "Меню навыков - [N] | Осталось очков : ",
 	["vi"] = "Menu kỹ năng - [N] | Điểm còn lại : ",
@@ -77,7 +101,7 @@ ZShelter.L("#RespawnAfter", {
 
 ZShelter.L("#BuildingHint", {
 	["en"] = "[Left Click] Build   |  [R] Rotate  |   [Right Click] Cancel",
-	["fr"] = "[Clic Gauche] Construire | [R] Pivoter | [Clic droit] Annuler",
+	["fr"] = "[Clic Gauche] Construire | [R] Pivoter | [Clic Droit] Annuler",
 	["tr"] = "[Sol Tık] İnşa Et   |  [R] Döndür  |   [Sağ Tık] İptal",
 	["ru"] = "[ЛКМ] Построить   |  [R] Вращать  |   [ПКМ] Отмена",
 	["vi"] = "[Nhấn Chuột Trái] Xây Dựng   |  [R] Xoay  |   [Nhấn Chuột Phải] Hủy",
@@ -87,7 +111,7 @@ ZShelter.L("#BuildingHint", {
 
 ZShelter.L("#BuildHints", {
 	["en"] = "[B] Build Menu  |  [F2] Game Menu  |  [F6] Config Menu",
-	["fr"] = "[B] Construction | [F2] Menu | [F6] Configuration",
+	["fr"] = "[B] Menu de Construction | [F2] Menu du Jeu | [F6] Menu de Configuration",
 	["tr"] = "[B] Yapı Menüsü  |  [F2] Oyun Menüsü  |  [F6] Konfig Menüsü",
 	["ru"] = "[B] Постройки  |  [F2] Меню игры  |  [F6] Конфигурация",
 	["vi"] = "[B] Menu Xây Dựng  |  [F2] Menu Trò Chơi  |  [F6] Menu Cấu Hình",
