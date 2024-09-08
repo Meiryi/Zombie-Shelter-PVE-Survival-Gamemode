@@ -21,4 +21,5 @@ Create a separate file for [zshelter_server_settings.properties](https://github.
 * Tora - Turkish Localization
 * MisterClems - French Localization
 * JOSMRZ - Vietnamese Localization
+* Ryo567 - Spanish Localization
 * We Is Heroes - Playtest, and provided alot of ideas for skills
