@@ -21,4 +21,5 @@ Create a separate file for [zshelter_server_settings.properties](https://github.
 - **Turkish** - Tora
 - **French** - MisterClems
 - **German** - DascooleSchaf and GermanMaKo
+- **Vietnamese** - JOSMRZ
 - **We Is Heroes** - Playtest, and provided alot of ideas for skills
