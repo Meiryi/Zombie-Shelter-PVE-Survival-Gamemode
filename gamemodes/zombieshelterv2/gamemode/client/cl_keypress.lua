@@ -41,7 +41,7 @@ function ZShelter.AddMenu(ui)
 end
 
 hook.Add("Think", "ZShelter-KeyPressHandler", function()
-	if(gui.IsConsoleVisible() || ZShelter.BlockMenu || ZShelter.ChatOpened) then return end
+	if(gui.IsConsoleVisible() || ZShelter.BlockMenu || ZShelter.ChatOpened || GetConVar("zshelter_enable_menu_keys"):GetInt() != 1) then return end
 	for k,v in next, keys do
 		if(input.IsKeyDown(v)) then
 			if(!ZShelter.KeyStates[v]) then

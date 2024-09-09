@@ -65,6 +65,7 @@ CreateConVar("zshelter_server_category_name", "", FCVAR_NOTIFY + FCVAR_ARCHIVE, 
 
 if(CLIENT) then
 	CreateConVar("zshelter_enable_hud", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable zombie shelter hud?")
+	CreateConVar("zshelter_enable_menu_keys", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable keys to toggle menu?")
 end
 
 if(GetConVar("zshelter_server_category_name"):GetString() != "") then
