@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture"		"zsh_dust\{zsh_ba03"
+	"$alphatest"		"1"
+	"$ALPHATESTREFERENCE"		"0.500000"
+	"$model"		"1"
+}

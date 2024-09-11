@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture"		"czde_prodigy\{ladder2"
+	"$alphatest"		"1"
+	"$ALPHATESTREFERENCE"		"0.500000"
+	"$model"		"1"
+}

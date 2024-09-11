@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture"		"ze_hitchhiking\{po_tension"
+	"$alphatest"		"1"
+	"$ALPHATESTREFERENCE"		"0.500000"
+	"$model"		"1"
+}

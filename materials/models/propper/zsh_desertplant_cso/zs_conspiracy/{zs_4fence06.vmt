@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture"		"zs_conspiracy\{zs_4fence06"
+	"$alphatest"		"1"
+	"$ALPHATESTREFERENCE"		"0.500000"
+	"$model"		"1"
+}
