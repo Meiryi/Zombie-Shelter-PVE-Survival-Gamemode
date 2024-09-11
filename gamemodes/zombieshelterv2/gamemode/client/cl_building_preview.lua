@@ -380,10 +380,13 @@ hook.Add("Think", "ZShelter-PreviewController", function()
 		start = LocalPlayer():EyePos(),
 		endpos = LocalPlayer():EyePos() + LocalPlayer():EyeAngles():Forward() * 256,
 		mask = MASK_PLAYERSOLID,
+		collisiongroup = COLLISION_GROUP_PLAYER,
 		filter = ply,
 	}
 	local pos = util.TraceLine(tr).HitPos
-	local trace = util.QuickTrace(pos, Vector(0, 0, -1024000), ply)
+	tr.start = pos
+	tr.endpos = pos - Vector(0, 0, 32767)
+	local trace = util.TraceLine(tr)
 	local pos = trace.HitPos
 	if(snapToGrid) then
 		local offs = gridSize / 2
