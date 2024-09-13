@@ -16,6 +16,11 @@
 	ZH-CN :
 	昼夜求生 v2.0 by Meiryi  / Meika / Shiro / Shigure
 	任何形式的编辑是不被允许的 (包括模式的名称), 若有问题请在Steam上联络我
+
+	DE :
+	Zombie Shelter v2.0 von Meiryi / Meika / Shiro / Shigure
+	Sie sollten die Codes NICHT bearbeiten / ändern / erneut hochladen, dies beinhaltet die Bearbeitung des Namens des Spielmodus.
+	Wenn irgendwelche Probleme auftreten, können Sie mich gerne über Steam kontaktieren. Vielen Dank fürs Lesen.
 	
 	FR :
 	Zombie Shelter v2.0 par Meiryi / Meika / Shiro / Shigure
@@ -31,6 +36,7 @@
 ZShelter.AddInfo("Basic Engineering", {
 	title = {
 		["en"] = "Basic Engineering",
+		["de"] = "Grundlegendes Ingenieurswesen",
 		["fr"] = "Ingénierie de Base",
 		["tr"] = "Temel Mühendislik",
 		["vi"] = "Kỹ Sư Cơ Bản",
@@ -40,6 +46,7 @@ ZShelter.AddInfo("Basic Engineering", {
 	},
 	desc = {
 		["en"] = "Allows you to build advanced turrets",
+		["de"] = "Ermöglicht den Bau fortschrittlicher Geschütztürme",
 		["fr"] = "Permet de construire des tourelles avancées",
 		["tr"] = "Gelişmiş taretler üretmenize olanak sağlar",
 		["vi"] = "Cho phép bạn xây dựng tháp pháo tiên tiến",
@@ -51,6 +58,7 @@ ZShelter.AddInfo("Basic Engineering", {
 ZShelter.AddInfo("Build Speed Boost", {
 	title = {
 		["en"] = "Build Speed Boost",
+		["de"] = "Baugeschwindigkeitssteigerung",
 		["fr"] = "Vitesse de Construction Améliorée",
 		["tr"] = "İnşa Hızı",
 		["vi"] = "Tăng Tốc Độ Xây Dựng",
@@ -60,6 +68,7 @@ ZShelter.AddInfo("Build Speed Boost", {
 	},
 	desc = {
 		["en"] = "Increases build speed +35% per upgrade",
+		["de"] = "Erhöht die Baugeschwindigkeit um +35 % pro Upgrade",
 		["fr"] = "Augmente la vitesse de construction de +35% par amélioration",
 		["tr"] = "İnşa hızını yükseltme başına +%35 artırır",
 		["vi"] = "Tăng tốc độ xây dựng +35% mỗi cấp",
@@ -71,6 +80,7 @@ ZShelter.AddInfo("Build Speed Boost", {
 ZShelter.AddInfo("Improved Blueprint", {
 	title = {
 		["en"] = "Improved Blueprint",
+		["de"] = "Verbesserter Bauplan",
 		["fr"] = "Schéma Amélioré",
 		["tr"] = "Gelişmiş Plan",
 		["vi"] = "Bản Học Cải Tiến",
@@ -80,6 +90,7 @@ ZShelter.AddInfo("Improved Blueprint", {
 	},
 	desc = {
 		["en"] = "Decreases resource cost, -10% per upgrade",
+		["de"] = "Reduziert die Ressourcenkosten um -10 % pro Upgrade",
 		["fr"] = "Réduit le nombre de ressources nécessaires, -10% par amélioration",
 		["tr"] = "Kaynak maliyetini azaltır, yükseltme başına -%10",
 		["vi"] = "Giảm chi phí tài nguyên, -10% mỗi cấp",
@@ -91,6 +102,7 @@ ZShelter.AddInfo("Improved Blueprint", {
 ZShelter.AddInfo("Electrical Engineering", {
 	title = {
 		["en"] = "Electrical Engineering",
+		["de"] = "Elektrotechnik",
 		["fr"] = "Ingénierie Électrique",
 		["tr"] = "Elektrik Mühendisliği",
 		["vi"] = "Kỹ Sư Điện",
@@ -100,6 +112,7 @@ ZShelter.AddInfo("Electrical Engineering", {
 	},
 	desc = {
 		["en"] = "Decreases power usage, -10% per upgrade",
+		["de"] = "Reduziert den Stromverbrauch um -10 % pro Upgrade",
 		["fr"] = "Réduit la consommation d'énergie, -10% par amélioration",
 		["tr"] = "Güç kullanımını azaltır, yükseltme başına -%10",
 		["vi"] = "Giảm tiêu thụ điện, -10% mỗi cấp",
@@ -111,6 +124,7 @@ ZShelter.AddInfo("Electrical Engineering", {
 ZShelter.AddInfo("Turret Damage Boost", {
 	title = {
 		["en"] = "Turret Damage Boost",
+		["de"] = "Geschützturmschaden Boost",
 		["fr"] = "Dégâts des Tourelles Améliorée",
 		["tr"] = "Taret Hasar Yükseltmesi",
 		["vi"] = "Tăng Sát Thương Tháp Pháo",
@@ -120,6 +134,7 @@ ZShelter.AddInfo("Turret Damage Boost", {
 	},
 	desc = {
 		["en"] = "Increases turret's damage, +10% per upgrade",
+		["de"] = "Erhöht den Schaden des Geschützturms um +10 % pro Upgrade.",
 		["fr"] = "Augmente les dégâts des tourelles, +10% par amélioration",
 		["tr"] = "Taretin hasarını artırır, yükseltme başına +%10",
 		["vi"] = "Tăng sát thương của tháp pháo, +10% mỗi cấp",
@@ -131,6 +146,7 @@ ZShelter.AddInfo("Turret Damage Boost", {
 ZShelter.AddInfo("Advanced Engineering", {
 	title = {
 		["en"] = "Advanced Engineering",
+		["de"] = "Fortschrittliches Ingenieurswesen",
 		["fr"] = "Ingénierie de Pointe",
 		["tr"] = "Gelişmiş Mühendislik",
 		["vi"] = "Kỹ Sư Nâng Cao",
@@ -140,6 +156,7 @@ ZShelter.AddInfo("Advanced Engineering", {
 	},
 	desc = {
 		["en"] = "Allows you to build special buildings",
+		["de"] = "Ermöglicht den Bau spezieller Gebäude",
 		["fr"] = "Vous permet de construire des bâtiments spéciaux",
 		["tr"] = "Özel yapılar inşa etmenize olanak sağlar",
 		["vi"] = "Cho phép bạn xây dựng các công trình đặc biệt",
@@ -151,6 +168,7 @@ ZShelter.AddInfo("Advanced Engineering", {
 ZShelter.AddInfo("Repair Speed Boost", {
 	title = {
 		["en"] = "Repair Speed Boost",
+		["de"] = "Reparaturgeschwindigkeitssteigerung",
 		["fr"] = "Réparation Accélérée",
 		["tr"] = "Tamir Hızı",
 		["vi"] = "Tăng Tốc Độ Sửa Chữa",
@@ -160,6 +178,7 @@ ZShelter.AddInfo("Repair Speed Boost", {
 	},
 	desc = {
 		["en"] = "Increases repair speed, +15% per upgrade",
+		["de"] = "Erhöht die Reparaturgeschwindigkeit um +15 % pro Upgrade",
 		["fr"] = "Augmente la vitesse de réparation, +15% par amélioration",
 		["tr"] = "Tamir hızını artırır, yükseltme başına +%15",
 		["vi"] = "Tăng tốc độ sửa chữa, +15% mỗi cấp",
@@ -171,6 +190,7 @@ ZShelter.AddInfo("Repair Speed Boost", {
 ZShelter.AddInfo("Auto Repair", {
 	title = {
 		["en"] = "Auto Repair",
+		["de"] = "Automatische Reparatur",
 		["fr"] = "Réparation Automatique",
 		["tr"] = "Otomatik Tamir",
 		["vi"] = "Tự Động Sửa Chữa",
@@ -180,6 +200,7 @@ ZShelter.AddInfo("Auto Repair", {
 	},
 	desc = {
 		["en"] = "Auto repairs nearby buildings, +256 unit radius and 20% repair speed per upgrade",
+		["de"] = "Automatische Reparaturen nahegelegener Gebäude, +256 Einheitenradius und 20 % Reparaturgeschwindigkeit pro Upgrade",
 		["fr"] = "Réparation automatique des bâtiments proches, +256 de rayon d'action et 20% de vitesse de réparation par amélioration",
 		["tr"] = "Yakındaki yapıları otomatik olarak tamir eder, yükseltme başına +256 birim alan ve %20 tamir hızı",
 		["vi"] = "Tự động sửa chữa các công trình gần đó, +256 đơn vị bán kính và 20% tốc độ sửa chữa mỗi cấp",
@@ -191,6 +212,7 @@ ZShelter.AddInfo("Auto Repair", {
 ZShelter.AddInfo("Clawhammer Upgrade", {
 	title = {
 		["en"] = "Clawhammer Upgrade",
+		["de"] = "Klauenhammer Upgrade",
 		["fr"] = "Marteau",
 		["tr"] = "Pençe Çekiç",
 		["vi"] = "Nâng Cấp Búa Nhổ Đinh",
@@ -200,6 +222,7 @@ ZShelter.AddInfo("Clawhammer Upgrade", {
 	},
 	desc = {
 		["en"] = "Upgrades your melee weapon to clawhammer (+50% build and repair speed)",
+		["de"] = "Rüstet deine Nahkampfwaffe zum Klauenhammer auf (+50 % Bau- und Reparaturgeschwindigkeit)",
 		["fr"] = "Améliore votre arme de mêlée en marteau (+50% de vitesse de construction et de réparation)",
 		["tr"] = "Yakın dövüş silahınızı pençe çekice yükseltir (+%50 inşa ve tamir hızı)",
 		["vi"] = "Nâng cấp vũ khí cận chiến của bạn thành búa nhổ đinh (+50% tốc độ xây dựng và sửa chữa)",
@@ -211,6 +234,7 @@ ZShelter.AddInfo("Clawhammer Upgrade", {
 ZShelter.AddInfo("Building Health Boost", {
 	title = {
 		["en"] = "Building Health Boost",
+		["de"] = "Gebäuden-Gesundheitsboost",
 		["fr"] = "Renforcement des Constructions",
 		["tr"] = "Yapı Sağlık Yükseltmesi",
 		["vi"] = "Tăng Máu Công Trình",
@@ -220,6 +244,7 @@ ZShelter.AddInfo("Building Health Boost", {
 	},
 	desc = {
 		["en"] = "Increases building's health, +10% per upgrade",
+		["de"] = "Erhöht die Gesundheit des Gebäudes um +10 % pro Upgrade.",
 		["fr"] = "Augmente la santé des bâtiments, +10% par amélioration",
 		["tr"] = "Yapının sağlığını artırır, yükseltme başına +%10",
 		["vi"] = "Tăng máu của công trình, +10% mỗi cấp",
@@ -231,6 +256,7 @@ ZShelter.AddInfo("Building Health Boost", {
 ZShelter.AddInfo("Expert Engineering", {
 	title = {
 		["en"] = "Expert Engineering",
+		["de"] = "Kompetente Ingenieurstechnik",
 		["fr"] = "Expert en Ingénierie",
 		["tr"] = "Uzman Mühendislik",
 		["vi"] = "Kỹ Sư Chuyên Nghiệp",
@@ -240,6 +266,7 @@ ZShelter.AddInfo("Expert Engineering", {
 	},
 	desc = {
 		["en"] = "Allows you to build advanced buildings",
+		["de"] = "Ermöglicht den Bau fortgeschrittener Gebäude",
 		["fr"] = "Permet de construire des bâtiments avancés",
 		["tr"] = "Gelişmiş yapılar inşa etmenizi sağlar",
 		["vi"] = "Cho phép bạn xây dựng các công trình tiên tiến",
@@ -251,6 +278,7 @@ ZShelter.AddInfo("Expert Engineering", {
 ZShelter.AddInfo("Chain Repair", {
 	title = {
 		["en"] = "Chain Repair",
+		["de"] = "Kettenreparatur",
 		["fr"] = "Réparation à la Chaîne",
 		["tr"] = "Zincirleme Tamir",
 		["vi"] = "Sửa Chữa Mắt Xích",
@@ -260,6 +288,7 @@ ZShelter.AddInfo("Chain Repair", {
 	},
 	desc = {
 		["en"] = "Repairs all nearby buildings, +64 unit radius and 20% repair speed per upgrade",
+		["de"] = "Repariert alle Gebäude in der Nähe, +64 Einheitenradius und 20 % Reparaturgeschwindigkeit pro Upgrade",
 		["fr"] = "Répare tous les bâtiments proches, +64 de rayon d'action et 20% de vitesse de réparation par amélioration",
 		["tr"] = "Yakındaki tüm yapıları tamir eder, yükseltme başına +64 birim alan ve %20 tamir hızı",
 		["vi"] = "Sửa chữa tất cả các công trình gần đó, +64 đơn vị bán kính và 20% tốc độ sửa chữa mỗi cấp",
@@ -271,6 +300,7 @@ ZShelter.AddInfo("Chain Repair", {
 ZShelter.AddInfo("Overheal", {
 	title = {
 		["en"] = "Overheal",
+		["de"] = "Overheal",
 		["fr"] = "Rénovation",
 		["tr"] = "Gelişmiş İyileştirme",
 		["vi"] = "Hồi Phục Quá Mức",
@@ -280,6 +310,7 @@ ZShelter.AddInfo("Overheal", {
 	},
 	desc = {
 		["en"] = "Temporary increases building's maximum health, +25% health per upgrade\nOverhealed building won't be stunned\n*Only work when repairing manually*",
+		["de"] = "Erhöht vorübergehend die maximale Gesundheit des Gebäudes, +25 % Gesundheit pro Upgrade\nÜberheilte Gebäude werden nicht betäubt\n*Funktioniert nur bei manueller Reparatur*",
 		["fr"] = "Augmente temporairement la santé maximale des bâtiments, +25% de santé par amélioration\nLes bâtiments rénover ne sont pas étourdis\n*Cela ne fonctionne que pour les réparations manuelles*",
 		["tr"] = "Geçici olarak yapının maksimum sağlığını artırır, yükseltme başına +%25\nGelişmiş İyileştirme kullanılan yapı sersemlemez",
 		["vi"] = "Tăng tạm thời máu tối đa của công trình, +25% máu mỗi cấp\nCông trình hồi phục sẽ không bị choáng\n*Chỉ hoạt động khi sửa chữa thủ công*",
@@ -291,6 +322,7 @@ ZShelter.AddInfo("Overheal", {
 ZShelter.AddInfo("Recycle", {
 	title = {
 		["en"] = "Recycle",
+		["de"] = "Recycling",
 		["fr"] = "Recyclage",
 		["tr"] = "Geri Dönüşüm",
 		["vi"] = "Tái Chế",
@@ -300,6 +332,7 @@ ZShelter.AddInfo("Recycle", {
 	},
 	desc = {
 		["en"] = "Returns resources when building got destroyed, +20% per upgrade",
+		["de"] = "Gibt Ressourcen zurück, wenn ein Gebäude zerstört wurde, +20 % pro Upgrade",
 		["fr"] = "Restitue une partie des ressources lorsqu'un bâtiment a été détruit, +20% par amélioration",
 		["tr"] = "Yapı yok edildiğinde kaynakları geri döndürür, yükseltme başına +%20",
 		["vi"] = "Trả lại tài nguyên khi công trình bị phá hủy, +20% mỗi cấp",
@@ -311,6 +344,7 @@ ZShelter.AddInfo("Recycle", {
 ZShelter.AddInfo("Self Destruction", {
 	title = {
 		["en"] = "Self Destruction",
+		["de"] = "Selbstdetonation",
 		["fr"] = "Autodestruction",
 		["tr"] = "Kendini İmha Etme",
 		["vi"] = "Tự Hủy",
@@ -320,6 +354,7 @@ ZShelter.AddInfo("Self Destruction", {
 	},
 	desc = {
 		["en"] = "When a turret gets destroyed, it'll damage all nearby enemy",
+		["de"] = "Wenn ein Geschützturm zerstört wird, fügt er allen Gegnern in der Nähe Schaden zu.",
 		["fr"] = "Lorsqu'une tourelle est détruite, elle explose et inflige des dégâts à tous les ennemis proches",
 		["tr"] = "Bir kule yok edildiğinde yakındaki tüm düşmanlara hasar verir",
 		["vi"] = "Khi một tháp pháo bị phá hủy, nó sẽ gây sát thương cho tất cả kẻ địch ở gần",
@@ -331,6 +366,7 @@ ZShelter.AddInfo("Self Destruction", {
 ZShelter.AddInfo("Transporting Drone", {
 	title = {
 		["en"] = "Transporting Drone",
+		["de"] = "Transportdrohne",
 		["fr"] = "Drone de Transport",
 		["tr"] = "Aktarım Dronu",
 		["vi"] = "Vận Chuyển Bằng Drone",
@@ -340,6 +376,7 @@ ZShelter.AddInfo("Transporting Drone", {
 	},
 	desc = {
 		["en"] = "Allows you to use resources directly from storage to build",
+		["de"] = "Ermöglicht die Nutzung von Ressourcen direkt aus dem Speicher zum Erstellen",
 		["fr"] = "Permet d'utiliser directement les ressources du stockage pour construire",
 		["tr"] = "Depodan kaynakları doğrudan inşa etmek için kullanabilmeni sağlar",
 		["vi"] = "Cho phép bạn sử dụng tài nguyên trực tiếp từ kho để xây dựng",
@@ -351,6 +388,7 @@ ZShelter.AddInfo("Transporting Drone", {
 ZShelter.AddInfo("C4", {
 	title = {
 		["en"] = "C4",
+		["de"] = "C4",
 		["fr"] = "C4",
 		["tr"] = "C4",
 		["vi"] = "C4",
@@ -360,6 +398,7 @@ ZShelter.AddInfo("C4", {
 	},
 	desc = {
 		["en"] = "A C4 can be used to destroy obstacles",
+		["de"] = "Mit einem C4 können Hindernisse zerstört werden",
 		["fr"] = "Les C4 peuvent être utilisés pour détruire des obstacles",
 		["tr"] = "Engelleri yok etmek için C4 kullanılabilir",
 		["vi"] = "C4 có thể được sử dụng để phá hủy chướng ngại vật",
@@ -371,6 +410,7 @@ ZShelter.AddInfo("C4", {
 ZShelter.AddInfo("Repair Aura", {
 	title = {
 		["en"] = "Repair Aura",
+		["de"] = "Reparatur Aura",
 		["fr"] = "Aura de Réparation",
 		["tr"] = "Tamir Aurası",
 		["vi"] = "Hào Quang Sửa Chữa",
@@ -380,6 +420,7 @@ ZShelter.AddInfo("Repair Aura", {
 	},
 	desc = {
 		["en"] = "Auto repairs all nearby buildings with 300% speed",
+		["de"] = "Repariert automatisch alle Gebäude in der Nähe mit 300 % Geschwindigkeit",
 		["fr"] = "Réparation automatique de tous les bâtiments proches à une vitesse de 300%",
 		["tr"] = "Yakındaki tüm yapıları %300 hızla otomatik olarak onarır",
 		["vi"] = "Tự động sửa chữa tất cả các công trình gần đó với tốc độ 300%",
@@ -391,6 +432,7 @@ ZShelter.AddInfo("Repair Aura", {
 ZShelter.AddInfo("Damage Reflection", {
     title = {
         ["en"] = "Damage Reflection",
+        ["de"] = "Schadensreflexion",
 		["fr"] = "Réflexion des Dégâts",
         ["tr"] = "Hasar Yansıtma",
 		["vi"] = "Phản Xạ Sát Thương",
@@ -400,6 +442,7 @@ ZShelter.AddInfo("Damage Reflection", {
     },
     desc = {
         ["en"] = "Reflects damage when turret is being attacked\n+25% Damage to attacker per upgrade\n+5 Damage to all nearby enemies per upgrade",
+        ["de"] = "Reflektiert Schaden, wenn der Turm angegriffen wird\n+25 % Schaden für den Angreifer pro Upgrade\n+5 Schaden für alle Gegner in der Nähe pro Upgrade",
 		["fr"] = "Les tourelles renvoie les dégâts lorsqu'elles sont attaquées\n+25 % de dégâts à l'attaquant par amélioration\n+5 dégâts à tous les ennemis proches par amélioration",
         ["tr"] = "",
 		["vi"] = "Phản xạ sát thương khi tháp pháo bị tấn công\n+25% Sát thương cho kẻ tấn công mỗi cấp\n+5 Sát thương cho tất cả kẻ địch gần đó mỗi cấp",

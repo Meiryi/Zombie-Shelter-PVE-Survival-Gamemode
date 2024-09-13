@@ -17,6 +17,11 @@
 	昼夜求生 v2.0 by Meiryi  / Meika / Shiro / Shigure
 	任何形式的编辑是不被允许的 (包括模式的名称), 若有问题请在Steam上联络我
 	
+	DE :
+	Zombie Shelter v2.0 von Meiryi / Meika / Shiro / Shigure
+	Sie sollten die Codes NICHT bearbeiten / ändern / erneut hochladen, dies beinhaltet die Bearbeitung des Namens des Spielmodus.
+	Wenn irgendwelche Probleme auftreten, können Sie mich gerne über Steam kontaktieren. Vielen Dank fürs Lesen.
+
 	FR :
 	Zombie Shelter v2.0 par Meiryi / Meika / Shiro / Shigure
 	Vous NE DEVEZ PAS éditer / modifier / reposter le code du jeu, cela inclut aussi le nom du mode de jeu.
@@ -31,6 +36,7 @@
 ZShelter.AddInfo("Speed Boost", {
 	title = {
 		["en"] = "Speed Boost",
+		["de"] = "Geschwindigkeitsboost",
 		["fr"] = "Sprint",
 		["tr"] = "Hareket Hızı",
 		["vi"] = "Tăng Tốc",
@@ -40,6 +46,7 @@ ZShelter.AddInfo("Speed Boost", {
 	},
 	desc = {
 		["en"] = "Increases movement speed, +20% per upgrade",
+		["de"] = "Erhöht die Bewegungsgeschwindigkeit um +20 % pro Upgrade",
 		["fr"] = "Augmente votre vitesse de déplacement, +20% par amélioration",
 		["tr"] = "Hareket hızını artırır, yükseltme başına +%20",
 		["vi"] = "Tăng tốc độ di chuyển, +20% mỗi cấp độ",
@@ -51,6 +58,7 @@ ZShelter.AddInfo("Speed Boost", {
 ZShelter.AddInfo("Sanity Boost", {
 	title = {
 		["en"] = "Sanity Boost",
+		["de"] = "Stärkung der geistigen Gesundheit",
 		["fr"] = "Santé Mentale Renforcée",
 		["tr"] = "Akıl Sağlığı",
 		["vi"] = "Tăng Sức Khỏe Tinh Thần",
@@ -60,6 +68,7 @@ ZShelter.AddInfo("Sanity Boost", {
 	},
 	desc = {
 		["en"] = "Decreases sanity drain rate, -15% per upgrade",
+		["de"] = "Reduziert die Rate des geistigen Verlusts um -15 % pro Upgrade",
 		["fr"] = "Réduit la vitesse d'épuisement de votre santé mentale, -15% par amélioration",
 		["tr"] = "Akıl sağlığı azalma oranını azaltır, yükseltme başına -%15",
 		["vi"] = "Giảm tốc độ mất sức khỏe tinh thần, -15% mỗi cấp độ",
@@ -71,6 +80,7 @@ ZShelter.AddInfo("Sanity Boost", {
 ZShelter.AddInfo("Resource Rader", {
 	title = {
 		["en"] = "Resource Radar",
+		["de"] = "Ressourcenradar",
 		["fr"] = "Radar à Ressources",
 		["tr"] = "Kaynak Radarı",
 		["vi"] = "Radar Tài Nguyên",
@@ -80,6 +90,7 @@ ZShelter.AddInfo("Resource Rader", {
 	},
 	desc = {
 		["en"] = "Displays all nearby resources",
+		["de"] = "Zeigt alle naheliegenden Ressourcen",
 		["fr"] = "Affiche toutes les ressources à proximité",
 		["tr"] = "Yakındaki kaynakları gösterir",
 		["vi"] = "Hiển thị tất cả tài nguyên xung quanh",
@@ -91,6 +102,7 @@ ZShelter.AddInfo("Resource Rader", {
 ZShelter.AddInfo("Crowbar Upgrade", {
 	title = {
 		["en"] = "Crowbar Upgrade",
+		["de"] = "Upgrade auf Brechstange",
 		["fr"] = "Pied de Biche",
 		["tr"] = "Levye Yükseltmesi",
 		["vi"] = "Nâng Cấp Xà Beng",
@@ -100,6 +112,7 @@ ZShelter.AddInfo("Crowbar Upgrade", {
 	},
 	desc = {
 		["en"] = "Upgrades your melee weapon to crowbar (+60% attack speed)",
+		["de"] = "Rüstet deine Nahkampfwaffe zur Brechstange auf (+60 % Angriffsgeschwindigkeit)",
 		["fr"] = "Améliore votre arme de mêlée en pied de biche (+60% de vitesse d'attaque)",
 		["tr"] = "Yakın dövüş silahınızı levyeye yükseltir (+%60 saldırı hızı)",
 		["vi"] = "Nâng cấp vũ khí cận chiến thành xà beng (+60% tốc độ tấn công)",
@@ -111,6 +124,7 @@ ZShelter.AddInfo("Crowbar Upgrade", {
 ZShelter.AddInfo("Advanced Gathering", {
 	title = {
 		["en"] = "Advanced Gathering",
+		["de"] = "Fortgeschrittenes Sammeln",
 		["fr"] = "Collecte Améliorée",
 		["tr"] = "Gelişmiş Toplama",
 		["vi"] = "Thu Thập Nâng Cao",
@@ -120,6 +134,7 @@ ZShelter.AddInfo("Advanced Gathering", {
 	},
 	desc = {
 		["en"] = "Small chance to get double amount of resources, +10% per upgrade",
+		["de"] = "Eine geringe Chance, die doppelte Menge an Ressourcen zu erhalten, +10 % pro Upgrade",
 		["fr"] = "Petite chance d'obtenir le double de ressources, +10% par amélioration",
 		["tr"] = "İki kat kaynak alabilmek için küçük bir değişiklik, yükseltme başına +%10",
 		["vi"] = "Có cơ hội nhỏ để nhận được gấp đôi lượng tài nguyên, +10% mỗi cấp độ",
@@ -131,6 +146,7 @@ ZShelter.AddInfo("Advanced Gathering", {
 ZShelter.AddInfo("Chain Gathering", {
 	title = {
 		["en"] = "Chain Gathering",
+		["de"] = "Kettensammlung",
 		["fr"] = "Collecte à la Chaîne",
 		["tr"] = "Zincirleme Toplama",
 		["vi"] = "Thu Thập Mắt Xích",
@@ -140,6 +156,7 @@ ZShelter.AddInfo("Chain Gathering", {
 	},
 	desc = {
 		["en"] = "Gathering multiple resources at same time",
+		["de"] = "Sammelt mehrere Ressourcen gleichzeitig",
 		["fr"] = "Collecte simultanément plusieurs ressources à la fois",
 		["tr"] = "Aynı anda birden fazla kaynak toplama",
 		["vi"] = "Thu thập nhiều tài nguyên cùng một lúc",
@@ -151,6 +168,7 @@ ZShelter.AddInfo("Chain Gathering", {
 ZShelter.AddInfo("Haste", {
 	title = {
 		["en"] = "Haste",
+		["de"] = "Eile",
 		["fr"] = "Célérité",
 		["tr"] = "Çabukluk",
 		["vi"] = "Vội Vàng",
@@ -160,6 +178,7 @@ ZShelter.AddInfo("Haste", {
 	},
 	desc = {
 		["en"] = "Get double amount of resources per hit",
+		["de"] = "Beim Treffer erhaltet man die doppelte Menge an Ressourcen",
 		["fr"] = "Double le nombre de ressources par coup",
 		["tr"] = "İki kat toplama hızı",
 		["vi"] = "Nhận được gấp đôi lượng tài nguyên mỗi lần đánh",
@@ -171,6 +190,7 @@ ZShelter.AddInfo("Haste", {
 ZShelter.AddInfo("Resource Transporting", {
 	title = {
 		["en"] = "Resource Transporting",
+		["de"] = "Ressourcentransport",
 		["fr"] = "Transport de Ressources",
 		["tr"] = "Kaynak Aktarımı",
 		["vi"] = "Vận Chuyển Tài Nguyên",
@@ -180,6 +200,7 @@ ZShelter.AddInfo("Resource Transporting", {
 	},
 	desc = {
 		["en"] = "Resources will be send to storage when inventory is full",
+		["de"] = "Ressourcen werden ins Lager geschickt, wenn Inventar voll ist",
 		["fr"] = "Les ressources sont envoyées au stockage lorsque votre inventaire est plein",
 		["tr"] = "Envanter dolu olduğunda kaynaklar depoya gönderilir",
 		["vi"] = "Tài nguyên sẽ được chuyển đến kho khi hòm đồ đầy",
@@ -191,6 +212,7 @@ ZShelter.AddInfo("Resource Transporting", {
 ZShelter.AddInfo("Stunwave", {
 	title = {
 		["en"] = "Stunwave",
+		["de"] = "Betäubungswelle",
 		["fr"] = "Onde Paralysante",
 		["tr"] = "Sersemletici Dalga",
 		["vi"] = "Sóng Choáng",
@@ -200,6 +222,7 @@ ZShelter.AddInfo("Stunwave", {
 	},
 	desc = {
 		["en"] = "Stuns all nearby enemies for 25 seconds",
+		["de"] = "Betäubt alle Gegner in der Nähe für 25 Sekunden.",
 		["fr"] = "Étourdit tous les ennemis proches pendant 25 secondes",
 		["tr"] = "Yakındaki tüm düşmanları 25 saniye boyunca sersemletir",
 		["vi"] = "Choáng tất cả kẻ địch xung quanh trong 25 giây",
@@ -211,6 +234,7 @@ ZShelter.AddInfo("Stunwave", {
 ZShelter.AddInfo("Cloaking", {
 	title = {
 		["en"] = "Cloaking",
+		["de"] = "Tarnung",
 		["fr"] = "Cape d'Invisibilité",
 		["tr"] = "Görünmezlik",
 		["vi"] = "Ẩn Thân",
@@ -220,6 +244,7 @@ ZShelter.AddInfo("Cloaking", {
 	},
 	desc = {
 		["en"] = "Become invisible for 30 seconds, enemy cannot see you while you're invisible",
+		["de"] = "Werde 30 Sekunden lang unsichtbar. Der Feind kann dich nicht sehen, während du unsichtbar bist.",
 		["fr"] = "Vous devenez invisible pendant 30 secondes, l'ennemi ne peut plus vous voir pendant que vous êtes invisible",
 		["tr"] = "30 saniye boyunca görünmez ol, düşman seni görünmezken göremez",
 		["vi"] = "Trở nên vô hình trong 30 giây, kẻ địch không thể nhìn thấy bạn khi bạn vô hình",
@@ -231,6 +256,7 @@ ZShelter.AddInfo("Cloaking", {
 ZShelter.AddInfo("Claymore", {
 	title = {
 		["en"] = "Claymore",
+		["de"] = "Claymore",
 		["fr"] = "Claymore",
 		["tr"] = "Kılıç",
 		["vi"] = "Mìn Claymore",
@@ -240,6 +266,7 @@ ZShelter.AddInfo("Claymore", {
 	},
 	desc = {
 		["en"] = "Allows you to build claymore",
+		["de"] = "Erlaubt das Bauen von Claymores",
 		["fr"] = "Vous permet de construire des claymore",
 		["tr"] = "APM üretmenize olanak sağlar",
 		["vi"] = "Cho phép bạn xây dựng mìn claymore",
@@ -251,6 +278,7 @@ ZShelter.AddInfo("Claymore", {
 ZShelter.AddInfo("Campfire", {
 	title = {
 		["en"] = "Campfire",
+		["de"] = "Lagerfeuer",
 		["fr"] = "Feu de Camp",
 		["tr"] = "Kamp Ateşi",
 		["vi"] = "Lửa Trại",
@@ -260,6 +288,7 @@ ZShelter.AddInfo("Campfire", {
 	},
 	desc = {
 		["en"] = "Allows you to build campfire",
+		["de"] = "Ermöglicht das Bauen eines Lagerfeuers",
 		["fr"] = "Vous permet de faire des feux de camp",
 		["tr"] = "Kamp ateşi kurmanıza olanak sağlar",
 		["vi"] = "Cho phép bạn xây dựng lửa trại",
@@ -271,6 +300,7 @@ ZShelter.AddInfo("Campfire", {
 ZShelter.AddInfo("Trap Damage Boost", {
 	title = {
 		["en"] = "Trap Damage Boost",
+		["de"] = "Schadenboost für Fallen",
 		["fr"] = "Pièges Améliorer",
 		["tr"] = "Tuzak Hasar Yükseltmesi",
 		["vi"] = "Tăng Sức Mạnh Bẫy",
@@ -280,6 +310,7 @@ ZShelter.AddInfo("Trap Damage Boost", {
 	},
 	desc = {
 		["en"] = "Increase trap damage, +40% per upgrade",
+		["de"] = "Erhöhter Fallen Schaden, +40 % pro Upgrade",
 		["fr"] = "Augmente les dégâts des pièges, +40% par amélioration",
 		["tr"] = "Tuzak hasarını artırır, yükseltme başına +%40",
 		["vi"] = "Tăng sức mạnh bẫy, +40% mỗi cấp độ",
@@ -291,6 +322,7 @@ ZShelter.AddInfo("Trap Damage Boost", {
 ZShelter.AddInfo("Temporary Turret", {
 	title = {
 		["en"] = "Temporary Turret",
+		["de"] = "Temporärer Geschützturm",
 		["fr"] = "Tourelle Temporaire",
 		["tr"] = "Geçici Taret",
 		["vi"] = "Tháp Pháo Tạm Thời",
@@ -300,6 +332,7 @@ ZShelter.AddInfo("Temporary Turret", {
 	},
 	desc = {
 		["en"] = "Spawn a temporary turret, disappears after 15 seconds",
+		["de"] = "Erzeugt einen temporären Geschützturm, der nach 15 Sekunden verschwindet",
 		["fr"] = "Apparition temporaire d'une tourelle , elle disparaît au bout de 15 secondes",
 		["tr"] = "Geçici bir taret oluştur, 15 saniye sonra kaybolur",
 		["vi"] = "Tạo ra một tháp pháo tạm thời, biến mất sau 15 giây",
@@ -311,6 +344,7 @@ ZShelter.AddInfo("Temporary Turret", {
 ZShelter.AddInfo("Increased Capacity", {
 	title = {
 		["en"] = "Increased Capacity",
+		["de"] = "Erhöhte Kapazität",
 		["fr"] = "Capacité Améliorée",
 		["tr"] = "Artırılmış Kapasite",
 		["vi"] = "Tăng Dung Tích",
@@ -320,6 +354,7 @@ ZShelter.AddInfo("Increased Capacity", {
 	},
 	desc = {
 		["en"] = "Increase your resource capacity by 30%",
+                ["de"] = "Erhöhte Ressourcenkapazität von 30 %",
 		["fr"] = "Augmente la capacité de votre Sac à dos de 30 %",
 		["tr"] = "Kaynak kapasiteni %30 artırır",
 		["vi"] = "Tăng khả năng chứa tài nguyên của bạn lên 30%",
@@ -331,6 +366,7 @@ ZShelter.AddInfo("Increased Capacity", {
 ZShelter.AddInfo("Demolitions Specialist", {
 	title = {
 		["en"] = "Demolitions Specialist",
+		["de"] = "Abrissspezialist",
 		["fr"] = "Spécialiste en Démolitions",
 		["tr"] = "Yıkım Uzmanı",
 		["vi"] = "Chuyên Gia Phá Dỡ",
@@ -340,6 +376,7 @@ ZShelter.AddInfo("Demolitions Specialist", {
 	},
 	desc = {
 		["en"] = "+1 Mine detonate count per upgrade",
+		["de"] = "+1 Minendetonationsanzahl pro Upgrade",
 		["fr"] = "Les mines explossent +1 fois par amélioration",
 		["tr"] = "Yükseltme başına patlatılabilir Mayın sayısını +1 artırır",
 		["vi"] = "+1 lần kích nổ mìn mỗi cấp độ",
@@ -351,6 +388,7 @@ ZShelter.AddInfo("Demolitions Specialist", {
 ZShelter.AddInfo("Trap Health Boost", {
 	title = {
 		["en"] = "Trap Health Boost",
+		["de"] = "Erhöhte Fallengesundheit",
 		["fr"] = "Renforcement des Pièges",
 		["tr"] = "Tuzak Sağlığı Yükseltmesi",
 		["vi"] = "Tăng Máu Bẫy",
@@ -360,6 +398,7 @@ ZShelter.AddInfo("Trap Health Boost", {
 	},
 	desc = {
 		["en"] = "Increase trap's health, +15% health per upgrade",
+		["de"] = "Erhöht die Gesundheit der Falle um +15 % pro Upgrade.",
 		["fr"] = "Augmente la vitesse de réparation des pièges, +100% par amélioration de la santé des pièges, +15% de santé par amélioration",
 		["tr"] = "Tuzak sağlığını artırır, yükseltme başına +%15 sağlık",
 		["vi"] = "Tăng máu của bẫy, +15% máu mỗi cấp độ",
@@ -371,6 +410,7 @@ ZShelter.AddInfo("Trap Health Boost", {
 ZShelter.AddInfo("Fast Deploy", {
 	title = {
 		["en"] = "Fast Deploy",
+		["de"] = "Schnelle Bereitstellung",
 		["fr"] = "Déploiement Rapide",
 		["tr"] = "Hızlı Kurulum",
 		["vi"] = "Triển Khai Nhanh",
@@ -380,6 +420,7 @@ ZShelter.AddInfo("Fast Deploy", {
 	},
 	desc = {
 		["en"] = "Traps takes less time to build, -50% per upgrade",
+		["de"] = "Der Bau von Fallen nimmt weniger Zeit in Anspruch, -50 % pro Upgrade",
 		["fr"] = "Les pièges prennent moins de temps à être construits, -50% par amélioration",
 		["tr"] = "Tuzakları daha az zamanda kurmanızı sağlar, yükseltme başına -%50",
 		["vi"] = "Bẫy mất ít thời gian để xây dựng, -50% mỗi cấp độ",
@@ -391,6 +432,7 @@ ZShelter.AddInfo("Fast Deploy", {
 ZShelter.AddInfo("Reinforced Traps", {
 	title = {
 		["en"] = "Reinforced Traps",
+		["de"] = "Verstärkte Fallen",
 		["fr"] = "Pièges Renforcés",
 		["tr"] = "Güçlendirilmiş Tuzaklar",
 		["vi"] = "Bẫy Củng Cố",
@@ -400,6 +442,7 @@ ZShelter.AddInfo("Reinforced Traps", {
 	},
 	desc = {
 		["en"] = "Increase trap's health, +35% health per upgrade",
+		["de"] = "Erhöht die Gesundheit der Falle um +35 % pro Upgrade.",
 		["fr"] = "Augmente la santé des pièges, +35% de santé par amélioration",
 		["tr"] = "Tuzağın sağlığını artırır, yükseltme başına +%35",
 		["vi"] = "Tăng máu của bẫy, +35% máu mỗi cấp độ",
@@ -411,6 +454,7 @@ ZShelter.AddInfo("Reinforced Traps", {
 ZShelter.AddInfo("Slick Repairing", {
 	title = {
 		["en"] = "Slick Repairing",
+		["de"] = "Glatte Reparatur",
 		["fr"] = "Réparation en Série",
 		["tr"] = "Seri Tamir",
 		["vi"] = "Sửa Chữa Khéo Léo",
@@ -420,6 +464,7 @@ ZShelter.AddInfo("Slick Repairing", {
 	},
 	desc = {
 		["en"] = "Repairing a trap also repairs nearby traps, +1.5 meters per upgrade",
+		["de"] = "Durch die Reparatur einer Falle werden auch benachbarte Fallen repariert, +1,5 Meter pro Upgrade",
 		["fr"] = "La réparation d'un piège répare également les pièges à proximité, +1,5 mètre par amélioration",
 		["tr"] = "Yakındaki tüm tuzakları tamir eder, +86 birim alan",
 		["vi"] = "Sửa chữa một bẫy cũng sửa chữa các bẫy xung quanh, +1.5 mét mỗi cấp độ",
@@ -431,6 +476,7 @@ ZShelter.AddInfo("Slick Repairing", {
 ZShelter.AddInfo("Fast Repair", {
 	title = {
 		["en"] = "Fast Repair",
+		["de"] = "Schnelle Reparatur",
 		["fr"] = "Réparation Rapide",
 		["tr"] = "Hızlı Tamir",
 		["vi"] = "Sửa Chữa Nhanh",
@@ -440,6 +486,7 @@ ZShelter.AddInfo("Fast Repair", {
 	},
 	desc = {
 		["en"] = "Increases trap's repair speed, +100% per upgrade",
+		["de"] = "Erhöht die Reparaturgeschwindigkeit der Falle um +100 % pro Upgrade.",
 		["fr"] = "Augmente la vitesse de réparation des pièges, +100% par amélioration",
 		["tr"] = "Tuzağın tamir hızını artırır, yükseltme başına +%100",
 		["vi"] = "Tăng tốc độ sửa chữa của bẫy, +100% mỗi cấp độ",
