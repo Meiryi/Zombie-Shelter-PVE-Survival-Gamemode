@@ -183,6 +183,9 @@ ZShelter.AddBuildItem("Barricade",  "Wooden Spike Wall",  3,  1,  0,  750,  "pro
 	end,
 })
 ZShelter.AddBuildItem("Barricade",  "Wire Fence",  0,  3,  0,  1000,  "prop_physics",  "models/zshelter/shelter_b_wall01.mdl",  0,  Vector(0, 0, 0), {buildspeed = 1.5})
+ZShelter.AddBuildItem("Barricade",  "Light",  4,  4,  2,  600,  "obj_structure_light",  "models/props_combine/combine_light002a.mdl",  0,  Vector(0, 0, 0), {
+	notarget = true,
+})
 
 ZShelter.AddBuildItem("Barricade",  "Metal Wall",  2,  3,  0,  850,  "prop_physics",  "models/galaxy/rust/metal_wall.mdl",  1,  Vector(0, 0, 1), {buildspeed = 2})
 ZShelter.AddBuildItem("Barricade",  "Reinforced Wire Fence",  1,  4,  0,  1450,  "prop_physics",  "models/zshelter/shelter_b_wall02.mdl",  1,  Vector(0, 0, 0), {buildspeed = 2})

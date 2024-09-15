@@ -246,15 +246,15 @@ ZShelter.AddInfo("Grenade Supply", {
 		["de"] = "Granatenvorrat",
 	},
 	desc = {
-		["en"] = "Regenerates a grenade every 15 seconds",
-		["bg"] = "Възстановява граната на всеки 15 секунди",
-		["fr"] = "Vous obtenez une grenade toutes les 15 secondes",
-		["tr"] = "15 saniyede bir el bombası üretir",
-		["vi"] = "Tái tạo lựu đạn mỗi 15 giây",
-		["zh-TW"] = "每15秒生成一顆手榴彈",
-		["zh-CN"] = "每15秒生成一颗手榴弹",
-		["ru"] = "Восстанавливает гранату каждые 15 секунд",
-		["de"] = "Regeneriert eine Granate alle 15 Sekunden",
+		["en"] = "Regenerates a grenade every 10 seconds",
+		["bg"] = "Възстановява граната на всеки 10 секунди",
+		["fr"] = "Vous obtenez une grenade toutes les 10 secondes",
+		["tr"] = "10 saniyede bir el bombası üretir",
+		["vi"] = "Tái tạo lựu đạn mỗi 10 giây",
+		["zh-TW"] = "每10秒生成一顆手榴彈",
+		["zh-CN"] = "每10秒生成一颗手榴弹",
+		["ru"] = "Восстанавливает гранату каждые 10 секунд",
+		["de"] = "Regeneriert eine Granate alle 10 Sekunden",
 	}
 })
 

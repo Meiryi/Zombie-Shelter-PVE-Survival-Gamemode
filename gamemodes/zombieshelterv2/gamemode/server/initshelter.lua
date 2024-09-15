@@ -83,6 +83,7 @@ function ZShelter.InitShelter()
 
 		shelter.Level = 1
 		shelter.IsShelter = true
+		shelter.IsPlayerBarricade = true
 
 		shelter.bait = ents.Create("npc_vj_zshelter_shelter_hitbox")
 			shelter.bait:SetPos(shelter:GetPos())

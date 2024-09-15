@@ -272,6 +272,18 @@ ZShelter.L("#Wire Fence", {
 	["zh-CN"] = "铁丝网",
 })
 
+ZShelter.L("#Light", {
+	["en"] = "Light",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "照明燈",
+	["zh-CN"] = "照明灯",
+})
+
 ZShelter.L("#Metal Wall", {
 	["en"] = "Metal Wall",
 	["bg"] = "Метална стена",
@@ -1547,7 +1559,7 @@ ZShelter.L("#TotalPlayed", {
 ZShelter.L("#TotalFailed", {
 	["en"] = "<VAR> Failed",
 	["bg"] = "<VAR> Провали",
-	["de] = "<VAR> Fehlgeschlagen",
+	["de"] = "<VAR> Fehlgeschlagen",
 	["fr"] = "<VAR> Échec",
 	["tr"] = "<VAR> Başarısız Oldu",
 	["ru"] = "из которых <VAR> проиграны",

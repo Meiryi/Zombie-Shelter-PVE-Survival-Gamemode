@@ -220,14 +220,22 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 		if(!ent2.IsPlayerBarricade) then
 			return false
 		else
-			return true
+			if(ent2.IsShelter) then
+				return false
+			else
+				return true
+			end
 		end
 	end
 	if(ent2.OnlyCollideToBarricade) then
-		if(!ent1.IsPlayerBarricade) then
+		if(!ent1.IsPlayerBarricade && ent1.IsShelter) then
 			return false
 		else
-			return true
+			if(ent1.IsShelter) then
+				return false
+			else
+				return true
+			end
 		end
 	end
 	if(ent1:GetNWBool("IsTurret", false) && ent2:IsPlayer()) then

@@ -65,14 +65,18 @@ ZShelter.AddSkills(ClassName, "OnGiveMelee",
 ZShelter.AddSkills(ClassName, "OnSecondPassed",
 	function(player)
 		if(!player.NextGrenadeTime) then
-			player.NextGrenadeTime = CurTime() + 15
+			player.NextGrenadeTime = CurTime() + 10
 		else
+			if(player:HasWeapon("weapon_frag")) then
+				player.NextGrenadeTime = CurTime() + 10
+				return
+			end
 			if(player.NextGrenadeTime > CurTime()) then
 				return
 			end
 		end
 		player:Give("weapon_frag")
-		player.NextGrenadeTime = CurTime() + 15
+		player.NextGrenadeTime = CurTime() + 10
 	end, nil, 1, "grenaderegen", 2, "Grenade Supply")
 
 ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "gmastery2", 2, "Intermediate Gun Mastery")

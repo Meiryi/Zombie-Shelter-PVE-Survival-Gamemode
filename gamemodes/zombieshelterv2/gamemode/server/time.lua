@@ -14,7 +14,50 @@
 ]]
 
 util.AddNetworkString("ZShelter-DayPassed")
+util.AddNetworkString("ZShelter-UpdateLighting")
+
 ZShelter.StartedDifficulty = ZShelter.StartedDifficulty || -1
+
+local lightings_day = {
+	[3] = "c",
+	[6] = "e",
+	[9] = "g",
+	[12] = "i",
+	[15] = "k",
+}
+local lightings_night = {
+	[3] = "k",
+	[6] = "i",
+	[9] = "g",
+	[12] = "e",
+	[15] = "c",
+}
+function ZShelter.ProcessLighting()
+	local time = GetGlobalInt("Time", 0)
+	local update = false
+	if(GetGlobalBool("Night")) then
+		local light = lightings_night[time]
+		if(light) then
+			engine.LightStyle(0, light)
+			update = true
+		end
+	else
+		local light = lightings_day[time]
+		if(light) then
+			engine.LightStyle(0, light)
+			update = true
+		end
+	end
+	if(update) then
+		ZShelter.UpdatePlayerLighting()
+	end
+end
+
+function ZShelter.UpdatePlayerLighting(fullUpdate)
+	net.Start("ZShelter-UpdateLighting")
+	net.WriteBool(fullUpdate || false)
+	net.Broadcast()
+end
 
 function ZShelter.HandleWin(title, desc)
 	ZShelter.AddWinCount(GetGlobalInt("Day", 1), GetConVar("zshelter_difficulty"):GetInt())
@@ -38,6 +81,8 @@ end
 function ZShelter.OnNightSwitch()
 	ZShelter.ToggleBarricadeCollision(true)
 	ZShelter.KillDayEnemies()
+	engine.LightStyle(0, "b")
+	ZShelter.UpdatePlayerLighting(true)
 
 	hook.Run("ZShelter-NightSwitch")
 end
@@ -78,6 +123,9 @@ function ZShelter.OnDayPassed()
 	net.WriteInt(GetGlobalInt("Day"), 32)
 	net.Broadcast()
 
+	engine.LightStyle(0, "m")
+	ZShelter.UpdatePlayerLighting(true)
+
 	if(GetGlobalInt("Day") > 30 && GetConVar("zshelter_endless"):GetInt() == 0) then
 		ZShelter.HandleWin("#Victory", "#Survived30Day")
 	end
@@ -98,10 +146,11 @@ hook.Add("Think", "ZShelter-Think", function()
 		end
 		if(GetGlobalBool("GameStarted", false)) then
 			ZShelter.RestoreConVars()
+			ZShelter.ProcessLighting()
+			SetGlobalInt("Time", GetGlobalInt("Time") - 1)
 			if(ZShelter.StartedDifficulty != -1 && GetConVar("zshelter_difficulty"):GetInt() != ZShelter.StartedDifficulty) then
 				GetConVar("zshelter_difficulty"):SetInt(ZShelter.StartedDifficulty)
 			end
-			SetGlobalInt("Time", GetGlobalInt("Time") - 1)
 			if(GetGlobalInt("Time") <= 0) then
 				if(GetGlobalBool("Rescuing")) then
 					ZShelter.HandleWin("#Victory", "#Survived15Day")
