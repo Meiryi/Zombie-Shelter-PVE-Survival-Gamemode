@@ -21,5 +21,8 @@ Create a separate file for [zshelter_server_settings.properties](https://github.
 - **Turkish** - Tora
 - **French** - MisterClems
 - **German** - DascooleSchaf and GermanMaKo
+- **Bulgarian** - DDobromirov ( [dvd_video][ref-dvd] )
 - **Vietnamese** - JOSMRZ
 - **We Is Heroes** - Playtest, and provided alot of ideas for skills
+
+[ref-dvd]: https://steamcommunity.com/id/dvd_video/
