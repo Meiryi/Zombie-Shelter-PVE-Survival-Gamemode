@@ -558,6 +558,106 @@ ZShelter.AddInfo("Grenade Stunning", {
 	}
 })
 
+ZShelter.AddInfo("Aim Assist", {
+	title = {
+		["en"] = "Aim Assist",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "輔助瞄準",
+		["zh-CN"] = "辅助瞄准",
+		["ru"] = "",
+		["de"] = "",
+	},
+	desc = {
+		["en"] = "Auto aims the enemy for you\nHold Mouse 4 to active",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "自動瞄準敵人\n按下滑鼠測鍵使用",
+		["zh-CN"] = "自动瞄准敌人\n按下滑鼠测键使用",
+		["ru"] = "",
+		["de"] = "",
+	}
+})
+
+ZShelter.AddInfo("Armor Regenerate", {
+	title = {
+		["en"] = "Armor Regenerate",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "護甲修復",
+		["zh-CN"] = "护甲修复",
+		["ru"] = "",
+		["de"] = "",
+	},
+	desc = {
+		["en"] = "Recovers armor every second, +1 per upgrade",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "每秒鐘恢復護甲, 每升級一次增加 1",
+		["zh-CN"] = "每秒钟恢复护甲, 每升级一次增加 1",
+		["ru"] = "",
+		["de"] = "",
+	}
+})
+
+ZShelter.AddInfo("Battle Axe Upgrade", {
+	title = {
+		["en"] = "Battle Axe Upgrade",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "戰斧",
+		["zh-CN"] = "战斧",
+		["ru"] = "",
+		["de"] = "",
+	},
+	desc = {
+		["en"] = "Upgrade melee weapon to battle axe (+200% damage)",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "將近戰武器替換成戰斧 (+200%傷害)",
+		["zh-CN"] = "将近战武器替换为战斧 (+200%伤害)",
+		["ru"] = "",
+		["de"] = "",
+	}
+})
+
+ZShelter.AddInfo("Firerate Boost", {
+	title = {
+		["en"] = "Firerate Boost",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "射速提升",
+		["zh-CN"] = "射速提升",
+		["ru"] = "",
+		["de"] = "",
+	},
+	desc = {
+		["en"] = "Boost firerate on Hitscan based weapons, +10% firerate per upgrade",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "提升Hitscan武器的射速, 每升級一次增加 10%",
+		["zh-CN"] = "提升Hitscan武器的射速, 每升级一次增加 10%",
+		["ru"] = "",
+		["de"] = "",
+	}
+})
+
 ZShelter.AddInfo("Damage Reflecting", {
 	title = {
 		["en"] = "Damage Reflecting",

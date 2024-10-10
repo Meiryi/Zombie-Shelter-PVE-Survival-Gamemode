@@ -93,6 +93,22 @@ function ZShelter.SpawnResources(amount)
 	end
 end
 
+function ZShelter.SpawnLootboxVec(vec)
+	local pos = vec
+	if(!pos) then return end
+	local amount = math.random(1, 5)
+	local type = "obj_resource_lootbox"
+	local res = ents.Create(type)
+		res:SetPos(pos)
+		res:SetAngles(Angle(0, math.random(-180, 180), 0))
+		res:Spawn()
+		res:SetNWBool("IsResource", true)
+		res.NextRemoveDay = GetGlobalInt("Day", 1) + 1
+		res.IsLootbox = true
+
+	ZShelter.ResourceList[res:EntIndex()] = res
+end
+
 function ZShelter.RespawnLootbox()
 	for k,v in pairs(ZShelter.ResourceList) do
 		if(!IsValid(v)) then ZShelter.ResourceList[k] = nil continue end

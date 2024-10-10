@@ -205,12 +205,30 @@ local itemElem = {
 		format = "int",
 	},
 	[8] = {
+		hint = "Volume multiplier",
+		id = "volume",
+		type = "textentry",
+		format = "int",
+	},
+	[9] = {
+		hint = "Ammo Capacity",
+		id = "ammo_capacity",
+		type = "textentry",
+		format = "int",
+	},
+	[10] = {
+		hint = "Ammo regen speed",
+		id = "ammoregen",
+		type = "textentry",
+		format = "int",
+	},
+	[11] = {
 		hint = "Required skills (use comma for multiple skills)",
 		id = "requiredskills",
 		type = "textentry",
 		format = "table",
 	},
-	[9] = {
+	[12] = {
 		hint = "Can get ammo from ammo supply crate?",
 		id = "ammo_supply",
 		type = "button",
@@ -235,6 +253,21 @@ local newEnemy = {
 	max_amount = -1,
 	hp_boost_day = 0,
 	color = Color(255, 255, 255, 255),
+}
+
+local newWeapon = {
+	category = "New Category",
+	title = "Weapon Name",
+	class = "Weapon Class",
+	dmgscale = 1,
+	icon = "",
+	woods = 1,
+	irons = 1,
+	ammo_supply = true,
+	ammo_capacity = -1,
+	ammoregen = -1,
+	requiredskills = {},
+	volume = 1,
 }
 
 local bgmat = Material("zsh/icon/tools.png", "smooth")
@@ -401,6 +434,10 @@ local func = {
 
 		local btn = ZShelter.CreateButton(pa, XPos, NextY, wide, tall2, "Save Current Item", "ZShelter-ConfigFont", Color(200, 200, 200, 255), Color(30, 30, 30, 255), function()
 			if(ui.CurrentItemIndex == -1) then return end
+			for k,v in pairs(newWeapon) do
+				if(ZShelter.ItemConfig[ui.CurrentItemIndex][k] != nil) then continue end
+				ZShelter.ItemConfig[ui.CurrentItemIndex][k] = v
+			end
 			for k,v in pairs(ZShelter.ItemConfig[ui.CurrentItemIndex]) do
 				if(ui.ItemConfigElems[k]) then
 					ZShelter.ItemConfig[ui.CurrentItemIndex][k] = ui.ItemConfigElems[k]:GetVal()
@@ -440,17 +477,6 @@ local func = {
 		NextY = NextY + tall2 + dockmargin
 
 		ZShelter.CreateButton(pa, XPos, NextY, wide, tall2, "Add a new weapon", "ZShelter-ConfigFont", Color(200, 200, 200, 255), Color(30, 30, 30, 255), function()
-			local newWeapon = {
-				category = "New Category",
-				title = "Weapon Name",
-				class = "Weapon Class",
-				dmgscale = 1,
-				icon = "",
-				woods = 1,
-				irons = 1,
-				ammo_supply = true,
-				requiredskills = {},
-			}
 			ui.CurrentItemIndex = table.insert(ZShelter.ItemConfig, newWeapon)
 			ui.RefreshItemInfo(newWeapon)
 			ui.ReloadItemList()

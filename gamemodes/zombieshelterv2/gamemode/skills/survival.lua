@@ -69,19 +69,19 @@ ZShelter.AddSkills(ClassName, nil, nil,
 
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
 	function(player)
-		player:Give("zsh_shelter_crowbar")
+		player:Give("tfa_zsh_cso_crowbar")
 	end,
 	function(player)
 		player:SetActiveWeapon(nil)
 		ZShelter.ClearMelee(player)
 		timer.Simple(0, function()
-			local wep = ents.Create("zsh_shelter_crowbar")
+			local wep = ents.Create("tfa_zsh_cso_crowbar")
 				wep:Spawn()
 				player:PickupWeapon(wep)
 				player:SetActiveWeapon(wep)
 		end)
 	end, 1, "crowbar", 2, "Crowbar Upgrade", {
-		"Clawhammer Upgrade", "Machete Upgrade",
+		"Battle Axe Upgrade", "Clawhammer Upgrade", "Machete Upgrade",
 	})
 
 ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "cm", 2, "Claymore", {})

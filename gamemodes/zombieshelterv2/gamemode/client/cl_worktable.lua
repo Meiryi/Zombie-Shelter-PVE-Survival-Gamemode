@@ -222,7 +222,26 @@ function ZShelter.OpenWorktable()
 				local panel = ZShelter.CreatePanel(list, 0, 0, w, h, Color(30, 30, 30, 120))
 					panel:Dock(TOP)
 					panel:DockMargin(0, 0, 0, dockmargin)
-
+					local tw, th, vol = ZShelter.CreateLabel(panel, panel:GetWide(), textmargin, ((v.volume || 1) * 100).."%", "ZShelter-WorktableTitle", Color(200, 200, 200, 255))
+					vol:SetX(vol:GetX() - (tw + dockmargin))
+					local img = ZShelter.CreateImage(panel, dockmargin + tw + innermargin, textmargin, th, th, "zsh/icon/volume.png", Color(255, 255, 255, 255))
+					img:SetX(vol:GetX() - (th + innermargin))
+					local regensp = v.ammoregen || 1
+					if(regensp == -1) then
+						regensp = 1
+					end
+					local tw, th, regen = ZShelter.CreateLabel(panel, panel:GetWide(), textmargin, regensp.."s", "ZShelter-WorktableTitle", Color(200, 200, 200, 255))
+					regen:SetX(img:GetX() - (tw + dockmargin))
+					local ammoimg = ZShelter.CreateImage(panel, dockmargin + tw + innermargin, textmargin, th, th, "zsh/icon/ammoregen.png", Color(255, 255, 255, 255))
+					ammoimg:SetX(regen:GetX() - (th + innermargin))
+					local capa = v.ammo_capacity || "inf"
+					if(capa == -1) then
+						capa = "inf"
+					end
+					local tw, th, capacity = ZShelter.CreateLabel(panel, panel:GetWide(), textmargin, capa, "ZShelter-WorktableTitle", Color(200, 200, 200, 255))
+					capacity:SetX(ammoimg:GetX() - (tw + dockmargin))
+					local ammoimg = ZShelter.CreateImage(panel, dockmargin + tw + innermargin, textmargin, th, th, "zsh/class/combat.png", Color(255, 255, 255, 255))
+					ammoimg:SetX(capacity:GetX() - (th + innermargin))
 					local tw, th, title = ZShelter.CreateLabel(panel, dockmargin, textmargin, v.title, "ZShelter-WorktableTitle", Color(200, 200, 200, 255))
 					panel.Paint = function()
 						draw.RoundedBox(0, 0, 0, panel:GetWide(), panel:GetTall(), Color(30, 30, 30, 150))
@@ -240,9 +259,14 @@ function ZShelter.OpenWorktable()
 						if(file.Exists("materials/arccw/weaponicons/"..v.class..".vtf", "GAME")) then
 							path = "arccw/weaponicons/"..v.class..".vtf"
 						end
+						if(v.class && string.sub(v.class, 1, 5) != "arccw") then
+							path = ""
+						end
 					end
-					local imgW, imgH = panel:GetWide() * 0.2, panel:GetTall() - th
-					ZShelter.CreateImage(panel, dockmargin, th, imgW, imgH, path, Color(255, 255, 255, 255))
+					if(path != "") then
+						local imgW, imgH = panel:GetWide() * 0.2, panel:GetTall() - th
+						ZShelter.CreateImage(panel, dockmargin, th, imgW, imgH, path, Color(255, 255, 255, 255))
+					end
 
 					local list = {
 						[1] = "Woods",
@@ -261,6 +285,12 @@ function ZShelter.OpenWorktable()
 
 					yaxis = yaxis + dockmargin
 					size = size + innermargin
+					for _, str in pairs(v.requiredskills) do
+						local val = string.Explode(",", str)
+						if(#val > 1) then
+							v.requiredskills = val
+						end
+					end
 					for _, skill in pairs(v.requiredskills) do
 						local data = ZShelter.SkillDatas[skill]
 						if(!data) then continue end

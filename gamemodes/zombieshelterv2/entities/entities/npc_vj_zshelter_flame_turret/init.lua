@@ -36,7 +36,9 @@ function ENT:Think()
 	self.MaximumDistance = 256 + (self:GetNWInt("UpgradeCount", 0) * 64)
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
-		self:NextThink(CurTime() + 0.33)
+		if(!IsValid(self.AimTarget)) then
+			self:NextThink(CurTime() + 0.15)
+		end
 		return true
 	else
 		local spos = self:GetPos()

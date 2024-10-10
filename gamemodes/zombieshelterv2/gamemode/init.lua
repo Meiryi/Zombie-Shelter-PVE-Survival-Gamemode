@@ -61,3 +61,26 @@ if(!safeCtrlS || !ZShelter.VarInited) then
 	ZShelter.UnsupportedMap = false
 	ZShelter.VarInited = true
 end
+
+util_BlastDamage = util_BlastDamage || util.BlastDamage
+local oldInflictor = nil
+local oldAttacker = nil
+local oldEpicenter = nil
+local oldRadius = nil
+local oldDamage = nil
+local lastCallTime = 0
+function util.BlastDamage(inflictor, attacker, epicenter, radius, damage)
+	-- Prevent TFA CSO's projectile doing double amount of damage
+	if(inflictor == oldinflictor && attacker == oldAttacker && epicenter == oldEpicenter && radius == oldRadius && damage == oldDamage && CurTime() == lastCallTime) then
+		return
+	end
+
+	oldinflictor = inflictor
+	oldAttacker = attacker
+	oldEpicenter = epicenter
+	oldRadius = radius
+	oldDamage = damage
+	
+	lastCallTime = CurTime()
+	util_BlastDamage(inflictor, attacker, epicenter, radius, damage)
+end

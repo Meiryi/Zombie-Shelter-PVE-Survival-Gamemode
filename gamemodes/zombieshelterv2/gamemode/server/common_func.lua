@@ -29,6 +29,12 @@ function ZShelter.ValidateEntity(o, c)
 	return true
 end
 
+function ZShelter.ValidTarget(o, c)
+	if(o == c || c:IsPlayer() || c.IsBuilding || c:Health() <= 0) then return false end
+	if(!c:IsNPC() && !c:IsNextBot()) then return false end
+	return true
+end
+
 function ZShelter.ShouldDetonate(player, trap)
 	if(!IsValid(player)) then return true end
 	if(player.Callbacks && player.Callbacks.OnTrapDetonate) then
@@ -100,7 +106,7 @@ function ZShelterVisible_Vec(self, vec, target)
 		mins.z = 0
 		maxs.z = 0
 		local dst = mins:Distance(maxs)
-		if(ent.IsPlayerBarricade) then return end
+		if(ent.IsPlayerBarricade || ent.IsBarricade) then return false end
 		return ent:GetPos():Distance(tr.endpos) <= dst || (IsValid(ent) && ZShelter_WhiteListedEntity[ent:GetClass()])
 	else
 		return ret.Fraction == 1
@@ -121,7 +127,7 @@ function ZShelterVisible_Vec_IgnoreTurret(self, vec, target)
 		mins.z = 0
 		maxs.z = 0
 		local dst = mins:Distance(maxs)
-		if(ent.IsPlayerBarricade) then return end
+		if(ent.IsPlayerBarricade || ent.IsBarricade) then return false end
 		return ent:GetPos():Distance(tr.endpos) <= dst || (IsValid(ent) && ZShelter_WhiteListedEntity[ent:GetClass()])
 	else
 		return ret.Fraction == 1
@@ -193,9 +199,10 @@ function ZShelter.RegisterMeleeWeapon(class)
 	ZShelter.Melees[class] = true
 end
 
-ZShelter.RegisterMeleeWeapon("zsh_shelter_axe")
-ZShelter.RegisterMeleeWeapon("zsh_shelter_machete")
-ZShelter.RegisterMeleeWeapon("zsh_shelter_crowbar")
-ZShelter.RegisterMeleeWeapon("zsh_shelter_clawhammer")
+ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_shelteraxe")
+ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_machete")
+ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_crowbar")
+ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_clawhammer")
+ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_skull9")
 
 ZShelterAddWhitelistedEntity("obj_zshelter_shield")

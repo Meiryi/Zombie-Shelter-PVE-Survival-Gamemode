@@ -25,7 +25,7 @@ end
 
 function ENT:FindEnemy()
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance * 0.5)) do
-		if(!ZShelter.ValidateEntity(self, v)) then continue end
+		if(!ZShelter.ValidTarget(self, v)) then continue end
 		self.AimTarget = v
 		return
 	end
@@ -41,7 +41,7 @@ function ENT:Think()
 		self:FindEnemy()
 	else
 		for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
-			if(!ZShelter.ValidateEntity(self, v)) then continue end
+			if(!ZShelter.ValidateTarget(self, v)) then continue end
 			v:NextThink(CurTime() + 10)
 			v.OriginalColor = v:GetColor()
 			v:SetColor(Color(55, 55, 255, 255))

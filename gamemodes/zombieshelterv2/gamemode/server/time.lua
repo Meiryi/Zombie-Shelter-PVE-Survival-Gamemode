@@ -70,6 +70,7 @@ function ZShelter.ToggleBarricadeCollision(toggle)
 	for k,v in pairs(ZShelter.Barricades) do
 		if(!IsValid(v)) then continue end
 		v.IgnoreCollision = toggle
+		v:CollisionRulesChanged()
 		if(toggle) then
 			v:SetColor(Color(255, 255, 255, 150))
 		else

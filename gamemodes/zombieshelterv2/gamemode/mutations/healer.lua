@@ -26,7 +26,7 @@ m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 			e:SetOrigin(pos + Vector(math.random(mins.x, maxs.x), math.random(mins.y, maxs.y), math.random(0, maxs.z)))
 			util.Effect("zshelter_healing_bubbles", e, true, true)
 			for k,v in pairs(ents.FindInSphere(self:GetPos(), 256)) do
-				if(!ZShelter.IsEnemy(v)) then continue end
+				if(!ZShelter.IsEnemy(v) || v:Health() <= 0) then continue end
 				local hp = 75
 				v:SetHealth(math.min(v:Health() + hp, v:GetMaxHealth()))
 			end

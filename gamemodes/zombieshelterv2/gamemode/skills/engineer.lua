@@ -71,25 +71,34 @@ ZShelter.AddSkills(ClassName, "OnSecondPassed",
 
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
 	function(player)
-		player:Give("zsh_shelter_clawhammer")
+		player:Give("tfa_zsh_cso_clawhammer")
 	end,
 	function(player)
 		player:SetActiveWeapon(nil)
 		ZShelter.ClearMelee(player)
 		timer.Simple(0, function()
-			local wep = ents.Create("zsh_shelter_clawhammer")
+			local wep = ents.Create("tfa_zsh_cso_clawhammer")
 				wep:Spawn()
 				player:PickupWeapon(wep)
 				player:SetActiveWeapon(wep)
 		end)
 		end, 1, "cham", 2, "Clawhammer Upgrade", {
-		"Crowbar Upgrade", "Machete Upgrade",
+		"Battle Axe Upgrade", "Crowbar Upgrade", "Machete Upgrade",
 	})
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
 		player:SetNWFloat("BuildingHPScale", player:GetNWFloat("BuildingHPScale", 1) + 0.1)
-		player:SetNWFloat("BuildingHPScale", player:GetNWFloat("BuildingHPScale", 1))
+		local scale = current * 0.1
+		for k,v in ipairs(ents.GetAll()) do
+			if(!v.IsBuilding || v.Builder != player) then continue end
+			local boost = math.floor((v.oMaxHealth || v:GetMaxHealth()) * scale)
+			if(v:Health() >= v:GetMaxHealth()) then
+				v:SetHealth(v.oMaxHealth + boost)
+			end
+			v:SetMaxHealth(v.oMaxHealth + boost)
+			v:SetNWInt("oMaxHealth", v:GetMaxHealth())
+		end
 	end, 3, "bhb", 2, "Building Health Boost")
 
 --ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "eeng", 3, "Expert Engineering", {})

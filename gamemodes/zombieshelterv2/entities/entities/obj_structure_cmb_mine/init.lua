@@ -56,7 +56,7 @@ function ENT:Think()
 					util.Effect("zshelter_emp", e, true, true)
 				end
 				for k,v in ipairs(ents.FindInSphere(pos, 186)) do
-					if(!ZShelter.ValidateEntity(nil, v)) then continue end
+					if(!ZShelter.ValidTarget(nil, v)) then continue end
 					v:SetMoveVelocity(v:GetMoveVelocity() * 0.2)
 					v:SetNWFloat("DefenseNerfTime", CurTime() + 8)
 

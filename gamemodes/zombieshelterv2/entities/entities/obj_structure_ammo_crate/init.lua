@@ -36,11 +36,22 @@ function ENT:Think()
 		for k,v in pairs(player.GetAll()) do
 			if(!ZShelter.ValidatePlayerDistance(self, v, 86)) then continue end
 			local wep = v:GetActiveWeapon()
-			if(!IsValid(wep) || wep:GetPrimaryAmmoType() == -1 || !wep.CanGetAmmoSupply) then continue end
-			local ammos = math.min(wep:GetMaxClip1() * 2, self:GetNWInt("CurrentAmmos", 3000))
-			v:GiveAmmo(ammos, wep:GetPrimaryAmmoType(), true)
-
-			self:SetNWInt("CurrentAmmos", math.max(self:GetNWInt("CurrentAmmos", 3000) - ammos, 0))
+			if(!IsValid(wep) || wep:GetPrimaryAmmoType() == -1 || !wep.CanGetAmmoSupply || (wep.AmmoRegenSpeed != -1 && wep.NextAmmoRegen && wep.NextAmmoRegen > CurTime())) then continue end
+			if(wep.AmmoCapacity == -1) then
+				local ammos = math.min(wep:GetMaxClip1() * 2, self:GetNWInt("CurrentAmmos", 3000))
+				if(ammos <= 1) then
+					ammos = math.min(1, self:GetNWInt("CurrentAmmos", 3000))
+				end
+				v:GiveAmmo(ammos, wep:GetPrimaryAmmoType(), true)
+				self:SetNWInt("CurrentAmmos", math.max(self:GetNWInt("CurrentAmmos", 3000) - ammos, 0))
+			else
+				local ammos = 1
+				local cammos = v:GetAmmoCount(wep:GetPrimaryAmmoType())
+				if(cammos >= wep.AmmoCapacity) then continue end
+				v:SetAmmo(math.min(cammos + ammos, wep.AmmoCapacity), wep:GetPrimaryAmmoType())
+				self:SetNWInt("CurrentAmmos", math.max(self:GetNWInt("CurrentAmmos", 3000) - ammos, 0))
+			end
+			wep.NextAmmoRegen = CurTime() + (wep.AmmoRegenSpeed || 0)
 			self.LastTakeTime = CurTime() + 1
 			sound.Play("items/ammo_pickup.wav", v:GetPos(), 100, 100, 1)
 		end

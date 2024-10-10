@@ -25,8 +25,19 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 	wep:Spawn()
 	wep.DamageScaling = data.dmgscale
 	wep.CanGetAmmoSupply = data.ammo_supply
+	wep.VolumeMultiplier = data.volume || 1
+	wep.AmmoCapacity = data.ammo_capacity || -1
+	wep.AmmoRegenSpeed = data.ammoregen || -1
+	wep.Category = data.category
 	ply:PickupWeapon(wep)
 	ply:GiveAmmo(wep:GetMaxClip1(), wep:GetPrimaryAmmoType(), true)
+
+	timer.Simple(0, function()
+		if(!IsValid(wep) || !IsValid(wep:GetOwner()) || wep.AmmoCapacity == -1) then return end
+		wep:GetOwner():SetAmmo(0, wep:GetPrimaryAmmoType())
+	end)
+
+	sound.Play("shigure/gunpickup2.wav", ply:GetPos())
 
 	SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - data.woods, 0))
 	SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - data.irons, 0))

@@ -13,7 +13,7 @@ ENT.UserKeyDown = false
 function ENT:RemoveOwnerWeapon()
 	if(!IsValid(self.Controller)) then return end
 	for k,v in pairs(self.Controller:GetWeapons()) do
-		if(v:GetClass() == "arccw_cso_mounted_gun") then
+		if(v:GetClass() == "tfa_zsh_cso_mounted_machine_gun") then
 			self.Controller:DropWeapon(v)
 			v:Remove()
 			return
@@ -62,7 +62,7 @@ function ENT:Think()
 		self.Ammos = math.Clamp(self.Ammos + 1, 0, 250)
 		if(IsValid(self.Controller)) then
 			local wep = self.Controller:GetActiveWeapon()
-			if(IsValid(wep) && wep:GetClass() == "arccw_cso_mounted_gun") then
+			if(IsValid(wep) && wep:GetClass() == "tfa_zsh_cso_mounted_machine_gun") then
 				wep:SetClip1(self.Ammos)
 			end
 		end
@@ -90,7 +90,7 @@ function ENT:Think()
 		local wep = self.Controller:GetActiveWeapon()
 		if(self.StartCheckTime < CurTime()) then
 			if(IsValid(wep)) then
-				if(wep:GetClass() != "arccw_cso_mounted_gun") then
+				if(wep:GetClass() != "tfa_zsh_cso_mounted_machine_gun") then
 					self:SelectLastWeapon()
 					self:RemoveOwnerWeapon()
 					self:Unmount()
@@ -134,7 +134,7 @@ function ENT:Use(user)
 	user.LastActiveWeapon = user:GetActiveWeapon()
 	user:SetActiveWeapon(nil)
 	timer.Simple(0.0, function()
-		local wep = ents.Create("arccw_cso_mounted_gun")
+		local wep = ents.Create("tfa_zsh_cso_mounted_machine_gun")
 			user:PickupWeapon(wep)
 			wep:SetClip1(self.Ammos)
 	end)

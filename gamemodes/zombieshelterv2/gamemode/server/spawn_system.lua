@@ -252,6 +252,9 @@ function ZShelter.FilteEnemy(ignoreDay)
 		if(v.min_difficulty > difficulty) then continue end
 		if(v.max_difficulty && v.max_difficulty < difficulty) then continue end -- check it for backward compatibility
 		if(!ignoreDay && v.day > day) then continue end
+		if(ignoreDay) then
+			if(v.end_day != -1) then continue end
+		end
 		if(v.end_day <= day && v.end_day != -1) then continue end
 		local randIndex = bit.tohex(math.random(1, 65536), 4)
 		ZShelter.EnemyCounter[randIndex] = 0
@@ -602,7 +605,7 @@ function ZShelter.AddAwakeThinker(boss)
 				return
 			end
 			for k,v in pairs(player.GetAll()) do
-				if(!ZShelter.ValidatePlayerDistance(boss, v, 380)) then continue end
+				if(!ZShelter.ValidatePlayerDistance(boss, v, 512)) then continue end
 				boss:NextThink(CurTime())
 				boss.Awake = true
 			end
@@ -645,6 +648,7 @@ end
 function ZShelter.KillDayEnemies()
 	for k,v in pairs(ents.GetAll()) do
 		if(!v.IsZShelterEnemy || v.ImmunityNightDamage) then continue end
+		v.KilledBySystem = true
 		v:TakeDamage(32767000, nil, nil)
 	end
 end

@@ -20,7 +20,7 @@ function ZShelter.GiveMelee(player)
 			return
 		end
 	end
-	player:Give("zsh_shelter_axe")
+	player:Give("tfa_zsh_cso_shelteraxe")
 end
 
 function ZShelter.RS()
@@ -129,6 +129,11 @@ hook.Add("PlayerSpawn", "ZShelter-PlayerSpawn", function(ply)
 	if(ZShelter.SpawnPos) then
 		ply:SetPos(ZShelter.SpawnPos + Vector(math.random(-128, 128), math.random(-128, 128), 0))
 	end
+
+	sound.Play("shigure/ammopickup2.wav", ply:GetPos(), 120, 100, 2)
+	timer.Simple(0, function()
+		ply:SetArmor(ply:GetMaxArmor() * 0.5)
+	end)
 
 	timer.Simple(5, function()
 		if(!IsValid(ply)) then return end

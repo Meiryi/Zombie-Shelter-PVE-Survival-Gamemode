@@ -101,7 +101,7 @@ file.CreateDir("zombie shelter v2/exps/")
 file.CreateDir("zombie shelter v2/leaderboard/")
 
 ZShelter.GameVersion = "1.1.0"
-ZShelter.ConfigVersion = "1.0.9" -- DANGER, MODIFY THIS WILL RESET CONFIGS
+ZShelter.ConfigVersion = "1.1.0" -- DANGER, MODIFY THIS WILL RESET CONFIGS
 ZShelter.BasePath = "zombieshelterv2/gamemode/"
 ZShelter.MaximumDifficulty = 9
 
@@ -210,12 +210,6 @@ hook.Add( "PlayerNoClip", "ZShelter_Noclip", function(ply, desiredNoClipState)
 end)
 
 hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
-	if(ent1:IsPlayer() && ent2:IsPlayer()) then
-		return false
-	end
-	if(ent2:IsPlayer() && ent1:IsPlayer()) then
-		return false
-	end
 	if(ent1.OnlyCollideToBarricade) then
 		if(!ent2.IsPlayerBarricade) then
 			return false
@@ -244,7 +238,7 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 	if(ent2:GetNWBool("IsTurret", false) && ent1:IsPlayer()) then
 		return false
 	end
-	if(ent1.IgnoreCollision && ent2:IsNPC()) then
+	if((ent1.IgnoreCollision) && ent2:IsNPC()) then
 		return false
 	end
 	if(ent2.IgnoreCollision && ent1:IsNPC()) then
@@ -303,3 +297,12 @@ RunConsoleCommand("cl_threaded_client_leaf_system", "1")
 RunConsoleCommand("mat_queue_mode", "-1")
 RunConsoleCommand("r_threaded_particles", "1")
 RunConsoleCommand("r_decals", "128")
+
+local meta = FindMetaTable("Entity")
+
+function meta:CollisionRulesChanged()
+	if not self.m_OldCollisionGroup then self.m_OldCollisionGroup = self:GetCollisionGroup() end
+	self:SetCollisionGroup( self.m_OldCollisionGroup == COLLISION_GROUP_DEBRIS and COLLISION_GROUP_WORLD or COLLISION_GROUP_DEBRIS )
+	self:SetCollisionGroup( self.m_OldCollisionGroup )
+	self.m_OldCollisionGroup = nil
+end

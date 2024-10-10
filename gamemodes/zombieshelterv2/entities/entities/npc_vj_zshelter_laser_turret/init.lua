@@ -21,14 +21,14 @@ ENT.Firerate = 0.5
 ENT.LosAngle = 8
 ENT.CheckValidTime = 0
 ENT.Deg = math.cos(math.rad(65))
-ENT.MaxTarget = 3
+ENT.MaxTarget = 1
 
 function ENT:Think()
 	local vec = Angle(0, self:EyeAngles().y, 0):Forward()
 	local vect = self:GetPos() + Vector(0, 0, 5)
 	local c = 0
 	local shooted = false
-	self.Firerate = 0.5 - (self:GetNWInt("UpgradeCount", 0) * 0.035)
+	self.MaxTarget = 1 + self:GetNWInt("UpgradeCount", 0) -- Make target count increase with upgrade
 	for k,v in ipairs(ents.FindInCone(self:GetPos(), vec, self.MaximumDistance, self.Deg)) do
 		if(c >= self.MaxTarget) then break end
 		if(!ZShelter.ValidateEntity(self, v) || !ZShelterVisible_Vec_IgnoreTurret(self, vect, v)) then continue end

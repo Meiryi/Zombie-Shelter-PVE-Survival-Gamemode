@@ -449,7 +449,7 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 
 		ent.Cate = data.category
 
-		ent:SetMaxHealth(data.health * scale)
+		ent:SetMaxHealth(data.health * ply:GetNWFloat("BuildingHPScale", 1))
 		ent:SetHealth(1)
 
 		ent:SetColor(Color(255, 255, 255, 180))
@@ -470,8 +470,10 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 			ent.AttackDamage = tdata.damage
 			ent:SetNWInt("AttackDamage", ent.AttackDamage)
 			ent:SetNWInt("oAttackDamage", ent.AttackDamage)
-			ent:SetNWInt("oMaxHealth", ent:GetMaxHealth())
 		end
+
+		ent:SetNWInt("oMaxHealth", ent:GetMaxHealth())
+		ent.oMaxHealth = data.health
 
 		if(index1 == "Trap") then
 			ent.IsTrap = true

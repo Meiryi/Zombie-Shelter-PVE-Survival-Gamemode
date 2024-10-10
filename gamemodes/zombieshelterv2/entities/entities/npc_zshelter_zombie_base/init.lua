@@ -64,6 +64,8 @@ ENT.NextAnyMeleeAttack = 0
 ENT.PropCheckTraceLineLength = 0
 
 ENT.MoveWhileAttacking = true
+ENT.NextForceRunTime = 0
+ENT.LastForceRunPos = Vector(0, 0, 0)
 
 local schrun = ai_schedule.New("Chase1")
 	schrun:EngTask("TASK_GET_PATH_TO_LASTPOSITION", 0)
@@ -72,6 +74,9 @@ local schrun = ai_schedule.New("Chase1")
 local schrand = ai_schedule.New("Rand1")
 	schrand:EngTask("TASK_GET_PATH_TO_RANDOM_NODE", 2048)
 	schrand:EngTask("TASK_RUN_PATH", 0)
+
+local schmove = ai_schedule.New("Move1")
+	schrun:EngTask("TASK_RUN_PATH", 0)
 
 local defIdleTbl = {ACT_IDLE}
 local defScaredStandTbl = {ACT_COWER}
@@ -113,7 +118,8 @@ function ENT:FindEnemy()
 	local enemy = nil
 	for _, ent in ipairs(ents.GetAll()) do
 		if(ZShelter.PathValidTime < CurTime() && self:IsUnreachable(ent)) then continue end
-		if(isenemy(ent) || ent.NoTarget) then continue end
+		if(isenemy(ent) || ent.NoTarget || ent:IsFlagSet(FL_NOTARGET)) then continue end
+		if(ent:IsPlayer() && !ent:Alive()) then continue end
 		local _dst = ent:GetPos():Distance(pos)
 		if(dst == -1) then
 			dst = _dst
@@ -161,6 +167,7 @@ end
 function ENT:PostInitialize()
 	self:CapabilitiesClear()
 	self:CapabilitiesAdd(CAP_MOVE_GROUND)
+	self:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
 end
 
 local math_cos = math.cos
@@ -239,22 +246,31 @@ function ENT:Think(fromengine)
 	self:SetEnemy(self.CurrentEnemy)
 	local enemy = self:GetEnemy()
 	if(IsValid(enemy)) then
-		if(self.NextChaseTime < curTime) then -- Only re-chase if enemy or enemy position changed
-			self.PropCheckTraceLineLength = self:OBBMins():Distance(self:OBBMaxs())
-			if(self.LastTarget != enemy || self.LastTargetPosition != enemy:GetPos()) then
-				--self:VJ_TASK_GOTO_TARGET()
-				self:MoveToEnemy()
-				self.LastTargetPosition = enemy:GetPos()
-				self.LastTarget = enemy
-			else
-				if(self:GetCurWaypointPos() == vec000) then
+		local epos = enemy:GetPos()
+		local spos = self:GetPos() + Vector(0, 0, self:OBBMaxs().z * 0.5)
+		if(self.NextForceRunTime < curTime && self.LastForceRunPos != epos && ZShelterVisible_Vec(self, spos, enemy) && spos:Distance(enemy:GetPos()) < 384) then
+			self:SetLastPosition(epos)
+			self:StartSchedule(schrun)
+			self.NextForceRunTime = curTime + 0.2
+			self.LastForceRunPos = epos
+		else
+			if(self.NextChaseTime < curTime) then -- Only re-chase if enemy or enemy position changed
+				self.PropCheckTraceLineLength = self:OBBMins():Distance(self:OBBMaxs())
+				if(self.LastTarget != enemy || self.LastTargetPosition != enemy:GetPos()) then
 					--self:VJ_TASK_GOTO_TARGET()
 					self:MoveToEnemy()
 					self.LastTargetPosition = enemy:GetPos()
 					self.LastTarget = enemy
+				else
+					if(self:GetCurWaypointPos() == vec000) then
+						--self:VJ_TASK_GOTO_TARGET()
+						self:MoveToEnemy()
+						self.LastTargetPosition = enemy:GetPos()
+						self.LastTarget = enemy
+					end
 				end
+				self.NextChaseTime = curTime + 0.6
 			end
-			self.NextChaseTime = curTime + 0.6
 		end
 		local spos, epos = self:GetPos(), enemy:GetPos()
 		local blockedByProp, PropEnt = self:DoPropCheck()

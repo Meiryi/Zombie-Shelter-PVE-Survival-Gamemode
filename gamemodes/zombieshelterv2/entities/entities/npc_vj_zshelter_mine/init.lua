@@ -46,7 +46,7 @@ function ENT:Think()
 			dmginfo:SetAttacker(self)
 			dmginfo:SetInflictor(self)
 		for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance * 2.5)) do
-			if(!ZShelter.ValidateEntity(self, v)) then continue end
+			if(!ZShelter.ValidTarget(self, v)) then continue end
 			v:TakeDamageInfo(dmginfo)
 		end
 		local effectdata = EffectData()

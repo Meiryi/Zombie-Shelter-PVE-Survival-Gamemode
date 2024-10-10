@@ -73,6 +73,7 @@ local LoadOrder = {
 	["Engineer"] = 3,
 }
 function ZShelter.SkillMenu()
+	if(IsValid(ZShelter.CFGMenu)) then return end
 	if(IsValid(ZShelter.SkillUI)) then
 		ZShelter.SkillUI:Remove()
 		return

@@ -19,6 +19,7 @@ m.Variables = {
 
 m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 	Think = function(self, ...)
+		if(self:Health() <= 0) then return end
 		if(self.zsh_NextApplyTime < CurTime()) then
 			for k,v in pairs(ents.FindInSphere(self:GetPos(), 256)) do
 				if(!ZShelter.IsEnemy(v)) then continue end

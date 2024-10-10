@@ -147,7 +147,7 @@ function ZShelter.MakeShelterTab(ui)
 		[3] = "Powers",
 	}
 
-	local scaling = 1 + (math.max(player.GetCount() - 1, 0) * 0.65)
+	local scaling = 1 + (math.max(player.GetCount() - 1, 0) * 0.5)
 	for k,v in pairs(ZShelter.ShelterUpgrade) do
 		if(GetGlobalInt("ShelterLevel", 0) >= k && k != #ZShelter.ShelterUpgrade) then continue end
 		local base = ZShelter.CreatePanel(pa, 0, 0, pa:GetWide(), ui.container:GetTall() * 0.7, Color(30, 30, 30, 255))
@@ -270,7 +270,7 @@ end
 
 local warning = Material("zsh/icon/warning.png", "smooth")
 function ZShelter.BuildMenu()
-	if(ZShelter.Building) then return end
+	if(ZShelter.Building || IsValid(ZShelter.CFGMenu)) then return end
 	if(IsValid(ZShelter.BuildUI)) then
 		ZShelter.BuildUI:Remove()
 		return

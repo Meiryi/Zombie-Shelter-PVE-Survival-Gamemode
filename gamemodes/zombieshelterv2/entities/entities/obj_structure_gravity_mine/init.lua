@@ -53,7 +53,7 @@ function ENT:Think()
 		if(self.EndPullTime > CurTime()) then
 			local pos = self:GetPos()
 			for k,v in ipairs(ents.FindInSphere(self:GetPos(), 360)) do
-				if(!ZShelter.ValidateEntity(self, v)) then continue end
+				if(!ZShelter.ValidTarget(self, v)) then continue end
 				local vel = (pos - v:GetPos())
 				local f = math.Clamp((pos:Distance(v:GetPos()) / 360) + 0.75, 0, 1)
 				vel:Normalize()
@@ -67,7 +67,7 @@ function ENT:Think()
 				e:SetAngles(self:GetAngles() - Angle(0, 180, 0))
 				util.Effect("zshelter_pushing", e)
 			for k,v in ipairs(ents.FindInSphere(self:GetPos(), 200)) do
-				if(!ZShelter.ValidateEntity(self, v)) then continue end
+				if(!ZShelter.ValidTarget(self, v)) then continue end
 				v:TakeDamage(100, self, self)
 			end
 			if(ZShelter.ShouldDetonate(self:GetOwner(), self)) then

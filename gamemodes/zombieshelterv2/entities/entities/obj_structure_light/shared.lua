@@ -22,11 +22,18 @@ if(CLIENT) then
 				self.LightEntity.size = 768
 				self.LightEntity.b = 255
 				self.LightEntity.brightness = 8
-				self.LightEntity.dietime = CurTime() + 0.25
+				self.LightEntity.dietime = CurTime() + 0.5
 			end
 		else
-			self.LightEntity.dietime = CurTime() + 0.25
+			if(!GetGlobalBool("Night")) then
+				self.LightEntity.brightness = 2
+			else
+				self.LightEntity.brightness = 8
+			end
+			self.LightEntity.dietime = CurTime() + 0.5
 		end
+		self:SetNextClientThink(CurTime() + 0.1)
+		return true
 	end
 end
 

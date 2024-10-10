@@ -548,6 +548,18 @@ ZShelter.L("#Mending Tower", {
 	["zh-CN"] = "建筑修复器",
 })
 
+ZShelter.L("#Camouflage Tower", {
+	["en"] = "Camouflage Tower",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "隱身塔",
+	["zh-CN"] = "隐身塔",
+})
+
 ZShelter.L("#Flame Turret", {
 	["en"] = "Flame Turret",
 	["bg"] = "Огнена кула",
@@ -1338,6 +1350,31 @@ ZShelter.L("#Heavy", {
 	["vi"] = "Nặng",
 	["zh-TW"] = "重型武器",
 	["zh-CN"] = "重型武器",
+})
+
+ZShelter.L("#Sniper Rifle", {
+	["en"] = "Sniper Rifle",
+	["bg"] = "Снайперска пушка",
+	["de"] = "Scharfschützengewehr",
+	["fr"] = "Fusil de Sniper",
+	["tr"] = "Keskin Nişancı Tüfeği",
+	["ru"] = "Снайперские винтовки",
+	["vi"] = "Súng Bắn Tỉa",
+	["zh-TW"] = "狙擊步槍",
+	["zh-CN"] = "狙击步枪",
+})
+
+
+ZShelter.L("#Explosive", {
+	["en"] = "Explosive",
+	["bg"] = "Експлозив",
+	["de"] = "Explosiv",
+	["fr"] = "Explosif",
+	["tr"] = "Patlayıcı",
+	["ru"] = "Взрывчатка",
+	["vi"] = "Nổ",
+	["zh-TW"] = "爆炸物",
+	["zh-CN"] = "爆炸物",
 })
 
 ZShelter.L("#Close", {

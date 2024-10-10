@@ -44,6 +44,7 @@ ZShelter.SkillDatas = {}
 		Shared :
 			ShouldUseStorage(player, buildingdata) -- Note : return true will bypass resource checks (Excluding skill, shelter level checks)
 			OnMeleeDamage(attacker, victim, dmginfo, melee2) -- Won't be called on buildings
+			CreateMove(cmd) -- It explains itself
 ]]
 
 function ZShelter.AddSkills(category, callbackhook, callback, callback_onselect, maximum, icon, tier, title, blacklisted, cooldown)

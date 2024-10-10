@@ -43,17 +43,25 @@ ZShelter.AddSkills(ClassName, "OnSecondPassed",
 	end,
 	function(player)
 		player:SetNWFloat("SelfRecovering", player:GetNWFloat("SelfRecovering", 0) + 2)
-	end, 2, "sheal", 1, "Self Recovering")
+	end, 3, "sheal", 1, "Self Recovering")
+
+ZShelter.AddSkills(ClassName, "OnSecondPassed",
+	function(player)
+		player:SetArmor(math.min(player:Armor() + player:GetNWFloat("ArmorRecovering", 1), player:GetMaxArmor()))
+	end,
+	function(player)
+		player:SetNWFloat("ArmorRecovering", player:GetNWFloat("ArmorRecovering", 0) + 1)
+	end, 3, "armorregen", 1, "Armor Regenerate")
 
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
 	function(player)
-		player:Give("zsh_shelter_machete")
+		player:Give("tfa_zsh_cso_machete")
 	end,
 	function(player)
 		player:SetActiveWeapon(nil)
 		ZShelter.ClearMelee(player)
 		timer.Simple(0, function()
-			local wep = ents.Create("zsh_shelter_machete")
+			local wep = ents.Create("tfa_zsh_cso_machete")
 				wep:Spawn()
 				player:PickupWeapon(wep)
 				player:SetActiveWeapon(wep)
@@ -84,7 +92,7 @@ ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "gmastery2", 2, "Intermediate Gu
 ZShelter.AddSkills(ClassName, nil, nil, 
 	function(player, current)
 		player:SetNWFloat("DamageResistance", player:GetNWFloat("DamageResistance", 1) + 0.2)
-	end, 2, "dmgres", 2, "Damage Resistance")
+	end, 3, "dmgres", 2, "Damage Resistance")
 
 
 ZShelter.AddSkills(ClassName, "OnEnemyKilled",
@@ -118,6 +126,35 @@ ZShelter.AddSkills(ClassName, "OnTakingDamage",
 	function(player, current)
 		player:SetNWFloat("DamageRef", player:GetNWFloat("DamageRef", 0) + 0.5)
 	end, 2, "thorns_combat", 2, "Damage Reflecting")
+
+ZShelter.AddSkills(ClassName, "OnFireBullets",
+	function(ply, bulletdata)
+		local wep = ply:GetActiveWeapon()
+		if(IsValid(wep)) then
+			local firerate = wep:GetNextPrimaryFire() - CurTime()
+			wep:SetNextPrimaryFire(CurTime() + (firerate * ply:GetNWFloat("FRate", 1)))
+		end
+	end,
+	function(player, current)
+		player:SetNWFloat("FRate", player:GetNWFloat("FRate", 1) - 0.1)
+	end, 3, "firerate", 2, "Firerate Boost")
+
+ZShelter.AddSkills(ClassName, "OnGiveMelee",
+	function(player)
+		player:Give("tfa_zsh_cso_skull9")
+	end,
+	function(player)
+		player:SetActiveWeapon(nil)
+		ZShelter.ClearMelee(player)
+		timer.Simple(0, function()
+			local wep = ents.Create("tfa_zsh_cso_skull9")
+				wep:Spawn()
+				player:PickupWeapon(wep)
+				player:SetActiveWeapon(wep)
+		end)
+	end, 1, "mupgrade", 3, "Battle Axe Upgrade", {
+		"Machete Upgrade", "Clawhammer Upgrade", "Crowbar Upgrade",
+	})
 
 ZShelter.AddSkills(ClassName, "OnDealingDamage",
 	function(attacker, victim, dmginfo)
@@ -253,6 +290,154 @@ ZShelter.AddSkills(ClassName, "OnDealingDamage",
 	function(player, current)
 		player.StunTime = current * 2.5
 	end, 2, "grns", 3, "Grenade Stunning")
+
+local function vvec(self, vec, target)
+	local tr = {
+		start = vec,
+		endpos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z / 2),
+		filter = {self, target},
+		mask = MASK_SHOT,
+	}
+	local ret = util.TraceLine(tr)
+	local ent = ret.Entity
+	if(IsValid(ent)) then
+		local mins, maxs = ent:GetCollisionBounds()
+		mins.z = 0
+		maxs.z = 0
+		local dst = mins:Distance(maxs) * 1.5
+		if(ent.IsPlayerBarricade || ent.IsBarricade) then return false end
+		return ent:GetPos():Distance(tr.endpos) <= dst
+	else
+		return ret.Fraction == 1
+	end
+end
+
+local whitelist = {
+	logic_zshelter_path_tester = true,
+
+}
+local validTarget = function(ply, target)
+	if(ZShelter.TurretClassesForCheck[target:GetClass()] || target:GetNWBool("IsBuilding")) then return false end
+	if(!target:IsNPC() && !target:IsNextBot()) then return false end
+	return true
+end
+local traceToFOV = function(pos)
+	local x, y = ScrW() * 0.5, ScrH() * 0.5
+	return math.Distance(pos.x, pos.y, x, y)
+end
+local servertime = 0
+if(CLIENT) then
+	hook.Add("Move", "ZShelter_ServerTime", function()
+		if(!IsFirstTimePredicted()) then return end
+		servertime = CurTime()
+	end)
+end
+
+ZShelter.AimAssistStrength = 0.08
+local switch = false
+local nextreloadTime = 0
+local maxFOV = 10
+local finalTarget = nil
+ZShelter.AddSkills(ClassName, "CreateMove",
+	function(ply, cmd)
+		ply = LocalPlayer()
+		local keydown = input.IsMouseDown(MOUSE_4)
+		if(!keydown) then return end
+		local eyepos = ply:EyePos()
+		local eyeangles = ply:EyeAngles()
+		local _dst = -1
+		local targetset = false
+		for k,v in ipairs(ents.GetAll()) do
+			if(v:Health() <= 0 || whitelist[v:GetClass()] || !validTarget(ply, v)) then continue end
+			if(!vvec(ply, eyepos, v)) then continue end
+			local pos = v:GetPos() + v:OBBCenter()
+			if(pos:Distance(v:GetPos()) <= 1) then continue end
+			local ang = (pos - eyepos):Angle()
+			local p = math.abs(math.NormalizeAngle(eyeangles.p - ang.p))
+			local y = math.abs(math.NormalizeAngle(eyeangles.y - ang.y))
+			local dst = p + y
+			if(p > maxFOV || y > maxFOV) then continue end
+			if(_dst == -1) then
+				finalTarget = v
+				_dst = dst
+				targetset = true
+			else
+				if(dst < _dst) then
+					finalTarget = v
+					_dst = dst
+					targetset = true
+				end
+			end
+		end
+		if(!targetset) then
+			finalTarget = false
+		end
+		if(IsValid(finalTarget)) then
+			local wep = ply:GetActiveWeapon()
+			if(IsValid(wep) && wep:Clip1() <= 0) then
+				return
+			end
+			local viewpunchAngle = ply:GetViewPunchAngles()
+			local eyeangle = ply:EyeAngles()
+			local pos = finalTarget:GetPos() + finalTarget:OBBCenter()
+			if(pos == finalTarget:GetPos()) then
+				pos.z = pos.z + 35
+			end
+			local ang = ((pos + (finalTarget:GetVelocity() * FrameTime())) - eyepos):Angle()
+			local lerpangle = LerpAngle(ZShelter.AimAssistStrength, eyeangle, ang - viewpunchAngle)
+			cmd:SetViewAngles(lerpangle)
+			local eyetrace = {
+				start = eyepos,
+				endpos = eyepos + lerpangle:Forward() * 32767,
+				mask = MASK_SHOT,
+				filter = ply,
+			}
+			local trace = util.TraceLine(eyetrace)
+			if(IsValid(trace.Entity) && validTarget(ply, trace.Entity)) then
+				if(!switch) then
+					cmd:AddKey(IN_ATTACK)
+					switch = true
+				else
+					switch = false
+				end
+			end
+		end
+	end,
+nil, 1, "aimbot", 3, "Aim Assist")
+
+if(CLIENT) then
+	local alpha = 0
+	local entsAlpha = {}
+	hook.Add("HUDPaint", "ZShelter_DrawAimbotFOV", function()
+		if(LocalPlayer():GetNWInt("SK_Aim Assist", 0) == 0) then return end
+		local keydown = input.IsMouseDown(MOUSE_4)
+		if(keydown) then
+			alpha = math.Clamp(alpha + ZShelter.GetFixedValue(25), 0, 255)
+		else
+			alpha = math.Clamp(alpha - ZShelter.GetFixedValue(25), 0, 255)
+		end
+		if(alpha <= 0) then return end
+		local f = math.tan(math.rad(maxFOV))
+		local radius = f * (ScrW() / 2.637)
+		local centerX, centerY = ScrW() / 2, ScrH() / 2
+		surface.DrawCircle(centerX, centerY, radius, Color(255, 255, 255, alpha))
+		if(IsValid(finalTarget)) then
+			local pos = finalTarget:GetPos() + finalTarget:OBBCenter() + (finalTarget:GetVelocity() * FrameTime())
+			pos = pos:ToScreen()
+			surface.DrawLine(centerX, centerY, pos.x, pos.y)
+			local wide = ScreenScaleH(2)
+			local pos = finalTarget:GetPos()
+			pos = pos:ToScreen()
+			local p1 = (finalTarget:GetPos() + finalTarget:OBBMaxs()):ToScreen()
+			local tall = math.abs(p1.y - pos.y)
+			local offset = math.abs(p1.x - pos.x)
+			local widehalf = wide * 0.5
+			local fraction = math.Clamp(finalTarget:Health() / finalTarget:GetMaxHealth(), 0, 1)
+			draw.RoundedBox(0, pos.x + offset, pos.y - tall, wide, tall, Color(0, 0, 0, alpha * 0.5))
+			draw.RoundedBox(0, pos.x + offset, pos.y - tall * fraction, wide, tall * fraction, Color(255 * (1 - fraction), 255 * fraction, 0, alpha))
+		end
+	end)
+end
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)

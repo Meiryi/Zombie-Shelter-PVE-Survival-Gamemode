@@ -17,22 +17,24 @@ end
 
 ENT.NextShootTime = 0
 ENT.RotateSpeed = 0.45
-ENT.Firerate = 2
+ENT.Firerate = 2.5
 ENT.LosAngle = 8
 ENT.CheckValidTime = 0
 ENT.Deg = math.cos(math.rad(65))
-ENT.MaxChainCount = 6
+ENT.MaxChainCount = 5
 ENT.CurrentChainCount = 0
 ENT.ChainTargets = {}
+ENT.ChainReactionRange = 256
 ENT.StopChain = false
 
 function ENT:NextChainTarget(ent)
 	if(self.CurrentChainCount >= self.MaxChainCount) then return end
 	local vpos = ent:GetPos() + Vector(0, 0, ent:OBBMaxs().z * 0.5)
 	local localchained = 1
-	for k,v in ipairs(ents.FindInSphere(ent:GetPos(), 256)) do
+	local range = self.ChainReactionRange
+	for k,v in ipairs(ents.FindInSphere(ent:GetPos(), range)) do
 		if(localchained > 2 || self.StopChain) then return end
-		if(!ZShelter.ValidateEntity(self, v) || v == target || self.ChainTargets[v:EntIndex()]) then continue end
+		if(!ZShelter.ValidTarget(self, v) || v == target || self.ChainTargets[v:EntIndex()]) then continue end
 		v:TakeDamage(40, self, self)
 		local e = EffectData()
 			e:SetOrigin(vpos)
@@ -59,6 +61,9 @@ function ENT:Think()
 	self.StopChain = false
 	self.ChainTargets = {}
 	self.CurrentChainCount = 0
+	local upgrade = self:GetNWInt("UpgradeCount", 0)
+	self.MaxChainCount = 5 + (upgrade * 2)
+	self.ChainReactionRange = 256 + (upgrade * 64)
 	for k,v in ipairs(ents.FindInCone(self:GetPos(), vec, self.MaximumDistance, self.Deg)) do
 		if(!ZShelter.ValidateEntity(self, v) || !ZShelterVisible_Vec_IgnoreTurret(self, vect, v)) then continue end
 		local _dst = vect:Distance(v:GetPos())

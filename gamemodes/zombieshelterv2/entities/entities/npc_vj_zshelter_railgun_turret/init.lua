@@ -9,7 +9,7 @@ ENT.IsBuilding = true
 ENT.IsVJBaseSNPC_Animal = true
 ENT.MaximumDistance = 2000
 ENT.AimTarget = nil
-ENT.AimOffset = Vector(0, 0, 25)
+ENT.AimOffset = Vector(0, 0, 35)
 
 function ENT:RunAI() -- Disable VJ Base's AI
 	return
@@ -17,7 +17,7 @@ end
 
 function ENT:FindEnemy()
 	local target = nil
-	local vec = self:GetPos() + Vector(0, 0, self.AimOffset)
+	local vec = self:GetPos() + self.AimOffset
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 		if(!ZShelter.ValidateEntity(self, v)) then continue end
 		if(!ZShelterVisible_Vec_IgnoreTurret(self, vec, v)) then continue end
@@ -54,7 +54,7 @@ function ENT:Think()
 	if(!IsValid(self.AimTarget)) then
 		self:FindEnemy()
 	else
-		local vec = self:GetPos() + Vector(0, 0, self.AimOffset)
+		local vec = self:GetPos() + self.AimOffset
 		if(self.CheckValidTime < CurTime()) then
 			if(!ZShelterVisible_Vec_IgnoreTurret(self, vec, self.AimTarget) || !ZShelter.ValidateTarget(self.AimTarget)) then
 				self.AimTarget = nil

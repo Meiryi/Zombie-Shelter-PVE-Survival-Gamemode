@@ -25,8 +25,7 @@ end
 
 function ENT:DoAttack()
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
-		if(v == self || v:IsPlayer() || v.IsBuilding) then continue end
-		if(!v:IsNPC() && !v:IsNextBot()) then continue end
+		if(!ZShelter.ValidateTarget(self, v)) then continue end
 		v:TakeDamage(30, self, self)
 	end
 end
@@ -41,7 +40,7 @@ end
 
 function ENT:FindEnemy()
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
-		if(!ZShelter.ValidateEntity(self, v)) then continue end
+		if(!ZShelter.ValidTarget(self, v)) then continue end
 		self.AimTarget = v
 		return
 	end

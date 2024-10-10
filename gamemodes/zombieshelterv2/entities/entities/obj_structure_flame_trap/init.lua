@@ -52,7 +52,7 @@ function ENT:Think()
 		end
 		if(self.NextDamageTime < CurTime()) then
 			for k,v in pairs(ents.FindInSphere(self:GetPos(), 120)) do
-				if(!ZShelter.ValidateEntity(self, v)) then continue end
+				if(!ZShelter.ValidTarget(self, v)) then continue end
 				v:TakeDamage(30, self, self)
 			end
 			self.NextDamageTime = CurTime() + 0.1

@@ -106,7 +106,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	-- Player to anything (exlcuding turrets)
 
 	if(attacker:IsPlayer() && !target.IsBuilding) then
-		if(dmginfo:GetDamageCustom() != 8) then
+		if(dmginfo:GetDamageCustom() != 8 && !target.IsBoss) then
 			local wep = attacker:GetActiveWeapon()
 			if(IsValid(wep) && wep.DamageScaling) then
 				dmginfo:SetDamage(damage * wep.DamageScaling)
@@ -205,6 +205,9 @@ hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflict
 	if(!IsValid(npc)) then return end
 	npc:SetCollisionGroup(10)
 	npc:SetCollisionBounds(Vector(0, 0, 0), Vector(0, 0, 0)) -- So it doesn't block turret's bullet + melees
+	if(npc.IsBoss && !npc.KilledBySystem) then
+		ZShelter.SpawnLootboxVec(npc:GetPos())
+	end
 	if(npc.AttackedByTurrets && IsValid(npc.AttackerTurret)) then
 		npc.AttackerTurret:SetNWInt("ZShelter_KillCount", npc.AttackerTurret:GetNWInt("ZShelter_KillCount", 0) + 1)
 	end

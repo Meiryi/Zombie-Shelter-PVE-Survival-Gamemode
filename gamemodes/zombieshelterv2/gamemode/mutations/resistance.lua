@@ -25,6 +25,7 @@ m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 			self:SetHealth(self:GetMaxHealth() * 1.5) -- 50% more health
 	end,
 	Think = function(self, ...)
+		if(self:Health() <= 0) then return end
 		if(self.zsh_NextApplyTime < CurTime()) then
 			for k,v in pairs(ents.FindInSphere(self:GetPos(), 256)) do
 				if(!ZShelter.IsEnemy(v) || v == self) then continue end

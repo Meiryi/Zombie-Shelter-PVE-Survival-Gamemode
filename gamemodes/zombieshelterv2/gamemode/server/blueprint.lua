@@ -37,6 +37,8 @@ end
 
 function ZShelter.SpawnBlueprints()
 	for k,v in pairs(ZShelter.Blueprints) do
+		local spawn = math.random(0, 100) <= 40
+		if(!spawn) then continue end
 		ZShelter.CreateBlueprint(v.id, v.model)
 	end
 end
