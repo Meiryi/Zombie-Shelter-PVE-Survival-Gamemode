@@ -146,4 +146,8 @@ net.Receive("ZShelter-SyncConfig", function(len, ply)
 	net.Start("ZShelter-GetShelterEntity")
 	net.WriteEntity(ZShelter.Shelter)
 	net.Send(ply)
+
+	if(ZShelter.LoadedSave) then
+		ZShelter.LoadPlayerSaveData(ply)
+	end
 end)

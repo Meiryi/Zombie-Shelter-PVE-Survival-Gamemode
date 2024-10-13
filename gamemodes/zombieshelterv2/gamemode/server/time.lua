@@ -15,6 +15,7 @@
 
 util.AddNetworkString("ZShelter-DayPassed")
 util.AddNetworkString("ZShelter-UpdateLighting")
+util.AddNetworkString("ZShelter-SyncBuildingHealth")
 
 ZShelter.StartedDifficulty = ZShelter.StartedDifficulty || -1
 
@@ -53,6 +54,14 @@ function ZShelter.ProcessLighting()
 	end
 end
 
+function ZShelter.SyncBuildingHPSinglePlayer(ent) -- fuck you im lazy
+	net.Start("ZShelter-SyncBuildingHealth")
+	net.WriteEntity(ent)
+	net.WriteInt(ent:GetMaxHealth(), 32)
+	net.WriteInt(ent:Health(), 32)
+	net.Broadcast()
+end
+
 function ZShelter.UpdatePlayerLighting(fullUpdate)
 	net.Start("ZShelter-UpdateLighting")
 	net.WriteBool(fullUpdate || false)
@@ -85,6 +94,8 @@ function ZShelter.OnNightSwitch()
 	engine.LightStyle(0, "b")
 	ZShelter.UpdatePlayerLighting(true)
 
+	ZShelter.SaveGame()
+	
 	hook.Run("ZShelter-NightSwitch")
 end
 
@@ -136,9 +147,18 @@ end
 
 local nextTick = 0
 local nextFilte = 0
+local nextExec = 0
 hook.Add("Think", "ZShelter-Think", function()
 	if(IsValid(ZShelter.Shelter)) then
 		ZShelter.Shelter:SetCollisionGroup(0)
+	end
+	if(nextExec < CurTime() && game.SinglePlayer()) then
+		for k,v in ipairs(ents.GetAll()) do
+			if(!v:GetNWBool("IsBuilding") && !v.IsShelter) then continue end
+			ZShelter.SyncBuildingHPSinglePlayer(v)
+		end
+
+		nextExec = CurTime() + 0.1
 	end
 	if(nextTick < CurTime()) then
 		ZShelter.RunPathCheck()

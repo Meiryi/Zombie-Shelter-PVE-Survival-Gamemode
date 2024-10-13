@@ -537,7 +537,64 @@ end
 
 local red = Color(255, 0, 0, 255)
 
+function SWEP:ArccwStyleMelee(attk)
+	self.Owner:LagCompensation(true)
+	local reach = 32 + attk.len
+    local tr = util.TraceLine({
+        start = self:GetOwner():GetShootPos(),
+        endpos = self:GetOwner():GetShootPos() + self:GetOwner():GetAimVector() * reach,
+        filter = self:GetOwner(),
+        mask = MASK_SHOT_HULL
+    })
+    if(!IsValid(tr.Entity)) then
+        tr = util.TraceHull({
+            start = self:GetOwner():GetShootPos(),
+            endpos = self:GetOwner():GetShootPos() + self:GetOwner():GetAimVector() * reach,
+            filter = self:GetOwner(),
+            mins = Vector(-16, -16, -8),
+            maxs = Vector(16, 16, 8),
+            mask = MASK_SHOT_HULL
+        })
+    end
+	local forcevec = Vector(self:GetOwner():EyeAngles():Forward() * reach)
+	local damage = DamageInfo()
+	damage:SetAttacker(self:GetOwner())
+	damage:SetInflictor(self)
+	damage:SetDamage(attk.dmg)
+	damage:SetDamageType(attk.dmgtype || DMG_SLASH)
+	damage:SetDamageForce(forcevec)
+	
+	local melee2 = self.Melee2Attack
+
+    if(IsValid(tr.Entity)) then
+    	local ent = tr.Entity
+    	if(ent:IsPlayer() || ent:IsNPC()) then
+    		if(ent:GetNWBool("IsBuilding")) then
+    			self:EmitSoundNet(attk.hitworld)
+    		else
+    			if(melee2) then
+    				self:EmitSoundNet(attk.hitflesh)
+    			else
+    				self:EmitSoundNet(attk.hitflesh)
+    			end
+    		end
+    	else
+    		self:EmitSoundNet(attk.hitworld)
+    	end
+    	self:ApplyDamage(tr, damage, attk)
+    else
+    	if(tr.HitWorld) then
+    		self:EmitSoundNet(attk.hitworld)
+    	end
+    end
+	self.Owner:LagCompensation(false)
+end
+
 function SWEP:Strike(attk, precision)
+	if(self.OldStyleHit) then
+			self:ArccwStyleMelee(attk)
+		return
+	end
 	local hitWorld, hitFlesh, needsCB
 	local distance, direction, maxhull
 	local ow = self:GetOwner()

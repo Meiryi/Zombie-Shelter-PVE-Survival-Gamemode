@@ -17,12 +17,12 @@ if SERVER then
 	end
 
 	function ENT:PhysicsCollide()
-		for k,v in ipairs(ents.FindInSphere(self:GetPos(), 150)) do
+		for k,v in ipairs(ents.FindInSphere(self:GetPos(), 256)) do
 			if(!v.IsBuilding && !v:IsPlayer()) then continue end
 			if(v.IsBuilding) then
-				ZShelter.ApplyDamageFast(v, self.damage, true, true)
+				ZShelter.ApplyDamageFast(v, self.damage * 2, true, true)
 			else
-				v:TakeDamage(self.damage, self, self)
+				v:TakeDamage(self.damage * 2, self, self)
 			end
 		end
 		local e = EffectData()

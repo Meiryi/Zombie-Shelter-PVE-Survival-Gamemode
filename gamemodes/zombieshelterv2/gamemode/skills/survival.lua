@@ -28,6 +28,7 @@ ZShelter.AddSkills(ClassName, nil, nil,
 
 local wood = Material("zsh/icon/woods_white.png", "smooth")
 local iron = Material("zsh/icon/irons_white.png", "smooth")
+local lootbox = Material("zsh/icon/lootbox.png", "smooth")
 local matTable = {
 	["Woods"] = wood,
 	["Irons"] = iron,
@@ -51,6 +52,18 @@ ZShelter.AddSkills(ClassName, "OnHUDPaint",
 			surface.DrawTexturedRect(pos.x - sx * 0.5, pos.y - sx * 0.5, sx, sx)
 		end
 	end, nil, 1, "reswallhack", 1, "Resource Rader")
+
+hook.Add("PreDrawHalos", "ZShelter-SkillboxRender", function()
+	local ply = LocalPlayer()
+	if(ply:GetNWInt("SK_Resource Rader") == 0) then return end
+	local list = {}
+	local pos = ply:GetPos()
+	for k,v in ipairs(ents.FindByClass("obj_resource_lootbox")) do
+		if(pos:Distance(v:GetPos()) > 1024) then continue end
+		table.insert(list, v)
+	end
+	halo.Add(list, Color(0, 100, 0), 2, 2, 1, true, true)
+end)
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)

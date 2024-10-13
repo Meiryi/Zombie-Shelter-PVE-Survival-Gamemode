@@ -52,6 +52,7 @@ ENT.SoundTbl_MeleeAttackExtra = {"zshelter/zombies/hit1.wav","zshelter/zombies/h
 ENT.SoundTbl_Death = {"zshelter/zombies/zbs_death_1.wav"}
 ENT.DeathSoundPitch1 = 100
 ENT.DeathSoundPitch1 = 100
+ENT.NoPush = true
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------

@@ -229,6 +229,12 @@ local itemElem = {
 		format = "table",
 	},
 	[12] = {
+		hint = "Required Shelter Level",
+		id = "shelterlevel",
+		type = "textentry",
+		format = "int",
+	},
+	[13] = {
 		hint = "Can get ammo from ammo supply crate?",
 		id = "ammo_supply",
 		type = "button",
@@ -268,6 +274,7 @@ local newWeapon = {
 	ammoregen = -1,
 	requiredskills = {},
 	volume = 1,
+	shelterlevel = 1,
 }
 
 local bgmat = Material("zsh/icon/tools.png", "smooth")
@@ -415,7 +422,7 @@ local func = {
 		local NextY = dockmargin
 		local XPos = list:GetX() + list:GetWide() + dockmargin * 2
 		local wide = pa:GetWide() * 0.33
-		local tall = pa:GetTall() * 0.065
+		local tall = pa:GetTall() * 0.0475
 		local tall2 = pa:GetTall() * 0.03
 
 		ui.ItemConfigElems = {}
@@ -483,6 +490,7 @@ local func = {
 		end)
 
 		ui.RefreshItemInfo = function(v)
+		--[[
 			for index, var in pairs(v) do
 				if(ui.ItemConfigElems[index]) then
 					if(index == "requiredskills") then
@@ -494,12 +502,31 @@ local func = {
 								str = str..","..v
 							end
 						end
-							ui.ItemConfigElems[index]:SetValue(str)
-						else
-							ui.ItemConfigElems[index]:SetValue(var)
-						end
+						ui.ItemConfigElems[index]:SetValue(str)
+					else
+						ui.ItemConfigElems[index]:SetValue(var)
 					end
 				end
+			end
+		]]
+			for index, value in pairs(newWeapon) do
+				local var = v[index] || value
+				if(ui.ItemConfigElems[index]) then
+					if(index == "requiredskills") then
+						local str = ""
+						for k,v in pairs(var) do
+							if(k == 1) then
+								str = v
+								else
+								str = str..","..v
+							end
+						end
+						ui.ItemConfigElems[index]:SetValue(str)
+					else
+						ui.ItemConfigElems[index]:SetValue(var)
+					end
+				end
+			end
 		end
 
 		ui.ReloadItemList = function()

@@ -34,6 +34,8 @@ SWEP.Precision = 50
 SWEP.Secondary.MaxCombo = -1
 SWEP.Primary.MaxCombo = -1
 
+SWEP.OldStyleHit = true
+
 SWEP.Offset = {
 		Pos = {
 		Up = -6,
@@ -107,7 +109,7 @@ SWEP.Primary.Attacks = {
 		['delay'] = 0.1, --Delay
 		['spr'] = true, --Allow attack while sprinting?
 		['snd'] = "TFABaseMelee.Null", -- Sound ID
-		['snd_delay'] = 0.01,
+		['snd_delay'] = 0.1,
 		["viewpunch"] = Angle(0,0,0), --viewpunch angle
 		['end'] = 0.6, --time before next attack
 		['hull'] = 32, --Hullsize
@@ -143,7 +145,7 @@ SWEP.Secondary.Attacks = {
 		['dir'] = Vector(0,0,-40), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dmg'] = 150, --Nope!! Not overpowered!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
-		['delay'] = 0.2, --Delay
+		['delay'] = 0.15, --Delay
 		['spr'] = true, --Allow attack while sprinting?
 		['snd'] = "TFABaseMelee.Null", -- Sound ID
 		['snd_delay'] = 0.01,
@@ -151,7 +153,7 @@ SWEP.Secondary.Attacks = {
 		['end'] = 1.2, --time before next attack
 		['hull'] = 64, --Hullsize
 		['direction'] = "F", --Swing dir
-		['hitflesh'] = "Tomahawk.HitFleshSlash3",
+		['hitflesh'] = "weapons/tfa_cso/tomahawk/hit3.wav",
 		['hitworld'] = "Tomahawk.HitWall",
 		['maxhits'] = 1
 	}

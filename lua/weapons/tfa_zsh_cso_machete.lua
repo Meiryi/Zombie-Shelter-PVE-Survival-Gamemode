@@ -44,6 +44,8 @@ SWEP.NZPreventBox		= false	-- If true, this gun won't be placed in random boxes 
 SWEP.NZTotalBlackList	= false	-- if true, this gun can't be placed in the box, even manually, and can't be bought off a wall, even if placed manually. Only code can give this gun.
 SWEP.PaPMats			= {}
 
+SWEP.OldStyleHit = true
+
 SWEP.Offset = {
 		Pos = {
 		Up = -3.5,
@@ -117,7 +119,7 @@ SWEP.Primary.Attacks = {
 		['delay'] = 0.1, --Delay
 		['spr'] = true, --Allow attack while sprinting?
 		['snd'] = "TFABaseMelee.Null", -- Sound ID
-		['snd_delay'] = 0.01,
+		['snd_delay'] = 0.1,
 		["viewpunch"] = Angle(0,0,0), --viewpunch angle
 		['end'] = 0.6, --time before next attack
 		['hull'] = 32, --Hullsize
@@ -161,7 +163,7 @@ SWEP.Secondary.Attacks = {
 		['end'] = 1.2, --time before next attack
 		['hull'] = 64, --Hullsize
 		['direction'] = "F", --Swing dir
-		['hitflesh'] = "Tomahawk.HitFleshSlash3",
+		['hitflesh'] = "weapons/tfa_cso/tomahawk/hit3.wav",
 		['hitworld'] = "Tomahawk.HitWall",
 		['maxhits'] = 3
 	}

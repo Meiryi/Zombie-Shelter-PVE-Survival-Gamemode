@@ -63,7 +63,7 @@ SWEP.Primary.StaticRecoilFactor = 0.5 	--Amount of recoil to directly apply to E
 
 --Firing Cone Related
 
-SWEP.Primary.Spread		= .15					--This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
+SWEP.Primary.Spread		= .07					--This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
 SWEP.Primary.IronAccuracy = .045	-- Ironsight accuracy, should be the same for shotguns
 
 --Unless you can do this manually, autodetect it.  If you decide to manually do these, uncomment this block and remove this line.
@@ -389,7 +389,7 @@ function SWEP:SecondaryAttack( ... )
 			self.Primary_TFA.Damage = 25
             self.Primary_TFA.RPM = 300
 			self.Primary_TFA.AmmoConsumption = self:Clip1()
-			self.Primary_TFA.Spread = 0.28
+			self.Primary_TFA.Spread = 0.175
             self.Primary_TFA.NumShots = self:Clip1() * 15
 			self.Primary_TFA.Sound 	= Sound("Tbarrel.Fire")
             BaseClass.PrimaryAttack( self, ... )
@@ -401,7 +401,7 @@ function SWEP:SecondaryAttack( ... )
 		    self.Primary_TFA.Damage = 25
 			self.Primary_TFA.AmmoConsumption = 1
 			self.Primary_TFA.NumShots = 15
-			self.Primary_TFA.Spread = 0.28
+			self.Primary_TFA.Spread = 0.175
             self.Primary_TFA.RPM = 300
 			self.Primary_TFA.Sound 	= Sound("Tbarrel.Fire")
             return BaseClass.SecondaryAttack( self, ... )
@@ -414,7 +414,7 @@ function SWEP:CompleteReload( ... )
             self.Primary_TFA.AmmoConsumption = 1
             self.Primary_TFA.NumShots = 15
             self.Primary_TFA.RPM = 300
-            self.Primary_TFA.Spread = 0.1
+            self.Primary_TFA.Spread = 0.07
             self.Primary_TFA.Sound     = Sound("Tbarrel.Fire")
     end
     return BaseClass.CompleteReload(self,...)

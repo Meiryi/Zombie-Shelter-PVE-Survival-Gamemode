@@ -1064,6 +1064,18 @@ ZShelter.L("#Dif9", {
 	["zh-CN"] = "地狱",
 })
 
+ZShelter.L("#Uncraft Weapons", {
+	["en"] = "Uncraft Weapons",
+	["bg"] = "Разглоби оръжия",
+	["de"] = "Waffen zerlegen",
+	["fr"] = "Démonter les Armes",
+	["tr"] = "Silahları Parçala",
+	["ru"] = "Разобрать оружие",
+	["vi"] = "Phân Rã Vũ Khí",
+	["zh-TW"] = "拆解武器",
+	["zh-CN"] = "拆解武器",
+})
+
 ZShelter.L("#Woods", {
 	["en"] = "Woods",
 	["bg"] = "Гори",

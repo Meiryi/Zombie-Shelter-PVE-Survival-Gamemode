@@ -15,6 +15,20 @@
 
 util.AddNetworkString("ZShelter-OpenWorktable")
 util.AddNetworkString("ZShelter-Worktable")
+util.AddNetworkString("ZShelter-UncraftWeapon")
+
+local refundScale = 0.5
+net.Receive("ZShelter-UncraftWeapon", function(len, ply)
+	local wep = net.ReadEntity()
+	if(!IsValid(wep) || !wep:IsWeapon() || wep:GetNWInt("zsh_index", -1) == -1) then return end
+	local data = ZShelter.ItemConfig[wep:GetNWInt("zsh_index")]
+	if(!ply:HasWeapon(data.class)) then return end
+	if(IsValid(wep)) then
+		SetGlobalInt("Woods", math.min(math.floor(GetGlobalInt("Woods", 0) + data.woods * refundScale), GetGlobalInt("Capacity", 32)))
+		SetGlobalInt("Irons", math.min(math.floor(GetGlobalInt("Irons", 0) + data.irons * refundScale), GetGlobalInt("Capacity", 32)))
+		ply:StripWeapon(data.class)
+	end
+end)
 
 net.Receive("ZShelter-Worktable", function(len, ply)
 	local index1 = net.ReadInt(32)
@@ -29,6 +43,10 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 	wep.AmmoCapacity = data.ammo_capacity || -1
 	wep.AmmoRegenSpeed = data.ammoregen || -1
 	wep.Category = data.category
+	wep:SetNWInt("zsh_index", index1)
+	wep:SetNWInt("zsh_woods", data.woods)
+	wep:SetNWInt("zsh_irons", data.irons)
+
 	ply:PickupWeapon(wep)
 	ply:GiveAmmo(wep:GetMaxClip1(), wep:GetPrimaryAmmoType(), true)
 

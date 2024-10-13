@@ -15,6 +15,7 @@
 
 ZShelter.BuildingConfig = {}
 ZShelter.BuildingData = {}
+ZShelter.BuildingData_Class = {}
 ZShelter.WeaponConfig = {}
 ZShelter.IngredientConfig = {}
 ZShelter.TurretClasses = {}
@@ -41,6 +42,26 @@ function ZShelter.AddBuildItem(cat, name, wood, iron, power, health, class, mode
 		specialreq = specialreq,
 		finddata = finddata,
 	})
+	local index = name.."/"..class.."/"..model
+	if(!ZShelter.BuildingData_Class[index]) then
+		ZShelter.BuildingData_Class[index] = {
+			category = cat,
+			title = name,
+			woods = wood,
+			irons = iron,
+			powers = power,
+			health = health,
+			class = class,
+			model = model,
+			shelterlvl = shelterlvl,
+			offset = offset,
+			tdata = tdata,
+			specialreq = specialreq,
+			finddata = finddata,
+		}
+	end
+
+
 	if(cat == "Turret") then
 		table.insert(ZShelter.TurretClasses, class)
 		ZShelter.TurretClassesForCheck[class] = true
@@ -298,7 +319,9 @@ ZShelter.AddBuildItem("Generator",  "Generator",  5,  5,  0, 120,  "prop_physics
 			end
 		end,
 		ondestroy = function(self)
-			if(!self.Power) then self.Power = 0 end
+			if(!self.Power) then
+				self.Power = 90 + (GetGlobalInt("ShelterLevel", 0) * powergain)
+			end
 			SetGlobalInt("Powers", GetGlobalInt("Powers", 0) - self.Power)
 
 			if(GetGlobalInt("Powers", 0) < 0) then

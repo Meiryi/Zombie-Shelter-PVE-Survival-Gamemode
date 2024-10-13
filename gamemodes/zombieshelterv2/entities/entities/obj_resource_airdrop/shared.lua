@@ -19,7 +19,7 @@ if(CLIENT) then
 		angle.x = 0
 		local ent = LocalPlayer():GetEyeTrace().Entity
 		if(ent != self) then return end
-		local amount = math.min(math.max(math.floor(GetGlobalInt("Capacity", 32) * 0.4), 20), 86)
+		local amount = math.min(math.max(math.floor(GetGlobalInt("Capacity", 32) * 0.2), 16), 64)
 		local powers = (GetGlobalInt("ShelterLevel") + 1) * 30
 		cam.IgnoreZ(true)
 			cam.Start3D2D(self:GetPos() + Vector(-20, 20, 48), angle, 0.33)
@@ -54,21 +54,38 @@ if(CLIENT) then
 else
 
 	function ENT:GetRandomWeapon()
-		local wep = ZShelter.ItemConfig[math.random(1, #ZShelter.ItemConfig)]
-		return wep
+		local index = -1
+		local wep = {}
+		local weps= {}
+		local allowedLevel = GetGlobalInt("ShelterLevel", 0) + 2
+
+		for k,v in pairs(ZShelter.ItemConfig) do
+			local chance = math.random(1, 100)
+			if((v.shelterlevel || 1) > allowedLevel) then
+				local max = 40 / (math.Clamp(v.shelterlevel - allowedLevel, 1, 100))
+				if(math.random(1, 100) > max) then
+					continue
+				end
+			end
+			table.insert(weps, v)
+		end
+		if(#weps <= 0) then return wep, index end
+		index = math.random(1, #weps)
+		wep = weps[index]
+		return wep, index
 	end
 
 	function ENT:Use(ent)
 		if(!IsValid(ent) || !ent:IsPlayer()) then return end
 		sound.Play("shigure/pickup.wav", ent:GetPos())
 		local max = GetGlobalInt("Capacity", 32)
-		local amount = math.min(math.max(math.floor(GetGlobalInt("Capacity", 32) * 0.4), 20), 86)
+		local amount = math.min(math.max(math.floor(GetGlobalInt("Capacity", 32) * 0.2), 16), 64)
 		local powers = 30 + ((GetGlobalInt("ShelterLevel") + 1) * 10)
 		SetGlobalInt("Woods", math.min(GetGlobalInt("Woods") + amount, max))
 		SetGlobalInt("Irons", math.min(GetGlobalInt("Irons") + amount, max))
 		SetGlobalInt("Powers", GetGlobalInt("Powers") + powers)
-		local wep = self:GetRandomWeapon()
-		if(!ent:HasWeapon(wep.class)) then
+		local wep, index = self:GetRandomWeapon()
+		if(index != -1 && !ent:HasWeapon(wep.class)) then
 			local wepent = ents.Create(wep.class)
 				wepent:Spawn()
 				wepent.DamageScaling = wep.dmgscale
@@ -76,6 +93,10 @@ else
 				wepent.VolumeMultiplier = wep.volume || 1
 				wepent.AmmoCapacity = wep.ammo_capacity || -1
 				wepent.AmmoRegenSpeed = wep.ammoregen || -1
+				wepent:SetNWInt("zsh_index", index)
+				wepent:SetNWInt("zsh_woods", math.floor(wep.woods * 0.85))
+				wepent:SetNWInt("zsh_irons", math.floor(wep.irons * 0.85))
+
 				ent:PickupWeapon(wepent)
 				ent:GiveAmmo(wepent:GetMaxClip1(), wepent:GetPrimaryAmmoType(), true)
 		end

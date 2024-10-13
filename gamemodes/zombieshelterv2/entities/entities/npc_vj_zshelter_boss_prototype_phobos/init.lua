@@ -101,11 +101,15 @@ ENT.GetLeapAngle = true
 ENT.NextLeapAttackCodeTime = 0
 ENT.LeapEndTime = 0
 
+ENT.NoUnstuckChecks = true
+ENT.NoPush = true
+
 function ENT:CustomOnLeapAttackVelocityCode()
 	self.LeapEndTime = CurTime() + 0.5
 end
 
 function ENT:CustomOnThink()
+	if(self.Dead) then return end
 	self:SetCollisionBounds(Vector(30, 30, 100), Vector(-30, -30, 0))
 	if(IsValid(self:GetEnemy())) then
 		if(self.ShockWaveTimer < CurTime() && !self.Rushing) then
@@ -160,7 +164,7 @@ function ENT:ShockWave()
 	VJ_EmitSound(self,self.SoundTbl_Shockwave_Ready,100,100)
 	VJ_EmitSound(self,self.SoundTbl_Shockwave_Ready,100,100) 
 	timer.Simple(2, function()
-		if(!IsValid(self)) then return end
+		if(!IsValid(self) || self.Dead) then return end
 		VJ_EmitSound(self,self.SoundTbl_Shockwave,100,100)
 		VJ_EmitSound(self,self.SoundTbl_Shockwave,100,100) 
 		local diff = GetConVar("zshelter_difficulty"):GetInt()

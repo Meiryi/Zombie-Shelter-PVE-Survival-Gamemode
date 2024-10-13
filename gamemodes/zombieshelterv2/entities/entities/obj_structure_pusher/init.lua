@@ -24,7 +24,7 @@ function ENT:Think()
 	if(self.NextPush < CurTime()) then
 		if(self:FindEnemy()) then
 			for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
-				if(v == self) then continue end
+				if(v == self || v.NoPush) then continue end
 				if(!ZShelter.ValidateEntity(self, v)) then continue end
 				v:SetVelocity((self:GetAngles() - Angle(7, 180, 0)):Forward() * 2048)
 			end

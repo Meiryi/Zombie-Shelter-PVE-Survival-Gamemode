@@ -239,10 +239,11 @@ end
 hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo, took)
 	if(!took || GetConVar("zshelter_debug_damage_number"):GetInt() == 0) then return end
 	local attacker = dmginfo:GetAttacker()
+	local inflictor = dmginfo:GetInflictor()
 	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
 	local damage = dmginfo:GetDamage()
 	local pos = dmginfo:GetDamagePosition()
-	if(pos == Vector(0, 0, 0)) then
+	if(pos == Vector(0, 0, 0) || (IsValid(inflictor) && pos:Distance(inflictor:GetPos()) < 2)) then
 		pos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z * 0.5)
 	end
 	ZShelter.SendDamage(attacker, target:EntIndex(), damage, pos)

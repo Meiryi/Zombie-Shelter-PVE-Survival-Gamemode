@@ -399,28 +399,28 @@ end
 
 function ZShelter.CalcSpawnAmount_Debug(day, diff, ply)
 	local day = day
-	local diffScale = 1 + (diff * 0.15)
+	local diffScale = 1 + (diff * 1.25)
 	local plyScale = 1 + ((ply - 1) * 0.15)
 	return math.max(math.floor((6 + ((day * 0.34) * diffScale)) * plyScale), 1) -- make sure it's more than 0
 end
 
 function ZShelter.CalcSpawnAmount()
 	local day = GetGlobalInt("Day", 1)
-	local diffScale = 1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.15)
+	local diffScale = 1 + (GetConVar("zshelter_difficulty"):GetInt() * 1.25)
 	local plyScale = 1 + ((player.GetCount() - 1) * 0.15)
 	return math.max(math.floor((6 + ((day * 0.34) * diffScale)) * plyScale), 1) -- make sure it's more than 0
 end
 
 function ZShelter.CalcMaxAmount_Debug(day)
 	local day = day
-	local diffScale = 1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.25)
-	return math.min(50, math.floor(1 + ((day * 3) * diffScale)))
+	local diffScale = 1 + ((GetConVar("zshelter_difficulty"):GetInt() - 1) * 0.45)
+	return math.min(60, math.floor(1 + ((day * 4) * diffScale)))
 end
 
 function ZShelter.CalcMaxAmount()
 	local day = GetGlobalInt("Day", 1)
-	local diffScale = 1 + ((GetConVar("zshelter_difficulty"):GetInt() - 1) * 0.3)
-	return math.min(50, math.floor(1 + ((day * 2.25) * diffScale)))
+	local diffScale = 1 + ((GetConVar("zshelter_difficulty"):GetInt() - 1) * 0.45)
+	return math.min(60, math.floor(1 + ((day * 4) * diffScale)))
 end
 
 function ZShelter.SpawnPanicEnemies()
@@ -655,7 +655,11 @@ end
 
 function ZShelter.CalcSpawnTime(day, diff)
 	local scaling = math.max(1 - (0.1 * (player.GetCount() - 1)), 0.25)
-	return math.max(((30 - diff) - (day * (diff * 0.5))) * scaling, 1)
+	local t = 0
+	if(diff >= 7) then
+		t = diff * 0.15
+	end
+	return math.max((((30 - diff) - (day * (diff * 0.45))) * scaling) - t, 1)
 end
 
 local dayTimer = 0

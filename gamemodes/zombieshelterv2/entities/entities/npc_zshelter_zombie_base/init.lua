@@ -66,6 +66,7 @@ ENT.PropCheckTraceLineLength = 0
 ENT.MoveWhileAttacking = true
 ENT.NextForceRunTime = 0
 ENT.LastForceRunPos = Vector(0, 0, 0)
+ENT.AttackingTime = 0
 
 local schrun = ai_schedule.New("Chase1")
 	schrun:EngTask("TASK_GET_PATH_TO_LASTPOSITION", 0)
@@ -95,7 +96,9 @@ end
 
 function ENT:RunAI(strExp)
 	self:Think(true)
-	self:MaintainActivity()
+	if(self.AttackingTime < CurTime()) then
+		self:MaintainActivity()
+	end
 	self:SetMovementActivity(VJ_PICK(self.AnimTbl_Run))
 end
 
@@ -281,7 +284,7 @@ function ENT:Think(fromengine)
 		if((self.NextAnyMeleeAttack < curTime && (spos:Distance(epos) <= self.MeleeAttackDamageDistance || blockedByProp))) then
 			if(!self.DisableMeleeAttackAnimation) then
 				local anim = VJ_PICK(self.AnimTbl_MeleeAttack)
-				local v1 = self:VJ_ACT_PLAYACTIVITY(anim, false, 0, true, self.MeleeAttackAnimationDelay)
+				local v1 = self:VJ_ACT_PLAYACTIVITY(anim, false, self.AttackAnimLength || 0, true, self.MeleeAttackAnimationDelay)
 				self.CurrentAttackAnimation = anim
 				self.CurrentAttackAnimationDuration = v1
 				v1 = v1 * 0.5

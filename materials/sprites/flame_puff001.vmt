@@ -1,0 +1,16 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "sprites/flame_puff001"
+	"$translucent" 1
+	"$additive" 1
+	"$nocull" 1
+	"Proxies"
+	{
+	"AnimatedTexture"
+		{
+		"animatedTextureVar" "$basetexture"
+		"animatedTextureFrameNumVar" "$frame"
+		"animatedTextureFrameRate" "21"
+		}
+	}
+}

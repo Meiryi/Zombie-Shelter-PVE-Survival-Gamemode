@@ -159,6 +159,16 @@ function ZShelterVisible_NPC(self, target) -- This is costy
 	return true
 end
 
+function ZShelterVisibleNPC(self, target)
+	local tr = {
+		start = self:GetPos() + self:OBBCenter(),
+		endpos = target:GetPos() + target:OBBCenter(),
+		filter = {self, target},
+		mask = MASK_NPCSOLID_BRUSHONLY,
+	}
+	return util.TraceLine(tr).Fraction == 1
+end
+
 function ZShelterVisible_NPCVec(self, vec, target) -- This is costy
 	local tr = {
 		start = vec,

@@ -38,6 +38,7 @@ end
 function ZShelter.AddNoise(amount)
 	if((immunitySounds > SysTime() || GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted", false) || GetGlobalBool("Rescuing") || ZShelter.PanicEnemySpawnTime > CurTime()) && !bypassChecks) then return end
 	SetGlobalFloat("NoiseLevel", math.min(GetGlobalFloat("NoiseLevel", 0) + amount, 100))
+	local scale = math.max(1 - ((player.GetCount() - 1) * 0.15), 0.5)
 	lastShoottime = CurTime() + 0.25
 	if(GetGlobalFloat("NoiseLevel", 0) >= 100) then
 		ZShelter.TriggerHorde()
@@ -75,7 +76,7 @@ hook.Add("EntityFireBullets", "ZShelter-Noise", function(ent, data)
 	if(!IsValid(wep)) then
 		wep = ent
 	end
-	local firstshot = math.abs((wep.LastShotTime || 0) - CurTime()) > 1.25
+	local firstshot = math.abs((wep.LastShotTime || 0) - CurTime()) > 1
 	local scale = wep.VolumeMultiplier || 1
 	local noise = (2.5 * scale)
 	if(firstshot && scale < 3) then

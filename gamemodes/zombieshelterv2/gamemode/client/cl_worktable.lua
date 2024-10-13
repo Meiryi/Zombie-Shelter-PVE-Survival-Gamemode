@@ -49,6 +49,24 @@ surface.CreateFont("ZShelter-WorktableTitle", {
 	outline = false,
 })
 
+surface.CreateFont("ZShelter-WorktableRefundTitle", {
+	font = "Arial",
+	extended = false,
+	size = ScreenScaleH(18),
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
 surface.CreateFont("ZShelter-WorktableDesc", {
 	font = "Arial",
 	extended = false,
@@ -72,6 +90,104 @@ net.Receive("ZShelter-OpenWorktable", function()
 	ZShelter.OpenWorktable()
 end)
 
+function ZShelter.RefundTab(category, container)
+	local outlineSize = 1
+	local tall = ScreenScaleH(32)
+	local smargin = 0
+	local yoffset = ScreenScaleH(3)
+	local sidemargin = ScreenScaleH(20)
+	local sx = ScreenScaleH(32)
+	local margin = ScreenScaleH(16)
+	local dockmargin = ScreenScaleH(4)
+	local innermargin = ScreenScaleH(2)
+	local textmargin = ScreenScaleH(1)
+
+	local type = "Uncraft Weapons"
+	local base = ZShelter.CreatePanel(category, 0, 0, category:GetWide(), category:GetTall() * 0.08, Color(40, 40, 40, 255))
+		local w, h = base:GetSize()
+			base:Dock(TOP)
+			base:DockMargin(0, 0, 0, dockmargin)
+			base.oPaint = base.Paint
+			base.Paint = function()
+				local sx = outlineSize * 2
+					draw.RoundedBox(0, outlineSize, outlineSize, w - sx, h - sx, Color(30, 30, 30, 180))
+					surface.SetDrawColor(255, 255, 255, 255)
+					surface.DrawOutlinedRect(0, 0, w, h, outlineSize)
+			end
+
+			local tw, th, title = ZShelter.CreateLabel(base, dockmargin, h / 2, ZShelter_GetTranslate("#"..type), "ZShelter-MenuLarge", Color(200, 200, 200, 255))
+			title.CentVer()
+			title:SetX((outlineSize + innermargin) + dockmargin)
+
+			local pa = ZShelter.CreateScroll(container, 0, 0, container:GetWide(), container:GetTall(), Color(0, 0, 0, 0))
+			container.AddPanel(pa)
+
+			pa.ReloadList = function()
+				pa:Clear()
+				local wep = LocalPlayer():GetWeapons()
+				for k,v in ipairs(wep) do
+					if(v:GetNWInt("zsh_index", -1) == -1) then continue end
+					local pnl = ZShelter.CreatePanel(pa, 0, 0, pa:GetWide(), pa:GetTall() * 0.125, Color(30, 30, 30, 120))
+						pnl:Dock(TOP)
+						pnl:DockMargin(0, 0, 0, dockmargin)
+						pnl.Alpha = 0
+						pnl.Paint = function()
+							if(pnl.Hovered) then
+								pnl.Alpha = math.Clamp(pnl.Alpha + ZShelter.GetFixedValue(20), 130, 255)
+							else
+								pnl.Alpha = math.Clamp(pnl.Alpha - ZShelter.GetFixedValue(20), 130, 255)
+							end
+							draw.RoundedBox(0, 0, 0, pnl:GetWide(), pnl:GetTall(), Color(30, 30, 30, pnl.Alpha))
+							surface.SetDrawColor(255, 255, 255, pnl.Alpha)
+							surface.DrawOutlinedRect(0, 0, pnl:GetWide(), pnl:GetTall(), outlineSize)
+						end
+						local class = v:GetClass()
+						pnl.Think = function()
+							if(!LocalPlayer():HasWeapon(class)) then
+								pnl:Remove()
+							end
+						end
+						local data = ZShelter.ItemConfig[v:GetNWInt("zsh_index")]
+						local refundScale = 0.5
+						local _, _, gunName = ZShelter.CreateLabel(pnl, dockmargin, pnl:GetTall() / 2, data.title, "ZShelter-WorktableRefundTitle", Color(200, 200, 200, 255))
+						gunName.CentVer()
+
+						local list = {
+							[1] = "Woods",
+							[2] = "Irons",
+						}
+						local tw, th = ZShelter.GetTextSize("ZShelter-WorktableDesc", "dummy")
+						local w, h = pnl:GetSize()
+						local size = h * 0.5
+						local yaxis = (h / 2) - (size / 2) - th / 2
+						local nextX = w - (size + dockmargin * 2)
+						for x,y in pairs(list) do
+							ZShelter.CreateImage(pnl, nextX, yaxis, size, size, "zsh/icon/"..string.lower(y)..".png", Color(255, 255, 255, 255))
+							local tw, th, cost = ZShelter.CreateLabel(pnl, nextX + size / 2, (yaxis + size) - innermargin, math.floor(data[string.lower(y)] * refundScale), "ZShelter-WorktableDesc", Color(200, 200, 200, 255))
+							cost:CentHor()
+							nextX = nextX - (size + dockmargin * 2)
+						end
+
+						local invisbutton = ZShelter.InvisButton(pnl, 0, 0, pnl:GetWide(), pnl:GetTall(), function()
+							net.Start("ZShelter-UncraftWeapon")
+							net.WriteEntity(v)
+							net.SendToServer()
+						end)
+				
+				end
+			end
+
+			listpnl = pa
+
+			pa.ReloadList()
+
+			local btn = ZShelter.InvisButton(base, 0, 0, w, h, function()
+				pa.ReloadList()
+				container.CurrentPanel = pa
+			end)
+end
+
+local shelter = Material("zsh/buildui/shelter.png", "smooth")
 function ZShelter.OpenWorktable()
 	if(IsValid(ZShelter.WorktableUI)) then
 		return
@@ -136,10 +252,10 @@ function ZShelter.OpenWorktable()
 	end
 
 	local margin = ScreenScaleH(16)
-	ui.cate = ZShelter.CreateScroll(ui, margin, margin, ScrW() * 0.175, ScrH() * 0.7, Color(0, 0, 0, 0))
+	ui.cate = ZShelter.CreateScroll(ui, margin, margin, ScrW() * 0.175, ScrH() * 0.8, Color(0, 0, 0, 0))
 	ui.cate:SetY(ScrH() / 2 - ui.cate:GetTall() / 2)
 	local scl = 0.215
-	ui.container = ZShelter.CreatePanelContainer(ui, (ScrW() * 1.6) * scl, ScrH() * 0.15, (ScrW() * 0.65) * (1 - scl) - margin, ScrH() * 0.7 - (margin), Color(0, 0, 0, 0))
+	ui.container = ZShelter.CreatePanelContainer(ui, ScrW() * scl, ScrH() * 0.15, ScrW() * (1 - scl) - margin, ScrH() * 0.75 - (margin), Color(0, 0, 0, 0))
 
 	local runorder = {
 		["Pistol"] = 1,
@@ -182,13 +298,25 @@ function ZShelter.OpenWorktable()
 		[3] = "Powers",
 	}
 
+	local filted = {}
+
+	for k,v in ipairs(ZShelter.ItemConfig) do
+		if(!filted[v.category]) then
+			filted[v.category] = {}
+		end
+		v.__index = k
+		table.insert(filted[v.category], v)
+	end
+
+	ZShelter.RefundTab(ui.cate, ui.container)
+
 	local outlineSize = 1
 	local dockmargin = ScreenScaleH(4)
 	local innermargin = ScreenScaleH(2)
 	local textmargin = ScreenScaleH(1)
 	local listPos = {}
 	for k,v in next, order do
-		local base = ZShelter.CreatePanel(ui.cate, 0, 0, ui.cate:GetWide(), ui.cate:GetTall() * 0.1, Color(40, 40, 40, 255))
+		local base = ZShelter.CreatePanel(ui.cate, 0, 0, ui.cate:GetWide(), ui.cate:GetTall() * 0.08, Color(40, 40, 40, 255))
 		local w, h = base:GetSize()
 			base:Dock(TOP)
 			base:DockMargin(0, 0, 0, dockmargin)
@@ -200,24 +328,44 @@ function ZShelter.OpenWorktable()
 					surface.DrawOutlinedRect(0, 0, w, h, outlineSize)
 			end
 			local type = types[k]
-
---[[
-			local isx = base:GetTall() - dockmargin * 2
-			local image = "zsh/icon/questionmark.png"
-			if(file.Exists("materials/zsh/worktable/"..string.lower(string.Replace(type, " ", "_"))..".png", "GAME")) then
-				image = "zsh/worktable/"..string.lower(string.Replace(type, " ", "_"))..".png"
-			end
-			local img = ZShelter.CreateImage(base, dockmargin, dockmargin, isx, isx, image)
-]]
 			local tw, th, title = ZShelter.CreateLabel(base, dockmargin, h / 2, ZShelter_GetTranslate("#"..type), "ZShelter-MenuLarge", Color(200, 200, 200, 255))
 			title.CentVer()
 			title:SetX((outlineSize + innermargin) + dockmargin)
 
 			local pa = ZShelter.CreatePanel(ui.container, 0, 0, ui.container:GetWide(), ui.container:GetTall(), Color(0, 0, 0, 0))
-			local list = ZShelter.CreateScroll(pa, 0, 0, pa:GetWide(), pa:GetTall(), Color(0, 0, 0, 0))
 
-			for k,v in pairs(ZShelter.ItemConfig) do
+			ui.container.AddPanel(pa)
+
+			local inited = {}
+			local query = {}
+			local _height = ScreenScaleH(30)
+			local first = false
+			local container = ZShelter.CreatePanelContainer(pa, 0, _height, pa:GetWide(), pa:GetTall() - _height, Color(0, 0, 0, 0))
+
+			for k,v in pairs(filted[type] || {}) do
 				if(v.category != type) then continue end
+				v.shelterlevel = v.shelterlevel || 1
+				if(!inited[v.shelterlevel]) then
+					local panel = ZShelter.CreateScroll(container, 0, 0, container:GetWide(), container:GetTall(), Color(0, 0, 0, 0))
+					container.AddPanel(panel)
+					local btn = ZShelter.CreateButton(pa, 0, 0, 100, _height, "", "ZShelter-MenuLarge", Color(200, 200, 200, 255), Color(30, 30, 30, 255), function()
+						container.CurrentPanel = panel
+						lastlevel = v.shelterlvl
+					end)
+					btn.Selected = false
+					btn.shelterlvl = v.shelterlevel
+					btn.Think = function()
+						btn.Selected = container.CurrentPanel == panel
+					end
+					table.insert(query, btn)
+					if(!first) then
+						container.CurrentPanel = panel
+						first = true
+					end
+					inited[v.shelterlevel] = panel
+				end
+				local list = inited[v.shelterlevel]
+
 				local w, h = pa:GetWide(), pa:GetTall() * 0.165
 				local panel = ZShelter.CreatePanel(list, 0, 0, w, h, Color(30, 30, 30, 120))
 					panel:Dock(TOP)
@@ -302,7 +450,7 @@ function ZShelter.OpenWorktable()
 				local btn = ZShelter.InvisButton(panel, 0, 0, w, h, function()
 					if(!panel.CanCraft) then return end
 					net.Start("ZShelter-Worktable")
-					net.WriteInt(k, 32)
+					net.WriteInt(v.__index, 32)
 					net.SendToServer()
 				end)
 				btn.Think = function()
@@ -316,7 +464,31 @@ function ZShelter.OpenWorktable()
 				end
 			end
 
-			ui.container.AddPanel(pa)
+			local nx = 0
+			local co = #query
+			local sizes = (container:GetWide() / co)
+			for k,v in pairs(query) do
+				v:SetX(nx)
+				v:SetWide(sizes)
+
+				local sx = ScreenScaleH(16)
+				local pos = v:GetWide() / 2
+				v.alpha = 0
+				v.Paint = function()
+					if(v.Selected) then
+						v.alpha = math.Clamp(v.alpha + ZShelter.GetFixedValue(20), 150, 255)
+					else
+						v.alpha = math.Clamp(v.alpha - ZShelter.GetFixedValue(20), 150, 255)
+					end
+					draw.RoundedBox(0, 0, 0, v:GetWide(), v:GetTall(), Color(30, 30, 30, v.alpha))
+					surface.SetDrawColor(255, 255, 255, v.alpha)
+					draw.DrawText(v.shelterlvl, "ZShelter-MenuLarge", pos + dockmargin, dockmargin * 2, Color(255, 255, 255, v.alpha), TEXT_ALIGN_CENTER)
+					surface.SetMaterial(shelter)
+					surface.DrawTexturedRect(pos - sx, dockmargin * 1.5, sx, sx)
+				end
+
+				nx = nx + (sizes + innermargin)
+			end
 
 			local btn = ZShelter.InvisButton(base, 0, 0, w, h, function()
 				ui.container.CurrentPanel = pa

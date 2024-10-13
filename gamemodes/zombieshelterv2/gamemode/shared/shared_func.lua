@@ -134,6 +134,7 @@ function ZShelter.CanCraftWeapon(player, data)
 		irons = irons,
 		requiredskills = requiredskills,
 	]]
+	if((data.shelterlevel || 0) > (GetGlobalInt("ShelterLevel", 0) + 1)) then return false end
 	for _, str in pairs(data.requiredskills) do
 		local val = string.Explode(",", str)
 		if(#val > 1) then

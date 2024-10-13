@@ -17,3 +17,11 @@ ZShelter = ZShelter || {}
 
 AddCSLuaFile()
 include("shared.lua")
+
+local fn = file.Find("zombie shelter v2/avatars/*", "DATA")
+for k,v in ipairs(fn) do
+	local d = file.Time("zombie shelter v2/avatars/"..v, "DATA")
+	if(math.abs(d - os.time()) > 604800) then
+		file.Delete("zombie shelter v2/avatars/"..v)
+	end
+end

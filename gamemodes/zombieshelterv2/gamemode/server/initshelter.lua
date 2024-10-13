@@ -19,6 +19,25 @@ ZShelter.FogController = ZShelter.FogController || nil
 ZShelter.MapEntitiesCreatedBySystem = ZShelter.MapEntitiesCreatedBySystem || {}
 ZShelter.ShelterInited = false
 
+function ZShelter.CreateStorageEntity(shelter)
+	local storages = {
+		(shelter:GetPos() + shelter:GetRight() * 210 - shelter:GetForward() * 40),
+		(shelter:GetPos() + shelter:GetRight() * 210 - shelter:GetForward() * 280)
+	}
+	local mins, maxs = Vector(-40, -40, 0), Vector(40, 40, 120)
+	for k,v in ipairs(storages) do
+		local storageEnt = ents.Create("obj_internal_storage")
+			storageEnt:SetPos(v)
+			storageEnt:SetOwner(shelter)
+			storageEnt:Spawn()
+			storageEnt:SetAngles(shelter:GetAngles())
+			storageEnt:SetCollisionGroup(2)
+			storageEnt:SetCollisionBounds(mins, maxs)
+			storageEnt:PhysicsInitBox(mins, maxs)
+			storageEnt.Position = v
+	end
+end
+
 function ZShelter.InitShelter()
 	if(IsValid(ZShelter.Shelter) || ZShelter.ShelterInited) then return end
 
@@ -110,24 +129,6 @@ function ZShelter.InitShelter()
 			return true
 		end
 
-		local storages = {
-			(shelter:GetPos() + shelter:GetRight() * 210 - shelter:GetForward() * 40),
-			(shelter:GetPos() + shelter:GetRight() * 210 - shelter:GetForward() * 280)
-		}
-
-		local mins, maxs = Vector(-40, -40, 0), Vector(40, 40, 120)
-		for k,v in ipairs(storages) do
-			local storageEnt = ents.Create("obj_internal_storage")
-				storageEnt:SetPos(v)
-				storageEnt:SetOwner(shelter)
-				storageEnt:Spawn()
-				storageEnt:SetAngles(shelter:GetAngles())
-				storageEnt:SetCollisionGroup(2)
-				storageEnt:SetCollisionBounds(mins, maxs)
-				storageEnt:PhysicsInitBox(mins, maxs)
-				storageEnt.Position = v
-		end
-
 		local phys = shelter:GetPhysicsObject()
 
 		if(IsValid(phys)) then
@@ -140,6 +141,8 @@ function ZShelter.InitShelter()
 		ZShelter.SpawnPos = shelter:GetPos() + (ZShelter.Shelter:GetAngles():Right() * 25 - ZShelter.Shelter:GetAngles():Forward() * 175)
 		SetGlobalEntity("ShelterEntity", ZShelter.Shelter)
 
+		ZShelter.CreateStorageEntity(ZShelter.Shelter)
+
 		ZShelter.CreateBarricades()
 		ZShelter.ForceReloadPoints()
 end
@@ -149,6 +152,66 @@ function ZShelter.SetupFog()
 	local fog = ents.Create("env_fog_controller")
 	fog:SetKeyValue("farz", 2100)
 	ZShelter.FogController = fog
+end
+
+function ZShelter.RecreateBarricades()
+	local hp = 25000 * (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.15))
+	for k,v in pairs(ents.FindByClass("prop_zshelter_obstacle")) do
+		if(IsValid(ZShelter.Barricades[k])) then
+			ZShelter.Barricades[k]:Remove()
+		end
+		local barricade = ents.Create("prop_physics")
+			barricade:SetPos(v:GetPos())
+			barricade:SetAngles(v:GetAngles())
+			barricade:SetModel("models/props_wasteland/cargo_container01.mdl")
+
+			barricade:Spawn()
+
+			barricade:SetMaxHealth(hp)
+			barricade:SetHealth(hp)
+			barricade:SetNWBool("IsBuilding", true)
+			barricade:SetNWBool("Completed", true)
+			barricade:SetNWString("Name", "Barricade")
+			barricade:SetRenderMode(RENDERMODE_TRANSCOLOR)
+
+			barricade.IsBarricade = true
+			barricade.IgnoreCollision = false
+
+			barricade:AddFlags(65536)
+			barricade:SetCollisionGroup(COLLISION_GROUP_BREAKABLE_GLASS)
+			barricade:SetCustomCollisionCheck(true)
+
+			local barricade2x = ents.Create("prop_physics")
+				barricade2x:SetPos(barricade:GetPos() + Vector(0, 0, 128))
+				barricade2x:SetAngles(barricade:GetAngles())
+				barricade2x:SetModel(barricade:GetModel())
+				barricade2x.IsBarricade = true
+				barricade2x.IgnoreCollision = false
+				barricade2x:AddFlags(65536)
+				barricade2x:SetCollisionGroup(COLLISION_GROUP_BREAKABLE_GLASS)
+				barricade2x:SetCustomCollisionCheck(true)
+				barricade2x:Spawn()
+				barricade2x:SetMaxHealth(2147483647)
+				barricade2x:SetHealth(2147483647)
+				barricade2x:SetNoDraw(true)
+				local phys = barricade2x:GetPhysicsObject()
+				if(IsValid(phys)) then
+					phys:EnableMotion(false)
+				end
+				barricade2x:SetNWBool("Completed", true)
+				ZShelter.CreateRemovelThinker(barricade2x, function()
+					if(!IsValid(barricade)) then
+						barricade2x:Remove()
+					end
+				end, 0.33)
+
+			local phys = barricade:GetPhysicsObject()
+			if(IsValid(phys)) then
+				phys:EnableMotion(false)
+			end
+
+			ZShelter.Barricades[k] = barricade
+	end
 end
 
 ZShelter.Barricades = ZShelter.Barricades || {}
@@ -195,9 +258,27 @@ hook.Add("EntityRemoved", "ZShelter-HandleFail", function(ent)
 	end
 end)
 
+function ZShelter.ShouldLoadSave()
+	local ctx = file.Read("zombie shelter v2/loadsave.txt", "DATA")
+	if(ctx == "true" && math.abs(file.Time("zombie shelter v2/loadsave.txt", "DATA") - os.time()) < 150) then
+		local save = file.Read("zombie shelter v2/saves/"..game.GetMap()..".dat", "DATA")
+		if(!save) then return end
+		local data = util.JSONToTable(save)
+		if(!data) then return end
+		return true
+	end
+end
 
 hook.Add( "PlayerInitialSpawn", "ZShelter-InitShelter", function(ply)
-	ZShelter.InitShelter()
+	if(!ZShelter.LoadedSave) then
+		ZShelter.LoadedSave = ZShelter.ShouldLoadSave()
+		file.Delete("zombie shelter v2/loadsave.txt")
+	end
+	if(!ZShelter.LoadedSave) then
+		ZShelter.InitShelter()
+	else
+		ZShelter.LoadSave()
+	end
 end)
 
 hook.Add("PlayerSpawn", "ZShelter-SetEntity", function()

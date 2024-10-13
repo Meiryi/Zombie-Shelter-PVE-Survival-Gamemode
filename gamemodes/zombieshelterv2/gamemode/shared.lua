@@ -65,6 +65,7 @@ CreateConVar("zshelter_server_category_name", "", FCVAR_NOTIFY + FCVAR_ARCHIVE, 
 
 if(CLIENT) then
 	CreateConVar("zshelter_enable_hud", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable zombie shelter hud?")
+	CreateConVar("zshelter_client_enable_music", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable music?")
 	CreateConVar("zshelter_enable_menu_keys", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable keys to toggle menu?")
 end
 
@@ -99,6 +100,7 @@ file.CreateDir("zombie shelter v2/avatars/")
 file.CreateDir("zombie shelter v2/multiplayer/")
 file.CreateDir("zombie shelter v2/exps/")
 file.CreateDir("zombie shelter v2/leaderboard/")
+file.CreateDir("zombie shelter v2/saves/")
 
 ZShelter.GameVersion = "1.1.0"
 ZShelter.ConfigVersion = "1.1.0" -- DANGER, MODIFY THIS WILL RESET CONFIGS
@@ -297,6 +299,9 @@ RunConsoleCommand("cl_threaded_client_leaf_system", "1")
 RunConsoleCommand("mat_queue_mode", "-1")
 RunConsoleCommand("r_threaded_particles", "1")
 RunConsoleCommand("r_decals", "128")
+
+RunConsoleCommand("sv_tfa_attachments_enabled", "0")
+RunConsoleCommand("sv_tfa_bullet_penetration_power_mul", "0.3")
 
 local meta = FindMetaTable("Entity")
 

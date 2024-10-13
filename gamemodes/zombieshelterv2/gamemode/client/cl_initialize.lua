@@ -13,6 +13,14 @@
 	任何形式的编辑是不被允许的 (包括模式的名称), 若有问题请在Steam上联络我
 ]]
 
+net.Receive("ZShelter-SyncBuildingHealth", function()
+	local ent = net.ReadEntity()
+	local mhp = net.ReadInt(32)
+	local hp = net.ReadInt(32)
+	if(!IsValid(ent)) then return end
+	ent:SetHealth(hp)
+end)
+
 net.Receive("ZShelter-SyncBuildings", function()
 	local len = net.ReadUInt(32)
 	local data = net.ReadData(len)

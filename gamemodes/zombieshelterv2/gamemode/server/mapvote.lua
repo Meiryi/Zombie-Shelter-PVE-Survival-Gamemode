@@ -90,7 +90,11 @@ function ZShelter.BroadcastEnd(victory, text, reason)
 			table.insert(maps, ret..".bsp")
 		end
 	end
-	for k,v in pairs(maps) do
+	local ret = maps
+	if(GetGlobalInt("Day", 0) > 1 && file.Exists("zombie shelter v2/saves/"..game.GetMap()..".dat", "DATA")) then
+		ret = table.Add({"Restart from previous day"}, maps)
+	end
+	for k,v in pairs(ret) do
 		ZShelter.Maps[v] = k
 	end
 
@@ -150,7 +154,12 @@ function ZShelter.BroadcastEnd(victory, text, reason)
 						vote = v
 					end
 				end
-				game.ConsoleCommand("changelevel "..map.."\n")
+				if(map == "Restart from previous day") then
+					file.Write("zombie shelter v2/loadsave.txt", "true")
+					game.ConsoleCommand("changelevel "..game.GetMap().."\n")
+				else
+					game.ConsoleCommand("changelevel "..map.."\n")
+				end
 			end
 		end)
 	end

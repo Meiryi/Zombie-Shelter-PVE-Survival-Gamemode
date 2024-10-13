@@ -55,7 +55,7 @@ function ZShelter.ApplyMutation(ent, mutation)
 end
 
 hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
-	if(ent.IsVJBaseSNPC && !ent.IsBuilding && !ent.IsDefaultBase) then
+	if(ent.IsVJBaseSNPC && !ent.IsBuilding && !ent.IsDefaultBase && !ent.NoUnstuckChecks) then
 		ent.StuckTimer = 0
     	ent.OverrideMove = function(self, finv)
 			if(ent.StuckTimer < CurTime()) then

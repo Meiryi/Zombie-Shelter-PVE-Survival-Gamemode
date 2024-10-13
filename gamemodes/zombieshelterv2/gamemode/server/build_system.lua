@@ -366,40 +366,16 @@ function ZShelter.CreateRemovelThinker(owner, func, interval)
 		end
 end
 
-net.Receive("ZShelter_BuildRequest", function(len, ply)
-	local index1 = net.ReadString()
-	local index2 = net.ReadInt(32)
-	local vec = net.ReadVector()
-	local yaw = net.ReadInt(32)
-
-	local data = ZShelter.BuildingConfig[index1][index2]
-	if(!data) then return end
-	local woods, irons, powers = math.max(math.floor(data.woods * ply:GetNWFloat("ResCost", 1)), 1), math.max(math.floor(data.irons * ply:GetNWFloat("ResCost", 1)), 1), math.max(math.floor(data.powers * ply:GetNWFloat("PowerCost", 1)), 0)
-	if(data.powers <= 0) then
-		powers = 0
-	end
-	local meet, storage = ZShelter.IsRequirementMeet(ply, data)
-	if(!meet) then return end
-
-	SetGlobalInt("TBuilds", GetGlobalInt("TBuilds", 0) + 1)
-	ply:SetNWInt("TBuilds", ply:GetNWInt("TBuilds", 0) + 1)
-
-	ply:AddFrags(math.floor((woods + irons + powers) * 0.65))
-
-	if(storage) then
-		SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - data.woods, 0))
-		SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - data.irons, 0))
-	else
-		ply:SetNWInt("Woods", math.max(ply:GetNWInt("Woods", 1) - data.woods, 0))
-		ply:SetNWInt("Irons", math.max(ply:GetNWInt("Irons", 1) - data.irons, 0))
-	end
-
+function ZShelter.CreateBuilding(ply, data, vec, yaw)
 	local tdata = data.tdata
+	local woods, irons, powers = math.max(math.floor(data.woods * ply:GetNWFloat("ResCost", 1)), 1), math.max(math.floor(data.irons * ply:GetNWFloat("ResCost", 1)), 1), math.max(math.floor(data.powers * ply:GetNWFloat("PowerCost", 1)), 0)
 	local ent = ents.Create(data.class)
 		ent:SetPos(vec + data.offset)
 		ent:SetAngles(Angle(0, yaw, 0))
+		ent.NoOwner = tdata.noowner
 		if(!ent:IsNPC()) then
 			ent:SetModel(data.model)
+			ent.NoOwner = true
 		else
 			if(!tdata.noowner) then
 				ent:SetOwner(ply)
@@ -412,6 +388,7 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 
 		if(tdata.forceowner) then
 			ent:SetOwner(ply)
+			ent.ForceOwner = true
 		end
 
 		if(tdata.notarget) then
@@ -570,7 +547,7 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 
 			--ZShelter.ValidPath(ent:GetNWVector("NoOffsetPos", ent:GetPos()), ent.PathIndex)
 		end
-		if(ply.Callbacks.OnBuildingPlaced) then
+		if(ply.Callbacks && ply.Callbacks.OnBuildingPlaced) then
 			for k,v in pairs(ply.Callbacks.OnBuildingPlaced) do
 				v(ply, ent)
 			end
@@ -588,6 +565,39 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 		end)
 		SetGlobalInt("Powers", GetGlobalInt("Powers", 0) - powers)
 		sound.Play("shigure/build.mp3", ent:GetNWVector("NoOffsetPos", ent:GetPos(), 100, 100, 2))
+
+		return ent
+end
+
+net.Receive("ZShelter_BuildRequest", function(len, ply)
+	local index1 = net.ReadString()
+	local index2 = net.ReadInt(32)
+	local vec = net.ReadVector()
+	local yaw = net.ReadInt(32)
+
+	local data = ZShelter.BuildingConfig[index1][index2]
+	if(!data) then return end
+	local woods, irons, powers = math.max(math.floor(data.woods * ply:GetNWFloat("ResCost", 1)), 1), math.max(math.floor(data.irons * ply:GetNWFloat("ResCost", 1)), 1), math.max(math.floor(data.powers * ply:GetNWFloat("PowerCost", 1)), 0)
+	if(data.powers <= 0) then
+		powers = 0
+	end
+	local meet, storage = ZShelter.IsRequirementMeet(ply, data)
+	if(!meet) then return end
+
+	SetGlobalInt("TBuilds", GetGlobalInt("TBuilds", 0) + 1)
+	ply:SetNWInt("TBuilds", ply:GetNWInt("TBuilds", 0) + 1)
+
+	ply:AddFrags(math.floor((woods + irons + powers) * 0.65))
+
+	if(storage) then
+		SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - data.woods, 0))
+		SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - data.irons, 0))
+	else
+		ply:SetNWInt("Woods", math.max(ply:GetNWInt("Woods", 1) - data.woods, 0))
+		ply:SetNWInt("Irons", math.max(ply:GetNWInt("Irons", 1) - data.irons, 0))
+	end
+
+	ZShelter.CreateBuilding(ply, data, vec, yaw)
 end)
 
 local count = 0

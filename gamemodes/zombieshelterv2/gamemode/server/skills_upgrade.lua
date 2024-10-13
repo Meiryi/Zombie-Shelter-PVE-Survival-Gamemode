@@ -17,17 +17,7 @@ util.AddNetworkString("ZShelter-UpgradeSkill")
 util.AddNetworkString("ZShelter-AddSkillCallback")
 util.AddNetworkString("ZShelter-ResetSkills")
 
-net.Receive("ZShelter-UpgradeSkill", function(len, ply)
-	local class = net.ReadString()
-	local tier = net.ReadInt(32)
-	local index = net.ReadInt(32)
-	if(!ZShelter.AllowedToUpgrade(ply, class, tier, index)) then return end
-	local skill = ZShelter.SkillList[class][tier][index]
-
-	-- Skill successfully upgraded
-
-	ply:SetNWInt("SkillPoints", math.max(ply:GetNWInt("SkillPoints", 0) - 1, 0))
-	ply:SetNWInt(class.."SkillSpent", ply:GetNWInt(class.."SkillSpent", 0) + 1)
+function ZShelter.ApplySkill(ply, tier, skill)
 	ply:SetNWInt("SK_"..skill.title, ply:GetNWInt("SK_"..skill.title, 0) + 1)
 	ply:SetNWInt("Tier"..tier.."Spent", ply:GetNWInt("Tier"..tier.."Spent", 0) + 1)
 
@@ -48,4 +38,19 @@ net.Receive("ZShelter-UpgradeSkill", function(len, ply)
 		end
 		ply.Callbacks[skill.callbackhook]["SK_"..skill.title] = skill.callback
 	end
+end
+
+net.Receive("ZShelter-UpgradeSkill", function(len, ply)
+	local class = net.ReadString()
+	local tier = net.ReadInt(32)
+	local index = net.ReadInt(32)
+	if(!ZShelter.AllowedToUpgrade(ply, class, tier, index)) then return end
+	local skill = ZShelter.SkillList[class][tier][index]
+
+	-- Skill successfully upgraded
+
+	ply:SetNWInt("SkillPoints", math.max(ply:GetNWInt("SkillPoints", 0) - 1, 0))
+	ply:SetNWInt(class.."SkillSpent", ply:GetNWInt(class.."SkillSpent", 0) + 1)
+
+	ZShelter.ApplySkill(ply, tier, skill)
 end)

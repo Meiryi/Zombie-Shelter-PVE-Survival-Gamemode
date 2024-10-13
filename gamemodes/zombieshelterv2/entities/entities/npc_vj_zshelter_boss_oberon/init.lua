@@ -4,7 +4,7 @@ include('shared.lua')
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 ENT.Model = {"models/monsters/zbs_oberon.mdl"}
-ENT.StartHealth = 500
+ENT.StartHealth = 50000
 ENT.HullType = HULL_HUMAN
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -88,6 +88,7 @@ ENT.FootStepSoundLevel = 100
 ENT.DeathSoundPitch1 = 100
 
 ENT.KnifeMode = false
+ENT.NoPush = true
 
 --[[
 	0	scene_appear
@@ -119,6 +120,8 @@ ENT.ResetTime = true
 ENT.HoleSkill = false
 ENT.BombSkill = false
 ENT.KnifeSwitching = false
+
+ENT.NoUnstuckChecks = true
 
 function ENT:CustomOnInitialize()
 	timer.Simple(0.0, function() if(!IsValid(self)) then return end self:EmitSound("zshelter/bosses/oberon/appear.wav", 1556, 100, 1, CHAN_STATIC) end)
@@ -193,7 +196,7 @@ function ENT:CustomOnThink()
 				if(IsValid(ref)) then
 					ref:Remove()
 				end
-				if(!IsValid(self)) then return end
+				if(!IsValid(self) || self.Dead) then return end
 				local diff = GetConVar("zshelter_difficulty"):GetInt()
 				local dmg = 70 * (1 + (diff - 1) * 0.05)
 				for k,v in pairs(ents.FindInSphere(self:GetPos(), 400)) do
@@ -214,14 +217,14 @@ function ENT:CustomOnThink()
 	end
 
 	if(self.HoleSkill) then
-		local maxdst = 2500
+		local maxdst = 2700
 		for k,v in ipairs(player.GetAll()) do
 			local dst = v:GetPos():Distance(self:GetPos())
 			if(dst > maxdst) then continue end
 			local f = 1 - math.Clamp(dst / maxdst, 0, 1)
 			local vel = (self:GetPos() - v:GetPos())
 			vel:Normalize()
-			v:SetVelocity((vel * 270) * f)
+			v:SetVelocity((vel * 300) * f)
 		end
 	end
 

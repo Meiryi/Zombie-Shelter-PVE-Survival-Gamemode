@@ -14,6 +14,7 @@
 ]]
 
 net.Receive("ZShelter-PlayMusic", function()
+	if(!GetConVar("zshelter_client_enable_music"):GetInt() == 1) then return end
 	local music = net.ReadString()
 	sound.PlayFile(music, "noplay", function(station, errCode, errStr)
 		if(!IsValid(station)) then return end

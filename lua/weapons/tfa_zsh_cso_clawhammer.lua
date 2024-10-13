@@ -39,6 +39,8 @@ SWEP.NZTotalBlackList	= false	-- if true, this gun can't be placed in the box, e
 SWEP.PaPMats			= {}
 SWEP.BuildSpeed = 85
 
+SWEP.OldStyleHit = true
+
 SWEP.Offset = {
 		Pos = {
 		Up = -8,
@@ -156,7 +158,7 @@ SWEP.Secondary.Attacks = {
 		['end'] = 1.2, --time before next attack
 		['hull'] = 96, --Hullsize
 		['direction'] = "F", --Swing dir
-		['hitflesh'] = "Tomahawk.HitFleshSlash3",
+		['hitflesh'] = "weapons/tfa_cso/tomahawk/hit3.wav",
 		['hitworld'] = "Tomahawk.HitWall",
 		['maxhits'] = 1
 	}

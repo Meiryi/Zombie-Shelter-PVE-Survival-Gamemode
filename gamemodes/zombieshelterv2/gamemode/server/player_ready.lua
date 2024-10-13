@@ -87,17 +87,22 @@ function ZShelter.CheckStart()
 			local fullres = GetConVar("zshelter_start_with_resources"):GetInt() == 1
 			local resources = math.floor(24 / player.GetCount())
 			local skills = ZShelter.CalcStartSkillPoints(player.GetCount())
-			if(diff >= 9) then
-				SetGlobalInt("Time", 270)
-				SetGlobalInt("Capacity", 40)
-			end
-			if(diff >= 9 || fullres) then
-				SetGlobalInt("Woods", GetGlobalInt("Capacity", 0))
-				SetGlobalInt("Irons", GetGlobalInt("Capacity", 0))
+			if(!ZShelter.LoadedSave) then
+				if(diff >= 9) then
+					SetGlobalInt("Time", 270)
+					SetGlobalInt("Capacity", 40)
+				end
+				if(diff >= 9 || fullres) then
+					SetGlobalInt("Woods", GetGlobalInt("Capacity", 0))
+					SetGlobalInt("Irons", GetGlobalInt("Capacity", 0))
+				end
+				for k,v in pairs(player.GetAll()) do
+					v:Freeze(false)
+					v:SetNWInt("SkillPoints", skills)
+				end
 			end
 			for k,v in pairs(player.GetAll()) do
 				v:Freeze(false)
-				v:SetNWInt("SkillPoints", skills)
 			end
 			ZShelter.FilteEnemy()
 			ZShelter.SetupTreasureArea()

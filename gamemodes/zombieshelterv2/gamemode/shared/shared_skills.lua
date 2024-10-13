@@ -144,3 +144,8 @@ concommand.Add("zshelter_debug_reload_skills", function(ply, cmd, args)
 	ZShelter.LoadSkills()
 	ZShelter.LoadSkillsDesc()
 end)
+
+concommand.Add("zshelter_debug_reset_skills", function(ply, cmd, args)
+	if(!ply:IsAdmin()) then return end
+	ZShelter.RS()
+end)
