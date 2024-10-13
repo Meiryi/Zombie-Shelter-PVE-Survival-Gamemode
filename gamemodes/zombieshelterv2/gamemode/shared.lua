@@ -28,6 +28,7 @@ CreateConVar("zshelter_music_countdown", "sound/shigure/ost_start.mp3", FCVAR_NO
 CreateConVar("zshelter_music_horde", "sound/shigure/ost_panic.mp3", FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Music to play on hordes")
 
 CreateConVar("zshelter_enable_director", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable map director, it dynamicly increases difficulty depends on current situation (Experimental)", 0, 1)
+CreateConVar("zshelter_enable_ranks", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable ranks", 0, 1)
 CreateConVar("zshelter_enable_fog", 1, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable fogs (Restart required)", 0, 1)
 CreateConVar("zshelter_build_in_shelter", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Allow players to build inside of shelter", 0, 1)
 

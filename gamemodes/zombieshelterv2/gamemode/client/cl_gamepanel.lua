@@ -852,7 +852,7 @@ function ZShelter.GameUI()
 		local wide = ui:GetWide() * 0.135
 		local nextX = 0
 		for k,v in ipairs(func) do
-			if(!ZShelter.EnableRanks && k == 1) then continue end
+			if(GetConVar("zshelter_enable_ranks"):GetInt() == 0 && k == 1) then continue end
 			local panel = ZShelter.CreatePanel(ui.Container, 0, 0, ui.Container:GetWide(), ui.Container:GetTall(), Color(0, 0, 0, 0))
 			if(v.func) then
 				local success, err = pcall(function() v.func(panel) end)
@@ -877,7 +877,7 @@ function ZShelter.GameUI()
 					end
 				end
 			end)
-			if(!ZShelter.EnableRanks) then
+			if(GetConVar("zshelter_enable_ranks"):GetInt() == 0) then
 				if(k == 3) then
 					ui.Container.CurrentPanel = panel
 					btn.DoClick()

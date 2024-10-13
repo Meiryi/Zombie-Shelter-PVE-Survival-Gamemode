@@ -24,6 +24,8 @@ resource.AddWorkshop("2131057232")
 resource.AddWorkshop("131759821")
 ]]
 
+resource.AddWorkshop("3313743318")
+
 game.SetSkillLevel(2) -- So player receives full amount of damage
 RunConsoleCommand("p2p_enabled", "1") -- Enable p2p so players can connect to the lobby
 
