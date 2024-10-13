@@ -174,6 +174,7 @@ function ZShelter.HTTPUpdateStatus()
 end
 
 local serverlist = {
+--[[ -- Both are dead
 	{
 		host = "Hamgungus Zombie Shelter",
 		address = "45.45.238.187:27015",
@@ -182,9 +183,11 @@ local serverlist = {
 		host = "Zombie Shelter FR/EU",
 		address = "194.69.160.47:27043",
 	},
+]]
 	{
-		host = "NPCZ | Shelter",
+		host = "NPCZ | Shelter - discord.gg/npc",
 		address = "193.243.190.18:27025",
+		maxplayers = 10,
 	},
 }
 
@@ -631,9 +634,37 @@ local func = {
 			ui.ReloadList = function(data)
 				local count = table.Count(data)
 				counttext.UpdateText(ZShelter_GetTranslate_Var("#OnlinePlayers", count))
+				local plyCounts = {}
+				for k,v in pairs(serverlist) do
+					local base = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.125, Color(25, 25, 25, 255))
+						base:Dock(TOP)
+						base:DockMargin(0, 0, 0, gap)
+						local avatar = ZShelter.CreateImage(base, 0, 0, base:GetTall(), base:GetTall(), "zsh/icon/server.png", Color(255, 255, 255, 255))
+						local _, _, nick = ZShelter.CreateLabel(base, gap + avatar:GetWide(), base:GetTall() * 0.5, v.host, "ZShelter-GameUIGameUITitle2x", Color(255, 255, 255, 255))
+						nick:CentVer()
+						local wide, _, cnt = ZShelter.CreateLabel(base, 0, base:GetTall() * 0.5, "[0/"..v.maxplayers.."]", "ZShelter-GameUIGameUITitle2x", Color(255, 255, 255, 255))
+						cnt:CentVer()
+						cnt:SetX(base:GetWide() - (wide + gap))
+						cnt.Think = function()
+							cnt.UpdateText("["..(plyCounts[v.host] || 0).."/"..v.maxplayers.."]")
+						end
+						local btn = ZShelter.InvisButton(base, 0, 0, base:GetWide(), base:GetTall(), function()
+							LocalPlayer():ConCommand("connect "..v.address)
+						end)
+						btn.Alpha = 0
+						btn.Paint = function()
+							if(btn:IsHovered()) then
+								btn.Alpha = math.Clamp(btn.Alpha + ZShelter.GetFixedValue(1.5), 0, 15)
+							else
+								btn.Alpha = math.Clamp(btn.Alpha - ZShelter.GetFixedValue(1.5), 0, 15)
+							end
+							draw.RoundedBox(0, 0, 0, btn:GetWide(), btn:GetTall(), Color(255, 255, 255, btn.Alpha))
+						end
+				end
 				if(count <= 0) then return end
 				for k,v in pairs(data) do
 					if(!v.lastonline || !v.host || !v.map || !v.address || !v.day) then continue end
+					plyCounts[v.host] = (plyCounts[v.host] || 0) + 1
 					local base = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.125, Color(25, 25, 25, 255))
 						base:Dock(TOP)
 						base:DockMargin(0, 0, 0, gap)
@@ -749,6 +780,7 @@ local func = {
 			end
 		end,
 	},
+	--[[
 	{
 		title = "ServerList",
 		func = function(ui)
@@ -784,6 +816,7 @@ local func = {
 				end
 		end,
 	},
+	]]
 	{
 		title = "Discord",
 		clickfunc = function()
