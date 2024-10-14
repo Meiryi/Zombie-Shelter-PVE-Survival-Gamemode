@@ -19,10 +19,13 @@ ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "gmastery1", 1, "Beginner Gun Ma
 
 ZShelter.AddSkills(ClassName, "OnDayPassed",
 	function(player)
-		player:SetMaxHealth(player:GetMaxHealth() + (10 * player:GetNWInt("SK_Health Boost", 0)))
+		player:SetMaxHealth(100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
+		player:SetNWInt("oMaxHealth", 100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
 	end,
 	function(player, current)
-		player:SetMaxHealth(player:GetMaxHealth() + (10 * GetGlobalInt("Day", 1)))
+		player:SetNWInt("MaxHealthBoostCount", player:GetNWInt("MaxHealthBoostCount", 0) + 1)
+		player:SetMaxHealth(100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
+		player:SetNWInt("oMaxHealth", 100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
 	end, 2, "hpboost", 1, "Health Boost")
 
 ZShelter.AddSkills(ClassName, nil, nil,
@@ -33,7 +36,8 @@ ZShelter.AddSkills(ClassName, nil, nil,
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
-		player:SetMaxArmor(player:GetMaxArmor() + 50)
+		player:SetMaxArmor(100 + (50 * current))
+		player:SetNWInt("oMaxArmor", 100 + (50 * current))
 	end, 2, "arboost", 1, "Armor Boost")
 
 ZShelter.AddSkills(ClassName, "OnSecondPassed",

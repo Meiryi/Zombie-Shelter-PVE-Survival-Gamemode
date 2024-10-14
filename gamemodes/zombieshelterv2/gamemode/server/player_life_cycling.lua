@@ -124,7 +124,6 @@ hook.Add("PlayerSpawn", "ZShelter-PlayerSpawn", function(ply)
 	ply:SetCustomCollisionCheck(true)
 	ply:SetNWFloat("Sanity", 100)
 	ZShelter.GiveMelee(ply)
-
 	ply:GodEnable()
 	if(ZShelter.SpawnPos) then
 		ply:SetPos(ZShelter.SpawnPos + Vector(math.random(-128, 128), math.random(-128, 128), 0))
@@ -132,7 +131,10 @@ hook.Add("PlayerSpawn", "ZShelter-PlayerSpawn", function(ply)
 
 	sound.Play("shigure/ammopickup2.wav", ply:GetPos(), 120, 100, 2)
 	timer.Simple(0, function()
+		ply:SetMaxArmor(ply:GetNWInt("oMaxArmor", ply:GetMaxArmor()))
 		ply:SetArmor(ply:GetMaxArmor() * 0.5)
+		ply:SetHealth(ply:GetNWInt("oMaxHealth", ply:GetMaxHealth()))
+		ply:SetMaxHealth(ply:GetNWInt("oMaxHealth", ply:GetMaxHealth()))
 	end)
 
 	timer.Simple(5, function()
