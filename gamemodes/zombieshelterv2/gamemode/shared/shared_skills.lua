@@ -38,8 +38,9 @@ ZShelter.SkillDatas = {}
 			OnSkillCalled(player) -- Only available for tier 4 skill
 			OnFireBullets(player, bulletdata)
 			OnTrapDetonate(player, trapent) -- Return true to prevent trap being removed due to detonation
-			OnBuildingDealDamage(building, dmginfo)
+			OnBuildingDealDamage(building, dmginfo, target)
 			OnRepairingTraps(player, trapent, repair) -- repair will be true if this hit repairs the trap
+			OnTurretsChanged()
 
 		Shared :
 			ShouldUseStorage(player, buildingdata) -- Note : return true will bypass resource checks (Excluding skill, shelter level checks)

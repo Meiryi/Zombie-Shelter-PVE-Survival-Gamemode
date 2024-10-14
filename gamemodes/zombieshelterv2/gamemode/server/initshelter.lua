@@ -240,11 +240,35 @@ function ZShelter.CreateBarricades()
 			barricade:SetCollisionGroup(COLLISION_GROUP_BREAKABLE_GLASS)
 			barricade:SetCustomCollisionCheck(true)
 
-			local phys = barricade:GetPhysicsObject()
+			local barricade2x = ents.Create("prop_physics")
+				barricade2x:SetPos(barricade:GetPos() + Vector(0, 0, 128))
+				barricade2x:SetAngles(barricade:GetAngles())
+				barricade2x:SetModel(barricade:GetModel())
+				barricade2x.IsBarricade = true
+				barricade2x.IgnoreCollision = false
+				barricade2x:AddFlags(65536)
+				barricade2x:SetCollisionGroup(COLLISION_GROUP_BREAKABLE_GLASS)
+				barricade2x:SetCustomCollisionCheck(true)
+				barricade2x:Spawn()
+				barricade2x:SetMaxHealth(2147483647)
+				barricade2x:SetHealth(2147483647)
+				barricade2x:SetNoDraw(true)
+				local phys = barricade2x:GetPhysicsObject()
+				if(IsValid(phys)) then
+					phys:EnableMotion(false)
+				end
+				barricade2x:SetNWBool("Completed", true)
+				ZShelter.CreateRemovelThinker(barricade2x, function()
+					if(!IsValid(barricade)) then
+						barricade2x:Remove()
+					end
+				end, 0.33)
 
+			local phys = barricade:GetPhysicsObject()
 			if(IsValid(phys)) then
 				phys:EnableMotion(false)
 			end
+
 
 			ZShelter.Barricades[k] = barricade
 	end
@@ -269,6 +293,7 @@ function ZShelter.ShouldLoadSave()
 	end
 end
 
+local loaded = false
 hook.Add( "PlayerInitialSpawn", "ZShelter-InitShelter", function(ply)
 	if(!ZShelter.LoadedSave) then
 		ZShelter.LoadedSave = ZShelter.ShouldLoadSave()
@@ -277,7 +302,10 @@ hook.Add( "PlayerInitialSpawn", "ZShelter-InitShelter", function(ply)
 	if(!ZShelter.LoadedSave) then
 		ZShelter.InitShelter()
 	else
-		ZShelter.LoadSave()
+		if(!loaded) then
+			ZShelter.LoadSave()
+			loaded = true
+		end
 	end
 end)
 

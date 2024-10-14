@@ -682,3 +682,53 @@ ZShelter.AddInfo("Damage Reflecting", {
 		["de"] = "Lenkt jeden eingehenden Schaden ab, +50% Schaden pro Upgrade",
 	}
 })
+
+ZShelter.AddInfo("Layered Defense", {
+	title = {
+		["en"] = "Layered Defense",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "多層防禦",
+		["zh-CN"] = "多层防御",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Regenerates a shield every 8 seconds, shield breaks after taking any amount of damage\nWhen shield breaks, recover 7% of maximum health (Every layer provides extra 3% of health)\n+1 Layer per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "每 8 秒恢復一層護盾, 受到任何傷害後護盾消失\n當護盾消失時, 恢復 7% 最大生命值 (每層提供額外 3% 生命值)\n每升級一次增加一層",
+		["zh-CN"] = "每 8 秒恢复一层护盾, 受到任何伤害后护盾消失\n当护盾消失时, 恢复 7% 最大生命值 (每层提供额外 3% 生命值)\n每升级一次增加一层",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Silencer", {
+	title = {
+		["en"] = "Silencer",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "消音器",
+		["zh-CN"] = "消音器",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Decrease noises from weapons, -10% per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "減少武器噪音, 每升級一次減少 10%",
+		["zh-CN"] = "减少武器噪音, 每升级一次减少 10%",
+		["ru"] = "",
+	}
+})

@@ -19,9 +19,9 @@ local ClassName = "Engineer"
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
-		player:SetNWFloat("BuildingSpeed", player:GetNWFloat("BuildingSpeed", 1) + 0.45)
+		player:SetNWFloat("BuildingSpeed", player:GetNWFloat("BuildingSpeed", 1) + 0.35)
 		player:SetNWFloat("oBuildingSpeed", player:GetNWFloat("BuildingSpeed", 1))
-	end, 4, "bspeed", 1, "Build Speed Boost")
+	end, 3, "bspeed", 1, "Build Speed Boost")
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
@@ -33,6 +33,17 @@ ZShelter.AddSkills(ClassName, nil, nil,
 			player:SetNWFloat("PowerCost", player:GetNWFloat("PowerCost", 1) - 0.15)
 		end, 2, "eing", 1, "Electrical Engineering")
 ]]
+
+ZShelter.AddSkills(ClassName, "OnMeleeDamage",
+	function(attacker, victim, dmginfo, melee2)
+		if(!IsValid(victim) || !victim:IsPlayer() || CLIENT) then return end
+		local maxArmor = victim:GetMaxArmor()
+		local gain = attacker:GetNWInt("ArmorRepairAmount", 7.5)
+		victim:SetArmor(math.min(victim:Armor() + math.floor(gain), maxArmor))
+	end,
+	function(player, current)
+		player:SetNWInt("ArmorRepairAmount", current * 7.5)
+	end, 2, "armor_repair", 1, "Armor Repairing")
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
@@ -138,6 +149,43 @@ ZShelter.AddSkills(ClassName, "OnBuildingDestroyed",
 		player:SetNWFloat("RecycleScale", player:GetNWFloat("RecycleScale", 0) + 0.2)
 	end, 3, "recyc", 2, "Recycle")
 
+ZShelter.AddSkills(ClassName, "OnBuildingPlaced",
+	function(player, building)
+		if(building.Cate == "Trap") then return end
+		local scl = player:GetNWFloat("QuickDeplayScale", 0.175)
+		ZShelter.BuildSystemNoScale(player, building, (building:GetMaxHealth() * scl) + 1)
+	end,
+	function(player, current)
+		player:SetNWFloat("QuickDeplayScale", current * 0.175)
+	end, 2, "fastdeploy_eng", 2, "Quick Deploy")
+
+ZShelter.AddSkills(ClassName, "OnBuildingDealDamage",
+	function(building, dmginfo, victim)
+		local ply = building:GetOwner()
+		if(!building.IsTurret || !IsValid(victim) || !IsValid(ply) || !ply:IsPlayer()) then return end
+		if(!building.SuppressionEnemies || !building.SuppressionEnemieTimings) then
+			building.SuppressionEnemies = {}
+			building.SuppressionEnemieTimings = {}
+		end
+		local index = victim:EntIndex()
+		local time = building.SuppressionEnemieTimings[index] || 0
+		if(time > CurTime()) then
+			return
+		end
+		if(math.abs(time - CurTime()) > 2.5) then
+			building.SuppressionEnemies[index] = 0
+		end
+		local scale = building.SuppressionEnemies[index] || 0
+		if(scale > 0) then
+			ZShelter.DealNoScaleDamage(ply, victim, dmginfo:GetDamage() * scale)
+		end
+		building.SuppressionEnemies[index] = math.min(scale + 0.04, ply:GetNWInt("SuppressionDamageScale", 0.25))
+		building.SuppressionEnemieTimings[index] = CurTime() + 0.2
+	end,
+	function(player, current)
+		player:SetNWFloat("SuppressionDamageScale", current * 0.25)
+	end, 2, "targetfire", 2, "Precision Suppression")
+
 ZShelter.AddSkills(ClassName, "ShouldUseStorage",
 	function(player, buildingdata)
 		local woods = player:GetNWInt("Woods", 0)
@@ -167,7 +215,7 @@ ZShelter.AddSkills(ClassName, "OnBuildingDestroyed",
 
 ZShelter.AddSkills(ClassName, "OnBuildingTakeDamage",
 	function(player, building, attacker, damage)
-		if(!building.IsTurret || attacker:IsPlayer()) then return end
+		if(!IsValid(attacker) || !building.IsTurret || attacker:IsPlayer()) then return end
 		local dmg = player:GetNWFloat("DRDamage", 5)
 		local dmgscale = player:GetNWInt("DRDamageScale", 0.25) * damage
 		ZShelter.DealNoScaleDamage(player, attacker, dmgscale)
@@ -181,7 +229,63 @@ ZShelter.AddSkills(ClassName, "OnBuildingTakeDamage",
 	function(player)
 		player:SetNWFloat("DRDamage", player:GetNWFloat("DRDamage", 0) + 5)
 		player:SetNWFloat("DRDamageScale", player:GetNWFloat("DRDamageScale", 0) + 0.25)
-	end, 3, "thorns", 3, "Damage Reflection")
+	end, 4, "thorns", 3, "Damage Reflection")
+
+local material = Material("zsh/icon/armor.png")
+ZShelter.AddSkills(ClassName, "MultipleHook",
+	{
+		OnTurretsChanged = function(player)
+			local st = SysTime()
+			local max = player:GetNWFloat("DefenseMul", 0.2)
+			for _, v in pairs(ZShelter.TrackedTurrets) do
+				if(!v.Builder == player) then continue end
+				v.DefenseMul = 0
+				local pos = v:GetPos()
+				for _, ent in pairs(ZShelter.TrackedTurrets) do
+					if(v.DefenseMul >= max || ent.Builder != player || ent == v) then continue end
+					if(ent:GetPos():Distance(pos) < 200) then
+						v.DefenseMul = v.DefenseMul + 0.05
+					end
+				end
+				v.DefenseMul = math.min(v.DefenseMul, max)
+				v:SetNWFloat("DefenseMul", v.DefenseMul)
+			end
+		end,
+		OnBuildingTakeDamage = function(player, building, attacker, damage)
+			local mul = building.DefenseMul || 0
+			if(mul == 0) then return end
+			local regen = damage * mul
+			if(building:Health() > building:GetMaxHealth()) then return end
+			building:SetHealth(building:Health() + regen)
+		end,
+		OnHUDPaint = function()
+			local turret = LocalPlayer():GetEyeTrace().Entity
+			if(!turret:GetNWBool("IsTurret") || turret:GetPos():Distance(LocalPlayer():GetPos()) > 768) then return end
+			local pos = (turret:GetPos() + turret:OBBCenter()):ToScreen()
+			local x, y = pos.x, pos.y
+			local size = ScreenScaleH(14)
+			surface.SetMaterial(material)
+			surface.SetDrawColor(255, 255, 255, 255)
+			surface.DrawTexturedRect(x - size * 0.5, y - size * 0.5, size, size)
+			local def = math.Round(turret:GetNWFloat("DefenseMul", 0) * 100, 2)
+			draw.DrawText(def.."%", "ZShelter-HUDElemFont", x, y + size * 0.5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+			for k,v in ipairs(ents.FindInSphere(turret:GetPos(), 200)) do
+				if(!v:GetNWBool("IsBuilding") || !v:GetNWBool("IsTurret")) then continue end
+				local pos = (v:GetPos() + v:OBBCenter()):ToScreen()
+				local _x, _y = pos.x, pos.y
+				surface.DrawLine(x, y, _x, _y)
+				surface.DrawTexturedRect(_x - size * 0.5, _y - size * 0.5, size, size)
+			end
+			cam.Start3D()
+				local bounds = Vector(200, 200, 1)
+				render.SetColorMaterial()
+				render.DrawBox(turret:GetPos(), angle_zero, -bounds, bounds, Color(235, 120, 50, 10), true)
+			cam.End3D()
+		end,
+	},
+	function(player, current)
+		player:SetNWFloat("DefenseMul", current * 0.25)
+	end, 2, "matrix", 3, "Defense Matrix")
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)

@@ -33,10 +33,19 @@ function ZShelter.ApplySkill(ply, tier, skill)
 		net.Start("ZShelter-AddSkillCallback")
 		net.WriteString(skill.title)
 		net.Send(ply)
-		if(!ply.Callbacks[skill.callbackhook]) then
-			ply.Callbacks[skill.callbackhook] = {}
+		if(skill.callbackhook != "MultipleHook") then
+			if(!ply.Callbacks[skill.callbackhook]) then
+				ply.Callbacks[skill.callbackhook] = {}
+			end
+			ply.Callbacks[skill.callbackhook]["SK_"..skill.title] = skill.callback
+		else
+			for callbackhook, callback in pairs(skill.callback) do
+				if(!ply.Callbacks[callbackhook]) then
+					ply.Callbacks[callbackhook] = {}
+				end
+				ply.Callbacks[callbackhook]["SK_"..skill.title] = callback
+			end
 		end
-		ply.Callbacks[skill.callbackhook]["SK_"..skill.title] = skill.callback
 	end
 end
 

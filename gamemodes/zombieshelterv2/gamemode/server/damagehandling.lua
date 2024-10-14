@@ -119,6 +119,22 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 				end
 			end
 		end
+		if(target:IsPlayer()) then
+			local skip = false
+			if(target.Callbacks.OnTakingDamage) then
+				for k,v in pairs(target.Callbacks.OnTakingDamage) do
+					local ret = v(attacker, target, dmginfo)
+					if(ret) then
+						skip = ret
+					end
+				end
+			end
+			local dmgscale = target:GetNWFloat("DamageResistance", 1)
+			dmginfo:SetDamage(dmginfo:GetDamage() / dmgscale)
+			if(skip) then
+				return true
+			end
+		end
 		if(attacker.AttackNerfTime && attacker.AttackNerfTime > CurTime()) then
 			if(!IsValid(wep) || !ZShelter.IsMeleeWeapon(wep:GetClass())) then
 				if(!attacker.LastNerfTargets || !attacker.LastNerfTargets[target:EntIndex()]) then
@@ -132,13 +148,20 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	-- Anything to player
 
 	if(target:IsPlayer() && !attacker.IsBuilding) then
+		local skip = false
 		if(target.Callbacks.OnTakingDamage) then
 			for k,v in pairs(target.Callbacks.OnTakingDamage) do
-				v(attacker, target, dmginfo)
+				local ret = v(attacker, target, dmginfo)
+				if(ret) then
+					skip = ret
+				end
 			end
 		end
 		local dmgscale = target:GetNWFloat("DamageResistance", 1)
 		dmginfo:SetDamage(dmginfo:GetDamage() / dmgscale)
+		if(skip) then
+			return true
+		end
 		return
 	end
 
@@ -166,7 +189,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		local dmgscale = player:GetNWFloat("TurretDamageScale", 1)
 		if(player.Callbacks && player.Callbacks.OnBuildingDealDamage) then
 			for k,v in pairs(player.Callbacks.OnBuildingDealDamage) do
-				v(attacker, dmginfo)
+				v(attacker, dmginfo, target)
 			end
 		end
 		if(attacker.IsTrap) then

@@ -562,3 +562,28 @@ ZShelter.AddInfo("Fast Repair", {
 		["ru"] = "Увеличивает скорость ремонта ловушек, +100% за улучшение",
 	}
 })
+
+ZShelter.AddInfo("Sanity Recovering", {
+	title = {
+		["en"] = "Sanity Recovering",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "理智回復",
+		["zh-CN"] = "理智回复",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Recovers sanity when gathering resources\n+3 Sanity per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "採集資源時回復理智\n每升級一次增加 3 點理智",
+		["zh-CN"] = "采集资源时回复理智\n每升一级增加 3 点理智",
+		["ru"] = "",
+	}
+})

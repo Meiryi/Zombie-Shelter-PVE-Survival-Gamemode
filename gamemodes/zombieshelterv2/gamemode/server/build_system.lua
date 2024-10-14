@@ -14,6 +14,7 @@
 ]]
 
 ZShelter.OverhealList =  ZShelter.OverhealList || {}
+ZShelter.TrackedTurrets = ZShelter.TrackedTurrets || {}
 
 util.AddNetworkString("ZShelter_BuildRequest")
 util.AddNetworkString("ZShelter_SyncBuildingHP")
@@ -160,6 +161,15 @@ function ZShelter.ApplyDamageFast(building, damage, sd, bypass_durability)
 		end
 		building:Remove()
 		sound.Play("shigure/break.mp3", building:GetNWVector("NoOffsetPos", building:GetPos(), 100, 100, 2))
+	else
+		local owner = building.Builder
+		if(IsValid(owner) && owner:IsPlayer()) then
+			if(owner.Callbacks.OnBuildingTakeDamage) then
+				for k,v in pairs(owner.Callbacks.OnBuildingTakeDamage) do
+					v(owner, building, nil, damage)
+				end
+			end
+		end
 	end
 end
 
@@ -547,9 +557,11 @@ function ZShelter.CreateBuilding(ply, data, vec, yaw)
 
 			--ZShelter.ValidPath(ent:GetNWVector("NoOffsetPos", ent:GetPos()), ent.PathIndex)
 		end
-		if(ply.Callbacks && ply.Callbacks.OnBuildingPlaced) then
-			for k,v in pairs(ply.Callbacks.OnBuildingPlaced) do
-				v(ply, ent)
+		if(ply.Callbacks) then
+			if(ply.Callbacks.OnBuildingPlaced) then
+				for k,v in pairs(ply.Callbacks.OnBuildingPlaced) do
+					v(ply, ent)
+				end
 			end
 		end
 
@@ -565,6 +577,17 @@ function ZShelter.CreateBuilding(ply, data, vec, yaw)
 		end)
 		SetGlobalInt("Powers", GetGlobalInt("Powers", 0) - powers)
 		sound.Play("shigure/build.mp3", ent:GetNWVector("NoOffsetPos", ent:GetPos(), 100, 100, 2))
+
+		if(ent.IsTurret) then
+			ent.TrackIndex = math.random(1, 32767000)
+			ZShelter.TrackedTurrets[ent.TrackIndex] = ent
+
+			if(ply.Callbacks && ply.Callbacks.OnTurretsChanged) then
+				for k,v in pairs(ply.Callbacks.OnTurretsChanged) do
+					v(ply)
+				end
+			end
+		end
 
 		return ent
 end
@@ -616,6 +639,17 @@ hook.Add("ZShelter-SecondPassed", "ZShelter-SecondTicker", function()
 end)
 
 hook.Add("EntityRemoved", "ZShelter-CheckAmount", function(ent, fullUpdate)
+	if(ent.TrackIndex) then
+		ZShelter.TrackedTurrets[ent.TrackIndex] = nil
+
+		if(IsValid(ent.Builder) && ent.Builder:IsPlayer()) then
+			if(ent.Builder.Callbacks && ent.Builder.Callbacks.OnTurretsChanged) then
+				for k,v in pairs(ent.Builder.Callbacks.OnTurretsChanged) do
+					v(ent.Builder)
+				end
+			end
+		end
+	end
 	if(!ent.counted && ent.nvar) then
 		SetGlobalInt(ent.nvar, math.max(GetGlobalInt(ent.nvar, 0) - 1, 0))
 	end

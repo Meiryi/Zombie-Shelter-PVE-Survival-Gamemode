@@ -139,6 +139,11 @@ ZShelter.AddSkills(ClassName, "OnFireBullets",
 		player:SetNWFloat("FRate", player:GetNWFloat("FRate", 1) - 0.1)
 	end, 3, "firerate", 2, "Firerate Boost")
 
+ZShelter.AddSkills(ClassName, nil, nil,
+	function(player, current)
+		player:SetNWFloat("NoiseScale", player:GetNWFloat("NoiseScale", 1) - 0.1)
+	end, 3, "silencer", 2, "Silencer")
+
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
 	function(player)
 		player:Give("tfa_zsh_cso_skull9")
@@ -438,6 +443,73 @@ if(CLIENT) then
 		end
 	end)
 end
+
+local ShieldMat1 = Material("zsh/buffs/shield_1.png")
+local ShieldMat2 = Material("zsh/buffs/shield_2.png")
+local ShieldMat3 = Material("zsh/buffs/shield_3.png")
+ZShelter.AddSkills(ClassName, "MultipleHook",
+	{
+		OnSecondPassed = function(player)
+			if((player.NextShieldTime || 0) > CurTime()) then return end
+			if(!IsValid(player.ShieldEntity)) then
+				player:SetNWInt("ZShelter_ShieldState", 1)
+				player.ShieldEntity = ents.Create("obj_combat_shield")
+				player.ShieldEntity:SetOwner(player)
+				player.ShieldEntity:Spawn()
+				player.NextShieldTime = CurTime() + 8
+				sound.Play("npc/scanner/combat_scan5.wav", player:GetPos(), 100, 100, 1)
+				return
+			else
+				if(!player:Alive()) then
+					player.ShieldEntity:Remove()
+					player.ShieldEntity = nil
+					player:SetNWInt("ZShelter_ShieldState", 0)
+					return
+				end
+			end
+			if(player:GetNWInt("ZShelter_ShieldState", 0) < player:GetNWInt("MaximumShieldCount", 0)) then
+				sound.Play("npc/scanner/combat_scan5.wav", player:GetPos(), 100, 100, 1)
+				player:SetNWInt("ZShelter_ShieldState", math.min(player:GetNWInt("ZShelter_ShieldState", 0) + 1, player:GetNWInt("MaximumShieldCount", 0)))
+			end
+			player.NextShieldTime = CurTime() + 8
+		end,
+		OnTakingDamage = function(attacker, victim, dmginfo)
+			local state = victim:GetNWInt("ZShelter_ShieldState", 0)
+			local block = false
+			if(state > 0) then
+				sound.Play("weapons/airboat/airboat_gun_energy"..math.random(1, 2)..".wav", victim:GetPos(), 100, 100, 1)
+				block = true
+			end
+			state = math.max(state - 1, 0)
+			victim:SetNWInt("ZShelter_ShieldState", state)
+			if(state <= 0 && IsValid(victim.ShieldEntity)) then
+				sound.Play("weapons/physcannon/energy_disintegrate4.wav", victim:GetPos(), 100, 100, 1)
+				victim.ShieldEntity:Remove()
+				victim.NextShieldTime = CurTime() + 5
+			end
+			return block
+		end,
+		OnHUDPaint = function()
+			local ply = LocalPlayer()
+			if(!ply:Alive()) then return end
+			local state = ply:GetNWInt("ZShelter_ShieldState", 0)
+			if(state <= 0) then return end
+			if(state == 1) then
+				surface.SetMaterial(ShieldMat1)
+			elseif(state == 2) then
+				surface.SetMaterial(ShieldMat2)
+			else
+				surface.SetMaterial(ShieldMat3)
+			end
+			local x, y = ScrW() * 0.5, ScrH() * 0.6
+			local size = ScreenScaleH(32)
+			surface.SetDrawColor(255, 255, 255, 255)
+			surface.DrawTexturedRect(x - size * 0.5, y - size * 0.5, size, size)
+		end,
+	},
+	function(player, current)
+		player:SetNWInt("MaximumShieldCount", current)
+	end, 3, "shieldabs", 3, "Layered Defense")
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)

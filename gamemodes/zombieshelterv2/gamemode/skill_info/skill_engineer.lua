@@ -38,6 +38,33 @@
 	Ако имате проблеми, можете да ми се обадите в стийм, благодаря че прочетохте това съобщение
 ]]
 
+--[[
+ZShelter.AddInfo("", {
+	title = {
+		["en"] = "",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "",
+		["zh-CN"] = "",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "",
+		["zh-CN"] = "",
+		["ru"] = "",
+	}
+})
+]]
+
 ZShelter.AddInfo("Basic Engineering", {
 	title = {
 		["en"] = "Basic Engineering",
@@ -509,6 +536,106 @@ ZShelter.AddInfo("Damage Reflection", {
 		["vi"] = "Phản xạ sát thương khi tháp pháo bị tấn công\n+25% Sát thương cho kẻ tấn công mỗi cấp\n+5 Sát thương cho tất cả kẻ địch gần đó mỗi cấp",
 		["zh-TW"] = "槍塔會反彈傷害至攻擊者\n每升級一次增加 25%對攻擊者的傷害",
 		["zh-CN"] = "枪塔会反弹伤害至攻击者\n每升级一次增加 25%对攻击者的伤害",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Defense Matrix", {
+	title = {
+		["en"] = "Defense Matrix",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "防禦矩陣",
+		["zh-CN"] = "防御矩阵",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Increases turret's defense when you place them near each other\n+25% Maximum damage resistance per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "",
+		["zh-CN"] = "",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Armor Repairing", {
+	title = {
+		["en"] = "Armor Repairing",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "護甲修復",
+		["zh-CN"] = "护甲修复",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Allow you to repair teammate's armor by hitting them with melee\n+7.5 Armor per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "可以使用近戰武器修復隊友的護甲\n每升級一次增加 7.5 護甲",
+		["zh-CN"] = "可以使用近战武器修复队友的护甲\n每升级一次增加 7.5 护甲",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Quick Deploy", {
+	title = {
+		["en"] = "Quick Deploy",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "快速部屬",
+		["zh-CN"] = "快速部署",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Buildings will have some of it's health when being deployed\n+17.5% Health per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "部署建築物時會有一部分的生命值\n每升級一次增加 17.5% 生命值",
+		["zh-CN"] = "部署建筑物时会有一部分的生命值\n每升级一次增加 17.5% 生命值",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Precision Suppression", {
+	title = {
+		["en"] = "Precision Suppression",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "精確壓制",
+		["zh-CN"] = "精确压制",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Damage will gradually increase when shooting at the same target\n+25% Maximum damage per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "對同一目標持續射擊時傷害會逐漸增加\n每升級一次增加 25% 最大傷害",
+		["zh-CN"] = "对同一目标持续射击时伤害会逐渐增加\n每升级一次增加 25% 最大伤害",
 		["ru"] = "",
 	}
 })

@@ -99,7 +99,7 @@ ZShelter.AddSkills(ClassName, "OnGiveMelee",
 
 ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "cm", 2, "Claymore", {})
 
-ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "cf", 2, "Campfire", {})
+ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "cf", 3, "Campfire", {})
 
 ZShelter.AddSkills(ClassName, "OnGatheringResources",
 	function(player, resource, type, amount, full)
@@ -124,6 +124,15 @@ ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
 		player:SetNWFloat("TrapHPScale", player:GetNWFloat("TrapHPScale", 1) + 0.35)
 	end, 3, "reinfortrap", 2, "Reinforced Traps")
+
+ZShelter.AddSkills(ClassName, "OnGatheringResources",
+	function(player, resource, type, amount, full)
+		local regen = player:GetNWInt("SanityRecoverAmount", 3)
+		player:SetNWInt("Sanity", math.min(player:GetNWInt("Sanity", 100) + regen, 100))
+	end,
+	function(player, current)
+		player:SetNWInt("SanityRecoverAmount", current * 3)
+	end, 3, "gsa", 2, "Sanity Recovering")
 
 --[[
 ZShelter.AddSkills(ClassName, nil, nil,

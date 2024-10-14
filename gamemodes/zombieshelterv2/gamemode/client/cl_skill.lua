@@ -24,10 +24,19 @@ net.Receive("ZShelter-AddSkillCallback", function()
 	if(!LocalPlayer().Callbacks) then
 		LocalPlayer().Callbacks = {}
 	end
-	if(!LocalPlayer().Callbacks[skTable.callbackhook]) then
-		LocalPlayer().Callbacks[skTable.callbackhook] = {}
+	if(skTable.callbackhook != "MultipleHook") then
+		if(!LocalPlayer().Callbacks[skTable.callbackhook]) then
+			LocalPlayer().Callbacks[skTable.callbackhook] = {}
+		end
+		table.insert(LocalPlayer().Callbacks[skTable.callbackhook], skTable.callback)
+	else
+		for callbackhook, callback in pairs(skTable.callback) do
+			if(!LocalPlayer().Callbacks[callbackhook]) then
+				LocalPlayer().Callbacks[callbackhook] = {}
+			end
+			table.insert(LocalPlayer().Callbacks[callbackhook], callback)
+		end
 	end
-	table.insert(LocalPlayer().Callbacks[skTable.callbackhook], skTable.callback)
 end)
 
 function ZShelter.UltimateSkill(skill)
