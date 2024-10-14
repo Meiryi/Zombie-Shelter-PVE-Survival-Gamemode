@@ -477,6 +477,8 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 			local state = victim:GetNWInt("ZShelter_ShieldState", 0)
 			local block = false
 			if(state > 0) then
+				local mul = 0.07 + math.max((state - 1) * 0.03, 0)
+				victim:SetHealth(math.min(victim:GetMaxHealth(), victim:Health() + (victim:GetMaxHealth() * mul)))
 				sound.Play("weapons/airboat/airboat_gun_energy"..math.random(1, 2)..".wav", victim:GetPos(), 100, 100, 1)
 				block = true
 			end
