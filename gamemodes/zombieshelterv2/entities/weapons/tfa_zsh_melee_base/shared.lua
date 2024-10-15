@@ -239,7 +239,7 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
 	if(IsValid(ent)) then
 		if(ent:GetNWBool("IsResource", false)) then
             if(SERVER) then
-            	for i = 1, self.GatheringAmount || 2 do
+            	for i = 1, self.GatheringAmount || 1 do
             		if(!IsValid(ent)) then continue end
             		ZShelter.GatheringSystem(ply, ent) 
             	end
