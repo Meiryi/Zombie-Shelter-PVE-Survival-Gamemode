@@ -162,7 +162,7 @@ ZShelter.AddSkills(ClassName, "OnGiveMelee",
 				player:SetActiveWeapon(wep)
 		end)
 	end, 1, "mupgrade", 3, "Battle Axe Upgrade", {
-		"Machete Upgrade", "Clawhammer Upgrade", "Crowbar Upgrade",
+		"Clawhammer Upgrade", "Crowbar Upgrade",
 	})
 
 ZShelter.AddSkills(ClassName, "OnDealingDamage",
