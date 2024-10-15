@@ -31,6 +31,11 @@ SWEP.NZPaPName				= "CROSSBONES-18"
 SWEP.NZPreventBox		= false	-- If true, this gun won't be placed in random boxes GENERATED. Users can still place it in manually.
 SWEP.NZTotalBlackList	= false	-- if true, this gun can't be placed in the box, even manually, and can't be bought off a wall, even if placed manually. Only code can give this gun.
 SWEP.BuildSpeed = 90
+SWEP.AOEDamage = true
+SWEP.AOERange_Primary = 20
+SWEP.AOERange_Secondary = 40
+SWEP.AllowSwitchAttack = false
+SWEP.GatheringAmount = 2
 
 SWEP.Attachments = {
     [1] = { atts = { "cso_skull9blood"} },

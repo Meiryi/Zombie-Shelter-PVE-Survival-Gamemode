@@ -25,9 +25,10 @@ function ZShelter.StartRescue()
 	ZShelter.BroadcastMessage("Rescue will come in 5 minutes!", Color(255, 255, 255, 255), true)
 end
 
+local cd = {}
 function ZShelter.ProcessRescue(ply)
 	if(GetGlobalBool("Rescuing")) then return end
-	if(ZShelter.RescueList[ply:EntIndex()]) then return end
+	if(cd[ply:SteamID64()] && cd[ply:SteamID64()] > CurTime()) then return end
 	ZShelter.RescueList[ply:EntIndex()] = true
 	local count = table.Count(ZShelter.RescueList)
 	ZShelter.BroadcastMessage(ply:Nick().." Called for rescue!   ["..count.."/"..(player.GetCount()).."]", Color(255, 255, 255, 255), true)
@@ -35,12 +36,5 @@ function ZShelter.ProcessRescue(ply)
 	if(count >= player.GetCount()) then
 		ZShelter.StartRescue()
 	end
+	cd[ply:SteamID64()] = CurTime() + 5
 end
-
-hook.Add("PlayerDisconnected", "ZShelter-DisconnectRescueCheck", function(ply)
-	local count = player.GetCount() - 1
-	if(!GetGlobalBool("GameStarted") || table.Count(ZShelter.RescueList) <= 0) then return end
-	if(count >= table.Count(ZShelter.RescueList)) then
-		ZShelter.StartRescue()
-	end
-end)

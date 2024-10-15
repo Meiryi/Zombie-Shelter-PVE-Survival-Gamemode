@@ -58,6 +58,8 @@ SWEP.Secondary.Attacks = {
 ["kickback"] = nil--Recoil if u hit something with this activity
 }
 }
+SWEP.AOEDamage = true
+SWEP.AOERange = 86
 ]]
 --
 SWEP.IsMelee = true
@@ -237,7 +239,10 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
 	if(IsValid(ent)) then
 		if(ent:GetNWBool("IsResource", false)) then
             if(SERVER) then
-                ZShelter.GatheringSystem(ply, ent) 
+            	for i = 1, self.GatheringAmount || 2 do
+            		if(!IsValid(ent)) then continue end
+            		ZShelter.GatheringSystem(ply, ent) 
+            	end
             end
 			return
 		end
@@ -525,7 +530,9 @@ function SWEP:StrikeThink()
 			self:SetNextSecondaryFire(self:GetNextSecondaryFire() - (attack.combotime or 0))
 		end
 
-		self:Strike(attack, self.Precision)
+		if(!self.AllowSwitchAttack) then
+			self:Strike(attack, self.Precision)
+		end
 	end
 end
 
@@ -667,11 +674,29 @@ function SWEP:Strike(attk, precision)
 	damage:SetDamageType(attk.dmgtype or DMG_SLASH)
 	damage:SetDamageForce(forcevec)
 	local fleshHits = 0
+	local range = self.AOERange_Primary || 8
+	if(self.Melee2Attack) then
+		range = self.AOERange_Secondary || 16
+	end
 
 	--Handle flesh
+	local targets = {}
+	local c = 0
 	for _, v in ipairs(totalResults) do
 		if v.Hit and IsValid(v.Entity) and TraceHitFlesh(v) and (not v.Entity.HasMeleeHit) then
-			self:ApplyDamage(v, damage, attk)
+			if(!self.AOEDamage) then
+				self:ApplyDamage(v, damage, attk)
+			end
+			targets[v.Entity:EntIndex()] = true
+			c = c + 1
+			local origin = v.HitPos
+			local bounds = Vector(range, range, 86)
+			for _, ent in pairs(ents.FindInBox(origin - bounds, origin + bounds)) do
+				if(c >= attk.maxhits) then break end
+				if(!IsValid(ent) || ent == self.Owner || (!ent:IsPlayer() && !ent:IsNPC() && !ent:IsNextBot()) || targets[ent:EntIndex()]) then continue end
+				targets[ent:EntIndex()] = true
+				c = c + 1
+			end
 			self:SmackEffect(v, damage)
 			v.Entity.HasMeleeHit = true
 			fleshHits = fleshHits + 1
@@ -684,14 +709,32 @@ function SWEP:Strike(attk, precision)
 				attk.callback(attack, self, v)
 				needsCB = false
 			end
-
 			hitFlesh = true
 		end
 		--debugoverlay.Sphere( v.HitPos, 5, 5, color_white )
 	end
 
+	if(self.AOEDamage) then
+		for k,v in pairs(targets) do
+			--[[
+				trace.StartPos
+				trace.Entity
+				trace.HitPos
+			]]
+			local ent = Entity(k)
+			if(!IsValid(ent)) then continue end
+			local trace = {
+				StartPos = self.Owner:EyePos(),
+				Entity = ent,
+				HitPos = ent:GetPos() + ent:OBBCenter()
+			}
+			self:ApplyDamage(trace, damage, attk)
+		end
+	end
+
 	--Handle world
 	for _, v in ipairs(totalResults) do
+
 		if v.Hit and (not TraceHitFlesh(v)) then
 			self:ApplyDamage(v, damage)
 
@@ -836,6 +879,13 @@ function SWEP:PrimaryAttack()
 	--We have attack isolated, begin attack logic
 	self:PlaySwing(attack.act)
 
+	if(self.AllowSwitchAttack) then
+		timer.Simple(attack.delay || 0.2, function()
+			if(!IsValid(self) || !IsValid(self.Owner) || !self.Owner:Alive()) then return end
+			self:Strike(attack, self.Precision)
+		end)
+	end
+
 	if not attack.snd_delay or attack.snd_delay <= 0 then
 		if IsFirstTimePredicted() then
 			self:EmitSound(attack.snd)
@@ -957,6 +1007,13 @@ function SWEP:SecondaryAttack()
 	attack = self.Secondary.Attacks[ind]
 	--We have attack isolated, begin attack logic
 	self:PlaySwing(attack.act)
+
+	if(self.AllowSwitchAttack) then
+		timer.Simple(attack.delay || 0.2, function()
+			if(!IsValid(self) || !IsValid(self.Owner) || !self.Owner:Alive()) then return end
+			self:Strike(attack, self.Precision)
+		end)
+	end
 
 	if not attack.snd_delay or attack.snd_delay <= 0 then
 		if IsFirstTimePredicted() then
