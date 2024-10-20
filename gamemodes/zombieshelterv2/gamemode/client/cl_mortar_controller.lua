@@ -28,6 +28,15 @@ end
 
 local size = 24
 local bbox = Vector(size, size, 2)
+local hideList = {
+	obj_resource_airdrop = true,
+	obj_resource_blueprint = true,
+	obj_resource_wood = true,
+	obj_resource_iron = true,
+	obj_resource_lootbox = true,
+	obj_resource_box = true,
+	obj_resource_backpack = true,
+}
 function ZShelter.CreateControllingGUI()
 	local scl = 0
 	local ui = ZShelter.CreatePanel(nil, ScrW() * scl, ScrH() * scl, ScrW() * (1 - scl * 2), ScrH() * (1 - scl * 2), Color(100, 100, 100, 255))
@@ -63,7 +72,15 @@ function ZShelter.CreateControllingGUI()
 		if(input.IsKeyDown(KEY_D)) then
 			offset.y = offset.y - ZShelter.GetFixedValue(16)
 		end
+		local limit = 1024
+		offset.x = math.Clamp(offset.x, -limit, limit)
+		offset.y = math.Clamp(offset.y, -limit, limit)
 		local scale = 3.85
+		local ent = ents.GetAll()
+		for k,v in ipairs(ent) do
+			if(!v:GetNWBool("IsResource") && !hideList[v:GetClass()]) then continue end
+			v:SetNoDraw(true)
+		end
 		render.RenderView({
 			origin =	camvec + offset,
 			angles = Angle(90, 0, 0),
@@ -73,6 +90,10 @@ function ZShelter.CreateControllingGUI()
 			drawviewmodel = false,
 			zfar = 32767,
 		})
+		for k,v in ipairs(ent) do
+			if(!v:GetNWBool("IsResource") && !hideList[v:GetClass()]) then continue end
+			v:SetNoDraw(false)
+		end
 		local aimx, aimy = ui:CursorPos()
 		aimx = aimx - ui:GetWide() * 0.5
 		aimy = aimy - ui:GetTall() * 0.5

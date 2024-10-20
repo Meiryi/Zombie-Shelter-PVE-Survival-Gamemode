@@ -14,6 +14,7 @@ if(CLIENT) then
 	local ironmat = Material("zsh/icon/irons_white.png", "smooth")
 	local powermat = Material("zsh/icon/powers_white.png", "smooth")
 	function ENT:Draw()
+		if(!IsValid(LocalPlayer()) || !LocalPlayer():Alive()) then return end
 		self:DrawModel()
 		local angle = LocalPlayer():EyeAngles() + Angle(0, -90, 90)
 		angle.x = 0
