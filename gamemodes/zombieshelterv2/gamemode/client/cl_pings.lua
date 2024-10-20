@@ -134,7 +134,7 @@ hook.Add("HUDPaint", "ZShelter-Pings", function()
 			surface.DrawTexturedRect(pos.x - size_half, pos.y - size_half, size, size)
 
 			data.size_start_mul = data.size_start_mul + ZShelter.GetFixedValue(0.65)
-			data.alpha_start = math.Clamp(data.alpha_start - Arknights.GetFixedValue(20), 0, 255)
+			data.alpha_start = math.Clamp(data.alpha_start - ZShelter.GetFixedValue(20), 0, 255)
 		end
 	end
 
