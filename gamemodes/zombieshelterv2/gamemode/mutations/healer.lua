@@ -19,7 +19,8 @@ m.Variables = {
 
 m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 	Think = function(self, ...)
-		if(self.zsh_NextHealTime < CurTime()) then
+		local silenced = self:GetNWFloat("SilencedTime", 0) > CurTime()
+		if(self.zsh_NextHealTime < CurTime() && !silenced && self:Health() > 0) then
 			local pos = self:GetPos()
 			local mins, maxs = self:GetCollisionBounds()
 			local e = EffectData()

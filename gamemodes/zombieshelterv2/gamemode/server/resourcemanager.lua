@@ -46,8 +46,8 @@ local resourceToSpawn = {
 	"obj_resource_wood", "obj_resource_iron"
 }
 local resourceMaxAmount = {
-	obj_resource_wood = 7,
-	obj_resource_iron = 7,
+	obj_resource_wood = 6,
+	obj_resource_iron = 4,
 }
 
 function ZShelter.SpawnBonusResource()
@@ -66,6 +66,7 @@ function ZShelter.DebugSpawnResource(player, amount)
 			res:SetAngles(Angle(0, math.random(-180, 180), 0))
 			res:Spawn()
 			res.Amount = amount
+			res.IsResource = true
 			res:SetNWBool("IsResource", true)
 
 		ZShelter.ResourceList[res:EntIndex()] = res
@@ -87,6 +88,7 @@ function ZShelter.SpawnResources(amount)
 			res:SetAngles(Angle(0, math.random(-180, 180), 0))
 			res:Spawn()
 			res.Amount = amount
+			res.IsResource = true
 			res:SetNWBool("IsResource", true)
 
 		ZShelter.ResourceList[res:EntIndex()] = res
@@ -103,6 +105,7 @@ function ZShelter.SpawnLootboxVec(vec)
 		res:SetAngles(Angle(0, math.random(-180, 180), 0))
 		res:Spawn()
 		res:SetNWBool("IsResource", true)
+		res.IsResource = true
 		res.NextRemoveDay = GetGlobalInt("Day", 1) + 1
 		res.IsLootbox = true
 
@@ -135,6 +138,7 @@ function ZShelter.SpawnLootbox()
 		res:Spawn()
 		res:SetNWBool("IsResource", true)
 		res.NextRemoveDay = GetGlobalInt("Day", 1) + 1
+		res.IsResource = true
 		res.IsLootbox = true
 
 	ZShelter.ResourceList[res:EntIndex()] = res
@@ -156,6 +160,7 @@ function ZShelter.RandomResourceVec(vec, amount)
 			res:SetAngles(Angle(0, math.random(-180, 180), 0))
 			res:Spawn()
 			res.Amount = amount
+			res.IsResource = true
 			res:SetNWBool("IsResource", true)
 
 		ZShelter.ResourceList[res:EntIndex()] = res

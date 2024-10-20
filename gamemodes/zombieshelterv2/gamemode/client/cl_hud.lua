@@ -209,7 +209,9 @@ function ZShelter.DrawPowerOutage()
 end
 
 local dmgs = {}
+local cvar = GetConVar("zshelter_damage_number")
 net.Receive("ZShelter-DamageNumber", function()
+	if(cvar:GetInt() == 0) then return end
 	local eindex = net.ReadInt(32)
 	local dmg = net.ReadInt(32)
 	local vec = net.ReadVector()

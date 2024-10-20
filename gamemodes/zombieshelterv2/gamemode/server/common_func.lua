@@ -214,5 +214,6 @@ ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_machete")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_crowbar")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_clawhammer")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_skull9")
+ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_mastercombatknife")
 
 ZShelterAddWhitelistedEntity("obj_zshelter_shield")

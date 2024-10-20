@@ -576,14 +576,14 @@ ZShelter.AddInfo("Sanity Recovering", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Recovers sanity when gathering resources\n+3 Sanity per upgrade",
+		["en"] = "Recovers sanity when gathering resources\n+1 Sanity per upgrade",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "採集資源時回復理智\n每升級一次增加 3 點理智",
-		["zh-CN"] = "采集资源时回复理智\n每升一级增加 3 点理智",
+		["zh-TW"] = "採集資源時回復理智\n每升級一次增加 1 點理智",
+		["zh-CN"] = "采集资源时回复理智\n每升一级增加 1 点理智",
 		["ru"] = "",
 	}
 })

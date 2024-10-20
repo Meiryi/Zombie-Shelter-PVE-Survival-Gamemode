@@ -46,15 +46,15 @@ ZShelter.AddInfo("Health Boost", {
 		["de"] = "Gesundheitsschub",
 	},
 	desc = {
-		["en"] = "Increases your maximum health everyday, +15 per upgrade",
-		["bg"] = "Увеличава максималното ви здраве всеки ден, +15 на ъпгрейд",
-		["fr"] = "Augmente votre santé maximale tous les jours, +15 par amélioration",
-		["tr"] = "Her gün maksimum sağlığınızı artırır, yükseltme başına +15",
-		["vi"] = "Tăng máu tối đa mỗi ngày, +15 máu mỗi lần nâng cấp",
-		["zh-TW"] = "每日提升最大體力, 每升級一次增加 15",
-		["zh-CN"] = "每天提升最大体力, 每升一级增加 15",
-		["ru"] = "Увеличивает макс. запас здоровья каждый день, +15 ед. за улучшение",
-		["de"] = "Erhöht deine maximale Gesundheit jeden Tag, +15 pro Upgrade",
+		["en"] = "Increases your maximum health everyday, +10 per upgrade",
+		["bg"] = "Увеличава максималното ви здраве всеки ден, +10 на ъпгрейд",
+		["fr"] = "Augmente votre santé maximale tous les jours, +10 par amélioration",
+		["tr"] = "Her gün maksimum sağlığınızı artırır, yükseltme başına +10",
+		["vi"] = "Tăng máu tối đa mỗi ngày, +10 máu mỗi lần nâng cấp",
+		["zh-TW"] = "每日提升最大體力, 每升級一次增加 10",
+		["zh-CN"] = "每天提升最大体力, 每升一级增加 10",
+		["ru"] = "Увеличивает макс. запас здоровья каждый день, +10 ед. за улучшение",
+		["de"] = "Erhöht deine maximale Gesundheit jeden Tag, +10 pro Upgrade",
 	}
 })
 
@@ -271,15 +271,15 @@ ZShelter.AddInfo("Double Tap", {
 		["de"] = "Doppelte Schläge",
 	},
 	desc = {
-		["en"] = "+25% chance to deal double damage every upgrade",
-		["bg"] = "+25% шанс за нанасяне на двойни щети при всеки ъпгрейд",
-		["fr"] = "+25% de chances d'infliger des dégâts double à chaque amélioration",
-		["tr"] = "Her yükseltmede iki kat hasar verme şansınızı +%25 artırın",
-		["vi"] = "+25% cơ hội gây sát thương gấp đôi mỗi lần nâng cấp",
-		["zh-TW"] = "每升級一次增加 25% 機率造成雙倍傷害",
-		["zh-CN"] = "每升级一次增加 25% 机率造成双倍伤害",
+		["en"] = "+10% chance to deal double damage every upgrade",
+		["bg"] = "+10% шанс за нанасяне на двойни щети при всеки ъпгрейд",
+		["fr"] = "+10% de chances d'infliger des dégâts double à chaque amélioration",
+		["tr"] = "Her yükseltmede iki kat hasar verme şansınızı +%10 artırın",
+		["vi"] = "+10% cơ hội gây sát thương gấp đôi mỗi lần nâng cấp",
+		["zh-TW"] = "每升級一次增加 10% 機率造成雙倍傷害",
+		["zh-CN"] = "每升级一次增加 10% 机率造成双倍伤害",
 		["ru"] = "",
-		["de"] = "+25% Chance, bei jedem Upgrade doppelten Schaden zu verursachen",
+		["de"] = "+10% Chance, bei jedem Upgrade doppelten Schaden zu verursachen",
 	}
 })
 
@@ -729,6 +729,56 @@ ZShelter.AddInfo("Silencer", {
 		["vi"] = "",
 		["zh-TW"] = "減少武器噪音, 每升級一次減少 10%",
 		["zh-CN"] = "减少武器噪音, 每升级一次减少 10%",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Bullet Saving", {
+	title = {
+		["en"] = "Bullet Saving",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "節省彈藥",
+		["zh-CN"] = "节省弹药",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Small chance to not consume ammo when shooting a hitscan weapon, +15% per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "射擊 Hitscan 武器時有機率不消耗彈藥, 每升級一次增加 15%",
+		["zh-CN"] = "射击 Hitscan 武器时有机率不消耗弹药, 每升级一次增加 15%",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Ammo Capacity Boost", {
+	title = {
+		["en"] = "Ammo Capacity Boost",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "",
+		["zh-CN"] = "",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Increase ammo capacity, +100% per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "增加攜彈量, 每升級一次增加 100%",
+		["zh-CN"] = "增加携弹量, 每升级一次增加 100%",
 		["ru"] = "",
 	}
 })

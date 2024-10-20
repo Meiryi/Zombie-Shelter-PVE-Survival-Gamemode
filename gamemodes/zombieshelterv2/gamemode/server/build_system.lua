@@ -124,6 +124,7 @@ function ZShelter.ApplyDamageFast(building, damage, sd, bypass_durability)
 	if(IsValid(phys)) then
 		phys:EnableMotion(false)
 	end 
+	if(building.IsResource) then return end
 	if(GetConVar("zshelter_debug_disable_building_damage"):GetInt() == 1) then return end
 	if(building:GetNWBool("DurabilitySystem", false) && !bypass_durability) then return end
 	building.LastDamagedTime = CurTime()
@@ -181,6 +182,7 @@ function ZShelter.ApplyDamage(attacker, building, dmginfo)
 	if(IsValid(attacker) && !attacker:IsPlayer()) then
 		ZShelter.Director_AddDamage(building, dmginfo:GetDamage())
 	end
+	if(building.IsResource) then return end
 	if(building:GetNWBool("DurabilitySystem", false)) then
 		if(!IsValid(attacker) || (IsValid(attacker) && !attacker:IsPlayer())) then return end
 	end
@@ -597,7 +599,7 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 	local index2 = net.ReadInt(32)
 	local vec = net.ReadVector()
 	local yaw = net.ReadInt(32)
-
+	if(!GetGlobalBool("GameStarted") && GetConVar("zshelter_debug_disable_build_checks"):GetInt() == 0) then return end
 	local data = ZShelter.BuildingConfig[index1][index2]
 	if(!data) then return end
 	local woods, irons, powers = math.max(math.floor(data.woods * ply:GetNWFloat("ResCost", 1)), 1), math.max(math.floor(data.irons * ply:GetNWFloat("ResCost", 1)), 1), math.max(math.floor(data.powers * ply:GetNWFloat("PowerCost", 1)), 0)

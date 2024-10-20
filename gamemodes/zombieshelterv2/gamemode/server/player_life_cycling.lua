@@ -151,3 +151,11 @@ hook.Add("EntityFireBullets", "ZShelter-PlayerShootBullets", function(ent, data)
 	end
 	ent.LastExecTime = CurTime() + 0.01
 end)
+
+local capacity = 240
+hook.Add("PlayerAmmoChanged", "ZShelter-AmmoCheck", function(ply, ammoID, oldCount, newCount)
+	local c = ply:GetNWFloat("ZShelter-AmmoCapacity", 1) * capacity
+	if(newCount >= c) then
+		ply:SetAmmo(c, ammoID)
+	end
+end)

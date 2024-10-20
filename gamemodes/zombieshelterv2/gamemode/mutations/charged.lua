@@ -33,13 +33,16 @@ m.Callbacks = { -- https://wiki.facepunch.com/gmod/ENTITY_Hooks
 	end,
 
 	OnRemove = function(self, ...)
-		sound.Play("npc/roller/mine/rmine_explode_shock1.wav", self:GetPos(), 100, 120, 1)
-		local e = EffectData()
-		e:SetOrigin(self:GetPos())
-		util.Effect("zshelter_shock_explode", e, true, true)
-		for k,v in pairs(ents.FindInSphere(self:GetPos(), 200)) do
-			if(!v.IsTurret && !v.canstun) then continue end
-			ZShelter.StunBuilding(v, 5)
+		local silenced = self:GetNWFloat("SilencedTime", 0) > CurTime()
+		if(!silenced) then
+			sound.Play("npc/roller/mine/rmine_explode_shock1.wav", self:GetPos(), 100, 120, 1)
+			local e = EffectData()
+			e:SetOrigin(self:GetPos())
+			util.Effect("zshelter_shock_explode", e, true, true)
+			for k,v in pairs(ents.FindInSphere(self:GetPos(), 200)) do
+				if(!v.IsTurret && !v.canstun) then continue end
+				ZShelter.StunBuilding(v, 5)
+			end
 		end
 		self.oOnRemove(self, ...)
 	end

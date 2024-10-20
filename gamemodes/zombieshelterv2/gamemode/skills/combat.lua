@@ -17,45 +17,11 @@ local ClassName = "Combat"
 
 ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "gmastery1", 1, "Beginner Gun Mastery")
 
-ZShelter.AddSkills(ClassName, "OnDayPassed",
-	function(player)
-		player:SetMaxHealth(100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
-		player:SetNWInt("oMaxHealth", 100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
-	end,
-	function(player, current)
-		player:SetNWInt("MaxHealthBoostCount", player:GetNWInt("MaxHealthBoostCount", 0) + 1)
-		player:SetMaxHealth(100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
-		player:SetNWInt("oMaxHealth", 100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
-	end, 2, "hpboost", 1, "Health Boost")
-
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
 		player:SetNWFloat("DamageScale", player:GetNWFloat("DamageScale", 1) + 0.1)
 		player:SetNWFloat("oDamageScale", player:GetNWFloat("DamageScale", 1))
 	end, 2, "dmgboost", 1, "Damage Boost")
-
-ZShelter.AddSkills(ClassName, nil, nil,
-	function(player, current)
-		player:SetMaxArmor(100 + (50 * current))
-		player:SetNWInt("oMaxArmor", 100 + (50 * current))
-	end, 2, "arboost", 1, "Armor Boost")
-
-ZShelter.AddSkills(ClassName, "OnSecondPassed",
-	function(player)
-		if(player:GetNWFloat("Sanity", 100) <= 0) then return end
-		player:SetHealth(math.min(player:Health() + player:GetNWFloat("SelfRecovering", 2), player:GetMaxHealth()))
-	end,
-	function(player)
-		player:SetNWFloat("SelfRecovering", player:GetNWFloat("SelfRecovering", 0) + 2)
-	end, 3, "sheal", 1, "Self Recovering")
-
-ZShelter.AddSkills(ClassName, "OnSecondPassed",
-	function(player)
-		player:SetArmor(math.min(player:Armor() + player:GetNWFloat("ArmorRecovering", 1), player:GetMaxArmor()))
-	end,
-	function(player)
-		player:SetNWFloat("ArmorRecovering", player:GetNWFloat("ArmorRecovering", 0) + 1)
-	end, 3, "armorregen", 1, "Armor Regenerate")
 
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
 	function(player)
@@ -73,6 +39,25 @@ ZShelter.AddSkills(ClassName, "OnGiveMelee",
 	end, 1, "mupgrade", 2, "Machete Upgrade", {
 		"Clawhammer Upgrade", "Crowbar Upgrade",
 	})
+
+ZShelter.AddSkills(ClassName, "OnFireBullets",
+	function(player, bulletdata)
+		local wep = player:GetActiveWeapon()
+		if(!IsValid(wep)) then return end
+		local seed = math.random(1, 100)
+		if(seed <= player:GetNWInt("SaveChance", 15)) then
+			wep:SetClip1(wep:Clip1() + 1)
+		end
+	end,
+	function(player, current)
+		player:SetNWInt("SaveChance", 15 * current)
+	end, 3, "ammosave", 1, "Bullet Saving")
+
+ZShelter.AddSkills(ClassName, nil, nil,
+	function(player, current)
+		player:SetNWInt("ZShelter-AmmoCapacity", 1 + current)
+	end, 3, "emag", 1, "Ammo Capacity Boost")
+
 
 ZShelter.AddSkills(ClassName, "OnSecondPassed",
 	function(player)
@@ -93,22 +78,11 @@ ZShelter.AddSkills(ClassName, "OnSecondPassed",
 
 ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "gmastery2", 2, "Intermediate Gun Mastery")
 
-ZShelter.AddSkills(ClassName, nil, nil, 
-	function(player, current)
-		player:SetNWFloat("DamageResistance", player:GetNWFloat("DamageResistance", 1) + 0.2)
-	end, 3, "dmgres", 2, "Damage Resistance")
-
-
 ZShelter.AddSkills(ClassName, "OnEnemyKilled",
 	function(player, npc, killedbyturrets)
 		if(killedbyturrets) then return end
 		local seed = math.random(1, 100)
 		local chance = player:GetNWInt("LootingChance", 10)
-		if(GetGlobalBool("Night", false)) then
-			chance = chance * 0.25
-		else
-			chance = chance * 1.5
-		end
 		if(seed <= chance) then
 			ZShelter.CreateBackpack(npc:GetPos(), math.random(1, 3), math.random(1, 3))
 		end
@@ -122,14 +96,6 @@ ZShelter.AddSkills(ClassName, nil, nil,
 		player:SetNWFloat("DamageScale", player:GetNWFloat("DamageScale", 1) + 0.15)
 		player:SetNWFloat("oDamageScale", player:GetNWFloat("DamageScale", 1))
 	end, 2, "dmgboost", 2, "Damage Boostx1")
-
-ZShelter.AddSkills(ClassName, "OnTakingDamage",
-	function(attacker, target, dmginfo)
-		ZShelter.DealNoScaleDamage(target, attacker, dmginfo:GetDamage() * target:GetNWFloat("DamageRef", 0.5))
-	end,
-	function(player, current)
-		player:SetNWFloat("DamageRef", player:GetNWFloat("DamageRef", 0) + 0.5)
-	end, 2, "thorns_combat", 2, "Damage Reflecting")
 
 ZShelter.AddSkills(ClassName, "OnFireBullets",
 	function(ply, bulletdata)
@@ -146,24 +112,7 @@ ZShelter.AddSkills(ClassName, "OnFireBullets",
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
 		player:SetNWFloat("NoiseScale", player:GetNWFloat("NoiseScale", 1) - 0.1)
-	end, 3, "silencer", 2, "Silencer")
-
-ZShelter.AddSkills(ClassName, "OnGiveMelee",
-	function(player)
-		player:Give("tfa_zsh_cso_skull9")
-	end,
-	function(player)
-		player:SetActiveWeapon(nil)
-		ZShelter.ClearMelee(player)
-		timer.Simple(0, function()
-			local wep = ents.Create("tfa_zsh_cso_skull9")
-				wep:Spawn()
-				player:PickupWeapon(wep)
-				player:SetActiveWeapon(wep)
-		end)
-	end, 1, "mupgrade", 3, "Battle Axe Upgrade", {
-		"Clawhammer Upgrade", "Crowbar Upgrade",
-	})
+	end, 3, "silencer", 1, "Silencer")
 
 ZShelter.AddSkills(ClassName, "OnDealingDamage",
 	function(attacker, victim, dmginfo)
@@ -174,26 +123,8 @@ ZShelter.AddSkills(ClassName, "OnDealingDamage",
 		end
 	end,
 	function(player, current)
-		player:SetNWFloat("DTChance", player:GetNWFloat("DTChance", 0) + 25)
+		player:SetNWFloat("DTChance", player:GetNWFloat("DTChance", 0) + 10)
 	end, 2, "dtap", 3, "Double Tap")
-
-ZShelter.AddSkills(ClassName, "OnMeleeDamage",
-	function(attacker, victim, dmginfo, melee2)
-		if(!victim:IsNPC() && !victim:IsNextBot()) then return end
-		if(melee2) then
-			victim:NextThink(CurTime() + 0.75)
-			if(SERVER) then
-				victim:ClearGoal()
-			end
-			attacker:EmitSound("shigure/stun_impact2.wav")
-		else
-			victim:NextThink(CurTime() + 0.2)
-			if(SERVER) then
-				victim:ClearGoal()
-			end
-			attacker:EmitSound("shigure/stun_impact1.wav")
-		end
-	end, nil, 1, "mstun", 3, "Melee Stunning")
 
 ZShelter.AddSkills(ClassName, nil, nil, nil, 1, "gmastery3", 3, "Advanced Gun Mastery")
 
@@ -223,15 +154,6 @@ ZShelter.AddSkills(ClassName, "OnSecondPassed",
 				util.Effect("zshelter_ampbuff", e)
 		end)
 	end, 2, "groupdmg", 3, "Damage Amplifier")
-
-ZShelter.AddSkills(ClassName, "OnEnemyKilled",
-	function(player, victim, killedbyturrets)
-		if(killedbyturrets) then return end
-		player:SetHealth(math.min(player:Health() + (player:GetNWInt("VampireHeal", 5)), player:GetMaxHealth()))
-	end,
-	function(player)
-		player:SetNWFloat("VampireHeal", player:GetNWFloat("VampireHeal", 0) + 5)
-	end, 2, "vamp", 3, "Vampire")
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)
@@ -397,7 +319,7 @@ ZShelter.AddSkills(ClassName, "CreateMove",
 			cmd:SetViewAngles(lerpangle)
 			local eyetrace = {
 				start = eyepos,
-				endpos = eyepos + lerpangle:Forward() * 32767,
+				endpos = eyepos + cmd:GetViewAngles():Forward() * 32767,
 				mask = MASK_SHOT,
 				filter = ply,
 			}
@@ -447,75 +369,6 @@ if(CLIENT) then
 		end
 	end)
 end
-
-local ShieldMat1 = Material("zsh/buffs/shield_1.png")
-local ShieldMat2 = Material("zsh/buffs/shield_2.png")
-local ShieldMat3 = Material("zsh/buffs/shield_3.png")
-ZShelter.AddSkills(ClassName, "MultipleHook",
-	{
-		OnSecondPassed = function(player)
-			if((player.NextShieldTime || 0) > CurTime()) then return end
-			if(!IsValid(player.ShieldEntity)) then
-				player:SetNWInt("ZShelter_ShieldState", 1)
-				player.ShieldEntity = ents.Create("obj_combat_shield")
-				player.ShieldEntity:SetOwner(player)
-				player.ShieldEntity:Spawn()
-				player.NextShieldTime = CurTime() + 8
-				sound.Play("npc/scanner/combat_scan5.wav", player:GetPos(), 100, 100, 1)
-				return
-			else
-				if(!player:Alive()) then
-					player.ShieldEntity:Remove()
-					player.ShieldEntity = nil
-					player:SetNWInt("ZShelter_ShieldState", 0)
-					return
-				end
-			end
-			if(player:GetNWInt("ZShelter_ShieldState", 0) < player:GetNWInt("MaximumShieldCount", 0)) then
-				sound.Play("npc/scanner/combat_scan5.wav", player:GetPos(), 100, 100, 1)
-				player:SetNWInt("ZShelter_ShieldState", math.min(player:GetNWInt("ZShelter_ShieldState", 0) + 1, player:GetNWInt("MaximumShieldCount", 0)))
-			end
-			player.NextShieldTime = CurTime() + 8
-		end,
-		OnTakingDamage = function(attacker, victim, dmginfo)
-			local state = victim:GetNWInt("ZShelter_ShieldState", 0)
-			local block = false
-			if(state > 0) then
-				local mul = 0.07 + math.max((state - 1) * 0.03, 0)
-				victim:SetHealth(math.min(victim:GetMaxHealth(), victim:Health() + (victim:GetMaxHealth() * mul)))
-				sound.Play("weapons/airboat/airboat_gun_energy"..math.random(1, 2)..".wav", victim:GetPos(), 100, 100, 1)
-				block = true
-			end
-			state = math.max(state - 1, 0)
-			victim:SetNWInt("ZShelter_ShieldState", state)
-			if(state <= 0 && IsValid(victim.ShieldEntity)) then
-				sound.Play("weapons/physcannon/energy_disintegrate4.wav", victim:GetPos(), 100, 100, 1)
-				victim.ShieldEntity:Remove()
-				victim.NextShieldTime = CurTime() + 5
-			end
-			return block
-		end,
-		OnHUDPaint = function()
-			local ply = LocalPlayer()
-			if(!ply:Alive()) then return end
-			local state = ply:GetNWInt("ZShelter_ShieldState", 0)
-			if(state <= 0) then return end
-			if(state == 1) then
-				surface.SetMaterial(ShieldMat1)
-			elseif(state == 2) then
-				surface.SetMaterial(ShieldMat2)
-			else
-				surface.SetMaterial(ShieldMat3)
-			end
-			local x, y = ScrW() * 0.5, ScrH() * 0.6
-			local size = ScreenScaleH(32)
-			surface.SetDrawColor(255, 255, 255, 255)
-			surface.DrawTexturedRect(x - size * 0.5, y - size * 0.5, size, size)
-		end,
-	},
-	function(player, current)
-		player:SetNWInt("MaximumShieldCount", current)
-	end, 3, "shieldabs", 3, "Layered Defense")
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)

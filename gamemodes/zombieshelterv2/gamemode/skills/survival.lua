@@ -127,12 +127,12 @@ ZShelter.AddSkills(ClassName, nil, nil,
 
 ZShelter.AddSkills(ClassName, "OnGatheringResources",
 	function(player, resource, type, amount, full)
-		local regen = player:GetNWInt("SanityRecoverAmount", 3)
+		local regen = player:GetNWFloat("SanityRecoverAmount", 1)
 		player:SetNWInt("Sanity", math.min(player:GetNWInt("Sanity", 100) + regen, 100))
 	end,
 	function(player, current)
-		player:SetNWInt("SanityRecoverAmount", current * 3)
-	end, 3, "gsa", 2, "Sanity Recovering")
+		player:SetNWFloat("SanityRecoverAmount", current * 1)
+	end, 2, "gsa", 2, "Sanity Recovering")
 
 --[[
 ZShelter.AddSkills(ClassName, nil, nil,

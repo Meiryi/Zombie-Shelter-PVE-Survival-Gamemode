@@ -29,11 +29,12 @@ end
 local size = 24
 local bbox = Vector(size, size, 2)
 function ZShelter.CreateControllingGUI()
-	local scl = 0.15
+	local scl = 0
 	local ui = ZShelter.CreatePanel(nil, ScrW() * scl, ScrH() * scl, ScrW() * (1 - scl * 2), ScrH() * (1 - scl * 2), Color(100, 100, 100, 255))
 	local xscale, yscale =  1920 / ScrW(), 1080 / ScrH()
 	local md = false
 	local size = ScreenScaleH(32)
+	local offset = Vector(0, 0, 0)
 	local alpha = 0
 	ZShelter.NextFire = 0
 	ui:SetCursor("blank")
@@ -50,8 +51,21 @@ function ZShelter.CreateControllingGUI()
 			mask = MASK_SOLID_BRUSHONLY,
 		}
 		local camvec = util.TraceLine(tr).HitPos
+		if(input.IsKeyDown(KEY_W)) then
+			offset.x = offset.x + ZShelter.GetFixedValue(16)
+		end
+		if(input.IsKeyDown(KEY_A)) then
+			offset.y = offset.y + ZShelter.GetFixedValue(16)
+		end
+		if(input.IsKeyDown(KEY_S)) then
+			offset.x = offset.x - ZShelter.GetFixedValue(16)
+		end
+		if(input.IsKeyDown(KEY_D)) then
+			offset.y = offset.y - ZShelter.GetFixedValue(16)
+		end
+		local scale = 3.85
 		render.RenderView({
-			origin =	camvec,
+			origin =	camvec + offset,
 			angles = Angle(90, 0, 0),
 			x = x, y = y,
 			fov = 85,
@@ -60,7 +74,6 @@ function ZShelter.CreateControllingGUI()
 			zfar = 32767,
 		})
 		local aimx, aimy = ui:CursorPos()
-		local scale = 3.85
 		aimx = aimx - ui:GetWide() * 0.5
 		aimy = aimy - ui:GetTall() * 0.5
 		local aimstart = camvec - Vector((aimy * yscale) * scale, (aimx * xscale) * scale, 0)

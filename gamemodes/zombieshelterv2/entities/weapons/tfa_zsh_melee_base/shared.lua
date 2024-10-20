@@ -212,7 +212,7 @@ function SWEP:ApplyForce(ent, force, posv)
 	if not IsValid(ent) then return end
 
 	if ent:IsPlayer() or ent:IsNPC() then
-		ent:SetVelocity(force * 0.1 * lim_up_vec)
+		--ent:SetVelocity(force * 0.1 * lim_up_vec)
 	end
 
 	if ent:GetPhysicsObjectCount() > 1 then
@@ -262,6 +262,11 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
             return
         end
 	end
+    if(ply.Callbacks && ply.Callbacks.OnMeleeDamage) then
+        for k,v in pairs(ply.Callbacks.OnMeleeDamage) do
+            v(ply, ent, dmginfo, melee2)
+        end
+    end
 	local dam, force = dmginfo:GetBaseDamage(), dmginfo:GetDamageForce()
 	dmginfo:SetDamagePosition(trace.HitPos)
 	dmginfo:SetReportedPosition(trace.StartPos)
@@ -271,13 +276,8 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
 	-- dmginfo:SetAttacker( self:GetOwner() )
 	self:ApplyForce(trace.Entity, dmginfo:GetDamageForce(), trace.HitPos)
 	dmginfo:SetDamage(dam)
-	dmginfo:SetDamageForce(force)
+	-- dmginfo:SetDamageForce(force)
 	-- dmginfo:SetAttacker( self:GetOwner() )
-    if(ply.Callbacks && ply.Callbacks.OnMeleeDamage) then
-        for k,v in pairs(ply.Callbacks.OnMeleeDamage) do
-            v(ply, ent, dmginfo, melee2)
-        end
-    end
 end
 
 function SWEP:SmackEffect(trace, dmg)
@@ -576,6 +576,40 @@ function SWEP:ArccwStyleMelee(attk)
     if(IsValid(tr.Entity)) then
     	local ent = tr.Entity
     	if(ent:IsPlayer() || ent:IsNPC()) then
+
+    		if(self.AOEDamage) then
+				attk.maxhits = attk.maxhits || 3
+				local range = self.AOERange_Primary || 8
+				if(self.Melee2Attack) then
+					range = self.AOERange_Secondary || 16
+				end
+				local targets = {}
+				local c = 0
+				local origin = tr.HitPos
+				local bounds = Vector(range, range, 86)
+				for _, ent in pairs(ents.FindInBox(origin - bounds, origin + bounds)) do
+					if(c >= attk.maxhits) then break end
+					if(!IsValid(ent) || ent == self.Owner || (!ent:IsPlayer() && !ent:IsNPC() && !ent:IsNextBot()) || targets[ent:EntIndex()]) then continue end
+					targets[ent:EntIndex()] = true
+					c = c + 1
+				end
+				targets[tr.Entity:EntIndex()] = nil
+				for k,v in pairs(targets) do
+					--[[
+						trace.StartPos
+						trace.Entity
+						trace.HitPos
+					]]
+					local ent = Entity(k)
+					if(!IsValid(ent)) then continue end
+					local trace = {
+						StartPos = self.Owner:EyePos(),
+						Entity = ent,
+						HitPos = ent:GetPos() + ent:OBBCenter()
+					}
+					self:ApplyDamage(trace, damage, attk)
+				end
+			end
     		if(ent:GetNWBool("IsBuilding")) then
     			self:EmitSoundNet(attk.hitworld)
     		else
@@ -598,6 +632,12 @@ function SWEP:ArccwStyleMelee(attk)
 end
 
 function SWEP:Strike(attk, precision)
+	local ply = self.Owner
+    if(ply.Callbacks && ply.Callbacks.OnMeleeStrike) then
+        for k,v in pairs(ply.Callbacks.OnMeleeStrike) do
+            v(ply, self.Melee2Attack)
+        end
+    end
 	if(self.OldStyleHit) then
 			self:ArccwStyleMelee(attk)
 		return

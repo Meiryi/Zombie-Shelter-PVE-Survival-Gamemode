@@ -60,7 +60,6 @@ CreateConVar("zshelter_debug_disable_building_upgrade_checks", 0, FCVAR_NOTIFY +
 CreateConVar("zshelter_debug_disable_craft_checks", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Disable crafting checks", 0, 1)
 CreateConVar("zshelter_debug_disable_building_damage", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Disable damage to buildings", 0, 1)
 CreateConVar("zshelter_debug_instant_build", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Instant build stuffs", 0, 1)
-CreateConVar("zshelter_debug_damage_number", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Enable damage number", 0, 1)
 
 CreateConVar("zshelter_server_category_name", "", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Name for server listing category, leave empty for default one")
 
@@ -68,6 +67,7 @@ if(CLIENT) then
 	CreateConVar("zshelter_enable_hud", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable zombie shelter hud?")
 	CreateConVar("zshelter_client_enable_music", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable music?")
 	CreateConVar("zshelter_enable_menu_keys", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable keys to toggle menu?")
+	CreateConVar("zshelter_damage_number", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable damage number", 0, 1)
 end
 
 if(GetConVar("zshelter_server_category_name"):GetString() != "") then
@@ -212,6 +212,8 @@ hook.Add( "PlayerNoClip", "ZShelter_Noclip", function(ply, desiredNoClipState)
 	return SBoxEnabled()
 end)
 
+
+local cvar = GetConVar("zshelter_friendly_fire")
 hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 	if(ent1.OnlyCollideToBarricade) then
 		if(!ent2.IsPlayerBarricade) then
@@ -234,6 +236,9 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 				return true
 			end
 		end
+	end
+	if(cvar:GetInt() == 0) then
+		if(ent1:IsPlayer() && ent2:IsPlayer()) then return false end
 	end
 	if(ent1:GetNWBool("IsTurret", false) && ent2:IsPlayer()) then
 		return false

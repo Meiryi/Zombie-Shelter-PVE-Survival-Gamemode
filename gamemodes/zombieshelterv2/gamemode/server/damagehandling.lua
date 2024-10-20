@@ -24,6 +24,16 @@ function ZShelter.DealNoScaleDamage(attacker, victim, damage)
 	victim:TakeDamageInfo(dmginfo)
 end
 
+function ZShelter.ApplyDamageMul(ent, id, mul, time)
+	if(!ent.DamageMultipliers) then
+		ent.DamageMultipliers = {}
+	end
+	ent.DamageMultipliers[id] = {
+		mul = mul,
+		time = CurTime() + time,
+	}
+end
+
 hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo)
 	local attacker = dmginfo:GetAttacker()
 	local damage = dmginfo:GetDamage()
@@ -38,6 +48,19 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 			phys:EnableMotion(false)
 		end
 		return true
+	end
+
+	if(attacker.DamageMultipliers) then
+		local mul = 1
+		for k,v in pairs(attacker.DamageMultipliers) do
+			if(v.time < CurTime()) then
+				attacker.DamageMultipliers[k] = nil
+				continue
+			end
+			mul = mul * v.mul
+		end
+		dmginfo:ScaleDamage(mul)
+		damage = dmginfo:GetDamage()
 	end
 
 	if(attacker:GetClass() == "entityflame" && dmginfo:IsDamageType(DMG_BURN) && IsValid(target.LastIgniteTarget)) then
@@ -106,8 +129,8 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	-- Player to anything (exlcuding turrets)
 
 	if(attacker:IsPlayer() && !target.IsBuilding) then
-		if(dmginfo:GetDamageCustom() != 8 && !target.IsBoss) then
-			local wep = attacker:GetActiveWeapon()
+		local wep = attacker:GetActiveWeapon()
+		if(dmginfo:GetDamageCustom() != 8 && !target.IsBoss && (IsValid(wep) && !ZShelter.IsMeleeWeapon(wep:GetClass()))) then
 			if(IsValid(wep) && wep.DamageScaling) then
 				dmginfo:SetDamage(damage * wep.DamageScaling)
 			end
@@ -240,11 +263,9 @@ hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflict
 			v(attacker, npc, npc.AttackedByTurrets)
 		end
 	end
-	local score = math.Clamp((npc:GetMaxHealth() / 100), 1, 10)
+	local score = math.Clamp((npc:GetMaxHealth() / 100), 1, 8)
 	if(npc.AttackedByTurrets) then
 		score = math.min(math.max(1, score * 0.15), 3)
-	else
-		score = score * 2
 	end
 	attacker:AddFrags(score)
 	SetGlobalInt("TKills", GetGlobalInt("TKills", 0) + 1)
@@ -260,13 +281,19 @@ function ZShelter.SendDamage(player, eindex, damage, pos)
 end
 
 hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo, took)
-	if(!took || GetConVar("zshelter_debug_damage_number"):GetInt() == 0) then return end
+	if(!took) then return end
 	local attacker = dmginfo:GetAttacker()
 	local inflictor = dmginfo:GetInflictor()
 	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
 	local damage = dmginfo:GetDamage()
 	local pos = dmginfo:GetDamagePosition()
-	if(pos == Vector(0, 0, 0) || (IsValid(inflictor) && pos:Distance(inflictor:GetPos()) < 2)) then
+	local mins, maxs = target:GetModelBounds()
+	mins.z = 0
+	maxs.z = 0
+	local dst = mins:Distance(maxs) * 1.25
+	local p1, p2 = Vector(pos.x, pos.y, 0), inflictor:GetPos()
+	p2.z = 0
+	if(pos == Vector(0, 0, 0) || (IsValid(inflictor) && p1:Distance(p2) < dst)) then
 		pos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z * 0.5)
 	end
 	ZShelter.SendDamage(attacker, target:EntIndex(), damage, pos)

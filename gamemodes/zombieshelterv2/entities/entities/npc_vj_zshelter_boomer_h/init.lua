@@ -75,32 +75,36 @@ function ENT:SetUpGibesOnDeath(dmginfo, hitgroup)
 	--util.BlastDamage(self, self, self:GetPos(), 170, 90)
 	local dmg = 45 * (1 + ((GetConVar("zshelter_difficulty"):GetInt() - 1) * 0.055))
 	local spos, up = self:GetPos(), Vector(0, 0, 10)
-	for k,v in pairs(ents.FindInSphere(self:GetPos(), 170)) do
-		if(v:IsPlayer()) then
-			local vel = ((v:GetPos() + up) - spos)
-			vel:Normalize()
-			vel.z = math.min(vel.z, 0.25)
-			v:SetVelocity(vel * 900)
-			v:TakeDamage(30, self, self)
-			continue
-		end
-		if(!v.IsBuilding) then continue end
-		if(v.IsTrap) then
-			ZShelter.ApplyDamageFast(v, 8, true, true)
-		else
-			ZShelter.ApplyDamageFast(v, dmg, true)
+	local silenced = self:GetNWFloat("SilencedTime", 0) > CurTime()
+	if(!silenced) then
+		for k,v in pairs(ents.FindInSphere(self:GetPos(), 170)) do
+			if(v:IsPlayer()) then
+				local vel = ((v:GetPos() + up) - spos)
+				vel:Normalize()
+				vel.z = math.min(vel.z, 0.25)
+				v:SetVelocity(vel * 900)
+				v:TakeDamage(30, self, self)
+				continue
+			end
+			if(!v.IsBuilding) then continue end
+			if(v.IsTrap) then
+				ZShelter.ApplyDamageFast(v, 8, true, true)
+			else
+				ZShelter.ApplyDamageFast(v, dmg, true)
+			end
 		end
 	end
-	self:DropEf()
+	self:DropEf(silenced)
 end
 
-function ENT:DropEf()
+function ENT:DropEf(silenced)
 	if self:IsValid() == true then 
 		local ef = ents.Create("ef_zbs_boomer")
 			ef:SetPos(self:GetPos())
 			ef:SetAngles(self:GetAngles())
 			ef:Spawn()
 			ef:Activate()
+		if(silenced) then return end
 		local ef2 = ents.Create("obj_boomer_sprite")
 			ef2:SetPos(self:GetPos())
 			ef2:Spawn()

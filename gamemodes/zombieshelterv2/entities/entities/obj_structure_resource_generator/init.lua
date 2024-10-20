@@ -30,7 +30,7 @@ end
 ENT.CurTime = 0
 function ENT:Think()
 	self:SetNWInt("ProvideAmount", self.BaseResources + math.floor(0.5 * GetGlobalInt("ShelterLevel", 0)))
-	if(self.CurTime < CurTime()) then
+	if(self.CurTime < CurTime() && GetGlobalBool("GameStarted")) then
 		SetGlobalInt("Woods", math.min(GetGlobalInt("Woods", 0) + self:GetNWInt("ProvideAmount", 4), GetGlobalInt("Capacity", 32)))
 		SetGlobalInt("Irons", math.min(GetGlobalInt("Irons", 0) + self:GetNWInt("ProvideAmount", 4), GetGlobalInt("Capacity", 32)))
 		self:SetNWInt("ProvideInterval", 35 + ((player.GetCount() - 1) * 20))

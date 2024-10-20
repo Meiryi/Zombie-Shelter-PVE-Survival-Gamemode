@@ -1304,6 +1304,18 @@ ZShelter.L("#Engineer", {
 	["zh-CN"] = "工程师",
 })
 
+ZShelter.L("#Berserker", {
+	["en"] = "Berserker",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "狂戰士",
+	["zh-CN"] = "狂战士",
+})
+
 ZShelter.L("#Pistol", {
 	["en"] = "Pistol",
 	["bg"] = "Пистолет",
