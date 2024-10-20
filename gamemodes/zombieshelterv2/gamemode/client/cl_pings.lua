@@ -121,6 +121,9 @@ hook.Add("HUDPaint", "ZShelter-Pings", function()
 				ZShelter:CircleTimerAnimation(pos.x, pos.y, hpbarSize, hpbarT, fraction, Color(255 * fraction_rev, 255 * fraction, 0, data.alpha))
 				draw.DrawText(ent:Health().."/"..ent:GetMaxHealth(), "ZShelter-PingHPFont", pos.x, pos.y + hpbarSize, Color(255, 255, 255, data.alpha), TEXT_ALIGN_CENTER)
 				surface.SetMaterial(mat)
+			else
+				surface.SetDrawColor(clr.r, clr.g, clr.b, data.alpha)
+				surface.DrawTexturedRect(pos.x - size_half, pos.y - size_half, size, size)
 			end
 		else
 			surface.SetDrawColor(clr.r, clr.g, clr.b, data.alpha)
