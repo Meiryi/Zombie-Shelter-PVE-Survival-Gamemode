@@ -221,15 +221,15 @@ ZShelter.AddInfo("Damage Resistance", {
 		["de"] = "Schadensresistenz",
 	},
 	desc = {
-		["en"] = "Receives less damage from all sources, +20% per upgrade",
-		["bg"] = "Получава по-малко щети от всички източници, +20% на ъпгрейд",
-		["fr"] = "Réduit les dégâts de tout type, +20% par amélioration",
-		["tr"] = "Bütün hasar kaynaklarından daha az hasar alırsınız, yükseltme başına +%20",
-		["vi"] = "Nhận ít sát thương hơn từ tất cả các nguồn, +20% mỗi lần nâng cấp",
-		["zh-TW"] = "減少受到的傷害,每升級一次減少 20%",
-		["zh-CN"] = "减少收到的伤害, 每升一级减少 20%",
-		["ru"] = "Получаете меньше урона от всех источников, +20% за улучшение",
-		["de"] = "Erleidet weniger Schaden jeglichen Ursprungs, +20% pro Upgrade",
+		["en"] = "Receives less damage from all sources, +10% per upgrade",
+		["bg"] = "Получава по-малко щети от всички източници, +10% на ъпгрейд",
+		["fr"] = "Réduit les dégâts de tout type, +10% par amélioration",
+		["tr"] = "Bütün hasar kaynaklarından daha az hasar alırsınız, yükseltme başına +%10",
+		["vi"] = "Nhận ít sát thương hơn từ tất cả các nguồn, +10% mỗi lần nâng cấp",
+		["zh-TW"] = "減少受到的傷害,每升級一次減少 10%",
+		["zh-CN"] = "减少收到的伤害, 每升一级减少 10%",
+		["ru"] = "Получаете меньше урона от всех источников, +10% за улучшение",
+		["de"] = "Erleidet weniger Schaden jeglichen Ursprungs, +10% pro Upgrade",
 	}
 })
 
