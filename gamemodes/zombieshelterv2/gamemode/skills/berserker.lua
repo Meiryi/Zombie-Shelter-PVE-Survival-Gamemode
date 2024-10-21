@@ -122,9 +122,6 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 			else
 				victim:NextThink(CurTime() + 0.75)
 			end
-			if(SERVER) then
-				victim:ClearGoal()
-			end
 			attacker:EmitSound("shigure/stun_impact2.wav")
 		else
 			if(victim.IsBoss) then
@@ -132,11 +129,9 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 			else
 				victim:NextThink(CurTime() + 0.3)
 			end
-			if(SERVER) then
-				victim:ClearGoal()
-			end
 			attacker:EmitSound("shigure/stun_impact1.wav")
 		end
+		victim:SetPos(victim:GetPos())
 	end, nil, 1, "stunning", 3, "Melee Stunning")
 
 ZShelter.AddSkills(ClassName, "OnEnemyKilled",
@@ -177,7 +172,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 				player.ShieldEntity = ents.Create("obj_combat_shield")
 				player.ShieldEntity:SetOwner(player)
 				player.ShieldEntity:Spawn()
-				player.NextShieldTime = CurTime() + 12
+				player.NextShieldTime = CurTime() + 10
 				sound.Play("npc/scanner/combat_scan5.wav", player:GetPos(), 100, 100, 1)
 				return
 			else
@@ -192,11 +187,13 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 				sound.Play("npc/scanner/combat_scan5.wav", player:GetPos(), 100, 100, 1)
 				player:SetNWInt("ZShelter_ShieldState", math.min(player:GetNWInt("ZShelter_ShieldState", 0) + 1, player:GetNWInt("MaximumShieldCount", 0)))
 			end
-			player.NextShieldTime = CurTime() + 12
+			player.NextShieldTime = CurTime() + 10
 		end,
-		OnTakingDamage = function(attacker, victim, dmginfo)
+		OnTakingDamage = function(attacker, victim, dmginfo, skip)
 			local state = victim:GetNWInt("ZShelter_ShieldState", 0)
 			local block = false
+			local parry = victim:GetNWFloat("ParryDuration") > CurTime()
+			if(parry) then return end
 			if(state > 0) then
 				local mul = 0.07 + math.max((state - 1) * 0.03, 0)
 				victim:SetHealth(math.min(victim:GetMaxHealth(), victim:Health() + (victim:GetMaxHealth() * mul)))
@@ -209,7 +206,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 				sound.Play("weapons/physcannon/energy_disintegrate4.wav", victim:GetPos(), 100, 100, 1)
 				victim.ShieldEntity:Remove()
 			end
-			victim.NextShieldTime = CurTime() + 12
+			victim.NextShieldTime = CurTime() + 10
 			return block
 		end,
 		OnHUDPaint = function()
@@ -279,7 +276,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 	},
 	function(player, current)
 		player:SetNWFloat("ParryCoolDownTime", 3.5 - (0.25 * current))
-		player:SetNWFloat("ParryTime", 0.15 + (0.05 * current))
+		player:SetNWFloat("ParryTime", 0.2 + (0.05 * current))
 	end, 2, "parry", 3, "Parry")
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",

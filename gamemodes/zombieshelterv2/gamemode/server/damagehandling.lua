@@ -174,7 +174,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		local skip = false
 		if(target.Callbacks.OnTakingDamage) then
 			for k,v in pairs(target.Callbacks.OnTakingDamage) do
-				local ret = v(attacker, target, dmginfo)
+				local ret = v(attacker, target, dmginfo, skip)
 				if(ret) then
 					skip = ret
 				end
