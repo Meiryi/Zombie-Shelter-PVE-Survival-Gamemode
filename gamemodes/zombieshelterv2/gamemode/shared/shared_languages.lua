@@ -1089,7 +1089,7 @@ ZShelter.L("#Woods", {
 })
 
 ZShelter.L("#Irons", {
-	["en"] = "Irons",
+	["en"] = "Metals",
 	["bg"] = "Железни находища",
 	["de"] = "Eisen",
 	["fr"] = "Fers",

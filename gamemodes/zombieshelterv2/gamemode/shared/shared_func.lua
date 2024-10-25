@@ -73,7 +73,23 @@ function ZShelter.IsRequirementMeet(player, building)
 end
 
 function ZShelter.CanUpgradeTurret(ply, woods, irons)
-	return (ply:GetNWInt("Woods", 0) >= woods && ply:GetNWInt("Irons", 0) >= irons)
+	local useStorage = false
+	if(ply.Callbacks && ply.Callbacks.ShouldUseStorage) then
+		for k,v in pairs(ply.Callbacks.ShouldUseStorage) do
+			if(v(ply, {woods = woods, irons = irons})) then
+				useStorage = true
+			end
+		end
+	end
+	local canUpgrade = false
+
+	if(!useStorage) then
+		canUpgrade = (ply:GetNWInt("Woods", 0) >= woods && ply:GetNWInt("Irons", 0) >= irons)
+	else
+		canUpgrade = (GetGlobalInt("Woods", 0) >= woods && GetGlobalInt("Irons", 0) >= irons)
+	end
+
+	return canUpgrade, useStorage
 end
 
 function ZShelter.CanUpgradeShelter(level, wood, iron, power, requiredbuilds)
@@ -167,10 +183,11 @@ function ZShelter.DecompressTable(compressedData)
 	return content
 end
 
-function ZShelter.CalculateDayEXPMultiplier(day, difficulty)
-	local multiplier = math.Clamp((day) / 3, 0, 1)
-	if(day > 3) then
-		multiplier = 1 + ((day - 3) * (0.0025 * math.max(difficulty - 2, 0)))
+function ZShelter.CalculateDayEXPMultiplier(day)
+	local f = math.min(day / 3, 1)
+	local multiplier = (0.8 + math.Clamp(day * 0.05, 0, 0.85)) * f
+	if(day == 1) then
+		multiplier = 0
 	end
 	return multiplier
 end
@@ -179,14 +196,15 @@ function ZShelter.CalculateEXPMultiplier(day, difficulty)
 	local day_multiplier = ZShelter.CalculateDayEXPMultiplier(day, difficulty)
 	local difficulty_multiplier = 0
 	if(difficulty <= 3) then
-		difficulty_multiplier = 0.25 + (difficulty * 0.25)
+		difficulty_multiplier = 0.15 + (difficulty * 0.25)
 	else
-		difficulty_multiplier = 1 + ((difficulty - 3) * 0.115)
+		difficulty_multiplier = 1 + ((difficulty - 3) * 0.055)
 		if(difficulty >= ZShelter.MaximumDifficulty) then
-			difficulty_multiplier = 2
+			difficulty_multiplier = 1.5
 		end
 	end
-	return difficulty_multiplier * day_multiplier
+	local mul = ZShelter.Modifiers.GetModifierScoreMul()
+	return math.max((difficulty_multiplier * day_multiplier) * mul, 0.01)
 end
 
 function ZShelter.CalculateEXPGain(day, difficulty)

@@ -84,6 +84,8 @@ function ZShelter.InitPlayerVariables(ply)
 	ply:SetNWFloat("BuildingHPScale", 1)
 
 	ply:SetNWFloat("MovementSpeed", 250)
+
+	hook.Run("ZShelterPostPlayerInitVariables", ply)
 end
 
 hook.Add("PlayerInitialSpawn", "ZShelter-InitPlayer", function(ply)

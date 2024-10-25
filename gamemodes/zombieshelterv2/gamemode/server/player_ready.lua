@@ -78,6 +78,7 @@ function ZShelter.CheckStart()
 				v:Freeze(true)
 			end
 		end
+		ZShelter.Modifiers.ApplyModifiers()
 		timer.Simple(10, function()
 			if(#ZShelter.AiNodes <= 0) then
 				ParseFile()
@@ -113,6 +114,7 @@ function ZShelter.CheckStart()
 			ZShelter.StartedDifficulty = GetConVar("zshelter_difficulty"):GetInt()
 			SetGlobalBool("GameStarted", true)
 			SetGlobalInt("TStart", CurTime())
+			hook.Run("ZShelterGameStarted")
 		end)
 		SetGlobalBool("RunSequence", false)
 		SetGlobalBool("ReadyState", false)

@@ -120,6 +120,42 @@ surface.CreateFont("ZShelter-GameUIStatisticTextSmall", {
 	outline = false,
 })
 
+surface.CreateFont("ZShelter-GameUIModifierTitle", {
+	font = "Arial",
+	extended = false,
+	size = ScreenScaleH(20),
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
+surface.CreateFont("ZShelter-GameUIModifierDesc", {
+	font = "Arial",
+	extended = false,
+	size = ScreenScaleH(12),
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
 local devs_steamid = {
 	["76561199185181296"] = true,
 	["76561198987271516"] = true,
@@ -190,6 +226,13 @@ local serverlist = {
 		maxplayers = 10,
 	},
 }
+
+local _pnl = nil
+function ZShelter.RefreshModifierVote()
+	if(IsValid(_pnl) && _pnl.ReloadVotes) then
+		_pnl.ReloadVotes()
+	end
+end
 
 function ZShelter.ReadName()
 	local ctx = file.Read("zombie shelter v2/multiplayer/names.txt", "DATA")
@@ -350,6 +393,150 @@ local func = {
 				ui.NextReloadTime = SysTime() + 1
 			end
 			scroll.RefreshLeaderboard()
+		end,
+	},
+	{
+		title = "Modifiers",
+
+		func = function(ui)
+			local categories = {}
+			local categoryColor = {}
+			for k,v in pairs(ZShelter.Modifiers.List) do
+				if(!categories[v.category]) then
+					categories[v.category] = {}
+				end
+				categoryColor[v.category] = v.categoryColor
+				table.insert(categories[v.category], v)
+			end
+
+			local sidePanel = ZShelter.CreateScroll(ui, 0, 0, ui:GetWide() * 0.2, ui:GetTall(), Color(0, 0, 0, 0))
+			local sidepadding = ScreenScaleH(4)
+			local sidepadding2x = sidepadding * 2
+			local selectedDiff = 1
+			local colorwide = ScreenScaleH(2)
+			local gap = ScreenScaleH(2)
+			local gap1x = ScreenScaleH(1)
+			local textpadding = ScreenScaleH(12)
+			local textpadding_2 = ScreenScaleH(8)
+			local height = ScreenScaleH(32)
+			local elemTall = ScreenScaleH(52)
+			local container = ZShelter.CreatePanelContainer(ui, sidePanel:GetWide(), 0, ui:GetWide() - sidePanel:GetWide(), ui:GetTall(), Color(20, 20, 20, 255))
+			local first = true
+			local displayEXPInformation = GetConVar("zshelter_enable_ranks"):GetInt() == 1
+			local pnls = {}
+			_pnl = ui
+
+			_pnl.ReloadVotes = function()
+				for _, pnl in ipairs(pnls) do
+					pnl.AvatarLayer.Reload()
+				end
+			end
+			for category, modifiers in pairs(categories) do
+				local diffpanel = ZShelter.CreateScroll(container, 0, 0, container:GetWide(), container:GetTall(), Color(0, 0, 0, 0))
+				for _, modifier in pairs(modifiers) do
+					local pnl = ZShelter.CreatePanel(diffpanel, 0, 0, diffpanel:GetWide(), elemTall, Color(25, 25, 25, 255))
+						pnl:Dock(TOP)
+						pnl:DockMargin(0, 0, 0, sidepadding)
+						local append = ""
+						if(displayEXPInformation) then
+							if(modifier.scoreMul > 1) then
+								append = "  (+"..((modifier.scoreMul - 1) * 100).."% EXP)"
+							else
+								append = "  (-"..((1 - modifier.scoreMul) * 100).."% EXP)"
+							end
+						end
+						local _, _, title = ZShelter.CreateLabel(pnl, sidepadding, sidepadding, (modifier.title || "NULL")..append, "ZShelter-GameUIModifierTitle", Color(255, 255, 255, 255))
+						local _, _, desc = ZShelter.CreateLabel(pnl, sidepadding, 0, modifier.desc || "NULL", "ZShelter-GameUIModifierDesc", Color(255, 255, 255, 255))
+						desc:SetY(pnl:GetTall() - desc:GetTall() - textpadding_2)
+
+						local stringIndex = modifier.title.."Voted"
+						pnl.AvatarLayer = ZShelter.CreatePanel(pnl, 0, 0, pnl:GetWide(), pnl:GetTall(), Color(0, 0, 0, 0))
+						pnl.AvatarLayer.Votes = 0
+						pnl.AvatarLayer.Reload = function(first)
+							pnl.AvatarLayer:Clear()
+							pnl.AvatarLayer.Votes = 0
+
+							local size = ScreenScaleH(18)
+							local nextX = pnl:GetWide() - textpadding - size
+							local Y = pnl:GetTall() - size - sidepadding
+							if(first) then
+								for _, ply in ipairs(player.GetAll()) do
+									if(!ply:GetNWBool(stringIndex)) then continue end
+									local avatar = ZShelter.CircleAvatar(pnl.AvatarLayer, nextX, Y, size, size, ply, 64)
+									nextX = nextX - size - sidepadding
+									pnl.AvatarLayer.Votes = pnl.AvatarLayer.Votes + 1
+								end
+							else
+								if(!ZShelter.Modifiers.VoteList[modifier.title]) then return end
+								for index, voted in pairs(ZShelter.Modifiers.VoteList[modifier.title]) do
+									local ply = Entity(index)
+									if((!IsValid(ply) && !ply:IsPlayer()) || !voted) then continue end
+									local avatar = ZShelter.CircleAvatar(pnl.AvatarLayer, nextX, Y, size, size, ply, 64)
+									nextX = nextX - size - sidepadding
+									pnl.AvatarLayer.Votes = pnl.AvatarLayer.Votes + 1
+								end
+							end
+						end
+
+						pnl.AvatarLayer.Reload(true)
+
+						local btn = ZShelter.InvisButton(pnl, 0, 0, pnl:GetWide(), pnl:GetTall(), function()
+							net.Start("ZShelter_SendVoteModifiers")
+							net.WriteString(modifier.title)
+							net.SendToServer()
+						end)
+						btn.Alpha = 0
+						btn.Paint = function()
+							if(btn:IsHovered()) then
+								btn.Alpha = math.Clamp(btn.Alpha + ZShelter.GetFixedValue(2), 0, 20)
+							else
+								btn.Alpha = math.Clamp(btn.Alpha - ZShelter.GetFixedValue(2), 0, 20)
+							end
+							draw.RoundedBox(0, 0, 0, btn:GetWide(), btn:GetTall(), Color(255, 255, 255, btn.Alpha))
+							if(pnl.AvatarLayer.Votes > 0 && pnl.AvatarLayer.Votes >= math.Round(player.GetCount() * 0.5)) then
+								surface.SetDrawColor(255, 255, 255, 255)
+								surface.DrawOutlinedRect(0, 0, btn:GetWide(), btn:GetTall(), gap1x)
+							else
+								local required = math.Round(player.GetCount() * 0.5) - pnl.AvatarLayer.Votes
+								draw.DrawText("[-"..required.."]", "ZShelter-GameUIDescription", btn:GetWide() - textpadding, sidepadding, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT)
+							end
+						end
+
+					table.insert(pnls, pnl)
+				end
+
+				container.AddPanel(diffpanel)
+				if(first) then
+					selectedDiff = category
+					container.CurrentPanel = diffpanel
+					first = false
+				end
+
+				local panel = ZShelter.CreatePanel(sidePanel, 0, 0, sidePanel:GetWide(), height, Color(25, 25, 25, 255))
+					panel:Dock(TOP)
+					panel:DockMargin(0, 0, 0, gap)
+					panel.AvatarLayer = ZShelter.CreatePanel(panel, 0, 0, panel:GetWide(), panel:GetTall(), Color(0, 0, 0, 0))
+					local _, _, dif = ZShelter.CreateLabel(panel, sidepadding, panel:GetTall() / 2, category, "ZShelter-SummeryButton", Color(255, 255, 255, 255))
+					dif:CentVer()
+					local color = categoryColor[category] || Color(255, 255, 255, 255)
+					local wide = 0
+					local btn = ZShelter.InvisButton(panel, 0, 0, panel:GetWide(), panel:GetTall(), function()
+						container.CurrentPanel = diffpanel
+						selectedDiff = category
+					end)
+					panel.Paint = function()
+						draw.RoundedBox(0, 0, 0, panel:GetWide(), panel:GetTall(), Color(30, 30, 30, 255))
+						draw.RoundedBox(0, 0, 0, colorwide, panel:GetTall(), color)
+						if(btn:IsHovered() || selectedDiff == category) then
+							wide = math.Clamp(wide + ZShelter.GetFixedValue((panel:GetWide() - wide) * 0.15), 0, panel:GetWide())
+						else
+							wide = math.Clamp(wide - ZShelter.GetFixedValue(wide * 0.15), 0, panel:GetWide())
+						end
+						surface.SetDrawColor(color.r, color.g, color.b, 80)
+						surface.SetMaterial(fade)
+						surface.DrawTexturedRect(0, 0, wide, panel:GetTall())
+					end
+				end
 		end,
 	},
 	{

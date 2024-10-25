@@ -96,17 +96,17 @@ function ZShelter.ReloadLeaderboard()
 end
 
 hook.Add("ZShelter-DaySwitch", "ZShelter-GainEXP", function()
-	if(!ZShelter.ShouldSend()) then return end
-	local difficulty = ZShelter.StartedDifficulty || 1
-	local day = GetGlobalInt("Day", 0)
-	local expGain = ZShelter.CalculateEXPGain(day, difficulty)
+	--if(!ZShelter.ShouldSend()) then return end
+	local difficulty = GetConVar("zshelter_difficulty"):GetInt() || 1
+	local day = math.max(GetGlobalInt("Day", 0) - 1, 1)
+	local scl = ZShelter.CalculateEXPMultiplier(day, difficulty)
 	for k,v in ipairs(player.GetAll()) do
 		if(!v.LastDayContribution) then
 			v.LastDayContribution = 0
 		end
 		local continute = math.max(v:Frags() - v.LastDayContribution, 0)
-		local exp = math.floor(continute * 0.75)
-		v:SetNWInt("ZShelterEXP", v:GetNWInt("ZShelterEXP", 0) + exp + expGain)
+		local exp = math.floor(continute * 0.5)
+		v:SetNWInt("ZShelterEXP", v:GetNWInt("ZShelterEXP", 0) + math.floor(exp * scl))
 		ZShelter.WritePlayerEXP(v, day, difficulty)
 		v.LastDayContribution = v:Frags()
 	end

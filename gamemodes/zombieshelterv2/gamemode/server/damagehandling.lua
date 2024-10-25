@@ -24,13 +24,14 @@ function ZShelter.DealNoScaleDamage(attacker, victim, damage)
 	victim:TakeDamageInfo(dmginfo)
 end
 
-function ZShelter.ApplyDamageMul(ent, id, mul, time)
+function ZShelter.ApplyDamageMul(ent, id, mul, time, infinite)
 	if(!ent.DamageMultipliers) then
 		ent.DamageMultipliers = {}
 	end
 	ent.DamageMultipliers[id] = {
 		mul = mul,
 		time = CurTime() + time,
+		infinite = infinite,
 	}
 end
 
@@ -53,7 +54,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	if(attacker.DamageMultipliers) then
 		local mul = 1
 		for k,v in pairs(attacker.DamageMultipliers) do
-			if(v.time < CurTime()) then
+			if(v.time < CurTime() && !v.infinite) then
 				attacker.DamageMultipliers[k] = nil
 				continue
 			end

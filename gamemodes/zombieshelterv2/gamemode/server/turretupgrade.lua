@@ -20,9 +20,15 @@ net.Receive("ZShelter-UpgradeTurret", function(len, ply)
 	local building = net.ReadEntity()
 	if(!building:GetNWBool("Upgradable", false) || building:GetNWInt("UpgradeCount", 0) >= building:GetNWInt("MaxUpgrade", 2)) then return end
 	local req_woods, req_irons = math.floor(math.max(building:GetNWInt("Woods", 0), 1)), math.floor(math.max(building:GetNWInt("Irons", 0) * 0.5, 1))
-	if(GetConVar("zshelter_debug_disable_building_upgrade_checks"):GetInt() == 0 && !ZShelter.CanUpgradeTurret(ply, req_woods, req_irons)) then return end
-	ply:SetNWInt("Woods", math.max(ply:GetNWInt("Woods", 0) - req_woods, 0))
-	ply:SetNWInt("Irons", math.max(ply:GetNWInt("Irons", 0) - req_irons, 0))
+	local canUpgrade, useStorage = ZShelter.CanUpgradeTurret(ply, req_woods, req_irons)
+	if(GetConVar("zshelter_debug_disable_building_upgrade_checks"):GetInt() == 0 && !canUpgrade) then return end
+	if(!useStorage) then
+		ply:SetNWInt("Woods", math.max(ply:GetNWInt("Woods", 0) - req_woods, 0))
+		ply:SetNWInt("Irons", math.max(ply:GetNWInt("Irons", 0) - req_irons, 0))
+	else
+		SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - req_woods, 0))
+		SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - req_irons, 0))
+	end
 
 	if(!building.AttackDamage) then building.AttackDamage = 0 end
 

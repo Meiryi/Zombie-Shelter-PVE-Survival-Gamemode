@@ -178,12 +178,12 @@ hook.Add("Think", "ZShelter-Think", function()
 				end
 				if(!GetGlobalBool("Night")) then
 					ZShelter.PlayMusic(GetConVarString("zshelter_music_night"))
-					SetGlobalInt("Time", 100 + (GetConVar("zshelter_difficulty"):GetInt() * 5))
+					SetGlobalInt("Time", (100 + (GetConVar("zshelter_difficulty"):GetInt() * 5)) * GetGlobalFloat("TimeMul", 1))
 					SetGlobalBool("Night", true)
 					ZShelter.OnNightSwitch()
 				else
 					SetGlobalInt("Day", GetGlobalInt("Day", 1) + 1)
-					SetGlobalInt("Time", 240 - (GetConVar("zshelter_difficulty"):GetInt() * 5))
+					SetGlobalInt("Time", (240 - (GetConVar("zshelter_difficulty"):GetInt() * 5)) * GetGlobalFloat("TimeMul", 1))
 					SetGlobalBool("Night", false)
 					ZShelter.OnDayPassed()
 				end

@@ -257,7 +257,7 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 		entity.olen = math.Clamp(entity.olen + ZShelter.GetFixedValue((overheal - entity.olen) * 0.1), 0, maxW)
 		draw_RoundedBox(0, startX, drawY, entity.olen, hpbar, Color(40, 240, 230, 255))
 		if(entity:GetNWBool("Upgradable", false) && entity:GetNWBool("Completed", false) && entity:GetNWInt("UpgradeCount", 0) < entity:GetNWInt("MaxUpgrade", 2)) then
-			local fraction = math.Clamp(CurTime() - upgradeHoldTime, 0, 1)
+			local fraction = math.Clamp((CurTime() - upgradeHoldTime) * 2, 0, 1)
 			if(fraction == 1) then
 				net.Start("ZShelter-UpgradeTurret")
 				net.WriteEntity(entity)

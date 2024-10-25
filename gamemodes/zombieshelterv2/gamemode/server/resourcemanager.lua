@@ -74,6 +74,7 @@ end
 
 function ZShelter.SpawnResources(amount)
 	if(table.Count(ZShelter.ResourceList) >= 75) then return end
+	amount = math.floor(amount * GetGlobalFloat("ResourceMul", 1))
 	if(#ZShelter.ResourceSpawnPoint <= 0) then -- Something goes very wrong
 		ZShelter.SetupSpawnPoints()
 	end
@@ -128,21 +129,22 @@ function ZShelter.SpawnLootbox()
 		ZShelter.SetupSpawnPoints()
 	end
 
-	local pos = ZShelter.ResourceSpawnPoint[math.random(1, #ZShelter.ResourceSpawnPoint)]
-	if(!pos) then return end
-	local amount = math.random(1, 5)
-	local type = "obj_resource_lootbox"
-	local res = ents.Create(type)
-		res:SetPos(pos)
-		res:SetAngles(Angle(0, math.random(-180, 180), 0))
-		res:Spawn()
-		res:SetNWBool("IsResource", true)
-		res.NextRemoveDay = GetGlobalInt("Day", 1) + 1
-		res.IsResource = true
-		res.IsLootbox = true
+	for i = 1, GetGlobalInt("SkillBoxAmount", 1) do
+		local pos = ZShelter.ResourceSpawnPoint[math.random(1, #ZShelter.ResourceSpawnPoint)]
+		if(!pos) then return end
+		local amount = math.random(1, 5)
+		local type = "obj_resource_lootbox"
+		local res = ents.Create(type)
+			res:SetPos(pos)
+			res:SetAngles(Angle(0, math.random(-180, 180), 0))
+			res:Spawn()
+			res:SetNWBool("IsResource", true)
+			res.NextRemoveDay = GetGlobalInt("Day", 1) + 1
+			res.IsResource = true
+			res.IsLootbox = true
 
-	ZShelter.ResourceList[res:EntIndex()] = res
-
+		ZShelter.ResourceList[res:EntIndex()] = res
+	end
 end
 
 local rand = 400

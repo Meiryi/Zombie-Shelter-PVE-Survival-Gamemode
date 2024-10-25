@@ -41,6 +41,9 @@ function ZShelter.AddWinCount(day, diff)
 	if(!ZShelter.ShouldSend()) then return end
 	day = math.Clamp(day, 1, 31)
 	diff = math.Clamp(diff, 1, ZShelter.MaximumDifficulty)
+	if(diff >= ZShelter.MaximumDifficulty - 2 && ZShelter.Modifiers.HasEasyMode) then
+		return
+	end
 	HTTP({
 		failed = function(reason)
 		end,

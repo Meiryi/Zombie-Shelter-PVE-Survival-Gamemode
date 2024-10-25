@@ -248,10 +248,11 @@ function ZShelter.FilteEnemy(ignoreDay)
 	local diffScale = (1 + ((difficulty - 1) * 0.02))
 	local day = GetGlobalInt("Day", 0)
 	local bossday = -65536
+	local fwd = GetGlobalInt("EnemySpawnForwardDay", 0)
 	for k,v in pairs(ZShelter.EnemyConfig) do
 		if(v.min_difficulty > difficulty) then continue end
 		if(v.max_difficulty && v.max_difficulty < difficulty) then continue end -- check it for backward compatibility
-		if(!ignoreDay && v.day > day) then continue end
+		if(!ignoreDay && v.day > day + fwd) then continue end
 		if(ignoreDay) then
 			if(v.end_day != -1) then continue end
 		end
@@ -401,14 +402,14 @@ function ZShelter.CalcSpawnAmount_Debug(day, diff, ply)
 	local day = day
 	local diffScale = 1 + (diff * 1.25)
 	local plyScale = 1 + ((ply - 1) * 0.15)
-	return math.max(math.floor((6 + ((day * 0.34) * diffScale)) * plyScale), 1) -- make sure it's more than 0
+	return math.max(math.floor((6 + ((day * 0.34) * diffScale)) * plyScale), 1) * GetGlobalFloat("EnemySpawnMul", 1) -- make sure it's more than 0
 end
 
 function ZShelter.CalcSpawnAmount()
 	local day = GetGlobalInt("Day", 1)
 	local diffScale = 1 + (GetConVar("zshelter_difficulty"):GetInt() * 1.25)
 	local plyScale = 1 + ((player.GetCount() - 1) * 0.15)
-	return math.max(math.floor((6 + ((day * 0.34) * diffScale)) * plyScale), 1) -- make sure it's more than 0
+	return math.max(math.floor((6 + ((day * 0.34) * diffScale)) * plyScale), 1) * GetGlobalFloat("EnemySpawnMul", 1) -- make sure it's more than 0
 end
 
 function ZShelter.CalcMaxAmount_Debug(day)
@@ -659,7 +660,7 @@ function ZShelter.CalcSpawnTime(day, diff)
 	if(diff >= 7) then
 		t = diff * 0.15
 	end
-	return math.max((((30 - diff) - (day * (diff * 0.45))) * scaling) - t, 1)
+	return math.max((((30 - diff) - (day * (diff * 0.45))) * scaling) - t, 1) * GetGlobalFloat("EnemySpawnTimeMul", 1)
 end
 
 local dayTimer = 0
