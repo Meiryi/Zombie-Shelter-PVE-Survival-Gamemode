@@ -36,6 +36,7 @@ SWEP.AOERange_Primary = 20
 SWEP.AOERange_Secondary = 40
 SWEP.AllowSwitchAttack = false
 SWEP.GatheringAmount = 2
+SWEP.KnockbackForce = 1500
 
 SWEP.Attachments = {
     [1] = { atts = { "cso_skull9blood"} },
@@ -97,7 +98,7 @@ SWEP.Primary.Attacks = {
 		['act'] = ACT_VM_PRIMARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 220, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(0,0,-90), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 500, --This isn't overpowered enough, I swear!!
+		['dmg'] = 800, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = bit.bor(DMG_SLASH,DMG_ALWAYSGIB), --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 1, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -118,7 +119,7 @@ SWEP.Secondary.Attacks = {
 		['act'] = ACT_VM_SECONDARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 220, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-180,0,0), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 300, --Nope!! Not overpowered!! B-baka!!
+		['dmg'] = 250, --Nope!! Not overpowered!! B-baka!!
 		['dmgtype'] = bit.bor(DMG_SLASH,DMG_ALWAYSGIB), --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 1, --Delay
 		['spr'] = true, --Allow attack while sprinting?

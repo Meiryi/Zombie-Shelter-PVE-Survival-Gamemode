@@ -2,12 +2,33 @@ util.AddNetworkString("ZShelter_StartMortarController")
 util.AddNetworkString("ZShelter_EndMortarController")
 util.AddNetworkString("ZShelter_SendManualAttack")
 util.AddNetworkString("ZShelter_SyncFirerateTimer")
+util.AddNetworkString("ZShelter_ManualAim")
+
+function ZShelter.SyncManualAimSpot(ply, mortar)
+	net.Start("ZShelter_ManualAim")
+	net.WriteEntity(mortar)
+	net.WriteVector(mortar:GetNWVector("ManualAimPos", Vector(0, 0, 0)))
+	net.Send(ply)
+end
+
+net.Receive("ZShelter_ManualAim", function(len, ply)
+	local ent = net.ReadEntity()
+	local vec = net.ReadVector()
+	if(!IsValid(ent) || ent != ply.ControllingMortar) then return end
+	if(ent:GetNWVector("ManualAimPos", Vector(0, 0, 0)) != Vector(0, 0, 0)) then
+		ply.ControllingMortar:SetNWVector("ManualAimPos", Vector(0, 0, 0))
+	else
+		ply.ControllingMortar:SetNWVector("ManualAimPos", vec)
+	end
+end)
 
 function ZShelter.SetControllingMortar(ply, mortar)
 	mortar.CurrentController = ply
 	ply.ControllingMortar = mortar
 	net.Start("ZShelter_StartMortarController")
+	net.WriteEntity(mortar)
 	net.Send(ply)
+	ZShelter.SyncManualAimSpot(ply, mortar)
 end
 
 function ZShelter.UnSetControllingMortar(ply, mortar)

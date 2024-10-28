@@ -98,6 +98,7 @@ function ZShelterVisible_Vec(self, vec, target)
 		endpos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z / 2),
 		filter = {self, target},
 		mask = MASK_SHOT,
+		collisiongroup = COLLISION_GROUP_NPC_SCRIPTED,
 	}
 	local ret = util.TraceLine(tr)
 	local ent = ret.Entity

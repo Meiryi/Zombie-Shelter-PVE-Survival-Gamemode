@@ -49,7 +49,7 @@ function ZShelter.ConvertConfigToCode()
 	SetClipboardText(output)
 end
 
-function ZShelter.AddItem(category, class, title, woods, irons, damage, no_ammo_supply, requiredskills, icon, volume, ammocapacity, ammoregen, shelterlevel)
+function ZShelter.AddItem(category, class, title, woods, irons, damage, no_ammo_supply, requiredskills, icon, volume, ammocapacity, ammoregen, shelterlevel, requiredLevel)
 	table.insert(ZShelter.ItemConfig, {
 		category = category,
 		title = title,
@@ -64,6 +64,7 @@ function ZShelter.AddItem(category, class, title, woods, irons, damage, no_ammo_
 		requiredskills = requiredskills,
 		volume = volume,
 		shelterlevel = shelterlevel,
+		requiredLevel = requiredLevel || 0,
 	})
 end
 

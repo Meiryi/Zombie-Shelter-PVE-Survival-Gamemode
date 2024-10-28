@@ -155,6 +155,7 @@ end
 	attackrange = Minimum attack of this turret to be active, used for displaying range in building preview
 	circlerange = Shows the range with circle
 	notarget = won't be targeted by zombies
+	ignorecollision = Ignore collision with other turrets
 
 	maxamount = Maximum amount of this building
 	bait = Creates a bait entity so enemy will attack this building
@@ -519,6 +520,7 @@ ZShelter.AddBuildItem("Turret",  "Freeze Turret",  5,  4,  12,  450,  "npc_vj_zs
 	damage = 1,
 	insideshelter = true,
 	attackrange = 550,
+	ignorecollision = true,
 }, nil, {find = true, day = 1})
 ZShelter.AddBuildItem("Turret",  "Mounted Machine Gun",  12,  12,  0,  500,  "npc_vj_zshelter_mounted_mg",  "models/tfa_cso/emplacement/w_csomountgun.mdl",  0,  Vector(0, 0, 0), {
 	playercount = true,
@@ -549,6 +551,7 @@ ZShelter.AddBuildItem("Turret",  "Burst Shotgun Turret",  4,  6,  15,  525,  "np
 	damage = 7,
 	insideshelter = true,
 	attackrange = 700,
+	ignorecollision = true,
 }, {}, {find = true, day = 2})
 ZShelter.AddBuildItem("Turret",  "Flame Turret",  6,  6,  15,  600,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
 	upgrade_attackscale = 0.42,
@@ -558,6 +561,7 @@ ZShelter.AddBuildItem("Turret",  "Flame Turret",  6,  6,  15,  600,  "npc_vj_zsh
 	damage = 8,
 	insideshelter = true,
 	attackrange = 360,
+	ignorecollision = true,
 })
 ZShelter.AddBuildItem("Turret",  "Enemy Scanner",  4,  7,  10,  800,  "obj_structure_scanner",  "models/zshelter/obj_decoy01.mdl",  1,  Vector(0, 0, 20), {
 	notarget = true,

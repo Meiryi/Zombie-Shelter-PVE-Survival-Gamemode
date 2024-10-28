@@ -283,7 +283,7 @@ function ZShelter.TrapRepairSystem(player, building)
 			v(player, building)
 		end
 	end
-	local restore = (building.DurabilityRepair || 1) * player:GetNWFloat("TrapRepairSpeed", 1)
+	local restore = 20 * player:GetNWFloat("TrapRepairSpeed", 1)
 	building:SetHealth(math.min(building:Health() + restore, building:GetMaxHealth()))
 	ZShelter.SyncHP(building, player)
 end
@@ -412,6 +412,10 @@ function ZShelter.CreateBuilding(ply, data, vec, yaw)
 		end
 
 		ent:Spawn()
+
+		if(tdata.ignorecollision) then
+			ent:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
+		end
 
 		ent.oSetCollisionGroup = ent.SetCollisionGroup
 		local func = function(self, group)

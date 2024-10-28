@@ -1,10 +1,32 @@
 ZShelter.Controlling = ZShelter.Controlling || false
 ZShelter.ControllerGUI = ZShelter.ControllerGUI || nil
 ZShelter.FireInterval = ZShelter.FireInterval || 1
+ZShelter.ControllingMortar = ZShelter.ControllingMortar || nil
 ZShelter.NextFire = 0
+
+--[[
+	net.Start("ZShelter_ManualAim")
+	net.WriteVector(mortar:GetNWVector("ManualAimPos", Vector(0, 0, 0)))
+	net.Send(ply)
+]]
+
+function ZShelter.SendManualAim(vec)
+	net.Start("ZShelter_ManualAim")
+	net.WriteEntity(ZShelter.ControllingMortar)
+	net.WriteVector(vec)
+	net.SendToServer()
+end
+
+net.Receive("ZShelter_ManualAim", function()
+	local ent = net.ReadEntity()
+	local vec = net.ReadVector()
+	if(!IsValid(ent)) then return end
+	ent:SetNWVector("ManualAimPos", vec)
+end)
 
 net.Receive("ZShelter_StartMortarController", function()
 	ZShelter.Controlling = true
+	ZShelter.ControllingMortar = net.ReadEntity()
 	ZShelter.CreateControllingGUI()
 end)
 
@@ -15,6 +37,7 @@ end)
 
 net.Receive("ZShelter_EndMortarController", function()
 	ZShelter.Controlling = false
+	ZShelter.ControllingMortar = nil
 	if(IsValid(ZShelter.ControllerGUI)) then
 		ZShelter.ControllerGUI:Remove()
 	end
@@ -42,6 +65,7 @@ function ZShelter.CreateControllingGUI()
 	local ui = ZShelter.CreatePanel(nil, ScrW() * scl, ScrH() * scl, ScrW() * (1 - scl * 2), ScrH() * (1 - scl * 2), Color(100, 100, 100, 255))
 	local xscale, yscale =  1920 / ScrW(), 1080 / ScrH()
 	local md = false
+	local md2 = false
 	local size = ScreenScaleH(32)
 	local offset = Vector(0, 0, 0)
 	local alpha = 0
@@ -109,6 +133,12 @@ function ZShelter.CreateControllingGUI()
 			cam.IgnoreZ(true)
 				render.DrawBox(aimpos, Angle(0, 0, 0), -Vector(48, 4, 0), Vector(48, 4, 2), Color(255, 50, 50, 200))
 				render.DrawBox(aimpos, Angle(0, 0, 0), -Vector(4, 48, 0), Vector(4, 48, 2), Color(255, 50, 50, 200))
+				if(IsValid(ZShelter.ControllingMortar)) then
+					local manualAimPos = ZShelter.ControllingMortar:GetNWVector("ManualAimPos", Vector(0, 0, 0))
+					if(manualAimPos != Vector(0, 0, 0)) then
+						render.DrawBox(manualAimPos, Angle(0, 0, 0), -Vector(128, 128, 0), Vector(128, 128, 2), Color(128, 0, 255, 100))
+					end
+				end
 			cam.IgnoreZ(false)
 		cam.End3D()
 		ZShelter_NoDraw = false
@@ -117,6 +147,10 @@ function ZShelter.CreateControllingGUI()
 
 		if(input.IsMouseDown(107) && !md) then
 			ZShelter.SendManualAttack(aimpos)
+		end
+
+		if(input.IsMouseDown(108) && !md2) then
+			ZShelter.SendManualAim(aimpos)
 		end
 
 		if(ZShelter.NextFire > CurTime()) then
@@ -130,6 +164,7 @@ function ZShelter.CreateControllingGUI()
 		ZShelter:CircleTimerAnimation(ui:GetWide() * 0.5, ui:GetTall() * 0.5, size, ScreenScaleH(2), fraction, Color(255, 255, 255, alpha))
 
 		md = input.IsMouseDown(107)
+		md2 = input.IsMouseDown(108)
 	end
 	ZShelter.ControllerGUI = ui
 end

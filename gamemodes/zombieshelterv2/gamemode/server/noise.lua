@@ -106,7 +106,11 @@ hook.Add("OnEntityCreated", "ZShelter-ProjectileNoise", function(ent)
 		local scale = wep.VolumeMultiplier || 1
 		local noise = (2.5 * scale)
 		ZShelter.AddNoise(noise, owner)
-		
+		if(owner.Callbacks && owner.Callbacks.OnFireProjectile) then
+			for k,v in pairs(owner.Callbacks.OnFireProjectile) do
+				v(owner)
+			end
+		end
 		owner.LastNoiseTime = CurTime() + 0.01
 	end)
 end)

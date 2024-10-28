@@ -221,15 +221,15 @@ ZShelter.AddInfo("Damage Resistance", {
 		["de"] = "Schadensresistenz",
 	},
 	desc = {
-		["en"] = "Receives less damage from all sources, +10% per upgrade",
-		["bg"] = "Получава по-малко щети от всички източници, +10% на ъпгрейд",
-		["fr"] = "Réduit les dégâts de tout type, +10% par amélioration",
-		["tr"] = "Bütün hasar kaynaklarından daha az hasar alırsınız, yükseltme başına +%10",
-		["vi"] = "Nhận ít sát thương hơn từ tất cả các nguồn, +10% mỗi lần nâng cấp",
-		["zh-TW"] = "減少受到的傷害,每升級一次減少 10%",
-		["zh-CN"] = "减少收到的伤害, 每升一级减少 10%",
-		["ru"] = "Получаете меньше урона от всех источников, +10% за улучшение",
-		["de"] = "Erleidet weniger Schaden jeglichen Ursprungs, +10% pro Upgrade",
+		["en"] = "Receives less damage from all sources, +15% per upgrade",
+		["bg"] = "Получава по-малко щети от всички източници, +15% на ъпгрейд",
+		["fr"] = "Réduit les dégâts de tout type, +15% par amélioration",
+		["tr"] = "Bütün hasar kaynaklarından daha az hasar alırsınız, yükseltme başına +%15",
+		["vi"] = "Nhận ít sát thương hơn từ tất cả các nguồn, +15% mỗi lần nâng cấp",
+		["zh-TW"] = "減少受到的傷害,每升級一次減少 15%",
+		["zh-CN"] = "减少收到的伤害, 每升一级减少 15%",
+		["ru"] = "Получаете меньше урона от всех источников, +15% за улучшение",
+		["de"] = "Erleidet weniger Schaden jeglichen Ursprungs, +15% pro Upgrade",
 	}
 })
 
@@ -296,15 +296,15 @@ ZShelter.AddInfo("Melee Stunning", {
 		["de"] = "Nahkampf-Betäubung",
 	},
 	desc = {
-		["en"] = "Stun enemies for 0.75s when using melee with secondary attack",
-		["bg"] = "Зашеметява враговете за 0.75 секунди при използване на меле с вторична атака",
-		["fr"] = "Étourdis les ennemis pendant 0,75s lorsque vous utilisez votre attaque de mêlée secondaire",
-		["tr"] = "Yakın dövüşte düşmanları ikincil saldırı kullanarak 0.75 saniye sersemlet",
-		["vi"] = "Choáng kẻ địch trong 0.75s khi sử dụng cận chiến với đòn tấn công phụ",
-		["zh-TW"] = "使用近戰武器次要攻擊可暈眩敵人0.75秒",
-		["zh-CN"] = "使用近战武器的次要攻击可晕眩敌人0.75秒",
-		["ru"] = "Оглушает врагов на 0,75 сек. альтернативной атакой оружия ближнего боя",
-		["de"] = "Betäubt Feinde für 0,75s, bei der Verwenung des sekundären Nahkampfangriffs",
+		["en"] = "Stun enemies for 0.75s when hitting enemies with battle axe's secondary attack",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "使用戰斧的次要攻擊可暈眩敵人0.75秒",
+		["zh-CN"] = "使用战斧的次要攻击可晕眩敌人0.75秒",
+		["ru"] = "",
+		["de"] = "",
 	}
 })
 
@@ -471,15 +471,15 @@ ZShelter.AddInfo("Vampire", {
 		["de"] = "Vampir",
 	},
 	desc = {
-		["en"] = "Recover health when killing an enemy, +5 HP per upgrade",
-		["bg"] = "Възстановява здраве при убиване на враг, +5 HP на ъпгрейд",
-		["fr"] = "Récupérer des points de vie en tuant un ennemi, +5 PV par amélioration",
-		["tr"] = "Düşman öldürerek sağlığını geri kazanır",
-		["vi"] = "Hồi máu khi giết kẻ địch, +5 HP mỗi lần nâng cấp",
-		["zh-TW"] = "擊殺敵人時恢復自身生命值, 每升級一次增加 5",
-		["zh-CN"] = "击杀敌人后可恢复自身生命值, 每升一级增加 5",
-		["ru"] = "Восстанавливает здоровье, убивая врагов",
-		["de"] = "Regeneriere Gesundheit beim Töten eines Gegners, +5 HP pro Upgrade",
+		["en"] = "Recovers health when damaging enemies with melee weapon, +4 HP per upgrade",
+		["bg"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "使用近戰武器攻擊敵人時回復生命, 每升級一次回復 4 HP",
+		["zh-CN"] = "使用近战武器攻击敌人时回复生命, 每升一级回复 4 HP",
+		["ru"] = "",
+		["de"] = "",
 	}
 })
 
@@ -621,13 +621,13 @@ ZShelter.AddInfo("Battle Axe Upgrade", {
 		["de"] = "",
 	},
 	desc = {
-		["en"] = "Upgrade melee weapon to battle axe (+200% damage)",
+		["en"] = "Upgrade melee weapon to battle axe, able to hit multiple enemies, can knockback enemies",
 		["bg"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "將近戰武器替換成戰斧 (+200%傷害)",
-		["zh-CN"] = "将近战武器替换为战斧 (+200%伤害)",
+		["zh-TW"] = "將近戰武器替換成戰斧, 可以攻擊多個敵人, 並擊退敵人",
+		["zh-CN"] = "将近战武器替换为战斧, 可以攻击多个敌人, 并击退敌人",
 		["ru"] = "",
 		["de"] = "",
 	}
@@ -671,15 +671,15 @@ ZShelter.AddInfo("Damage Reflecting", {
 		["de"] = "Schadensablenkung",
 	},
 	desc = {
-		["en"] = "Reflecting all incoming damage, +50% damage per upgrade",
-		["bg"] = "Отразява всички входящи щети, +50% щети на ъпгрейд",
-		["fr"] = "Renvoie tous les dégâts subis, +50% de dégâts par amélioration",
-		["tr"] = "Alınan tüm hasarı yansıtır, yükseltme başına +%50 hasar",
-		["vi"] = "Phản sát thương đến từ tất cả các nguồn, +50% sát thương mỗi lần nâng cấp",
-		["zh-TW"] = "反彈所有受到的傷害, 每升級一次增加 50%",
-		["zh-CN"] = "反弹所有受到的伤害, 每升级一次增加 50%",
+		["en"] = "Reflecting all incoming damage, +400% damage per upgrade",
+		["bg"] = "Отразява всички входящи щети, +400% щети на ъпгрейд",
+		["fr"] = "Renvoie tous les dégâts subis, +400% de dégâts par amélioration",
+		["tr"] = "Alınan tüm hasarı yansıtır, yükseltme başına +%400 hasar",
+		["vi"] = "Phản sát thương đến từ tất cả các nguồn, +400% sát thương mỗi lần nâng cấp",
+		["zh-TW"] = "反彈所有受到的傷害, 每升級一次增加 400%",
+		["zh-CN"] = "反弹所有受到的伤害, 每升级一次增加 400%",
 		["ru"] = "",
-		["de"] = "Lenkt jeden eingehenden Schaden ab, +50% Schaden pro Upgrade",
+		["de"] = "Lenkt jeden eingehenden Schaden ab, +400% Schaden pro Upgrade",
 	}
 })
 
@@ -779,6 +779,31 @@ ZShelter.AddInfo("Ammo Capacity Boost", {
 		["vi"] = "",
 		["zh-TW"] = "增加攜彈量, 每升級一次增加 100%",
 		["zh-CN"] = "增加携弹量, 每升级一次增加 100%",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Quick Reload", {
+	title = {
+		["en"] = "Quick Reload",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "快速裝填",
+		["zh-CN"] = "快速装填",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Increase shotgun's reload speed, load two shells at once",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "增加霰彈槍的裝彈速度, 一次裝兩發",
+		["zh-CN"] = "增加霰弹枪的装弹速度, 一次装两发",
 		["ru"] = "",
 	}
 })

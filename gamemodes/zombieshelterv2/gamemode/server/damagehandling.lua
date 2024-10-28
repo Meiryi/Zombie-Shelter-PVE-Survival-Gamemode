@@ -35,6 +35,34 @@ function ZShelter.ApplyDamageMul(ent, id, mul, time, infinite)
 	}
 end
 
+function ZShelter.StunEntity(ent, stuntime)
+	ent:NextThink(CurTime() + stuntime)
+	ent.StunTimer = CurTime() + stuntime
+end
+
+function ZShelter.Freeze(ent)
+	if(ent.IsBuilding) then return end
+	if(ent.LastFreezeTime && ent.LastFreezeTime > CurTime()) then return end
+	if(ent.FreezeImmunityTime && ent.FreezeImmunityTime > CurTime()) then return end
+	if(!ent.FreezeCount) then
+		ent.FreezeCount = 0
+	else
+		ent.FreezeCount = ent.FreezeCount + 1
+		if(ent.FreezeCount > 12) then
+			ent:SetColor(Color(0, 0, 255, 255))
+			ent:NextThink(CurTime() + 3)
+			timer.Simple(3, function()
+				if(IsValid(ent)) then
+					ent:SetColor(Color(255, 255, 255, 255))
+				end
+			end)
+			ent.FreezeCount = 0
+			ent.FreezeImmunityTime = CurTime() + 10
+		end
+	end
+	ent.LastFreezeTime = CurTime() + 0.085 -- So it doesn't stack too much
+end
+
 hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo)
 	local attacker = dmginfo:GetAttacker()
 	local damage = dmginfo:GetDamage()
@@ -302,9 +330,9 @@ end)
 
 hook.Add("HandlePlayerArmorReduction", "ZShelter-ArmorHandling", function(ply, dmginfo)
 	local attacker = dmginfo:GetAttacker()
-	if(attacker:IsPlayer() && attacker != ply &&  !ZShelter.IsFriendlyFire(attacker, ply)) then dmginfo:SetDamage(0) return end
+	if(attacker:IsPlayer() && attacker != ply && !ZShelter.IsFriendlyFire(attacker, ply)) then dmginfo:SetDamage(0) return end
 	if(ply:Armor() <= 0 || bit.band(dmginfo:GetDamageType(), DMG_FALL + DMG_DROWN + DMG_POISON + DMG_RADIATION) != 0) then return end
-	if(!IsValid(attacker) || attacker.IsBuilding) then return end
+	if(attacker.IsBuilding) then return end
 
 	local armor = ply:Armor()
 	local damage = dmginfo:GetDamage()

@@ -215,6 +215,12 @@ end)
 
 local cvar = GetConVar("zshelter_friendly_fire")
 hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
+	if(ent1.IsTurret && ent2.IsTurret) then
+		return false
+	end
+	if(ent2.IsTurret && ent1.IsTurret) then
+		return false
+	end
 	if(ent1.OnlyCollideToBarricade) then
 		if(!ent2.IsPlayerBarricade) then
 			return false

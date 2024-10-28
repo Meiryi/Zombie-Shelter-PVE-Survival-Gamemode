@@ -40,8 +40,8 @@ ZShelter.AddSkills(ClassName, "OnGiveMelee",
 		"Clawhammer Upgrade", "Crowbar Upgrade",
 	})
 
-ZShelter.AddSkills(ClassName, "OnFireBullets",
-	function(player, bulletdata)
+ZShelter.AddSkills(ClassName, "MultipleHook", {
+	OnFireBullets = function(player, bulletdata)
 		local wep = player:GetActiveWeapon()
 		if(!IsValid(wep)) then return end
 		local seed = math.random(1, 100)
@@ -49,6 +49,7 @@ ZShelter.AddSkills(ClassName, "OnFireBullets",
 			wep:SetClip1(wep:Clip1() + 1)
 		end
 	end,
+	},
 	function(player, current)
 		player:SetNWInt("SaveChance", 15 * current)
 	end, 3, "ammosave", 1, "Bullet Saving")
@@ -97,17 +98,71 @@ ZShelter.AddSkills(ClassName, nil, nil,
 		player:SetNWFloat("oDamageScale", player:GetNWFloat("DamageScale", 1))
 	end, 2, "dmgboost", 2, "Damage Boostx1")
 
-ZShelter.AddSkills(ClassName, "OnFireBullets",
-	function(ply, bulletdata)
+ZShelter.AddSkills(ClassName, "MultipleHook", {
+	OnFireBullets = function(ply, bulletdata)
 		local wep = ply:GetActiveWeapon()
 		if(IsValid(wep)) then
 			local firerate = wep:GetNextPrimaryFire() - CurTime()
 			wep:SetNextPrimaryFire(CurTime() + (firerate * ply:GetNWFloat("FRate", 1)))
 		end
 	end,
+
+	OnFireProjectile = function(ply)
+		local wep = ply:GetActiveWeapon()
+		if(IsValid(wep)) then
+			local firerate = wep:GetNextPrimaryFire() - CurTime()
+			wep:SetNextPrimaryFire(CurTime() + (firerate * ply:GetNWFloat("FRate", 1)))
+		end
+	end,
+	},
 	function(player, current)
-		player:SetNWFloat("FRate", player:GetNWFloat("FRate", 1) - 0.1)
+		player:SetNWFloat("FRate", 1 - (current * 0.1))
 	end, 3, "firerate", 2, "Firerate Boost")
+
+local reloadActs = {
+	[183] = true,
+
+	[267] = true,
+	[268] = true,
+
+	[494] = true,
+	[518] = true,
+	[519] = true,
+	[523] = true,
+
+	[1927] = true,
+	[1950] = true,
+	[1951] = true,
+	[1952] = true,
+	[1953] = true,
+	[1954] = true,
+	[1958] = true,
+}
+ZShelter.AddSkills(ClassName, "Think",
+	function(player)
+		local wep = player:GetActiveWeapon()
+		if(!IsValid(wep)) then return end
+		local vm = player:GetViewModel()
+		if(!reloadActs[vm:GetSequenceActivity(vm:GetSequence())]) then return end
+		if(!wep.LastAmmoCount) then
+			wep.LastAmmoCount = wep:Clip1()
+		end
+
+		local CurrentAmmo = wep:Clip1()
+		local MaxAmmo = wep:GetMaxClip1()
+		local Diff = CurrentAmmo - wep.LastAmmoCount
+		if(Diff > 0 && Diff < 3) then
+			local ammotype = wep:GetPrimaryAmmoType()
+			if(player:GetAmmoCount(ammotype) > 0) then
+				wep:SetClip1(math.min(wep:Clip1() + 1, MaxAmmo))
+				player:RemoveAmmo(1, ammotype)
+			end
+		end
+		wep.LastAmmoCount = wep:Clip1()
+	end,
+	function(player, current)
+		return
+	end, 1, "ammosave", 2, "Quick Reload")
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)

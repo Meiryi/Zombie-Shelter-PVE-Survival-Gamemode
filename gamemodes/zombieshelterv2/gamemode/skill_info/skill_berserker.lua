@@ -46,14 +46,14 @@ ZShelter.AddInfo("Melee Damage Boost1x", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Increase melee weapon damage, +10% per upgrade",
+		["en"] = "Increase melee weapon damage, +30% per upgrade",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "提升近戰武器傷害, 每升級一次增加 10%",
-		["zh-CN"] = "提升近战武器伤害，每升级一次增加 10%",
+		["zh-TW"] = "提升近戰武器傷害, 每升級一次增加 30%",
+		["zh-CN"] = "提升近战武器伤害，每升级一次增加 30%",
 		["ru"] = "",
 	}
 })
@@ -71,14 +71,14 @@ ZShelter.AddInfo("Melee Damage Boost2x", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Increase melee weapon damage, +15% per upgrade",
+		["en"] = "Increase melee weapon damage, +50% per upgrade",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "提升近戰武器傷害, 每升級一次增加 15%",
-		["zh-CN"] = "提升近战武器伤害，每升级一次增加 15%",
+		["zh-TW"] = "提升近戰武器傷害, 每升級一次增加 50%",
+		["zh-CN"] = "提升近战武器伤害，每升级一次增加 50%",
 		["ru"] = "",
 	}
 })
@@ -96,14 +96,14 @@ ZShelter.AddInfo("Melee Damage Boost3x", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Increase melee weapon damage, +25% per upgrade",
+		["en"] = "Increase melee weapon damage, +40% per upgrade",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "提升近戰武器傷害, 每升級一次增加 25%",
-		["zh-CN"] = "提升近战武器伤害，每升级一次增加 25%",
+		["zh-TW"] = "提升近戰武器傷害, 每升級一次增加 40%",
+		["zh-CN"] = "提升近战武器伤害，每升级一次增加 40%",
 		["ru"] = "",
 	}
 })
@@ -221,14 +221,14 @@ ZShelter.AddInfo("Flash Slash", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Teleport to the position player is aiming at and deal 1000 damage to all enemies on the path",
+		["en"] = "Teleport to the position player is aiming at and deal 1000 damage to all enemies on the path\nGain 3 seconds of invincibility after teleporting",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "閃現到瞄準的地方並對路徑上的敵人造成1000點傷害",
-		["zh-CN"] = "閃現到瞄準的地方並對路徑上的敵人造成1000點傷害",
+		["zh-TW"] = "閃現到瞄準的地方並對路徑上的敵人造成1000點傷害, 閃現後獲得3秒的無敵時間",
+		["zh-CN"] = "閃現到瞄準的地方並對路徑上的敵人造成1000點傷害, 閃現後獲得3秒的無敵時間",
 		["ru"] = "",
 	}
 })

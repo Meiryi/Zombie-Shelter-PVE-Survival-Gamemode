@@ -385,6 +385,24 @@ ZShelter.Modifiers.Register("Increased enemy attack damage", {
 	},
 })
 
+--[[
+ZShelter.Modifiers.Register("One punch man zombies", {
+	category = "Increase Difficulty",
+	categoryColor = Color(255, 55, 55, 255),
+	desc = "+1000% Enemy attack damage",
+	scoreMul = 1.1,
+
+	hooks = {
+		OnEntityCreated = function(ent)
+			timer.Simple(0, function()
+				if(!IsValid(ent) || ent:IsPlayer() || ent.IsBuilding) then return end
+				ZShelter.ApplyDamageMul(ent, "ModifierBuff_Enemy", 10, 32767, true)
+			end)
+		end,
+	},
+})
+]]
+
 ZShelter.Modifiers.Register("Enemy running on day", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
@@ -419,6 +437,7 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 			SetGlobalFloat("EnemySpawnMul", GetGlobalFloat("EnemySpawnMul", 1) * 1.75)
 			SetGlobalFloat("EnemySpawnTimeMul", GetGlobalFloat("EnemySpawnTimeMul", 1) * 0.75)
 			SetGlobalFloat("ResourceMul", GetGlobalFloat("ResourceMul", 1) * 0.5)
+			SetGlobalInt("EnemySpawnForwardDay", GetGlobalInt("EnemySpawnForwardDay", 0) + 3)
 			GetConVar("zshelter_difficulty"):SetInt(9)
 			ZShelter.StartedDifficulty = GetConVar("zshelter_difficulty"):GetInt()
 		end,

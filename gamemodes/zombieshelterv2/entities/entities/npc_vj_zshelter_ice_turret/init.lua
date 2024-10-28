@@ -66,18 +66,7 @@ function ENT:Think()
 				if(v == self || v:IsPlayer() || v.IsBuilding) then continue end
 				if(!v:IsNPC() && !v:IsNextBot()) then continue end
 				v:TakeDamageInfo(dmginfo)
-				if(v.SetMoveVelocity) then
-					if(v.LastFreezeTime) then
-						if(v.LastFreezeTime > CurTime()) then
-							continue
-						else
-							v.LastFreezeTime = CurTime() + 0.15
-						end
-					else
-						v.LastFreezeTime = CurTime() + 0.1
-					end
-					v:SetMoveVelocity(v:GetMoveVelocity() * 0.7)
-				end
+				ZShelter.Freeze(v)
 				if(v == self.AimTarget) then
 					targethit = true
 				end

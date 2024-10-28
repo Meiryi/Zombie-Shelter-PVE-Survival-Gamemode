@@ -26,13 +26,13 @@ ZShelter.AddSkills(ClassName, "OnSecondPassed",
 ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(CLIENT) then return end
-		if(!victim:IsNPC() && !victim:IsNextBot()) then return end
+		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_1")
 		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
 	end,
 	function(player, current)
-		player:SetNWFloat("MeleeDamageBoost_1", current * 0.1)
-	end, 2, "meleedmg", 1, "Melee Damage Boost1x")
+		player:SetNWFloat("MeleeDamageBoost_1", current * 0.3)
+	end, 1, "meleedmg", 1, "Melee Damage Boost1x")
 
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
 	function(player)
@@ -67,7 +67,7 @@ ZShelter.AddSkills(ClassName, "OnTakingDamage",
 		ZShelter.DealNoScaleDamage(target, attacker, dmginfo:GetDamage() * target:GetNWFloat("DamageRef", 0.5))
 	end,
 	function(player, current)
-		player:SetNWFloat("DamageRef", player:GetNWFloat("DamageRef", 0) + 0.5)
+		player:SetNWFloat("DamageRef", 4 * current)
 	end, 2, "thorns_2", 2, "Damage Reflecting")
 
 ZShelter.AddSkills(ClassName, "OnTakingDamage",
@@ -81,7 +81,7 @@ ZShelter.AddSkills(ClassName, "OnTakingDamage",
 
 ZShelter.AddSkills(ClassName, nil, nil, 
 	function(player, current)
-		player:SetNWFloat("DamageResistance", player:GetNWFloat("DamageResistance", 1) + 0.1)
+		player:SetNWFloat("DamageResistance", 1 + (0.15 * current))
 	end, 2, "dmgres_3", 2, "Damage Resistance")
 
 ZShelter.AddSkills(ClassName, "OnMeleeDamage",
@@ -105,43 +105,50 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(CLIENT) then return end
-		if(!victim:IsNPC() && !victim:IsNextBot()) then return end
+		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_2")
 		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
 	end,
 	function(player, current)
-		player:SetNWFloat("MeleeDamageBoost_2", current * 0.15)
-	end, 2, "meleedmg", 2, "Melee Damage Boost2x")
+		player:SetNWFloat("MeleeDamageBoost_2", current * 0.5)
+	end, 1, "meleedmg", 2, "Melee Damage Boost2x")
 
 ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(!victim:IsNPC() && !victim:IsNextBot()) then return end
+		local wep = attacker:GetActiveWeapon()
+		if(!IsValid(wep) || wep:GetClass() != "tfa_zsh_cso_skull9") then return end
+		local t = 0.75
 		if(melee2) then
 			if(victim.IsBoss) then
-				victim:NextThink(CurTime() + 0.25)
-			else
-				victim:NextThink(CurTime() + 0.75)
+				t = t * 0.8
 			end
 			attacker:EmitSound("shigure/stun_impact2.wav")
 		else
+			t = t * 0.5
 			if(victim.IsBoss) then
-				victim:NextThink(CurTime() + 0.1)
-			else
-				victim:NextThink(CurTime() + 0.3)
+				t = t * 0.5
 			end
 			attacker:EmitSound("shigure/stun_impact1.wav")
 		end
-		victim:SetPos(victim:GetPos())
+		if(CLIENT) then return end
+		ZShelter.StunEntity(victim, t)
+		victim:SetSchedule(73)
+		--victim:SetPos(victim:GetPos())
+		timer.Simple(t, function()
+			if(!IsValid(victim)) then return end
+			victim:SetCondition(68)
+		end)
 	end, nil, 1, "stunning", 3, "Melee Stunning")
 
-ZShelter.AddSkills(ClassName, "OnEnemyKilled",
-	function(player, victim, killedbyturrets)
-		if(killedbyturrets) then return end
-		player:SetHealth(math.min(player:Health() + (player:GetNWInt("VampireHeal", 5)), player:GetMaxHealth()))
+ZShelter.AddSkills(ClassName, "OnMeleeDamage",
+	function(attacker, victim, dmginfo, melee2)
+		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
+		attacker:SetHealth(math.min(attacker:GetMaxHealth(), attacker:Health() + attacker:GetNWFloat("VampireHeal", 4)))
 	end,
-	function(player)
-		player:SetNWFloat("VampireHeal", player:GetNWFloat("VampireHeal", 0) + 5)
-	end, 1, "vampire_2", 3, "Vampire")
+	function(player, current)
+		player:SetNWFloat("VampireHeal", current * 4)
+	end, 2, "vampire_2", 3, "Vampire")
 
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
 	function(player)
@@ -234,13 +241,13 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(CLIENT) then return end
-		if(!victim:IsNPC() && !victim:IsNextBot()) then return end
+		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_3")
 		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
 	end,
 	function(player, current)
-		player:SetNWFloat("MeleeDamageBoost_3", current * 0.25)
-	end, 1, "meleedmg", 3, "Melee Damage Boost3x")
+		player:SetNWFloat("MeleeDamageBoost_3", current * 0.4)
+	end, 2, "meleedmg", 3, "Melee Damage Boost3x")
 
 local mat = Material("zsh/icon/parry.png", "smooth")
 local alpha = 0
@@ -284,10 +291,10 @@ ZShelter.AddSkills(ClassName, "OnSkillCalled",
 		local ang = player:EyeAngles()
 		ang.x = 0
 		local pos =  player:GetPos() + Vector(0, 0, 5)
-		local fwd = ang:Forward() * 600
+		local fwd = ang:Forward() * 800
 		local offset = (pos + fwd) - pos
 		local dst = pos:Distance(pos + fwd)
-		local gap = 64
+		local gap = 128
 		local entHit = {}
 		local step = math.max(math.floor(dst / gap), 1)
 		for i = 1, step do
@@ -309,7 +316,11 @@ ZShelter.AddSkills(ClassName, "OnSkillCalled",
 				player:SetPos(ret.HitPos)
 			end
 		end
-
+		player:GodEnable()
+		timer.Simple(3, function()
+			if(!IsValid(player)) then return end
+			player:GodDisable()
+		end)
 		for k,v in pairs(entHit) do
 			local ent = Entity(k)
 			ent:TakeDamage(1000, player, player)
@@ -319,4 +330,4 @@ ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	end,
 	function()
 
-	end, 1, "dash", 4, "Flash Slash", nil, 25)
+	end, 1, "dash", 4, "Flash Slash", nil, 20)

@@ -56,7 +56,7 @@ ENT.NextRunAwayOnDamageTime = 0
 ENT.CanFlinch = 0
 
 	-- ====== Leap Code ====== --
-ENT.HasLeapAttack = true -- Should the SNPC have a leap attack?
+ENT.HasLeapAttack = false -- Should the SNPC have a leap attack?
 ENT.AnimTbl_LeapAttack = {"zbs_attack_mahadash"} -- Melee Attack Animations
 ENT.LeapDistance = 1024 -- The distance of the leap, for example if it is set to 500, when the SNPC is 500 Unit away, it will jump
 ENT.LeapToMeleeDistance = 64 -- How close does it have to be until it uses melee?
@@ -108,41 +108,82 @@ function ENT:CustomOnLeapAttackVelocityCode()
 	self.LeapEndTime = CurTime() + 1
 end
 
+
+ENT.NextLeapAttackTime = 0
+ENT.LeapAttackTime = 0
+ENT.LeapDelayTime = 0
+ENT.LeapAngle = Angle(0, 0, 0)
+ENT.AngleTweakTime = 0
+ENT.SetSkillTime = true
+ENT.HitPlayers = {}
 function ENT:CustomOnThink()
 	if(self.Dead) then return end
 	self:SetCollisionBounds(Vector(30, 30, 100), Vector(-30, -30, 0))
+	if(self.SetSkillTime) then
+		self.ShockWaveTimer = CurTime() + 15
+		self.NextLeapAttackTime = CurTime() + 1
+		self.SetSkillTime = false
+	end
 	if(IsValid(self:GetEnemy())) then
-		if(self.ShockWaveTimer < CurTime() && !self.Rushing) then
+		if(self.ShockWaveTimer < CurTime() && !self.LeapAttacking) then
 			self:ShockWave()
+			self.IsDoingStunWave = true
 			self.ShockWaveTimer = CurTime() + math.random(18, 25)
 		end
-	end
-	if((self.LeapAttacking && !self.DoingShockwave) || self.LeapEndTime > CurTime()) then
-		if(CurTime() - self.Zsh_LastLeapAttackingTime > 0.5) then
-			local enemy = self:GetEnemy()
-			if(IsValid(enemy) && ZShelterVisible_NPC(self, enemy)) then
-				if(self.GetLeapAngle) then
-					self.LeapAngle = (enemy:GetPos() - self:GetPos()):Angle()
-					self.GetLeapAngle = false
+
+		if(self.NextLeapAttackTime < CurTime() && !self.IsDoingStunWave && self:Visible(self:GetEnemy())) then
+			self.LeapAngle = (self:GetEnemy():GetPos() - self:GetPos()):Angle()
+			self:SetAngles(Angle(0, self.LeapAngle.y, 0))
+			self:VJ_ACT_PLAYACTIVITY("zbs_attack_mahadash", true, 1.5, false)
+			self.LeapAttackTime = CurTime() + 2
+			self.LeapDelayTime = CurTime() + 0.5
+			self.HasMeleeAttack = false
+			self.HitPlayers = {}
+			timer.Simple(2, function()
+				if(!IsValid(self) || self.Dead) then return end
+				self.HasMeleeAttack = true
+			end)
+			sound.Play("sound/zshelter/bosses/boss_dash.wav", self:GetPos(), 140, 100)
+			self.NextLeapAttackTime = CurTime() + 20
+		end
+
+		if(self.LeapAttackTime > CurTime()) then
+			if(self.LeapDelayTime < CurTime()) then
+				if(self.AngleTweakTime > CurTime()) then
+					self.LeapAngle = (self:GetEnemy():GetPos() - self:GetPos()):Angle()
 				end
 				local ang = self.LeapAngle
 				self:SetAngles(Angle(0, ang.y, 0))
-				local vel = self:GetAngles():Forward() * 2500
+				local vel = ang:Forward() * 3000
+				local dmg = 20 * (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.03))
 				vel.z = 0
 				self:SetVelocity(vel)
+				for k,v in ipairs(ents.FindInSphere(self:GetPos(), 200)) do
+					if(!v.IsBuilding && !v:IsPlayer()) then continue end
+					local index = v:EntIndex()
+					if(v.IsBuilding) then
+						ZShelter.ApplyDamageFast(v, 20, true)
+					else
+						if(!self.HitPlayers[index]) then
+							if(v:IsPlayer()) then
+								local vel = self:GetAngles():Forward() * 1024
+								v:SetVelocity(vel + Vector(0, 0, 400))
+								v:TakeDamage((v:GetMaxHealth() * 0.5) + 35, nil, nil)
+							end
+							self.HitPlayers[index] = true
+						end
+					end
+				end
 			else
-				local vel = self:GetAngles():Forward() * 2500
-				vel.z = 0
-				self:SetVelocity(vel)
+				if(self:Visible(self:GetEnemy())) then
+					self.AngleTweakTime = CurTime() + 0.2
+					self.LeapAngle = (self:GetEnemy():GetPos() - self:GetPos()):Angle()
+				end
 			end
-			if(self.NextLeapAttackCodeTime < CurTime()) then
-				self:LeapDamageCode()
-				self.NextLeapAttackTime = CurTime() + 0.08
-			end
+			self.LeapAttacking = true
+		else
+			self.LeapAttacking = false
 		end
-	else
-		self.GetLeapAngle = true
-		self.Zsh_LastLeapAttackingTime = CurTime()
 	end
 end
 
@@ -156,7 +197,6 @@ end
 
 function ENT:ShockWave()
 	self.HasMeleeAttack = false
-	self.HasLeapAttack = false
 	self.DisableChasingEnemy = true
 	self.DisableFindEnemy = true
 	self.DoingShockwave = true
@@ -165,12 +205,19 @@ function ENT:ShockWave()
 	VJ_EmitSound(self,self.SoundTbl_Shockwave_Ready,100,100) 
 	timer.Simple(2, function()
 		if(!IsValid(self) || self.Dead) then return end
+		self.HasMeleeAttack = true
+		self.DisableChasingEnemy = false
+		self.DisableFindEnemy = false
+		self.DoingShockwave = false
+		self.IsDoingStunWave = false
+		self.NextLeapAttackTime = self.NextLeapAttackTime + 3
+		if(self.StunTimer && self.StunTimer > CurTime()) then return end
 		VJ_EmitSound(self,self.SoundTbl_Shockwave,100,100)
 		VJ_EmitSound(self,self.SoundTbl_Shockwave,100,100) 
 		local diff = GetConVar("zshelter_difficulty"):GetInt()
 		local radius = 512 * (1 + (diff - 1) * 0.05)
 		local dmg = 70 * (1 + (diff - 1) * 0.05)
-		for k,v in pairs(ents.FindInSphere(self:GetPos(), 512)) do
+		for k,v in pairs(ents.FindInSphere(self:GetPos(), 400)) do
 			if(v == self) then continue end
 			if(v.IsBuilding) then
 				ZShelter.ApplyDamageFast(v, dmg, true, true)
@@ -182,10 +229,5 @@ function ENT:ShockWave()
 			end
 		end
 		util.ScreenShake(self:GetPos(), 50, 50, 2, 1024)
-		self.HasMeleeAttack = true
-		self.HasLeapAttack = true
-		self.DisableChasingEnemy = false
-		self.DisableFindEnemy = false
-		self.DoingShockwave = false
 	end)
 end

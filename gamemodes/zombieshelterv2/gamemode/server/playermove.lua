@@ -29,6 +29,11 @@ end
 
 hook.Add("Move", "ZShelter-PlayerThink", function(ply, mv)
 	if(!ply:Alive()) then return end
+	if(ply.Callbacks && ply.Callbacks.Think) then
+		for k,v in pairs(ply.Callbacks.Think) do
+			v(ply)
+		end
+	end
 	if(!ply.NextTick) then
 		ply.NextTick = CurTime() + 1
 	else

@@ -25,6 +25,16 @@ function ENT:FindEnemy()
 	local vec = Vector(0, 0, 0)
 	local trg = nil
 	local dst = 0
+	local mpos = self:GetNWVector("ManualAimPos", Vector(0, 0, 0))
+	if(mpos != Vector(0, 0, 0)) then
+		for k,v in pairs(ents.FindInSphere(mpos, 128)) do
+			if(!ZShelter.ValidateEntity(self, v) || (v.IsBoss && !v.Awake)) then continue end
+			self.ShootingTarget = v
+			self.AimVec = v:GetPos()
+			return
+		end
+	end
+
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 		if(!ZShelter.ValidateEntity(self, v) || (v.IsBoss && !v.Awake)) then continue end
 		local _dst = self:GetPos():Distance(pos)

@@ -261,6 +261,21 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
             end
             return
         end
+	    if(!ent.IsBuilding) then
+	    	if(SERVER) then
+		    	local force = self.KnockbackForce || 0
+		    	local vel = (ent:GetPos() - ply:GetPos()):Angle():Forward() * force
+		    	vel.z = 0
+		    	if(ent:IsPlayer()) then
+		    		vel.z = 200
+		    	end
+		    	if(ent.IsBoss) then
+		    		vel = vel * 0.5
+		    	end
+		    	ent:SetVelocity(vel)
+		    	ent:SetLocalVelocity(vel)
+	    	end
+	    end
 	end
     if(ply.Callbacks && ply.Callbacks.OnMeleeDamage) then
         for k,v in pairs(ply.Callbacks.OnMeleeDamage) do

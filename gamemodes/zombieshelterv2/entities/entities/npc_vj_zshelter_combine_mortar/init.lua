@@ -36,6 +36,15 @@ function ENT:FindEnemy()
 	local hp = 0
 	local td = 0
 	local highhp = false
+	local mpos = self:GetNWVector("ManualAimPos", Vector(0, 0, 0))
+	if(mpos != Vector(0, 0, 0)) then
+		for k,v in pairs(ents.FindInSphere(mpos, 128)) do
+			if(!ZShelter.ValidateEntity(self, v) || (v.IsBoss && !v.Awake)) then continue end
+			self.AimTarget = v
+			return
+		end
+	end
+
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 		if(!ZShelter.ValidateEntity(self, v) || (v.IsBoss && !v.Awake)) then continue end
 		local h = v:Health()

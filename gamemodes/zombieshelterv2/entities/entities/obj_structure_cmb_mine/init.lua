@@ -59,7 +59,9 @@ function ENT:Think()
 					if(!ZShelter.ValidTarget(nil, v)) then continue end
 					v:SetMoveVelocity(v:GetMoveVelocity() * 0.2)
 					v:SetNWFloat("DefenseNerfTime", CurTime() + 8)
-
+					v.LastFreezeTime = 0
+					v.FreezeCount = 10
+					ZShelter.Freeze(v)
 					if(!v.LastApplyEffectTime || v.LastApplyEffectTime < CurTime()) then
 						local e = EffectData()
 							e:SetOrigin(v:GetPos())
