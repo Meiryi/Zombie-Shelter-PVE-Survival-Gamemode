@@ -710,6 +710,7 @@ end
 
 hook.Add("ZShelter-EnemyCreated", "ZShelter-ApplyMutation", function(enemy, night)
 	enemy:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
+	enemy:SetLagCompensated(true)
 	if(enemy.WepClass && enemy.WepClass != "none") then
 		enemy:Give(enemy.WepClass)
 	end
