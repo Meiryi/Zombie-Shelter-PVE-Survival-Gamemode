@@ -73,10 +73,16 @@ end)
 local scaledownTime = 2
 hook.Add("EntityFireBullets", "ZShelter-Noise", function(ent, data)
 	if(ent.LastNoiseTime && ent.LastNoiseTime > CurTime()) then return end
-	if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || !IsValid(ent) || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || !ent:IsPlayer()) && !bypassChecks) then return end
+	--if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || !IsValid(ent) || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || !ent:IsPlayer()) && !bypassChecks) then return end
 	local wep = ent:GetActiveWeapon()
 	if(!IsValid(wep)) then
 		wep = ent
+	else
+		if(wep.Callbacks && wep.Callbacks.OnFireWeapon) then
+			for k,v in pairs(wep.Callbacks.OnFireWeapon) do
+				v(owner, wep)
+			end
+		end
 	end
 	local firstshot = math.abs((wep.LastShotTime || 0) - CurTime()) > 1
 	local scale = wep.VolumeMultiplier || 1
@@ -100,7 +106,7 @@ hook.Add("OnEntityCreated", "ZShelter-ProjectileNoise", function(ent)
 		local class = ent:GetClass()
 		local owner = ent.Owner
 		if(!IsValid(owner) || !owner:IsPlayer()) then return end
-		if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || (owner.LastNoiseTime && owner.LastNoiseTime > CurTime())) && !bypassChecks) then return end
+		--if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || (owner.LastNoiseTime && owner.LastNoiseTime > CurTime())) && !bypassChecks) then return end
 		local wep = owner:GetActiveWeapon()
 		if(!IsValid(wep) || !wep.Primary || wep.Primary.Projectile != class) then return end
 		local scale = wep.VolumeMultiplier || 1
@@ -109,6 +115,11 @@ hook.Add("OnEntityCreated", "ZShelter-ProjectileNoise", function(ent)
 		if(owner.Callbacks && owner.Callbacks.OnFireProjectile) then
 			for k,v in pairs(owner.Callbacks.OnFireProjectile) do
 				v(owner)
+			end
+		end
+		if(wep.Callbacks && wep.Callbacks.OnFireWeapon) then
+			for k,v in pairs(wep.Callbacks.OnFireWeapon) do
+				v(owner, wep)
 			end
 		end
 		owner.LastNoiseTime = CurTime() + 0.01

@@ -25,7 +25,7 @@ end
 
 function ENT:DoAttack()
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
-		if(!ZShelter.ValidateTarget(self, v)) then continue end
+		if(!ZShelter.ValidTarget(self, v)) then continue end
 		v:TakeDamage(30, self, self)
 	end
 end

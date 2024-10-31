@@ -364,7 +364,7 @@ ZShelter.AddSkills(ClassName, "CreateMove",
 				return
 			end
 			local viewpunchAngle = ply:GetViewPunchAngles()
-			local eyeangle = ply:EyeAngles()
+			local eyeangle = cmd:GetViewAngles()
 			local pos = finalTarget:GetPos() + finalTarget:OBBCenter()
 			if(pos == finalTarget:GetPos()) then
 				pos.z = pos.z + 35
@@ -374,7 +374,7 @@ ZShelter.AddSkills(ClassName, "CreateMove",
 			cmd:SetViewAngles(lerpangle)
 			local eyetrace = {
 				start = eyepos,
-				endpos = eyepos + cmd:GetViewAngles():Forward() * 32767,
+				endpos = eyepos + (ply:EyeAngles() + ply:GetViewPunchAngles()):Forward() * 32767,
 				mask = MASK_SHOT,
 				filter = ply,
 			}

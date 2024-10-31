@@ -168,6 +168,10 @@ function ZShelter.CanCraftWeapon(player, data)
 	return true
 end
 
+function ZShelter.RequirementsCompare(woods, irons)
+	return GetGlobalInt("Woods", 0) >= woods && GetGlobalInt("Irons", 0) >= irons
+end
+
 function ZShelter.CompressTable(tab)
 	local data = util.Compress(util.TableToJSON(tab))
 	local len = string.len(data)

@@ -50,6 +50,49 @@ function ZShelter.ToggleScoreboard(display)
 		local padding2x = padding * 2
 		local padding3x = padding * 3
 		local ui = ZShelter.CreatePanel(nil, 0, 0, ScrW(), ScrH(), Color(0, 0, 0, 0))
+
+		if(outfitter) then
+			local margin = ScreenScaleH(4)
+			local buttonWide = ScreenScaleH(86)
+			local buttonTall = ScreenScaleH(24)
+			local r = ScreenScaleH(4)
+			local bg = ZShelter.CreatePanel(ui, margin, ScrH() * 0.5, buttonWide, buttonTall, Color(30, 30, 30, 255), ScreenScaleH(4))
+			local _, _, t = ZShelter.CreateLabel(bg, bg:GetWide() * 0.5, bg:GetTall() * 0.5, "Outfitter", "ZShelter-ScoreboardPopupFont", Color(255, 255, 255, 255))
+			t.CentPos()
+			bg.Alpha = 0
+			bg.Paint = function()
+				if(bg:IsHovered()) then
+					bg.Alpha = math.Clamp(bg.Alpha + ZShelter.GetFixedValue(5), 0, 40)
+				else
+					bg.Alpha = math.Clamp(bg.Alpha - ZShelter.GetFixedValue(5), 0, 40)
+				end
+				draw.RoundedBox(r, 0, 0, bg:GetWide(), bg:GetTall(), Color(30, 30, 30, 255))
+				draw.RoundedBox(r, 0, 0, bg:GetWide(), bg:GetTall(), Color(255, 255, 255, bg.Alpha))
+			end
+
+			function bg:OnMousePressed()
+				RunConsoleCommand("outfitter")
+			end
+
+			local bg = ZShelter.CreatePanel(ui, margin, ScrH() * 0.5 + buttonTall + margin, buttonWide, buttonTall, Color(30, 30, 30, 255), ScreenScaleH(4))
+			local _, _, t = ZShelter.CreateLabel(bg, bg:GetWide() * 0.5, bg:GetTall() * 0.5, "Thirdperson", "ZShelter-ScoreboardPopupFont", Color(255, 255, 255, 255))
+			t.CentPos()
+			bg.Alpha = 0
+			bg.Paint = function()
+				if(bg:IsHovered()) then
+					bg.Alpha = math.Clamp(bg.Alpha + ZShelter.GetFixedValue(5), 0, 40)
+				else
+					bg.Alpha = math.Clamp(bg.Alpha - ZShelter.GetFixedValue(5), 0, 40)
+				end
+				draw.RoundedBox(r, 0, 0, bg:GetWide(), bg:GetTall(), Color(30, 30, 30, 255))
+				draw.RoundedBox(r, 0, 0, bg:GetWide(), bg:GetTall(), Color(255, 255, 255, bg.Alpha))
+			end
+
+			function bg:OnMousePressed()
+				RunConsoleCommand("zshelter_toggle_thirdperson")
+			end
+		end
+
 		ui.Think = function()
 			if(!ui:HasFocus() && input.IsMouseDown(108)) then
 				ui:MakePopup()

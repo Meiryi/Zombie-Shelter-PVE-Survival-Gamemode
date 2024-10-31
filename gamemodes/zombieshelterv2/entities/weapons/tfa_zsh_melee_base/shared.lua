@@ -267,7 +267,10 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
 		    	local vel = (ent:GetPos() - ply:GetPos()):Angle():Forward() * force
 		    	vel.z = 0
 		    	if(ent:IsPlayer()) then
-		    		vel.z = 200
+		    		vel = vel * 0.2
+		    		if(!ent:IsOnGround()) then
+		    			vel = vel * 0.1
+		    		end
 		    	end
 		    	if(ent.IsBoss) then
 		    		vel = vel * 0.5
@@ -657,6 +660,26 @@ function SWEP:Strike(attk, precision)
 			self:ArccwStyleMelee(attk)
 		return
 	end
+
+	local reach = 32 + attk.len
+    local tr = util.TraceLine({
+        start = self:GetOwner():GetShootPos(),
+        endpos = self:GetOwner():GetShootPos() + self:GetOwner():GetAimVector() * reach,
+        filter = self:GetOwner(),
+        mask = MASK_SHOT
+    })
+
+    if(IsValid(tr.Entity) && (tr.Entity:GetNWBool("IsBuilding"))) then
+    	if(SERVER) then
+    		if(self.Melee2Attack) then
+    			self:ApplyDamage(tr, damage, attk)
+    		else
+    			ZShelter.BuildSystem(self.Owner, tr.Entity, self.BuildSpeed)
+    		end
+    	end
+    	self:EmitSoundNet(attk.hitworld)
+    end
+
 	local hitWorld, hitFlesh, needsCB
 	local distance, direction, maxhull
 	local ow = self:GetOwner()
@@ -790,7 +813,7 @@ function SWEP:Strike(attk, precision)
 	--Handle world
 	for _, v in ipairs(totalResults) do
 
-		if v.Hit and (not TraceHitFlesh(v)) then
+		if v.Hit and (not TraceHitFlesh(v) and !IsValid(v.Entity)) then
 			self:ApplyDamage(v, damage)
 
 			if not hitWorld then

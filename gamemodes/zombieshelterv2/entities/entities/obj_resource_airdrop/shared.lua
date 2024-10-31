@@ -57,7 +57,8 @@ else
 	function ENT:GetRandomWeapon()
 		local index = -1
 		local wep = {}
-		local weps= {}
+		local weps = {}
+		local indexes = {}
 		local allowedLevel = GetGlobalInt("ShelterLevel", 0) + 2
 
 		for k,v in pairs(ZShelter.ItemConfig) do
@@ -69,11 +70,13 @@ else
 				end
 			end
 			table.insert(weps, v)
+			table.insert(indexes, k)
 		end
 		if(#weps <= 0) then return wep, index end
 		index = math.random(1, #weps)
+		local ind = indexes[index]
 		wep = weps[index]
-		return wep, index
+		return wep, ind
 	end
 
 	function ENT:Use(ent)
@@ -95,8 +98,8 @@ else
 				wepent.AmmoCapacity = wep.ammo_capacity || -1
 				wepent.AmmoRegenSpeed = wep.ammoregen || -1
 				wepent:SetNWInt("zsh_index", index)
-				wepent:SetNWInt("zsh_woods", math.floor(wep.woods * 0.85))
-				wepent:SetNWInt("zsh_irons", math.floor(wep.irons * 0.85))
+				wepent:SetNWInt("zsh_woods", wep.woods)
+				wepent:SetNWInt("zsh_irons", wep.irons)
 
 				ent:PickupWeapon(wepent)
 				ent:GiveAmmo(wepent:GetMaxClip1(), wepent:GetPrimaryAmmoType(), true)

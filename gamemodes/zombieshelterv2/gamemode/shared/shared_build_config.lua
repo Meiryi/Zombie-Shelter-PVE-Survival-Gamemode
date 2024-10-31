@@ -390,10 +390,18 @@ ZShelter.AddBuildItem("Public Construction",  "Worktable",  20,  24,  0,  700,  
 		net.Send(player)
 	end
 })
-ZShelter.AddBuildItem("Public Construction",  "Cement Mixer",  32,  40,  3,  1050,  "prop_physics",  "models/shigure/shelter_b_concrete01.mdl",  1,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Public Construction",  "Enhancement Station",  32,  40,  3,  1050,  "prop_physics",  "models/props_lab/workspace001.mdl",  1,  Vector(0, 0, 0), {
+	bait = true,
+	onuse = function(player, building)
+		if(!building:GetNWBool("Completed")) then return end
+		net.Start("ZShelter-OpenEnhancementStation")
+		net.Send(player)
+	end
+})
+ZShelter.AddBuildItem("Public Construction",  "Cement Mixer",  32,  40,  3,  1250,  "prop_physics",  "models/shigure/shelter_b_concrete01.mdl",  1,  Vector(0, 0, 0), {
 	bait = true,
 })
-ZShelter.AddBuildItem("Public Construction",  "Comm Tower",  42,  51,  5,  1450,  "prop_physics",  "models/shigure/shelter_b_antenna01.mdl",  2,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Public Construction",  "Comm Tower",  42,  51,  5,  1650,  "prop_physics",  "models/shigure/shelter_b_antenna01.mdl",  2,  Vector(0, 0, 0), {
 	bait = true,
 	highlight_day = 15,
 	highlight_color = Color(150, 255, 150, 255),

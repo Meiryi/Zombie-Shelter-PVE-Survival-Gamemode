@@ -861,7 +861,7 @@ ZShelter.L("#Large Storage", {
 })
 
 ZShelter.L("#Worktable", {
-	["en"] = "Worktable",
+	["en"] = "Workbench",
 	["bg"] = "Работна маса",
 	["de"] = "Werkbank",
 	["fr"] = "Établi",
@@ -870,6 +870,18 @@ ZShelter.L("#Worktable", {
 	["vi"] = "Bàn Làm Việc",
 	["zh-TW"] = "工作站",
 	["zh-CN"] = "工作台",
+})
+
+ZShelter.L("#Enhancement Station", {
+	["en"] = "Enhancement Station",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "強化站",
+	["zh-CN"] = "强化站",
 })
 
 ZShelter.L("#Ammo Supply Crate", {

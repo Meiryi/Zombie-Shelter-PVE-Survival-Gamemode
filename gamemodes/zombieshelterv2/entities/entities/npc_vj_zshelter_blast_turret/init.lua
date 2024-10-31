@@ -102,8 +102,7 @@ function ENT:Think()
 
 			for k,v in pairs(ents.FindInSphere(targetPos, 150)) do
 				if(!ZShelter.ValidateEntity(self, v)) then continue end
-				v:Ignite(5, 0)
-				v.LastIgniteTarget = owner
+				ZShelter.Ignite(v, owner, 5, 4)
 			end
 
 			self.NextShootTime = CurTime() + self.Firerate

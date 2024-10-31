@@ -451,3 +451,20 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 		end
 	},
 })
+
+--[[
+	----------------------------------------------------------------------------------------
+]]
+
+ZShelter.Modifiers.Register("Friendly Fire", {
+	category = "Other",
+	categoryColor = Color(255, 255, 255, 255),
+	desc = "Enable friendly fire",
+	scoreMul = 1,
+
+	hooks = {
+		ZShelterGameStarted = function()
+			GetConVar("zshelter_friendly_fire"):SetInt(1)
+		end,
+	},
+})

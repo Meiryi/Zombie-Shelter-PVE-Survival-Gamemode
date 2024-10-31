@@ -35,23 +35,30 @@ function ZShelter.ApplyDamageMul(ent, id, mul, time, infinite)
 	}
 end
 
+function ZShelter.Ignite(victim, attacker, duration, damage)
+	victim:Ignite(duration)
+	victim.IgniteDamage = damage
+	victim.LastIgniteTarget = attacker
+end
+
 function ZShelter.StunEntity(ent, stuntime)
 	ent:NextThink(CurTime() + stuntime)
 	ent.StunTimer = CurTime() + stuntime
 end
 
-function ZShelter.Freeze(ent)
+function ZShelter.Freeze(ent, amount, time)
 	if(ent.IsBuilding) then return end
 	if(ent.LastFreezeTime && ent.LastFreezeTime > CurTime()) then return end
 	if(ent.FreezeImmunityTime && ent.FreezeImmunityTime > CurTime()) then return end
 	if(!ent.FreezeCount) then
 		ent.FreezeCount = 0
 	else
-		ent.FreezeCount = ent.FreezeCount + 1
+		ent.FreezeCount = ent.FreezeCount + (amount || 1)
 		if(ent.FreezeCount > 12) then
+			local t = time || 3
 			ent:SetColor(Color(0, 0, 255, 255))
-			ent:NextThink(CurTime() + 3)
-			timer.Simple(3, function()
+			ent:NextThink(CurTime() + t)
+			timer.Simple(t, function()
 				if(IsValid(ent)) then
 					ent:SetColor(Color(255, 255, 255, 255))
 				end
@@ -93,7 +100,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	end
 
 	if(attacker:GetClass() == "entityflame" && dmginfo:IsDamageType(DMG_BURN) && IsValid(target.LastIgniteTarget)) then
-		dmginfo:SetDamage(3)
+		dmginfo:SetDamage(target.IgniteDamage || 1)
 		dmginfo:SetAttacker(target.LastIgniteTarget)
 	end
 
@@ -159,15 +166,24 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 
 	if(attacker:IsPlayer() && !target.IsBuilding) then
 		local wep = attacker:GetActiveWeapon()
-		if(dmginfo:GetDamageCustom() != 8 && !target.IsBoss && (IsValid(wep) && !ZShelter.IsMeleeWeapon(wep:GetClass()))) then
-			if(IsValid(wep) && wep.DamageScaling) then
-				dmginfo:SetDamage(damage * wep.DamageScaling)
+		if(dmginfo:GetDamageCustom() != 8 && !target.IsBoss) then
+			local ismelee = false
+			if(IsValid(wep)) then
+				ismelee = ZShelter.IsMeleeWeapon(wep:GetClass())
+				dmginfo:SetDamage(damage * (wep.DamageScaling || 1))
+				if(wep.Callbacks && wep.Callbacks.OnHit) then
+					for k,v in pairs(wep.Callbacks.OnHit) do
+						v(attacker, target, dmginfo)
+					end
+				end
 			end
-			local dmgscale = attacker:GetNWFloat("DamageScale", 1)
-			dmginfo:ScaleDamage(dmgscale)
-			if(attacker.Callbacks.OnDealingDamage) then
-				for k,v in pairs(attacker.Callbacks.OnDealingDamage) do
-					v(attacker, target, dmginfo)
+			if(!ismelee) then
+				local dmgscale = attacker:GetNWFloat("DamageScale", 1)
+				dmginfo:ScaleDamage(dmgscale)
+				if(attacker.Callbacks.OnDealingDamage) then
+					for k,v in pairs(attacker.Callbacks.OnDealingDamage) do
+						v(attacker, target, dmginfo)
+					end
 				end
 			end
 		end
@@ -279,7 +295,6 @@ end)
 hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflictor)
 	if(!IsValid(npc)) then return end
 	npc:SetCollisionGroup(10)
-	npc:SetCollisionBounds(Vector(0, 0, 0), Vector(0, 0, 0)) -- So it doesn't block turret's bullet + melees
 	if(npc.IsBoss && !npc.KilledBySystem) then
 		ZShelter.SpawnLootboxVec(npc:GetPos())
 	end
@@ -290,6 +305,14 @@ hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflict
 	if(attacker.Callbacks.OnEnemyKilled) then
 		for k,v in pairs(attacker.Callbacks.OnEnemyKilled) do
 			v(attacker, npc, npc.AttackedByTurrets)
+		end
+	end
+	local wep = attacker:GetActiveWeapon()
+	if(IsValid(wep)) then
+		if(wep.Callbacks && wep.Callbacks.OnKill) then
+			for k,v in pairs(wep.Callbacks.OnKill) do
+				v(attacker, npc)
+			end
 		end
 	end
 	local score = math.Clamp((npc:GetMaxHealth() / 100), 1, 8)
@@ -330,7 +353,7 @@ end)
 
 hook.Add("HandlePlayerArmorReduction", "ZShelter-ArmorHandling", function(ply, dmginfo)
 	local attacker = dmginfo:GetAttacker()
-	if(attacker:IsPlayer() && attacker != ply && !ZShelter.IsFriendlyFire(attacker, ply)) then dmginfo:SetDamage(0) return end
+	if(ZShelter.IsFriendlyFire(attacker, ply) && attacker != ply) then dmginfo:ScaleDamage(0) return end
 	if(ply:Armor() <= 0 || bit.band(dmginfo:GetDamageType(), DMG_FALL + DMG_DROWN + DMG_POISON + DMG_RADIATION) != 0) then return end
 	if(attacker.IsBuilding) then return end
 

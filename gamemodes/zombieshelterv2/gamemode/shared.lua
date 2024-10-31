@@ -68,6 +68,10 @@ if(CLIENT) then
 	CreateConVar("zshelter_client_enable_music", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable music?")
 	CreateConVar("zshelter_enable_menu_keys", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable keys to toggle menu?")
 	CreateConVar("zshelter_damage_number", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable damage number", 0, 1)
+
+	CreateConVar("zshelter_thirdperson_distance", 128, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Distance for thirdperson", 32, 512)
+	CreateConVar("zshelter_thirdperson_offset", 16, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Offset for thirdperson", -64, 64)
+	CreateConVar("zshelter_thirdperson_fade_distance", 32, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Minimum distance for playermodel to fadeout", 0, 64)
 end
 
 if(GetConVar("zshelter_server_category_name"):GetString() != "") then
@@ -314,6 +318,8 @@ RunConsoleCommand("r_decals", "128")
 
 RunConsoleCommand("sv_tfa_attachments_enabled", "0")
 RunConsoleCommand("sv_tfa_bullet_penetration_power_mul", "0.3")
+RunConsoleCommand("sv_tfa_sprint_enabled", "0")
+RunConsoleCommand("sv_tfa_dynamicaccuracy", "0")
 
 local meta = FindMetaTable("Entity")
 

@@ -35,6 +35,10 @@ function ZShelter.ValidTarget(o, c)
 	return true
 end
 
+function ZShelter.HurtableTarget(v)
+	return v:IsNPC() || v:IsNextBot() || v:IsPlayer()
+end
+
 function ZShelter.ShouldDetonate(player, trap)
 	if(!IsValid(player)) then return true end
 	if(player.Callbacks && player.Callbacks.OnTrapDetonate) then
@@ -189,8 +193,9 @@ function ZShelter.ValidatePlayerDistance(self, player, distance)
 	return player:Alive() && self:GetPos():Distance(player:GetPos()) <= distance
 end
 
+local cvar = GetConVar("zshelter_friendly_fire")
 function ZShelter.IsFriendlyFire(attacker, victim)
-	return (attacker:IsPlayer() && victim:IsPlayer() && GetConVar("zshelter_friendly_fire"):GetInt() == 1)
+	return (attacker:IsPlayer() && victim:IsPlayer() && cvar:GetInt() == 0)
 end
 
 ZShelter.Melees = {}

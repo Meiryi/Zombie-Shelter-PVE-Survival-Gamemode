@@ -22,7 +22,11 @@ end
 
 ENT.PositionSet = false
 function ENT:Think()
-	if(!self.actualPosition || math.abs(self.StartDay - GetGlobalInt("Day")) > 1) then self:Remove() end
+	if(!self.actualPosition) then
+		self.actualPosition = self:GetPos()
+		self.PositionSet = true
+	end
+	if(math.abs(self.StartDay - GetGlobalInt("Day")) > 1) then self:Remove() return end
 	if(self:GetPos().z <= self.actualPosition.z || self.PositionSet) then
 		self:SetPos(self.actualPosition)
 		self.PositionSet = true
