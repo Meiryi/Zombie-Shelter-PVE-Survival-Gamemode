@@ -350,8 +350,11 @@ function ENT:DoKilled(dmginfo)
 	if(self.HasDeathAnimation) then
 		local time = self.DeathAnimationTime || 1
 		local act = VJ_PICK(self.AnimTbl_Death)
-		self:ResetIdealActivity(act)
-		self:SetActivity(act)
+		timer.Simple(0, function()
+			if(!IsValid(self)) then return end
+			self:ResetIdealActivity(act)
+			self:SetActivity(act)
+		end)
 		timer.Simple(time, function()
 			if(!IsValid(self)) then return end
 			self:Remove()
