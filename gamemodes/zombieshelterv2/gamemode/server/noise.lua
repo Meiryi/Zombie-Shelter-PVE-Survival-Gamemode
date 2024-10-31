@@ -73,7 +73,7 @@ end)
 local scaledownTime = 2
 hook.Add("EntityFireBullets", "ZShelter-Noise", function(ent, data)
 	if(ent.LastNoiseTime && ent.LastNoiseTime > CurTime()) then return end
-	--if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || !IsValid(ent) || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || !ent:IsPlayer()) && !bypassChecks) then return end
+	if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || !IsValid(ent) || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || !ent:IsPlayer()) && !bypassChecks) then return end
 	local wep = ent:GetActiveWeapon()
 	if(!IsValid(wep)) then
 		wep = ent
@@ -106,7 +106,7 @@ hook.Add("OnEntityCreated", "ZShelter-ProjectileNoise", function(ent)
 		local class = ent:GetClass()
 		local owner = ent.Owner
 		if(!IsValid(owner) || !owner:IsPlayer()) then return end
-		--if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || (owner.LastNoiseTime && owner.LastNoiseTime > CurTime())) && !bypassChecks) then return end
+		if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || (owner.LastNoiseTime && owner.LastNoiseTime > CurTime())) && !bypassChecks) then return end
 		local wep = owner:GetActiveWeapon()
 		if(!IsValid(wep) || !wep.Primary || wep.Primary.Projectile != class) then return end
 		local scale = wep.VolumeMultiplier || 1
