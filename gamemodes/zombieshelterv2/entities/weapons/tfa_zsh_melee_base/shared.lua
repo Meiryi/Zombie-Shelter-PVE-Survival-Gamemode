@@ -619,7 +619,7 @@ function SWEP:ArccwStyleMelee(attk)
 						trace.HitPos
 					]]
 					local ent = Entity(k)
-					if(!IsValid(ent)) then continue end
+					if(!IsValid(ent) || ent.IsBuilding) then continue end
 					local trace = {
 						StartPos = self.Owner:EyePos(),
 						Entity = ent,
@@ -800,7 +800,7 @@ function SWEP:Strike(attk, precision)
 				trace.HitPos
 			]]
 			local ent = Entity(k)
-			if(!IsValid(ent)) then continue end
+			if(!IsValid(ent) || ent.IsBuilding) then continue end
 			local trace = {
 				StartPos = self.Owner:EyePos(),
 				Entity = ent,

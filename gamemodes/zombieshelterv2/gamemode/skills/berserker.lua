@@ -64,6 +64,7 @@ ZShelter.AddSkills(ClassName, "OnDayPassed",
 
 ZShelter.AddSkills(ClassName, "OnTakingDamage",
 	function(attacker, target, dmginfo)
+		if(attacker == target) then return end
 		ZShelter.DealNoScaleDamage(target, attacker, dmginfo:GetDamage() * target:GetNWFloat("DamageRef", 0.5))
 	end,
 	function(player, current)

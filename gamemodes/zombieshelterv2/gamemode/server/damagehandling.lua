@@ -308,7 +308,7 @@ hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflict
 		end
 	end
 	local wep = attacker:GetActiveWeapon()
-	if(IsValid(wep)) then
+	if(IsValid(wep) && !npc.AttackedByTurrets) then
 		if(wep.Callbacks && wep.Callbacks.OnKill) then
 			for k,v in pairs(wep.Callbacks.OnKill) do
 				v(attacker, npc)

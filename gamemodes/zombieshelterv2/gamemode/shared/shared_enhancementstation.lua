@@ -300,9 +300,9 @@ ZShelter.Enhancements.Register({
 			--util.BlastDamage(attacker, attacker, victim:GetPos() + victim:OBBCenter(), 64 * scale, dmg * scale) -- Fucking chain reaction lmfao
 			local damage = dmg
 			for k,v in ipairs(ents.FindInSphere(victim:GetPos(), 64 * scale)) do
-				if(!ZShelter.HurtableTarget(v)) then continue end
+				if(!ZShelter.HurtableTarget(v) || v:Health() <= 0) then continue end
 				v.LastExplosionDamagedTime = CurTime() + 0.05
-				ZShelter.DealNoScaleDamage(attacker, v, damage)
+				--ZShelter.DealNoScaleDamage(attacker, v, damage)
 			end
 		end
 	},
