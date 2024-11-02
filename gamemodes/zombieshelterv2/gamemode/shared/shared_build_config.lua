@@ -531,7 +531,7 @@ ZShelter.AddBuildItem("Turret",  "Freeze Turret",  5,  4,  12,  450,  "npc_vj_zs
 	ignorecollision = true,
 }, nil, {find = true, day = 1})
 ZShelter.AddBuildItem("Turret",  "Mounted Machine Gun",  12,  12,  0,  500,  "npc_vj_zshelter_mounted_mg",  "models/tfa_cso/emplacement/w_csomountgun.mdl",  0,  Vector(0, 0, 0), {
-	playercount = true,
+	maxamount = 2,
 	damage = 40,
 	upgradable = true,
 	upgrade_attackscale = 0,
@@ -550,7 +550,7 @@ ZShelter.AddBuildItem("Turret",  "Mounted Machine Gun",  12,  12,  0,  500,  "np
 		self.AttackDamage = math.floor(40 * buff)
 		self:SetNWInt("AttackDamage", math.floor(40 * buff))
 	end,
-}, {}, {find = true, day = 1})
+})
 ZShelter.AddBuildItem("Turret",  "Burst Shotgun Turret",  4,  6,  15,  525,  "npc_vj_zshelter_burst_turret",  "models/vj_hlr/hl1/sentry.mdl",  1,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgrade_attackscale = 0.25,
