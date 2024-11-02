@@ -44,6 +44,12 @@ end
 function ZShelter.StunEntity(ent, stuntime)
 	ent:NextThink(CurTime() + stuntime)
 	ent.StunTimer = CurTime() + stuntime
+	ent:StopMoving(true)
+	ent:SetSchedule(SCHED_NPC_FREEZE)
+	timer.Simple(stuntime, function()
+		if(!IsValid(ent)) then return end
+		ent:SetCondition(68)
+	end)
 end
 
 function ZShelter.Freeze(ent, amount, time)

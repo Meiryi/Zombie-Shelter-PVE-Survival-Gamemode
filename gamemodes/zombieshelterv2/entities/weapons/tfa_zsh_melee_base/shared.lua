@@ -126,6 +126,12 @@ SWEP.VoxSoundTime = -1
 SWEP.Melee2Attack = false
 SWEP.BuildSpeed = 45
 
+function SWEP:OnTargetHit(melee2, target) end
+function SWEP:PostTargetHit(melee2, target) end
+function SWEP:OnComboBreak() end
+function SWEP:PreGatheringResource(res) return true end
+function SWEP:PostAttack() end
+
 function SWEP:SetupDataTables()
 	self:NetworkVar("Bool", 30, "VP")
 	self:NetworkVar("Float", 27, "VPTime")
@@ -240,7 +246,7 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
 		if(ent:GetNWBool("IsResource", false)) then
             if(SERVER) then
             	for i = 1, self.GatheringAmount || 1 do
-            		if(!IsValid(ent)) then continue end
+            		if(!IsValid(ent) || !self:PreGatheringResource(ent)) then continue end
             		ZShelter.GatheringSystem(ply, ent) 
             	end
             end
@@ -263,6 +269,7 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
         end
 	    if(!ent.IsBuilding) then
 	    	if(SERVER) then
+	    		self:OnTargetHit(melee2, ent, attk)
 		    	local force = self.KnockbackForce || 0
 		    	local vel = (ent:GetPos() - ply:GetPos()):Angle():Forward() * force
 		    	vel.z = 0
@@ -277,6 +284,7 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
 		    	end
 		    	ent:SetVelocity(vel)
 		    	ent:SetLocalVelocity(vel)
+		    	self:PostTargetHit(melee2, ent)
 	    	end
 	    end
 	end
@@ -422,7 +430,8 @@ end
 function SWEP:Think2()
 	if not self:VMIV() then return end
 
-	if (not self:GetOwner():KeyDown(IN_ATTACK)) and (not self:GetOwner():KeyDown(IN_ATTACK2)) then
+	if (not self:GetOwner():KeyDown(IN_ATTACK)) and (not self:GetOwner():KeyDown(IN_ATTACK2)) and self:GetComboCount() > 0 then
+		self:OnComboBreak()
 		self:SetComboCount(0)
 	end
 
@@ -651,14 +660,14 @@ end
 
 function SWEP:Strike(attk, precision)
 	local ply = self.Owner
+	local oldstyle = self.OldStyleHit
     if(ply.Callbacks && ply.Callbacks.OnMeleeStrike) then
         for k,v in pairs(ply.Callbacks.OnMeleeStrike) do
             v(ply, self.Melee2Attack)
         end
     end
-	if(self.OldStyleHit) then
-			self:ArccwStyleMelee(attk)
-		return
+	if(oldstyle) then
+		self:ArccwStyleMelee(attk)
 	end
 
 	local reach = 32 + attk.len
@@ -669,13 +678,9 @@ function SWEP:Strike(attk, precision)
         mask = MASK_SHOT
     })
 
-    if(IsValid(tr.Entity) && (tr.Entity:GetNWBool("IsBuilding"))) then
-    	if(SERVER) then
-    		if(self.Melee2Attack) then
-    			self:ApplyDamage(tr, damage, attk)
-    		else
-    			ZShelter.BuildSystem(self.Owner, tr.Entity, self.BuildSpeed)
-    		end
+    if(IsValid(tr.Entity) && !oldstyle) then
+    	if(SERVER && (tr.Entity.IsBuilding || tr.Entity.IsResource)) then
+    		self:ApplyDamage(tr, damage, attk)
     	end
     	self:EmitSoundNet(attk.hitworld)
     end
@@ -755,6 +760,10 @@ function SWEP:Strike(attk, precision)
 	local range = self.AOERange_Primary || 8
 	if(self.Melee2Attack) then
 		range = self.AOERange_Secondary || 16
+	end
+
+	if(oldstyle) then
+		totalResults = {}
 	end
 
 	--Handle flesh
@@ -849,6 +858,8 @@ function SWEP:Strike(attk, precision)
 		end
 	end
 
+	self:PostAttack()
+
 	if attack.kickback and (hitFlesh or hitWorld) then
 		self:SendViewModelAnim(attack.kickback)
 	end
@@ -863,41 +874,20 @@ end
 local lvec, ply, targ
 lvec = Vector()
 
-function SWEP:PrimaryAttack()
-	self.Melee2Attack = false
-	local ow = self:GetOwner()
-	if IsValid(ow) and ow:IsNPC() then
-		local keys = table.GetKeys(self.Primary.Attacks)
-		table.RemoveByValue(keys,"BaseClass")
-		local attk = self.Primary.Attacks[table.Random(keys)]
-		local owv = self:GetOwner()
-		timer.Simple(0.5, function()
-			if IsValid(self) and IsValid(owv) and owv:IsCurrentSchedule(SCHED_MELEE_ATTACK1) then
-				attack = attk
-				self:Strike(attk,5)
-			end
-		end)
-		self:SetNextPrimaryFire(CurTime() + attk["end"] or 1)
-		timer.Simple(self:GetNextPrimaryFire() - CurTime(), function()
-			if IsValid(owv) then
-				owv:ClearSchedule()
-			end
-		end)
-		self:GetOwner():SetSchedule(SCHED_MELEE_ATTACK1)
-		return
-	end
-	if self:GetSprinting() and not self:GetStat("AllowSprintAttack", false) then return end
-	if self:IsSafety() then return end
-	if not self:VMIV() then return end
-	if CurTime() <= self:GetNextPrimaryFire() then return end
-	if not TFA.Enum.ReadyStatus[self:GetStatus()] then return end
-	if self:GetComboCount() >= self.Primary.MaxCombo and self.Primary.MaxCombo > 0 then return end
-	table.Empty(att)
-	local founddir = false
+function SWEP:ChooseAttack(tblName)
+	local attacks = self:GetStatL(tblName .. ".Attacks")
+	if not attacks or #attacks <= 0 then return -1 end
 
-	if self.Primary.Directional then
-		ply = self:GetOwner()
-		--lvec = WorldToLocal(ply:GetVelocity(), Angle(0, 0, 0), vector_origin, ply:EyeAngles()):GetNormalized()
+	local keys = table.GetKeys(attacks)
+	table.RemoveByValue(keys, "BaseClass")
+	if #keys <= 0 then return -1 end
+
+	local ply = self:GetOwner()
+	local isdir = self:GetStatL(tblName .. ".Directional") and IsValid(ply) and ply:IsPlayer()
+	local founddir = false
+	local foundkeys = {}
+
+	if isdir then
 		lvec.x = 0
 		lvec.y = 0
 
@@ -917,9 +907,7 @@ function SWEP:PrimaryAttack()
 			lvec.x = lvec.x - 1
 		end
 
-		lvec.z = 0
-
-		--lvec:Normalize()
+		local targ = ""
 		if lvec.y > 0.3 then
 			targ = "L"
 		elseif lvec.y < -0.3 then
@@ -928,41 +916,85 @@ function SWEP:PrimaryAttack()
 			targ = "F"
 		elseif lvec.x < -0.1 then
 			targ = "B"
-		else
-			targ = ""
 		end
 
-		for k, v in pairs(self.Primary.Attacks) do
+		for k, v in pairs(attacks) do
 			if (not self:GetSprinting() or v.spr) and v.direction and string.find(v.direction, targ) then
-				if string.find(v.direction, targ) then
-					founddir = true
-				end
+				founddir = true
 
-				table.insert(att, #att + 1, k)
+				table.insert(foundkeys, k)
 			end
 		end
 	end
 
-	if not self.Primary.Directional or #att <= 0 or not founddir then
-		for k, v in pairs(self.Primary.Attacks) do
+	if not isdir or #foundkeys <= 0 or not founddir then
+		for k, v in pairs(attacks) do
 			if (not self:GetSprinting() or v.spr) and v.dmg then
-				table.insert(att, #att + 1, k)
+				table.insert(foundkeys, k)
 			end
 		end
 	end
 
-	if #att <= 0 then return end
-	ind = att[self:SharedRandom(1, #att, "PrimaryAttack")]
-	attack = self.Primary.Attacks[ind]
+	if #foundkeys <= 0 then return 0 end
+	local key = foundkeys[self:SharedRandom(1, #foundkeys, tblName .. "Attack")]
+	if not key then return 0 end
+
+	return key, attacks[key]
+end
+
+function SWEP:ChoosePrimaryAttack()
+	return self:ChooseAttack("Primary")
+end
+
+function SWEP:ChooseSecondaryAttack()
+	return self:ChooseAttack("Secondary")
+end
+
+function SWEP:PrePrimaryAttack() return true end
+
+function SWEP:PreSecondaryAttack() return true end
+
+function SWEP:PrimaryAttack()
+	local ow = self:GetOwner()
+	if IsValid(ow) and ow:IsNPC() then
+		local _, attk = self:ChoosePrimaryAttack()
+		if not attk then return end
+		local owv = self:GetOwner()
+
+		timer.Simple(0.5, function()
+			if IsValid(self) and IsValid(owv) and owv:IsCurrentSchedule(SCHED_MELEE_ATTACK1) then
+				self:Strike(attk, 5)
+			end
+		end)
+
+		self:SetNextPrimaryFire(CurTime() + attk["end"] or 1)
+
+		timer.Simple(self:GetNextPrimaryFire() - CurTime(), function()
+			if IsValid(owv) then
+				owv:ClearSchedule()
+			end
+		end)
+
+		self:GetOwner():SetSchedule(SCHED_MELEE_ATTACK1)
+		return
+	end
+
+	if self:GetSprinting() and not self:GetStatL("AllowSprintAttack", false) then return end
+	if self:IsSafety() then return end
+	if not self:VMIV() then return end
+	if CurTime() <= self:GetNextPrimaryFire() then return end
+	if not TFA.Enum.ReadyStatus[self:GetStatus()] then return end
+
+	local maxcombo = self:GetStatL("Primary.MaxCombo", 0)
+	if maxcombo > 0 and self:GetComboCount() >= maxcombo then return end
+	if not self:PrePrimaryAttack() then return end
+	self.Melee2Attack = false
+	
+	local ind, attack = self:ChoosePrimaryAttack()
+	if not attack then return end
+
 	--We have attack isolated, begin attack logic
 	self:PlaySwing(attack.act)
-
-	if(self.AllowSwitchAttack) then
-		timer.Simple(attack.delay || 0.2, function()
-			if(!IsValid(self) || !IsValid(self.Owner) || !self.Owner:Alive()) then return end
-			self:Strike(attack, self.Precision)
-		end)
-	end
 
 	if not attack.snd_delay or attack.snd_delay <= 0 then
 		if IsFirstTimePredicted() then
@@ -1001,97 +1033,35 @@ function SWEP:PrimaryAttack()
 	end
 
 	self.up_hat = false
-	self:SetStatus(TFA.Enum.STATUS_SHOOTING)
+	self:ScheduleStatus(TFA.Enum.STATUS_SHOOTING, attack.delay / self:GetAnimationRate(attack.act))
 	self:SetMelAttackID(ind)
-	self:SetStatusEnd(CurTime() + attack.delay / self:GetAnimationRate(attack.act))
 	self:SetNextPrimaryFire(CurTime() + attack["end"] / self:GetAnimationRate(attack.act))
 	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
 	self:SetComboCount(self:GetComboCount() + 1)
 end
 
 function SWEP:SecondaryAttack()
-	if self:GetSprinting() and not self:GetStat("AllowSprintAttack", false) then return end
+	if self:GetSprinting() and not self:GetStatL("AllowSprintAttack", false) then return end
 	if self:IsSafety() then return end
 	if not self:VMIV() then return end
 	if CurTime() <= self:GetNextPrimaryFire() then return end
 	if not TFA.Enum.ReadyStatus[self:GetStatus()] then return end
-	if self:GetComboCount() >= self.Secondary.MaxCombo and self.Secondary.MaxCombo > 0 then return end
+
 	self.Melee2Attack = true
-	table.Empty(att)
-	local founddir = false
+	local maxcombo = self:GetStatL("Secondary.MaxCombo", 0)
+	if maxcombo > 0 and self:GetComboCount() >= maxcombo then return end
+	if not self:PreSecondaryAttack() then return end
 
-	if not self.Secondary.Attacks or #self.Secondary.Attacks == 0 then
-		self.Secondary.Attacks = self.Primary.Attacks
+	local ind, attack = self:ChooseSecondaryAttack()
+	if attack then
+		ind = -ind
+	elseif ind < 0 and self:GetStatL("Secondary.PrimaryFallback") then
+		ind, attack = self:ChoosePrimaryAttack()
 	end
+	if not attack then return end
 
-	if self.Secondary.Directional then
-		ply = self:GetOwner()
-		--lvec = WorldToLocal(ply:GetVelocity(), Angle(0, 0, 0), vector_origin, ply:EyeAngles()):GetNormalized()
-		lvec.x = 0
-		lvec.y = 0
-
-		if ply:KeyDown(IN_MOVERIGHT) then
-			lvec.y = lvec.y - 1
-		end
-
-		if ply:KeyDown(IN_MOVELEFT) then
-			lvec.y = lvec.y + 1
-		end
-
-		if ply:KeyDown(IN_FORWARD) or ply:KeyDown(IN_JUMP) then
-			lvec.x = lvec.x + 1
-		end
-
-		if ply:KeyDown(IN_BACK) or ply:KeyDown(IN_DUCK) then
-			lvec.x = lvec.x - 1
-		end
-
-		lvec.z = 0
-
-		--lvec:Normalize()
-		if lvec.y > 0.3 then
-			targ = "L"
-		elseif lvec.y < -0.3 then
-			targ = "R"
-		elseif lvec.x > 0.5 then
-			targ = "F"
-		elseif lvec.x < -0.1 then
-			targ = "B"
-		else
-			targ = ""
-		end
-
-		for k, v in pairs(self.Secondary.Attacks) do
-			if (not self:GetSprinting() or v.spr) and v.direction and string.find(v.direction, targ) then
-				if string.find(v.direction, targ) then
-					founddir = true
-				end
-
-				table.insert(att, #att + 1, k)
-			end
-		end
-	end
-
-	if not self.Secondary.Directional or #att <= 0 or not founddir then
-		for k, v in pairs(self.Secondary.Attacks) do
-			if (not self:GetSprinting() or v.spr) and v.dmg then
-				table.insert(att, #att + 1, k)
-			end
-		end
-	end
-
-	if #att <= 0 then return end
-	ind = att[self:SharedRandom(1, #att, "SecondaryAttack")]
-	attack = self.Secondary.Attacks[ind]
 	--We have attack isolated, begin attack logic
 	self:PlaySwing(attack.act)
-
-	if(self.AllowSwitchAttack) then
-		timer.Simple(attack.delay || 0.2, function()
-			if(!IsValid(self) || !IsValid(self.Owner) || !self.Owner:Alive()) then return end
-			self:Strike(attack, self.Precision)
-		end)
-	end
 
 	if not attack.snd_delay or attack.snd_delay <= 0 then
 		if IsFirstTimePredicted() then
@@ -1130,9 +1100,8 @@ function SWEP:SecondaryAttack()
 	end
 
 	self.up_hat = false
-	self:SetStatus(TFA.Enum.STATUS_SHOOTING)
-	self:SetMelAttackID(-ind)
-	self:SetStatusEnd(CurTime() + attack.delay / self:GetAnimationRate(attack.act))
+	self:ScheduleStatus(TFA.Enum.STATUS_SHOOTING, attack.delay / self:GetAnimationRate(attack.act))
+	self:SetMelAttackID(ind)
 	self:SetNextPrimaryFire(CurTime() + attack["end"] / self:GetAnimationRate(attack.act))
 	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
 	self:SetComboCount(self:GetComboCount() + 1)

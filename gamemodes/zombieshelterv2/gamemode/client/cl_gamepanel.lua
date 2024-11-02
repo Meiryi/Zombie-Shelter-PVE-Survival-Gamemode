@@ -171,6 +171,11 @@ ZShelter.QueuedAvatarID = {}
 ZShelter.QueuedAvatarDownload = {}
 ZShelter.PlayerLists = {}
 ZShelter.Leaderboard = ZShelter.Leaderboard || {}
+ZShelter.SelectedMeleeWeapon = 0
+
+net.Receive("ZShelter-SyncMeleeWeapon", function()
+	ZShelter.SelectedMeleeWeapon = net.ReadInt(32)
+end)
 
 function ZShelter.HTTPFetchStatistics()
 	HTTP({
@@ -298,11 +303,22 @@ local func = {
 			local gap = ScreenScaleH(2)
 			local gap1x = ScreenScaleH(1)
 			local textpadding = ScreenScaleH(12)
+			local playerRank = 1
 			local playerAvatar = ZShelter.CircleAvatar(ui, textpadding, textpadding, size, size, LocalPlayer(), 186)
 			local currentRank, currentLevel, currentEXP, nextRequirement = ZShelter.CalculateRank(LocalPlayer():GetNWInt("ZShelterEXP", 0))
 			local title = "["..ZShelter.GetLevelTitle(currentLevel).."] "
 			local text_w, text_h, text_1 = ZShelter.CreateLabel(ui, playerAvatar:GetX() + playerAvatar:GetWide() + sidepadding * 2, playerAvatar:GetY() + sidepadding * 2, title, "ZShelter-GameUITitle", ZShelter.GetLevelColor(currentLevel))
 			local text_w, text_h, text = ZShelter.CreateLabel(ui, playerAvatar:GetX() + playerAvatar:GetWide() + sidepadding * 2 + text_w, playerAvatar:GetY() + sidepadding * 2, LocalPlayer():Nick(), "ZShelter-GameUITitle", Color(255, 255, 255, 255))
+			local size = ScreenScaleH(16)
+			local _star = ZShelter.CreatePanel(ui, text:GetX() + text:GetWide() + sidepadding, text:GetY() + text:GetTall(), size, size, Color(0, 0, 0, 0))
+			_star.Paint = function()
+				surface.SetDrawColor(255, 255, 255, 255)
+				surface.SetMaterial(starmat)
+				surface.DrawTexturedRect(0, 0, size, size)
+			end
+			_star:SetY(_star:GetY() - _star:GetTall())
+			local _, _, ranktext = ZShelter.CreateLabel(ui, _star:GetX() + _star:GetWide(), text:GetY() + (text:GetTall()), "x"..currentRank + (currentLevel * 5), "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+			ranktext:SetY(ranktext:GetY() - ranktext:GetTall())
 			local starSize = ScreenScaleH(16)
 			stars(ui, text_1:GetX() + gap, text:GetY() + text_h, starSize, 0, currentRank)
 			local levelFraction = 0
@@ -393,6 +409,65 @@ local func = {
 				ui.NextReloadTime = SysTime() + 1
 			end
 			scroll.RefreshLeaderboard()
+
+			local bw, bh = ui:GetWide() * 0.15, ScreenScaleH(24)
+			local meleeButton = ZShelter.CreateButton(ui, ui:GetWide() - (bw + sidepadding), sidepadding, bw, bh, "Bonus Weapons", "ZShelter-GameUIButton", Color(255, 255, 255, 255), Color(30, 30, 30, 255), function()
+				local panel = ZShelter.CreatePanel(ui, 0, 0, ui:GetWide(), ui:GetTall(), Color(30, 30, 30, 255))
+				local backButton = ZShelter.CreateButton(panel, panel:GetWide() - (bw + sidepadding), sidepadding, bw, bh, "Back", "ZShelter-GameUIButton", Color(255, 255, 255, 255), Color(30, 30, 30, 255), function()
+					panel:Remove()
+				end)
+				backButton.Paint = function()
+					draw.RoundedBox(0, 0, 0, backButton:GetWide(), backButton:GetTall(), Color(30, 30, 30, 255))
+					surface.SetDrawColor(255, 255, 255, 255)
+					surface.DrawOutlinedRect(0, 0, backButton:GetWide(), backButton:GetTall(), ScreenScaleH(1))
+				end
+
+				local top = ScreenScaleH(32)
+				local starsize = ScreenScaleH(24)
+				local scroll = ZShelter.CreateScroll(panel, sidepadding, top + sidepadding, panel:GetWide() - (sidepadding * 2), panel:GetTall() - (top + sidepadding * 2), Color(20, 20, 20, 255))
+				local _, myLevel = ZShelter.CalculateRank(LocalPlayer():GetNWInt("ZShelterEXP", 0))
+				for level, melee in ipairs(ZShelter.RankMelees) do
+					local pnl = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.15, Color(25, 25, 25, 255))
+						pnl:Dock(TOP)
+						pnl:DockMargin(0, 0, 0, gap)
+
+						local clr = ZShelter.GetLevelColor(level)
+						local size = pnl:GetTall() * 2.25
+						local icon = ZShelter.CreateImage(pnl, 0, (size - pnl:GetTall()) * -0.5, size, size, "entities/"..melee.icon..".png", Color(255, 255, 255, 255))
+						local _, _, title = ZShelter.CreateLabel(pnl, icon:GetX() + icon:GetWide() + sidepadding, sidepadding, melee.name, "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+						local _, _, desc = ZShelter.CreateLabel(pnl, title:GetX(), title:GetY() + title:GetTall() + sidepadding, melee.desc, "ZShelter-GameUIStatisticTextSmall", Color(255, 255, 255, 255))
+
+						local btn = ZShelter.InvisButton(pnl, 0, 0, pnl:GetWide(), pnl:GetTall(), function()
+							if(myLevel >= level) then
+								net.Start("ZShelter-SelectMeleeWeapon")
+									net.WriteInt(level, 32)
+								net.SendToServer()
+							end
+						end)
+						btn.Paint = function()
+							if(myLevel < level) then
+								draw.RoundedBox(0, 0, 0, btn:GetWide(), btn:GetTall(), Color(120, 50, 50, 150))
+							end
+							if(level == ZShelter.SelectedMeleeWeapon) then
+								surface.SetDrawColor(255, 255, 255, 255)
+								surface.DrawOutlinedRect(0, 0, btn:GetWide(), btn:GetTall(), ScreenScaleH(1))
+							end
+						end
+						local _, _, require = ZShelter.CreateLabel(btn, pnl:GetWide(), pnl:GetTall() * 0.5, "x"..level * 5, "ZShelter-GameUIStatisticText", clr)
+						require:SetPos(require:GetX() - (require:GetWide() + sidepadding * 2), require:GetY() - require:GetTall() * 0.5)
+						local _star = ZShelter.CreatePanel(btn, require:GetX() - starsize, pnl:GetTall() * 0.5 - starsize * 0.5, starsize, starsize, Color(0, 0, 0, 0))
+						_star.Paint = function()
+							surface.SetDrawColor(clr.r, clr.g, clr.b, 255)
+							surface.SetMaterial(starmat)
+							surface.DrawTexturedRect(0, 0, starsize, starsize)
+						end
+				end
+			end)
+			meleeButton.Paint = function()
+				draw.RoundedBox(0, 0, 0, meleeButton:GetWide(), meleeButton:GetTall(), Color(30, 30, 30, 255))
+				surface.SetDrawColor(255, 255, 255, 255)
+				surface.DrawOutlinedRect(0, 0, meleeButton:GetWide(), meleeButton:GetTall(), ScreenScaleH(1))
+			end
 		end,
 	},
 	{

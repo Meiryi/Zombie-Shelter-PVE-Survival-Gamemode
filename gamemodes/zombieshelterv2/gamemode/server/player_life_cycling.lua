@@ -20,7 +20,9 @@ function ZShelter.GiveMelee(player)
 			return
 		end
 	end
-	player:Give("tfa_zsh_cso_shelteraxe")
+	local melee = ZShelter.GetDefaultMelee(player) || "tfa_zsh_cso_shelteraxe"
+	player:Give(melee)
+	ZShelter.SyncMelee(player, player:GetNWInt("SelectedMelee", 0))
 end
 
 function ZShelter.RS()

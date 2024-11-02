@@ -1,0 +1,16 @@
+"UnlitGeneric"
+{
+	"$basetexture" "sprites/runebreaker_exp"
+	"$translucent" 1
+	"$additive" 1
+	"$nocull" 1
+	"Proxies"
+	{
+	"AnimatedTexture"
+		{
+		"animatedTextureVar" "$basetexture"
+		"animatedTextureFrameNumVar" "$frame"
+		"animatedTextureFrameRate" "30"
+		}
+	}
+}

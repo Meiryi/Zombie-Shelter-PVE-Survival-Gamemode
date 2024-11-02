@@ -3,7 +3,7 @@ ZShelter.RankLevel = 5
 local math_floor = math.floor
 function ZShelter.CalculateRankEXP(rank, level)
 	local lv = 1 + level
-	local exp = (100 * (level ^ (level * 0.35))) + ((1 + (rank * 0.1)) * (50 ^ (1 + (lv * 0.07))))
+	local exp = (100 * (level ^ (level * 0.35))) + ((1 + (rank * 0.1)) * (40 ^ (1 + (lv * 0.0325))))
 	return math_floor(exp)
 end
 
