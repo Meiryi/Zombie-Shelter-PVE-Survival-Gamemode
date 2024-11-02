@@ -437,7 +437,7 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 			SetGlobalFloat("EnemySpawnMul", GetGlobalFloat("EnemySpawnMul", 1) * 1.75)
 			SetGlobalFloat("EnemySpawnTimeMul", GetGlobalFloat("EnemySpawnTimeMul", 1) * 0.75)
 			SetGlobalFloat("ResourceMul", GetGlobalFloat("ResourceMul", 1) * 0.5)
-			SetGlobalInt("EnemySpawnForwardDay", GetGlobalInt("EnemySpawnForwardDay", 0) + 1)
+			SetGlobalInt("EnemySpawnForwardDay", GetGlobalInt("EnemySpawnForwardDay", 0) + 2)
 			GetConVar("zshelter_difficulty"):SetInt(9)
 			ZShelter.StartedDifficulty = GetConVar("zshelter_difficulty"):GetInt()
 		end,
@@ -448,7 +448,7 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 
 		PostPlayerDeath = function(ply)
 			ply:SetNWFloat("RespawnTime", CurTime() + GetGlobalInt("Time"))
-		end
+		end,
 	},
 })
 
