@@ -345,12 +345,13 @@ local build = Material("zsh/icon/building.png", "smooth")
 local list = {}
 net.Receive("ZShelter-Notify", function()
 	local death = net.ReadBool()
+	local ncolor = net.ReadColor()
 	local isplayer = net.ReadBool()
 	local title = net.ReadString()
 	if(!isplayer) then
 		title = ZShelter_GetTranslate("#"..title)
 	end
-	local color = Color(200, 80, 90, 255)
+	local color = Color(220, 55, 58, 255)
 	local tall = ScreenScaleH(16)
 	local wide = ScreenScaleH(64) + tall
 	local tw = ZShelter.GetTextSize("ZShelter-HUDNotifyFont", title)
@@ -359,10 +360,13 @@ net.Receive("ZShelter-Notify", function()
 		color = Color(55, 170, 220, 255)
 		mat = build
 	end
+	if(ncolor != Color(0, 0, 0, 0)) then
+		color = ncolor
+	end
 	if((wide - tall) <= tw) then wide = tw + tall + ScreenScaleH(4) end
 	table.insert(list, 1, {
 		title = title,
-		killtime = SysTime() + 3,
+		killtime = SysTime() + 6,
 		tall = tall,
 		wide = wide,
 		alpha = 0,

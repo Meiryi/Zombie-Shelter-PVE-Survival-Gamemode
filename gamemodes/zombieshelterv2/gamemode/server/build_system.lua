@@ -440,6 +440,10 @@ function ZShelter.CreateBuilding(ply, data, vec, yaw)
 			scale = ply:GetNWFloat("TrapHPScale", 1)
 		end
 
+		if(ply:IsPlayer()) then -- Add this check so it won't error out when loading save files (ply will be a du)
+			ent:SetNWString("BuilderName", ply:Nick())
+		end
+
 		ent.Cate = data.category
 
 		ent:SetMaxHealth(data.health * ply:GetNWFloat("BuildingHPScale", 1))

@@ -13,6 +13,7 @@ function ZShelter.SaveGame()
 		shelterlevel = GetGlobalInt("ShelterLevel", 0),
 		capacity = GetGlobalInt("Capacity", 0),
 		playerdata = {},
+		blueprints = {},
 		shelterdata = {
 			pos = shelter:GetPos(),
 			ang = shelter:GetAngles(),
@@ -21,6 +22,10 @@ function ZShelter.SaveGame()
 			model = shelter:GetModel(),
 		},
 	}
+
+	for _, bp in pairs(ZShelter.IngredientConfig) do
+		data.blueprints[bp.id] = GetGlobalBool("BP_"..bp.id)
+	end
 
 	for _, ply in pairs(player.GetAll()) do
 		local weps = {}
@@ -95,6 +100,9 @@ function ZShelter.LoadSave()
 		dummyEnt.Think = function() end
 		for nwindex, nwvar in pairs(plydata.nwvars) do
 			dummyEnt:SetNWString(nwindex, nwvar)
+		end
+		for blueprint, completed in pairs(data.blueprints) do
+			SetGlobalBool("BP_"..blueprint, completed)
 		end
 		for _, building in pairs(plydata.ownedbuilding) do
 			local data = ZShelter.BuildingData_Class[building.index]

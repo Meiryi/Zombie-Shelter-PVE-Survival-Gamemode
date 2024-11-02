@@ -15,9 +15,10 @@
 
 util.AddNetworkString("ZShelter-Notify")
 
-function ZShelter.BroadcastNotify(death, player, title)
+function ZShelter.BroadcastNotify(death, player, title, color)
 	net.Start("ZShelter-Notify")
 	net.WriteBool(death)
+	net.WriteColor(color || Color(0, 0, 0, 0))
 	net.WriteBool(player)
 	net.WriteString(title)
 	net.Broadcast()

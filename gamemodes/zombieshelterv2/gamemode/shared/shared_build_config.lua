@@ -308,7 +308,7 @@ ZShelter.AddBuildItem("Recovery",  "Campfire",  2,  1,  0,  50,  "prop_physics",
 }, {"Campfire"})
 local powergain = 60
 ZShelter.AddBuildItem("Generator",  "Generator",  5,  5,  0, 120,  "prop_physics",  "models/shigure/shelter_b_generator04.mdl",  0,  Vector(0, 0, 0), {
-		maxamount = 4,
+		maxamount = 6,
 		bait = true,
 		oncomplete = function(self)
 			local power = 90 + (GetGlobalInt("ShelterLevel", 0) * powergain)
@@ -560,7 +560,7 @@ ZShelter.AddBuildItem("Turret",  "Burst Shotgun Turret",  4,  6,  15,  525,  "np
 	insideshelter = true,
 	attackrange = 700,
 	ignorecollision = true,
-}, {}, {find = true, day = 2})
+})
 ZShelter.AddBuildItem("Turret",  "Flame Turret",  6,  6,  15,  600,  "npc_vj_zshelter_flame_turret",  "models/zshelter/shelter_b_firegun01.mdl",  1,  Vector(0, 0, 0), {
 	upgrade_attackscale = 0.42,
 	upgrade_healthscale = 0.3,
@@ -647,7 +647,7 @@ ZShelter.AddBuildItem("Turret",  "Plasma Turret",  13,  14,  25,  700,  "npc_vj_
 	insideshelter = true,
 	attackrange = 2500,
 }, {})
-ZShelter.AddBuildItem("Turret",  "Electric Defense Tower",  16,  16,  30,  1500,  "npc_vj_zshelter_electric_defense",  "models/zshelter/shelter_b_electric_defense.mdl",  3,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Turret",  "Electric Defense Tower",  16,  16,  30,  2700,  "npc_vj_zshelter_electric_defense",  "models/zshelter/shelter_b_electric_defense.mdl",  3,  Vector(0, 0, 0), {
 	upgradable = true,
 	upgrade_attackscale = 0.25,
 	upgrade_healthscale = 0.25,

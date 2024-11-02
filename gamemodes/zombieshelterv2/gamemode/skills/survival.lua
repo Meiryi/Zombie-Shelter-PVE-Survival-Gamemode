@@ -28,18 +28,27 @@ ZShelter.AddSkills(ClassName, nil, nil,
 
 local wood = Material("zsh/icon/woods_white.png", "smooth")
 local iron = Material("zsh/icon/irons_white.png", "smooth")
-local lootbox = Material("zsh/icon/lootbox.png", "smooth")
+local lootbox = Material("zsh/icon/box.png", "smooth")
+local bp = Material("zsh/icon/blueprint.png", "smooth")
 local matTable = {
-	["Woods"] = wood,
-	["Irons"] = iron,
+	obj_resource_wood = wood,
+	obj_resource_iron = iron,
+	obj_resource_lootbox = lootbox,
+	obj_resource_blueprint = bp,
+}
+local whitelistClasses = {
+	obj_resource_wood = true,
+	obj_resource_iron = true,
+	obj_resource_lootbox = true,
+	obj_resource_blueprint = true,
 }
 ZShelter.AddSkills(ClassName, "OnHUDPaint",
 	function(player)
-		local sx = ScreenScaleH(24)
+		local sx = ScreenScaleH(16)
 		for k,v in pairs(ents.GetAll()) do
-			if(!v:GetNWBool("IsResource", false)) then continue end
+			if(!whitelistClasses[v:GetClass()]) then continue end
 			if(!v.__alpha) then v.__alpha = 0 end
-			local mat = matTable[v:GetNWString("ResourceType", "")]
+			local mat = matTable[v:GetClass()]
 			if(!mat) then continue end
 			if(v:GetPos():Distance(player:GetPos()) > 1500) then
 				v.__alpha = math.Clamp(v.__alpha - ZShelter.GetFixedValue(15), 0, 255)
@@ -52,18 +61,6 @@ ZShelter.AddSkills(ClassName, "OnHUDPaint",
 			surface.DrawTexturedRect(pos.x - sx * 0.5, pos.y - sx * 0.5, sx, sx)
 		end
 	end, nil, 1, "reswallhack", 1, "Resource Rader")
-
-hook.Add("PreDrawHalos", "ZShelter-SkillboxRender", function()
-	local ply = LocalPlayer()
-	if(ply:GetNWInt("SK_Resource Rader") == 0) then return end
-	local list = {}
-	local pos = ply:GetPos()
-	for k,v in ipairs(ents.FindByClass("obj_resource_lootbox")) do
-		if(pos:Distance(v:GetPos()) > 1024) then continue end
-		table.insert(list, v)
-	end
-	halo.Add(list, Color(0, 100, 0), 2, 2, 1, true, true)
-end)
 
 ZShelter.AddSkills(ClassName, nil, nil,
 	function(player, current)

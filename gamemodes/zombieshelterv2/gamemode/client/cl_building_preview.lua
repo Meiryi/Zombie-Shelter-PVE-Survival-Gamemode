@@ -139,6 +139,24 @@ surface.CreateFont("ZShelter-HUDUpgradeDesc", {
 	outline = false,
 })
 
+surface.CreateFont("ZShelter-HUDBuilder", {
+	font = "Arial",
+	extended = false,
+	size = ScreenScaleH(8),
+	weight = 750,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
 ZShelter_NoDraw = false
 if(EnhancedCameraTwo) then -- Enhanced Camera 2 compatibilty
 	EnhancedCameraTwo.ORender = EnhancedCameraTwo.ORender || EnhancedCameraTwo.Render
@@ -339,6 +357,10 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 			surface_SetMaterial(health_mat)
 			surface_DrawTexturedRect(tx - sx, drawY, sx, sx)
 			draw_DrawText(hp, "ZShelter-HUDUpgradeDesc", tx, drawY + pad, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+
+			if(entity:GetNWString("BuilderName", "") != "") then
+				 ZShelter.ShadowText(ZShelter_GetTranslate_Var("#BuildBy", entity:GetNWString("BuilderName", "")), "ZShelter-HUDBuilder", x + w * 0.5, y + h + pad, Color(255, 255, 255, 180), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, 1)
+			end
 		end
 	else
 		upgradeHoldTime = CurTime()

@@ -1221,7 +1221,7 @@ ZShelter.L("#TotalWoods", {
 })
 
 ZShelter.L("#TotalIrons", {
-	["en"] = "Total Irons Gathered",
+	["en"] = "Total Metals Gathered",
 	["bg"] = "Общо събрани желязо",
 	["de"] = "Gesamtzahl des gesammelten Eisens",
 	["fr"] = "Fers collectés",
@@ -2012,6 +2012,19 @@ ZShelter.L("#EnemyListHPBoost", {
 	["zh-TW"] = "[天數 x <VAR>]",
 	["zh-CN"] = "[天数 x <VAR>]",
 })
+
+ZShelter.L("#BuildBy", {
+	["en"] = "Build by <VAR>",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "由 <VAR> 建造",
+	["zh-CN"] = "由 <VAR> 建造",
+})
+
 
 local TemporaryUnsupportedLanguage = {
 

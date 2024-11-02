@@ -56,6 +56,7 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 	end)
 
 	sound.Play("shigure/gunpickup2.wav", ply:GetPos())
+	ZShelter.BroadcastNotify(false, true, ply:Nick().." Crafted "..data.title, Color(220, 143, 55, 255))
 
 	SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - data.woods, 0))
 	SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - data.irons, 0))

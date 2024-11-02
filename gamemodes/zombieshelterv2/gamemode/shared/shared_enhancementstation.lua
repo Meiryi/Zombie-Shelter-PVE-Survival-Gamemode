@@ -60,6 +60,7 @@ if(SERVER) then
 			end
 			wep.Callbacks[funcName][enh.name] = func
 		end
+		ZShelter.BroadcastNotify(false, true, ply:Nick().." Upgraded "..enh.name, Color(220, 143, 55, 255))
 	end)
 else
 	net.Receive("ZShelter-EnhancementStationSyncFullAuto", function()
@@ -76,8 +77,8 @@ ZShelter.Enhancements.Register({
 	name = "Damage Boost",
 	desc = "Increase weapon's damage by 10%",
 	price = 3,
-	price_step = 0.33,
-	price_scale = 0.55,
+	price_step = 0.2,
+	price_scale = 0.4,
 	maxUpgrade = 4,
 
 	condfunc = function(wep)
@@ -95,8 +96,8 @@ ZShelter.Enhancements.Register({
 	name = "Firerate Boost",
 	desc = "Increase weapon's firerate by 5%",
 	price = 12,
-	price_step = 0.5,
-	price_scale = 0.4,
+	price_step = 0.25,
+	price_scale = 0.25,
 	maxUpgrade = 3,
 
 	condfunc = function(wep)
@@ -115,8 +116,8 @@ ZShelter.Enhancements.Register({
 	name = "Steady Control",
 	desc = "Decrease weapon's recoil by 20%",
 	price = 12,
-	price_step = 0.35,
-	price_scale = 0.15,
+	price_step = 0.1,
+	price_scale = 0.1,
 	maxUpgrade = 2,
 
 	condfunc = function(wep)
@@ -146,9 +147,9 @@ ZShelter.Enhancements.Register({
 	name = "Steady Line",
 	desc = "Decrease weapon's spready by 15%",
 	price = 14,
-	price_step = 0.45,
-	price_scale = 0.2,
-	maxUpgrade = 2,
+	price_step = 0.15,
+	price_scale = 0.1,
+	maxUpgrade = 3,
 
 	condfunc = function(wep)
 		return wep:GetMaxClip1() > 1 && wep.IsTFAWeapon
@@ -171,8 +172,8 @@ ZShelter.Enhancements.Register({
 	name = "Extended Magazine",
 	desc = "Increase magazine size by 20%",
 	price = 12,
-	price_step = 0.5,
-	price_scale = 0.33,
+	price_step = 0.25,
+	price_scale = 0.15,
 	maxUpgrade = 3,
 
 	condfunc = function(wep)
@@ -197,8 +198,8 @@ ZShelter.Enhancements.Register({
 	name = "Homemade full-auto",
 	desc = "Make an smei-auto weapon into full-auto",
 	price = 20,
-	price_step = 0.5,
-	price_scale = 0.4,
+	price_step = 0.1,
+	price_scale = 0.2,
 	maxUpgrade = 1,
 
 	condfunc = function(wep)
@@ -219,8 +220,8 @@ ZShelter.Enhancements.Register({
 	name = "Piercing Rounds",
 	desc = "Increase weapon's penetration by 20%",
 	price = 17,
-	price_step = 0.65,
-	price_scale = 0.25,
+	price_step = 0.3,
+	price_scale = 0.1,
 	maxUpgrade = 4,
 
 	condfunc = function(wep)
@@ -238,7 +239,7 @@ ZShelter.Enhancements.Register({
 
 ZShelter.Enhancements.Register({
 	name = "Ignition Strike",
-	desc = "Ignites enemy everytime you hit it, +1s duration and 2 damage per upgrade",
+	desc = "Ignites enemy everytime you hit it, +1s duration and 5 damage per upgrade",
 	price = 20,
 	price_step = 0.25,
 	price_scale = 0.55,
@@ -251,7 +252,7 @@ ZShelter.Enhancements.Register({
 		OnHit = function(attacker, victim, dmginfo)
 			if(ZShelter.IsFriendlyFire(attacker, victim)) then return end
 			local scale = attacker:GetActiveWeapon():GetNWInt("UG_Ignition Strike", 1)
-			ZShelter.Ignite(victim, attacker, 2 + scale, 2 * scale)
+			ZShelter.Ignite(victim, attacker, 2 + scale, 5 * scale)
 		end
 	},
 })
