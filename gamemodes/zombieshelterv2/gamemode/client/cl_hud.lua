@@ -139,6 +139,24 @@ surface.CreateFont("ZShelter-HUDDamageFont", {
 	outline = false,
 })
 
+surface.CreateFont("ZShelter-HUDDamageSmallFont", {
+	font = "Arial",
+	extended = false,
+	size = ScreenScaleH(8),
+	weight = 100,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
 surface.CreateFont("ZShelter-HUDNameTag", {
 	font = "Arial",
 	extended = false,
@@ -221,6 +239,7 @@ net.Receive("ZShelter-DamageNumber", function()
 		local prev = dmgs[eindex]
 		local new = {
 			damage = dmg + prev.damage,
+			prev = "(+"..dmg..")",
 			time = SysTime() + time,
 			alpha = 255,
 
@@ -275,6 +294,11 @@ function ZShelter.PaintDamageNumber()
 
 		cam.PushModelMatrix(matrix)
 		draw.DrawText(v.damage, "ZShelter-HUDDamageFont", pos.x, pos.y - v.current_offs, Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
+		--[[
+		if(v.prev) then
+			draw.DrawText(v.prev, "ZShelter-HUDDamageSmallFont", pos.x, pos.y - (v.current_offs - ScreenScaleH(10)), Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
+		end
+		]]
 		cam.PopModelMatrix()
 	end
 end

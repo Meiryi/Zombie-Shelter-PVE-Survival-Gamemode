@@ -182,14 +182,14 @@ SWEP.Secondary.Attacks = {
 		['act'] = ACT_VM_MISSLEFT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 250, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(0,0,80), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 350, --Nope!! Not overpowered!!
+		['dmg'] = 270, --Nope!! Not overpowered!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.3, --Delay
 		['spr'] = true, --Allow attack while sprinting?
 		['snd'] = "TFABaseMelee.Null", -- Sound ID
 		['snd_delay'] = 0.4,
 		["viewpunch"] = Angle(0,0,0), --viewpunch angle
-		['end'] = 1.3, --time before next attack
+		['end'] = 1.25, --time before next attack
 		['hull'] = 64, --Hullsize
 		['direction'] = "F", --Swing dir
 		['hitflesh'] = "DualKatana.HitFleshStab",
@@ -251,11 +251,18 @@ function SWEP:OnTargetHit(melee2, target, attk)
 	if(!target.UniqueID) then
 		target.UniqueID = math.random(0, 32767)
 	end
-	self.EnemyHit[target.UniqueID] = (self.EnemyHit[target.UniqueID] || 1) + 0.15
+	self.EnemyHit[target.UniqueID] = (self.EnemyHit[target.UniqueID] || 0) + 0.05
+	if(target.IsBoss) then
+		self.EnemyHit[target.UniqueID] = math.min(self.EnemyHit[target.UniqueID], 1.5)
+	end
 	target:TakeDamage(attk.dmg * self.EnemyHit[target.UniqueID], self.Owner, self)
 end
 
 function SWEP:OnComboBreak() -- Preventing player from spamming attacks
 	self:SetNextPrimaryFire(CurTime() + 0.55)
 	self:SetNextSecondaryFire(CurTime() + 0.55)
+	if(self.Melee2Attack) then
+		self:SetNextPrimaryFire(CurTime() + 1.25)
+		self:SetNextSecondaryFire(CurTime() + 1.25)
+	end
 end
