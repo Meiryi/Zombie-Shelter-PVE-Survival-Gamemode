@@ -1,6 +1,7 @@
 ZShelter.Leaderboard = {}
 util.AddNetworkString("ZShelter_SyncEXP")
 util.AddNetworkString("ZShelter_SyncLeaderboard")
+util.AddNetworkString("ZShelter_SyncLoaalRank")
 
 function ZShelter.BroadcastPlayerEXP(player, exp, difficulty, day)
 	player:SetNWInt("ZShelterEXP", exp)
@@ -120,5 +121,11 @@ function ZShelter.ReadLeaderboard()
 	if(!leaderboard) then return end
 	ZShelter.Leaderboard = leaderboard
 end
+
+net.Receive("ZShelter_SyncLoaalRank", function(len, ply)
+	local exp = net.ReadUInt(32)
+	ply:SetNWInt("ZShelterEXP", exp)
+	ZShelter.WritePlayerEXP(ply, 1, 1)
+end)
 
 ZShelter.ReadLeaderboard()

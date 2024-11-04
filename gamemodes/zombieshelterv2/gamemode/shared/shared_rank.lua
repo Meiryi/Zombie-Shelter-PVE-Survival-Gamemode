@@ -69,3 +69,13 @@ ZShelter.LevelTitles = {
 function ZShelter.GetLevelTitle(level)
 	return ZShelter.LevelTitles[math.Clamp(level, 0, 10)]
 end
+
+if(CLIENT) then
+	concommand.Add("zshelter_debug_sync_localrank", function()
+		local exp = file.Read("zombie shelter v2/localexps/"..LocalPlayer():SteamID64()..".txt", "DATA")
+		if(!exp) then return end
+		net.Start("ZShelter_SyncLoaalRank")
+		net.WriteUInt(exp, 32)
+		net.SendToServer()
+	end)
+end

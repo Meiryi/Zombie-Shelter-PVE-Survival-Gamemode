@@ -112,6 +112,42 @@ function ZShelter.ImageAnimation(a)
 	end
 end
 
+local clr = Color(0, 0, 0, 0)
+function ZShelter.MaskedSphereRing(pos, radius, steps, thickness, color)
+	cam.IgnoreZ(false)
+	render.SetStencilEnable(true)
+	render.SetStencilCompareFunction(STENCIL_ALWAYS)
+	render.SetStencilPassOperation(STENCIL_KEEP)
+	render.SetStencilFailOperation(STENCIL_KEEP)
+	render.SetStencilZFailOperation(STENCIL_KEEP)
+	render.SetStencilReferenceValue(1)
+	render.SetStencilTestMask(255)
+	render.SetStencilWriteMask(255)
+	render.ClearStencil()
+	render.SetColorMaterial()
+
+	local r1, r2 = radius, radius + thickness
+
+	render.SetStencilCompareFunction(STENCIL_ALWAYS)
+	render.SetStencilZFailOperation(STENCIL_INCRSAT)
+	render.DrawSphere(pos, -r2, steps, steps, clr)
+	render.SetStencilZFailOperation(STENCIL_DECR)
+	render.DrawSphere(pos, r2, steps, steps, clr)
+	render.SetStencilZFailOperation(STENCIL_INCR)
+	render.DrawSphere(pos, -r1, steps, steps, clr)
+	render.SetStencilZFailOperation(STENCIL_DECR)
+	render.DrawSphere(pos, r2, steps, steps, clr)
+
+	local dir = LocalPlayer():EyeAngles():Forward()
+
+	render.SetStencilCompareFunction( STENCIL_EQUAL )
+	render.SetStencilReferenceValue( 1 )
+	render.DrawQuadEasy(EyePos() + dir * 10, -dir, 200, 200, color, 0)
+
+	render.SetStencilEnable(false)
+end
+
+
 function ZShelter.GetFractionFromTime(target, t)
 	return math.Clamp(1 - ((target - SysTime()) / t), 0, 1)
 end
