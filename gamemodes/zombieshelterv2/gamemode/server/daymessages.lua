@@ -36,4 +36,4 @@ function ZShelter.BroadcastMessage(msg, color, style)
 	net.Broadcast()
 end
 
-ZShelter.SetDayMessage(15, "#CommHint", Color(255, 255, 255, 255), true)
+ZShelter.SetDayMessage(10, "#CommHint", Color(255, 255, 255, 255), true)

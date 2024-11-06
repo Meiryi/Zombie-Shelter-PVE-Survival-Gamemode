@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+                  "$basetexture" "zbs_scorp/scorpion_head"
+
+                   "$alphatest"    "1"
+                   
+}

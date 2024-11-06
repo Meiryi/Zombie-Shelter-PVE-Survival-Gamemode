@@ -403,11 +403,11 @@ ZShelter.AddBuildItem("Public Construction",  "Cement Mixer",  32,  40,  3,  125
 })
 ZShelter.AddBuildItem("Public Construction",  "Comm Tower",  42,  51,  5,  1650,  "prop_physics",  "models/shigure/shelter_b_antenna01.mdl",  2,  Vector(0, 0, 0), {
 	bait = true,
-	highlight_day = 15,
+	highlight_day = 10,
 	highlight_color = Color(150, 255, 150, 255),
 
 	onuse = function(player, building)
-		if(!building:GetNWBool("Completed") || GetGlobalInt("Day", 0) < 15) then return end
+		if(!building:GetNWBool("Completed") || GetGlobalInt("Day", 0) < 10) then return end
 		ZShelter.ProcessRescue(player)
 	end
 })

@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/boss/megalodon/bomb_megalodon"
+                $alphatest 1
+}

@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/misc/tentacle/$0a_tentacle_sign"
+	"$additive" 1
+}

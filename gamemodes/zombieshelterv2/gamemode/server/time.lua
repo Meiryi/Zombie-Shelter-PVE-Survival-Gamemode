@@ -138,7 +138,7 @@ function ZShelter.OnDayPassed()
 	engine.LightStyle(0, "m")
 	ZShelter.UpdatePlayerLighting(true)
 
-	if(GetGlobalInt("Day") > 30 && GetConVar("zshelter_endless"):GetInt() == 0) then
+	if(GetGlobalInt("Day") > 20 && GetConVar("zshelter_endless"):GetInt() == 0) then
 		ZShelter.HandleWin("#Victory", "#Survived30Day")
 	end
 

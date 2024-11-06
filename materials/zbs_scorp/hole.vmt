@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+                  "$basetexture" "zbs_scorp/hole"
+
+                   "$alphatest"    "0"
+                   
+}

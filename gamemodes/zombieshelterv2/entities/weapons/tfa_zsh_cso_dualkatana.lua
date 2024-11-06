@@ -107,7 +107,7 @@ SWEP.Primary.Attacks = {
 		['act'] = ACT_VM_HITLEFT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-100,0,-10), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 75, --This isn't overpowered enough, I swear!!
+		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.15, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -125,7 +125,7 @@ SWEP.Primary.Attacks = {
 		['act'] = ACT_VM_PRIMARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-100,0,-10), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 125, --This isn't overpowered enough, I swear!!
+		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.02, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -143,7 +143,7 @@ SWEP.Primary.Attacks = {
 		['act'] = ACT_VM_PULLBACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(100,0,45), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 75, --This isn't overpowered enough, I swear!!
+		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.04, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -161,7 +161,7 @@ SWEP.Primary.Attacks = {
 		['act'] = ACT_VM_SECONDARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-100,0,-45), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 125, --This isn't overpowered enough, I swear!!
+		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.04, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -182,7 +182,7 @@ SWEP.Secondary.Attacks = {
 		['act'] = ACT_VM_MISSLEFT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 250, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(0,0,80), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 270, --Nope!! Not overpowered!!
+		['dmg'] = 300, --Nope!! Not overpowered!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.3, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -251,7 +251,7 @@ function SWEP:OnTargetHit(melee2, target, attk)
 	if(!target.UniqueID) then
 		target.UniqueID = math.random(0, 32767)
 	end
-	self.EnemyHit[target.UniqueID] = (self.EnemyHit[target.UniqueID] || 0) + 0.05
+	self.EnemyHit[target.UniqueID] = (self.EnemyHit[target.UniqueID] || 0) + 0.08
 	if(target.IsBoss) then
 		self.EnemyHit[target.UniqueID] = math.min(self.EnemyHit[target.UniqueID], 1.5)
 	end

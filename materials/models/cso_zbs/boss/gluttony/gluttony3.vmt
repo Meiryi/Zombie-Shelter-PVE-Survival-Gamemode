@@ -1,0 +1,16 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/cso_zbs/boss/gluttony/gluttony3"
+Proxies 
+	{
+		Sine
+		{
+			resultVar	$alpha 
+			sineperiod	1
+			sinemin		0.2
+			sinemax		0.2
+		}
+	}
+
+}
+

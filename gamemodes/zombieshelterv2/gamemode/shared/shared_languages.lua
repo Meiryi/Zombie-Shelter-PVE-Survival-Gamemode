@@ -1822,27 +1822,27 @@ ZShelter.L("#Victory", {
 })
 
 ZShelter.L("#Survived30Day", {
-	["en"] = "Successfully survived to day 30",
-	["bg"] = "Успешно оцеля до ден 30",
-	["de"] = "Erfolgreich bis Tag 30 überlebt",
-	["fr"] = "Vous avez survécu jusqu'au 30ème jour",
-	["tr"] = "Başarıyla 30. güne kadar hayatta kalındı",
+	["en"] = "Successfully survived to day 20",
+	["bg"] = "Успешно оцеля до ден 20",
+	["de"] = "Erfolgreich bis Tag 20 überlebt",
+	["fr"] = "Vous avez survécu jusqu'au 20ème jour",
+	["tr"] = "Başarıyla 20. güne kadar hayatta kalındı",
 	["ru"] = "Удалось дожить до 30-го дня",
-	["vi"] = "Thành công sống sót đến ngày thứ 30",
-	["zh-TW"] = "成功生存到第30天",
-	["zh-CN"] = "成功生存到第30天",
+	["vi"] = "Thành công sống sót đến ngày thứ 20",
+	["zh-TW"] = "成功生存到第20天",
+	["zh-CN"] = "成功生存到第20天",
 })
 
 ZShelter.L("#Survived15Day", {
-	["en"] = "Successfully survived to day 15",
-	["bg"] = "Успешно оцеля до ден 15",
-	["de"] = "Erfolgreich bis Tag 15 überlebt",
-	["fr"] = "Vous avez survécu jusqu'au 15ème jour",
-	["tr"] = "Başarıyla 15. güne kadar hayatta kalındı",
-	["ru"] = "Удалось дожить до 15-го дня",
-	["vi"] = "Thành công sống sót đến ngày thứ 15",
-	["zh-TW"] = "成功生存到第15天",
-	["zh-CN"] = "成功生存到第15天",
+	["en"] = "Successfully survived to day 10",
+	["bg"] = "Успешно оцеля до ден 10",
+	["de"] = "Erfolgreich bis Tag 10 überlebt",
+	["fr"] = "Vous avez survécu jusqu'au 10ème jour",
+	["tr"] = "Başarıyla 10. güne kadar hayatta kalındı",
+	["ru"] = "Удалось дожить до 10-го дня",
+	["vi"] = "Thành công sống sót đến ngày thứ 10",
+	["zh-TW"] = "成功生存到第10天",
+	["zh-CN"] = "成功生存到第10天",
 })
 
 ZShelter.L("#PTS", {
