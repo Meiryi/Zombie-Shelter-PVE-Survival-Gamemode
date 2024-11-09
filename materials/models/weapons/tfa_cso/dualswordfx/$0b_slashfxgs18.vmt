@@ -1,0 +1,6 @@
+"UnLitGeneric"
+{
+	$basetexture	"models\weapons\tfa_cso\dualswordfx\$0b_slashfxgs18"
+	$additive		"1"
+	$nocull		"1"
+}
