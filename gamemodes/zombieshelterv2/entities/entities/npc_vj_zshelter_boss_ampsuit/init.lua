@@ -157,7 +157,7 @@ function ENT:CustomOnThink()
 		end)
 
 		self.NextFlameSkillTime = CurTime() + 30
-		self.NextLaserSkillTime = CurTime() + 25
+		self.NextLaserSkillTime = CurTime() + 17
 	end
 
 	if(self.FlameSkillDelay < CurTime() && self.FlameSkillDuration > CurTime()) then
@@ -188,7 +188,7 @@ function ENT:CustomOnThink()
 		end)
 
 		self.NextLaserSkillTime = CurTime() + 30
-		self.NextFlameSkillTime = CurTime() + 25
+		self.NextFlameSkillTime = CurTime() + 17
 	end
 
 	if(self.LaserSkillDelay < CurTime() && self.LaserSkillDuration > CurTime()) then
@@ -229,7 +229,7 @@ function ENT:CustomOnThink()
 	self.IsDoingLaserSkill = self.LaserSkillDuration > CurTime()
 end
 
-ENT.MoveSpeed = 450
+ENT.MoveSpeed = 625
 ENT.NextMoveTime = 0
 function ENT:OverrideMove(interval)
 	if(!self:IsMoving() || self.NextMoveTime > CurTime()) then return true end
@@ -261,6 +261,11 @@ function ENT:CustomOnMeleeAttack_BeforeChecks(seed)
 	end
 end
 
+function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo)
+	if(self.IsDoingLaserSkill || self.IsDoingFlameSkill) then
+		dmginfo:ScaleDamage(0.33)
+	end
+end
 
 --[[
 self:CustomOnMeleeAttack_BeforeChecks()

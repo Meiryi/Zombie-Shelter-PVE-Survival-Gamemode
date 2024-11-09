@@ -49,9 +49,9 @@ if SERVER then
 			},self)
 			if(IsValid(tr.Entity) && !self.Hits[tr.Entity:EntIndex()]) then
 				if(tr.Entity:IsPlayer()) then
-					tr.Entity:TakeDamage(self.Damage * 2, self:GetOwner(), self:GetOwner())
+					tr.Entity:TakeDamage(self.Damage * 2.15, self:GetOwner(), self:GetOwner())
 				else
-					tr.Entity:TakeDamage(self.Damage, self:GetOwner(), self:GetOwner())
+					tr.Entity:TakeDamage(self.Damage * 0.7, self:GetOwner(), self:GetOwner())
 				end
 				if(tr.Entity.IsPlayerBarricade) then
 					self:Remove()

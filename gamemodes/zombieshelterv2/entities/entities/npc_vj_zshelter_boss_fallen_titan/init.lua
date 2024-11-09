@@ -3,7 +3,7 @@ include('shared.lua')
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
-ENT.Model = {"models/zshelter/bosses/zbs_bossl_big07.mdl"}
+ENT.Model = {"models/zshelter/bosses/zbs_bossl_big04.mdl"}
 ENT.StartHealth = 5000
 ENT.HullType = HULL_HUMAN
 

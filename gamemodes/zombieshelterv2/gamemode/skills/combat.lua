@@ -444,4 +444,4 @@ ZShelter.AddSkills(ClassName, "OnSkillCalled",
 		end)
 	end,
 	function()
-	end, 1, "cstim", 4, "Combat Stimpack", nil, 90)
+	end, 1, "cstim", 4, "Combat Stimpack", nil, 60)

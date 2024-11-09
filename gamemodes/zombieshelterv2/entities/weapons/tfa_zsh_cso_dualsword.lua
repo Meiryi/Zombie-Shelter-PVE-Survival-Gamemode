@@ -310,6 +310,22 @@ function SWEP:SetupDataTables(...)
     return retVal
 end
 
+SWEP.ShouldPlaySound = false
+function SWEP:Think2(...)
+	if(CLIENT) then
+		local vm = self.Owner:GetViewModel()
+		if(vm:GetSequence() == 4 && vm:GetCycle() >= 0.1) then
+			if(self.ShouldPlaySound) then
+				self.Owner:EmitSound("shigure/wink.mp3")
+				self.ShouldPlaySound = false
+			end
+		else
+			self.ShouldPlaySound = true
+		end
+	end
+	BaseClass.Think2(self, ...)
+end
+
 function SWEP:ChooseSecondaryAttack()
     local attacks = self:GetStatL("Secondary.Attacks") -- getting the SWEP.Primary.Attacks table
 
@@ -322,6 +338,14 @@ function SWEP:ChooseSecondaryAttack()
     if nextattack > 4 then -- reset the count if we're going beyond attacks count
         nextattack = 1
         self:SetComboCount(0)
+    end
+
+    if(CLIENT) then
+	    local e = EffectData()
+	    	e:SetOrigin(self.Owner:EyePos())
+	    	e:SetFlags(1)
+	    	e:SetScale(nextattack)
+	    util.Effect("tfa_cso_dualswordfx", e)
     end
 
     self:SetLastSecondaryAttackChoice(nextattack) -- remembering the current choice for next time
@@ -339,7 +363,6 @@ function SWEP:ChoosePrimaryAttack()
     if nextattack > 2 then -- reset the count if we're going beyond attacks count
         nextattack = 1
     end
-
     self:SetLastPrimaryAttackChoice(nextattack) -- remembering the current choice for next time
     return nextattack, attacks[nextattack] -- returning the key of SWEP.Primary.Attacks table and the chosen attack table itself
 end
