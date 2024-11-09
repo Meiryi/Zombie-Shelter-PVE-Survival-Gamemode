@@ -126,7 +126,12 @@ function ZShelter.ApplyDamageFast(building, damage, sd, bypass_durability)
 	end 
 	if(building.IsResource) then return end
 	if(GetConVar("zshelter_debug_disable_building_damage"):GetInt() == 1) then return end
-	if(building:GetNWBool("DurabilitySystem", false) && !bypass_durability) then return end
+	if(building:GetNWBool("DurabilitySystem", false)) then
+		if(bypass_durability) then
+			building:SetHealth(math.max(building:Health() - damage, 0))
+		end
+		return
+	end
 	building.LastDamagedTime = CurTime()
 	building:SetHealth(building:Health() - damage)
 	if(game.SinglePlayer()) then

@@ -21,6 +21,7 @@ function ENT:Initialize()
 end
 
 function ENT:Think()
+	if(self:Health() <= 0) then return end
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), 80)) do
 		if(v == self || v:IsPlayer() || v.IsBuilding || v:Health() <= 0) then continue end
 		if(!v:IsNPC() && !v:IsNextBot()) then continue end

@@ -35,51 +35,27 @@ end
 ENT.AimTarget = nil
 
 function ENT:Think()
-	self:FindEnemy()
-	if(IsValid(self.AimTarget)) then
-		local pos = self:GetPos()
-		local effectdata = EffectData()
-			effectdata:SetOrigin(self:GetPos())
-			effectdata:SetMagnitude(12)
-			effectdata:SetScale(2)
-			effectdata:SetRadius(5)
-			util.Effect("Sparks", effectdata)
-		sound.Play("ambient/explosions/explode_8.wav", pos, 120, 100, 1)
-		for i = 1, 12 do
-			timer.Simple((i - 1) * 0.4, function()
-				local e = EffectData()
-				e:SetOrigin(pos)
-				util.Effect("zshelter_cyro_field", e)
-				for i = 1, 15 do
-					local e = EffectData()
-					e:SetOrigin(pos + Vector(math.random(-186, 186), math.random(-186, 186), math.random(10, 25)))
-					util.Effect("zshelter_emp", e, true, true)
-				end
-				for k,v in ipairs(ents.FindInSphere(pos, 186)) do
-					if(!ZShelter.ValidTarget(nil, v)) then continue end
-					v:SetMoveVelocity(v:GetMoveVelocity() * 0.2)
-					v:SetNWFloat("DefenseNerfTime", CurTime() + 8)
-					v.LastFreezeTime = 0
-					v.FreezeCount = 10
-					ZShelter.Freeze(v)
-					if(!v.LastApplyEffectTime || v.LastApplyEffectTime < CurTime()) then
-						local e = EffectData()
-							e:SetOrigin(v:GetPos())
-							e:SetEntity(v)
-						util.Effect("zshelter_defnerf", e)
-						v.LastApplyEffectTime = CurTime() + 3
-					end
-				end
-			end)
+	local pos = self:GetPos()
+	local shouldTakeHP = false
+	if(self:Health() <= 0) then return end
+	for k,v in ipairs(ents.FindInSphere(pos, 186)) do
+		if(!ZShelter.ValidTarget(nil, v)) then continue end
+		if((v.LastEFTime && v.LastEFTime > CurTime())) then
+			v:SetMoveVelocity(v:GetMoveVelocity() * 0.4)
 		end
-		if(ZShelter.ShouldDetonate(self:GetOwner(), self)) then
-			self:Remove()
-		else
-			self.AimTarget = nil
-			self:NextThink(CurTime() + 10)
-			return true
+		if(!v.LastApplyEffectTime || v.LastApplyEffectTime < CurTime()) then
+			ZShelter.Freeze(v)
+			v.LastApplyEffectTime = CurTime() + 0.2
 		end
+		v.LastEFTime = CurTime() + 0.2
+		shouldTakeHP = true
 	end
-	self:NextThink(CurTime() + 0.3)
+	if(shouldTakeHP) then
+		self:SetHealth(math.max(0, self:Health() - 1))
+	end
+	local e = EffectData()
+	e:SetOrigin(pos)
+	util.Effect("zshelter_cyro_field", e)
+	self:NextThink(CurTime() + 0.4)
 	return true
 end

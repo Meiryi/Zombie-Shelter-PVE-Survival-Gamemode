@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/Props/upgradebench/metal"
+	"$bumpmap" "models/Props/upgradebench/metaln"
+}

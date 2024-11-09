@@ -1,4 +1,6 @@
 ZShelter.Leaderboard = {}
+ZShelter.GatheringContribute = 3
+
 util.AddNetworkString("ZShelter_SyncEXP")
 util.AddNetworkString("ZShelter_SyncLeaderboard")
 util.AddNetworkString("ZShelter_SyncLoaalRank")

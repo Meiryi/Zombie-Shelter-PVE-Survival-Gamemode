@@ -26,7 +26,7 @@ end
 
 ENT.NextDamageTime = 0
 function ENT:Touch(ent)
-	if(!self:GetNWBool("Completed", false)) then return end
+	if(!self:GetNWBool("Completed", false) || self:Health() <= 0) then return end
 	if(!ZShelter.ValidateTarget(ent)) then return end
 	if(ent.LastFreezeTime && ent.LastFreezeTime > CurTime()) then return end
 	local owner = self:GetOwner()

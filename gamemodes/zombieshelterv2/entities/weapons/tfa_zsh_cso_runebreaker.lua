@@ -34,6 +34,10 @@ SWEP.Primary.MaxCombo = -1
 SWEP.BuildSpeed = 65
 SWEP.OldStyleHit = true
 
+SWEP.AOEDamage = true
+SWEP.AOERange_Primary = 24
+SWEP.AOERange_Secondary = 1
+
 SWEP.Offset = {
 		Pos = {
 		Up = -12,
@@ -94,9 +98,9 @@ sound.Add({
 SWEP.Primary.Attacks = {
 	{
 		['act'] = ACT_VM_PRIMARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 170, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-180,0,0), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 275, --This isn't overpowered enough, I swear!!
+		['dmg'] = 300, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.15, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -117,7 +121,7 @@ SWEP.Secondary.Attacks = {
 		['act'] = ACT_VM_HITRIGHT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
 		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(0,0,130), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 200, --Nope!! Not overpowered!!
+		['dmg'] = 225, --Nope!! Not overpowered!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 1.2, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -177,6 +181,15 @@ function SWEP:PostAttack()
 
 		for _, ent in pairs(entities) do
 			ent:TakeDamage(180, ply, self)
+		    if(ply.Callbacks && ply.Callbacks.OnMeleeDamage) then
+		    	local dmginfo = DamageInfo()
+		    		dmginfo:SetDamage(180)
+		    		dmginfo:SetAttacker(ply)
+		    		dmginfo:SetInflictor(self)
+		        for k,v in pairs(ply.Callbacks.OnMeleeDamage) do
+		            v(ply, ent, dmginfo, true)
+		        end
+		    end
 		end
 	end
 end

@@ -106,7 +106,7 @@ ZShelter.AddSkills(ClassName, "OnGatheringResources",
 			if(full && player:GetNWInt("SK_Resource Transporting", 0) >= 1) then
 				SetGlobalInt(type, math.min(GetGlobalInt(type, 0) + amount, GetGlobalInt("Capacity", 32)))
 			end
-			player:AddFrags(amount)
+			player:AddFrags(amount * ZShelter.GatheringContribute)
 			player.GatheringCount = 0
 		else
 			player.GatheringCount = player.GatheringCount + 1
@@ -176,7 +176,7 @@ ZShelter.AddSkills(ClassName, "OnGatheringResources",
 		local current = GetGlobalInt(type, 0)
 		local capacity = GetGlobalInt("Capacity", 16)
 		if(current >= capacity) then return end
-		player:AddFrags(amount * 2)
+		player:AddFrags(amount * ZShelter.GatheringContribute)
 		SetGlobalInt(type, math.min(current + amount, capacity))
 
 		resource.Amount = resource.Amount - 1

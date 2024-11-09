@@ -36,6 +36,7 @@ ENT.NativePoints = {
 
 function ENT:Think()
 	local pos = self:GetPos()
+	if(self:Health() <= 0) then return end
 	if(self.NextCheckPointTime < CurTime()) then -- Less lag
 		self.ConnectedPoints = {}
 		for k,v in ipairs(ents.FindByClass("obj_structure_laser_trap")) do

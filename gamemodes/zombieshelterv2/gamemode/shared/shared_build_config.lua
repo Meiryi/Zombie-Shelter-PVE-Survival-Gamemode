@@ -464,12 +464,16 @@ ZShelter.AddBuildItem("Trap",  "Spike Trap",  3,  4,  10,  240,  "npc_vj_zshelte
 	insideshelter = true,
 	attackrange = 45,
 })
-ZShelter.AddBuildItem("Trap",  "Flame Trap",  3,  3,  0,  120,  "obj_structure_flame_trap",  "models/combine_helicopter/helicopter_bomb01.mdl",  2,  Vector(0, 0, -7), {
-	damage = 25,
+ZShelter.AddBuildItem("Trap",  "Flame Trap",  12,  12,  0,  350,  "obj_structure_flame_trap",  "models/combine_helicopter/helicopter_bomb01.mdl",  2,  Vector(0, 0, -7), {
+	damage = 6,
+	durability = true,
+	durability_cost = 1,
 	forceowner = true,
 	nodestroymessage = true,
 	insideshelter = true,
-	activerange = 80,
+	upgrade_healthscale = 0.25,
+	upgradable = true,
+	upgradecount = 2,
 	attackrange = 120,
 })
 ZShelter.AddBuildItem("Trap",  "Propeller Trap",  4,  8,  15,  330,  "obj_structure_propeller_trap",  "models/props_c17/trappropeller_engine.mdl",  2,  Vector(0, 0, 18), {
@@ -487,12 +491,16 @@ ZShelter.AddBuildItem("Trap",  "Propeller Trap",  4,  8,  15,  330,  "obj_struct
 	insideshelter = true,
 	attackrange = 64,
 })
-ZShelter.AddBuildItem("Trap",  "CMB Trap",  4,  4,  0,  200,  "obj_structure_cmb_mine",  "models/props_combine/combine_mine01.mdl",  3,  Vector(0, 0, 0), {
+ZShelter.AddBuildItem("Trap",  "CMB Trap",  15,  15,  0,  500,  "obj_structure_cmb_mine",  "models/props_combine/combine_mine01.mdl",  3,  Vector(0, 0, 0), {
 	damage = 0,
 	forceowner = true,
+	durability = true,
+	durability_cost = 1,
 	nodestroymessage = true,
 	insideshelter = true,
-	activerange = 86,
+	upgrade_healthscale = 0.2,
+	upgradable = true,
+	upgradecount = 2,
 	attackrange = 186,
 })
 ZShelter.AddBuildItem("Trap",  "Gravity Mine",  5,  6,  0,  450,  "obj_structure_gravity_mine",  "models/roller_spikes.mdl",  3,  Vector(0, 0, -5), {

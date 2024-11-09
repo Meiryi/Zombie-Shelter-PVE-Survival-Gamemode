@@ -105,7 +105,7 @@ sound.Add({
 SWEP.Primary.Attacks = {
 	{
 		['act'] = ACT_VM_HITLEFT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-100,0,-10), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
@@ -123,7 +123,7 @@ SWEP.Primary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_PRIMARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-100,0,-10), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
@@ -141,7 +141,7 @@ SWEP.Primary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_PULLBACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(100,0,45), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
@@ -159,7 +159,7 @@ SWEP.Primary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_SECONDARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-100,0,-45), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
@@ -180,7 +180,7 @@ SWEP.Primary.Attacks = {
 SWEP.Secondary.Attacks = {
 	{
 		['act'] = ACT_VM_MISSLEFT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 250, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 200, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(0,0,80), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dmg'] = 300, --Nope!! Not overpowered!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
@@ -259,8 +259,8 @@ function SWEP:OnTargetHit(melee2, target, attk)
 end
 
 function SWEP:OnComboBreak() -- Preventing player from spamming attacks
-	self:SetNextPrimaryFire(CurTime() + 0.55)
-	self:SetNextSecondaryFire(CurTime() + 0.55)
+	self:SetNextPrimaryFire(CurTime() + 0.475)
+	self:SetNextSecondaryFire(CurTime() + 0.475)
 	if(self.Melee2Attack) then
 		self:SetNextPrimaryFire(CurTime() + 1.25)
 		self:SetNextSecondaryFire(CurTime() + 1.25)

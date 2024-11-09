@@ -38,6 +38,10 @@ SWEP.MoveSpeed = 1.2 --Multiply the player's movespeed by this.
 SWEP.BuildSpeed = 35
 SWEP.OldStyleHit = true
 
+SWEP.AOEDamage = true
+SWEP.AOERange_Primary = 32
+SWEP.AOERange_Secondary = 16
+
 SWEP.WElements = {
 	["fire_sword"] = { type = "Model", model = "models/weapons/tfa_cso/w_dualsword_fire.mdl", bone = "ValveBiped.Bip01_L_Hand", rel = "", pos = Vector(3.5, 0, 8.00), angle = Angle(10, -100, 0), size = Vector(1, 1, 1), color = Color(255, 255, 255, 255), surpresslightning = false, material = "", skin = 0, bodygroup = {} }
 }
@@ -258,7 +262,7 @@ SWEP.Primary.Attacks = {
 		['snd'] = "TFABaseMelee.Null", -- Sound ID
 		['snd_delay'] = 0.035,
 		["viewpunch"] = Angle(0,0,0), --viewpunch angle
-		['end'] = 0.5, --time before next attack
+		['end'] = 0.4, --time before next attack
 		['hull'] = 256, --Hullsize
 		['direction'] = "F", --Swing dir
 		['hitflesh'] = "DualSword.HitFleshStab1",
@@ -276,7 +280,7 @@ SWEP.Primary.Attacks = {
 		['snd'] = "TFABaseMelee.Null", -- Sound ID
 		['snd_delay'] = 0.05,
 		["viewpunch"] = Angle(0,0,0), --viewpunch angle
-		['end'] = 1, --time before next attack
+		['end'] = 0.9, --time before next attack
 		['hull'] = 256, --Hullsize
 		['direction'] = "F", --Swing dir
 		['hitflesh'] = "DualSword.HitFleshStab2",
@@ -341,8 +345,8 @@ function SWEP:ChoosePrimaryAttack()
 end
 
 function SWEP:OnComboBreak() -- Preventing player from spamming attacks
-	self:SetNextPrimaryFire(CurTime() + 0.5)
-	self:SetNextSecondaryFire(CurTime() + 0.5)
+	self:SetNextPrimaryFire(CurTime() + 0.425)
+	self:SetNextSecondaryFire(CurTime() + 0.425)
 end
 
 function SWEP:PreGatheringResource(res)

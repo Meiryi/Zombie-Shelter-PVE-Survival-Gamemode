@@ -39,6 +39,7 @@ function ENT:RunSequence(sequence)
 end
 
 function ENT:FindEnemy()
+	if(self:Health() <= 0) then return end
 	for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 		if(!ZShelter.ValidTarget(self, v)) then continue end
 		self.AimTarget = v

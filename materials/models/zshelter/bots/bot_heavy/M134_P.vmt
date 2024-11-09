@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	$basetexture	"models\zshelter\bots\bot_heavy\M134_P"
+	$bumpmap "models\zshelter\bots\bot_heavy\M134_P_N"
+
+	$nocull "1"
+	$phong "1"
+	$phongexponent "20"
+	$phongfresnelranges "[0.15 0.65 1.00]"
+	$phongalbedotint "1"
+	$phongboost "32"
+}

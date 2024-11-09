@@ -175,6 +175,24 @@ surface.CreateFont("ZShelter-HUDNameTag", {
 	outline = false,
 })
 
+surface.CreateFont("ZShelter-HUDDetails", {
+	font = "Arial",
+	extended = false,
+	size = ScreenScaleH(8),
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
 local mats = {}
 for i = 0, 15 do
 	mats[i] = Material("zsh/power/E"..i..".png", "smooth")
@@ -443,7 +461,7 @@ function ZShelter.PaintHUD()
 	local imagesx = ScreenScaleH(20)
 	local startX, startY = padding, ScrH() - (tall + padding)
 	local oY = startY
-	local barwide, bartall = wide - ((padding2x * 3) + imagesx), tall * 0.1
+	local barwide, bartall = wide - ((padding2x * 3) + imagesx), ScreenScaleH(7)
 	local barX = startX + padding3x + imagesx
 	local resWide, resTall = wide, tall * 0.35 
 	local ply, pos = LocalPlayer(), LocalPlayer():GetPos()
@@ -513,17 +531,23 @@ function ZShelter.PaintHUD()
 
 	if(shouldenablehud) then
 		draw_RoundedBox(padding, padding, startY, wide, tall, Color(30, 30, 30, 200))
-
+		local ply = LocalPlayer()
 		startX = startX + padding2x
 		startY = startY + padding2x
-		v1 = math_Clamp(v1 + ZShelter.GetFixedValue(((LocalPlayer():Health() / LocalPlayer():GetMaxHealth()) - v1) * 0.2), 0, 1)
-		v2 = math_Clamp(v2 + ZShelter.GetFixedValue(((LocalPlayer():Armor() / LocalPlayer():GetMaxArmor()) - v2) * 0.2), 0, 1)
-		v3 = math_Clamp(v3 + ZShelter.GetFixedValue(((LocalPlayer():GetNWFloat("Sanity", 0) / 100) - v3) * 0.2), 0, 1)
+		v1 = math_Clamp(v1 + ZShelter.GetFixedValue(((ply:Health() / ply:GetMaxHealth()) - v1) * 0.2), 0, 1)
+		v2 = math_Clamp(v2 + ZShelter.GetFixedValue(((ply:Armor() / ply:GetMaxArmor()) - v2) * 0.2), 0, 1)
+		v3 = math_Clamp(v3 + ZShelter.GetFixedValue(((ply:GetNWFloat("Sanity", 0) / 100) - v3) * 0.2), 0, 1)
+
+		local offset = ScreenScaleH(0.5)
+		local textX = barX + barwide - ScreenScaleH(2)
+		local textY = startY + padding - offset
 
 		surface_SetDrawColor(255, 255, 255, 255)
 		surface_SetMaterial(sanitymat)
 		surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
 		ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v3, Color(255, 255 * v3, 255 * v3, 255), Color(20, 20, 20, 255))
+		local clr = 255 * (1 - v3) * 2
+		draw.DrawText(math.Round(ply:GetNWFloat("Sanity", 0), 2).."/100", "ZShelter-HUDDetails", textX, textY, Color(clr, clr, clr, 255), TEXT_ALIGN_RIGHT)
 
 		startY = startY + imagesx + padding2x
 
@@ -531,6 +555,8 @@ function ZShelter.PaintHUD()
 		surface_SetMaterial(armormat)
 		surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
 		ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v2, Color(255, 255 * v2, 255 * v2, 255), Color(20, 20, 20, 255))
+		local clr = 255 * (1 - v2) * 2
+		draw.DrawText(ply:Armor().."/"..ply:GetMaxArmor(), "ZShelter-HUDDetails", textX, startY + padding - offset, Color(clr, clr, clr, 255), TEXT_ALIGN_RIGHT)
 
 		startY = startY + imagesx + padding2x
 
@@ -538,15 +564,17 @@ function ZShelter.PaintHUD()
 		surface_SetMaterial(hpmat)
 		surface_DrawTexturedRect(startX, startY, imagesx, imagesx)
 		ZShelter.DrawBar(padding2x, barX, startY + padding, barwide, bartall, v1, Color(255, 255 * v1, 255 * v1, 255), Color(20, 20, 20, 255))
+		local clr = 255 * (1 - v1) * 2
+		draw.DrawText(ply:Health().."/"..ply:GetMaxHealth(), "ZShelter-HUDDetails", textX, startY + padding - offset, Color(clr, clr, clr, 255), TEXT_ALIGN_RIGHT)
 	end
 
-	local skill = LocalPlayer():GetNWString("Tier4Skill", "")
+	local skill = ply:GetNWString("Tier4Skill", "")
 	local skTable = ZShelter.SkillDatas[skill]
 	if(skill != "" && skTable && skTable.callbackhook == "OnSkillCalled") then
 		local bx, by = wide + padding * 2, oY
 		draw_RoundedBox(padding, bx, by, tall, tall, Color(30, 30, 30, 200))
 		local f = padding * 2
-		local cd = LocalPlayer():GetNWFloat("UltimateCooldown", 0)
+		local cd = ply:GetNWFloat("UltimateCooldown", 0)
 		surface_SetDrawColor(255, 255, 255, 255)
 		if(!skillkeydown && input.IsKeyDown(92) && cd < CurTime()) then
 			ZShelter.UltimateSkill(skTable)

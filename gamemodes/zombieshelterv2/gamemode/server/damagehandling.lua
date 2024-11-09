@@ -146,7 +146,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	if(attacker.IsBuilding && target:IsPlayer()) then return true end
 
 	if(attacker:IsNPC() && !attacker.IsBuilding) then
-		if(attacker.damage && attacker.damage != -1) then
+		if(attacker.damage && attacker.damage != -1 && dmginfo:GetDamageCustom() != 8) then
 			dmginfo:SetDamage(attacker.damage)
 			damage = dmginfo:GetDamage()
 		end
@@ -330,13 +330,57 @@ hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflict
 	attacker:SetNWInt("TKills", attacker:GetNWInt("TKills", 0) + 1)
 end)
 
-function ZShelter.SendDamage(player, eindex, damage, pos)
+ZShelter.DamageNumbers = {}
+function ZShelter.AddDamageNumber(player, eindex, damage, pos)
+	--[[
 	net.Start("ZShelter-DamageNumber")
 	net.WriteInt(eindex, 32)
 	net.WriteInt(damage, 32)
 	net.WriteVector(pos)
 	net.Send(player)
+	]]
+	table.insert(ZShelter.DamageNumbers, {
+		player = player,
+		eindex = eindex,
+		damage = damage,
+		pos = pos,
+	})
 end
+
+hook.Add("Tick", "ZShelter-SendDamage", function()
+	local damageToSend = {}
+	for _, damageData in ipairs(ZShelter.DamageNumbers) do
+		if(!IsValid(damageData.player)) then continue end
+		local playerIndex = damageData.player:EntIndex()
+		local enemyIndex = damageData.eindex
+		if(!damageToSend[playerIndex]) then
+			damageToSend[playerIndex] = {}
+		end
+		if(!damageToSend[playerIndex][enemyIndex]) then
+			damageToSend[playerIndex][enemyIndex] = {
+				damage = damageData.damage,
+				pos = damageData.pos,
+			}
+		else
+			damageToSend[playerIndex][enemyIndex].damage = damageToSend[playerIndex][enemyIndex].damage + damageData.damage
+			damageToSend[playerIndex][enemyIndex].pos = damageData.pos
+		end
+	end
+
+	for ply, data in pairs(damageToSend) do
+		local player = Entity(ply)
+		if(!IsValid(player)) then continue end
+		for ene, dmg in pairs(data) do
+			net.Start("ZShelter-DamageNumber")
+			net.WriteInt(ene, 32)
+			net.WriteInt(dmg.damage, 32)
+			net.WriteVector(dmg.pos)
+			net.Send(player)
+		end
+	end
+
+	ZShelter.DamageNumbers = {}
+end)
 
 hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo, took)
 	if(!took) then return end
@@ -354,7 +398,7 @@ hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo,
 	if(pos == Vector(0, 0, 0) || (IsValid(inflictor) && p1:Distance(p2) < dst)) then
 		pos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z * 0.5)
 	end
-	ZShelter.SendDamage(attacker, target:EntIndex(), damage, pos)
+	ZShelter.AddDamageNumber(attacker, target:EntIndex(), damage, pos)
 end)
 
 hook.Add("HandlePlayerArmorReduction", "ZShelter-ArmorHandling", function(ply, dmginfo)

@@ -53,13 +53,13 @@ ZShelter.AddSkills(ClassName, "OnGiveMelee",
 
 ZShelter.AddSkills(ClassName, "OnDayPassed",
 	function(player)
-		player:SetMaxHealth(100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
-		player:SetNWInt("oMaxHealth", 100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
+		player:SetMaxHealth(100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (15 * GetGlobalInt("Day", 1))))
+		player:SetNWInt("oMaxHealth", 100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (15 * GetGlobalInt("Day", 1))))
 	end,
 	function(player, current)
-		player:SetNWInt("MaxHealthBoostCount", player:GetNWInt("MaxHealthBoostCount", 0) + 1)
-		player:SetMaxHealth(100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
-		player:SetNWInt("oMaxHealth", 100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (10 * GetGlobalInt("Day", 1))))
+		player:SetNWInt("MaxHealthBoostCount", current)
+		player:SetMaxHealth(100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (15 * GetGlobalInt("Day", 1))))
+		player:SetNWInt("oMaxHealth", 100 + (player:GetNWInt("MaxHealthBoostCount", 0) * (15 * GetGlobalInt("Day", 1))))
 	end, 2, "hpboost_2", 2, "Health Boost")
 
 ZShelter.AddSkills(ClassName, "OnTakingDamage",

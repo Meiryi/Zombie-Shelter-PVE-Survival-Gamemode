@@ -22,6 +22,11 @@ function ZShelter_IsProp(class)
 	return proplist[class]
 end
 
+function ZShelter.IsAttackableEntity(ent)
+	if(!IsValid(ent)) then return false end
+	return ent:IsPlayer() || ent.IsBuilding
+end
+
 function ZShelter.ValidateEntity(o, c)
 	if(o == c || c:IsPlayer() || c.IsBuilding || c:Health() <= 0) then return false end
 	if(!c:IsNPC() && !c:IsNextBot()) then return false end

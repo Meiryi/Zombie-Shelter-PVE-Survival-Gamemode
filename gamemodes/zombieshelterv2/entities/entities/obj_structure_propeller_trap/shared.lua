@@ -19,7 +19,7 @@ function ENT:Draw()
 	else
 		self.EffectModel:SetPos(self:GetPos() + Vector(0, 0, 25))
 		self.EffectModel:SetAngles(Angle(0, self.Yaw, 0))
-		if(self.NextYawUpdate < CurTime() && self:GetNWFloat("StunTime", 0) < CurTime()) then
+		if(self.NextYawUpdate < CurTime() && self:GetNWFloat("StunTime", 0) < CurTime() && self:Health() > 0) then
 			self.Yaw = self.Yaw + (1250 * FrameTime())
 			if(self.Yaw >= 360) then
 				self.Yaw = 0
