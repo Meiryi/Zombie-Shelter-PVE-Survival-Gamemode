@@ -50,6 +50,9 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 	ply:PickupWeapon(wep)
 	ply:GiveAmmo(wep:GetMaxClip1(), wep:GetPrimaryAmmoType(), true)
 
+	ply:SetNWInt("WoodsUsed", ply:GetNWInt("WoodsUsed", 0) + data.woods)
+	ply:SetNWInt("IronsUsed", ply:GetNWInt("IronsUsed", 0) + data.irons)
+
 	timer.Simple(0, function()
 		if(!IsValid(wep) || !IsValid(wep:GetOwner()) || wep.AmmoCapacity == -1) then return end
 		wep:GetOwner():SetAmmo(0, wep:GetPrimaryAmmoType())

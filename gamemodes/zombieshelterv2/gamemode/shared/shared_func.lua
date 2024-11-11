@@ -178,11 +178,11 @@ function ZShelter.CompressTable(tab)
 	return data, len
 end
 
-function ZShelter.DecompressTable(compressedData)
+function ZShelter.DecompressTable(compressedData, ignoreConversion)
 	if(!compressedData) then return false end
 	local decompressed = util.Decompress(compressedData)
 	if(!decompressed) then return false end
-	local content = util.JSONToTable(decompressed)
+	local content = util.JSONToTable(decompressed, false, ignoreConversion || false)
 	if(!content) then return false end
 	return content
 end

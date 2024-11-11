@@ -220,15 +220,16 @@ local serverlist = {
 		host = "Hamgungus Zombie Shelter",
 		address = "45.45.238.187:27015",
 	},
-	{
-		host = "Zombie Shelter FR/EU",
-		address = "194.69.160.47:27043",
-	},
 ]]
 	{
 		host = "NPCZ | Shelter - discord.gg/npc",
 		address = "193.243.190.18:27025",
 		maxplayers = 10,
+	},
+	{
+		host = "AnoZombie Shelter FR/EU | CUSTOM | FUN | DISCORD.GG/ANOMALIE",
+		address = "194.69.160.47:27043",
+		maxplayers = 32,
 	},
 }
 
@@ -614,14 +615,10 @@ local func = {
 				end
 		end,
 	},
+	--[[ I'm too lazy to write this
 	{
 		title = "Updates",
 		func = function(ui)
-			--[[
-				ZShelter-GameUITitle
-				ZShelter-GameUIGameUITitle2x
-				ZShelter-GameUIDescription
-			]]
 			local scroll = ZShelter.CreateScroll(ui, 0, 0, ui:GetWide(), ui:GetTall(), Color(0, 0, 0, 0))
 			local pad1x = ScreenScaleH(4)
 			local pad2x = ScreenScaleH(8)
@@ -646,6 +643,7 @@ local func = {
 			ZShelter.AddDockLabel(scroll, "Railgun Cannon now face to correct angle when placing it", "ZShelter-GameUIDescription", pad4x, pad1x, Color(255, 255, 255, 255))
 		end,
 	},
+	]]
 	{
 		title = "EnemyList",
 		func = function(ui)

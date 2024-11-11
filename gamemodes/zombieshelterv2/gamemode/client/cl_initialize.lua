@@ -96,4 +96,5 @@ end
 hook.Add("InitPostEntity", "ZShelter-InitPlayer", function()
 	net.Start("ZShelter-SyncConfig")
 	net.SendToServer()
+	ZShelter.StartPlayingTime = CurTime()
 end)

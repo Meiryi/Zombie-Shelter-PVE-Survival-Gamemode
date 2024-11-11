@@ -304,6 +304,14 @@ function ZShelter.CircleAvatar(parent, x, y, w, h, player, resolution)
     return base
 end
 
+function ZShelter.CreateAvatar(parent, x, y, w, h, player, resolution)
+    local av = vgui.Create("AvatarImage", parent)
+    av:SetPos(x, y)
+    av:SetSize(w, h)
+    av:SetPlayer(player, resolution)
+    return av
+end
+
 local circle_seg = 64
 function ZShelter.BuildCircle(x, y, radius)
     local c = {}

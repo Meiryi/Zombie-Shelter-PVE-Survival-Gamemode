@@ -29,7 +29,7 @@ surface.CreateFont("ZShelter-ScoreboardPopupFont", {
 })
 surface.CreateFont("ZShelter-ScoreboardDetailsFont", {
 	font = "Arial",
-    size = ScreenScaleH(14),
+    size = ScreenScaleH(12),
     weight = 100,
     antialias = true,
 })
@@ -91,6 +91,24 @@ function ZShelter.ToggleScoreboard(display)
 			function bg:OnMousePressed()
 				RunConsoleCommand("zshelter_toggle_thirdperson")
 			end
+
+			local bg = ZShelter.CreatePanel(ui, margin, ScrH() * 0.5 + buttonTall + buttonTall + margin + margin, buttonWide, buttonTall, Color(30, 30, 30, 255), ScreenScaleH(4))
+			local _, _, t = ZShelter.CreateLabel(bg, bg:GetWide() * 0.5, bg:GetTall() * 0.5, "Voting", "ZShelter-ScoreboardPopupFont", Color(255, 255, 255, 255))
+			t.CentPos()
+			bg.Alpha = 0
+			bg.Paint = function()
+				if(bg:IsHovered()) then
+					bg.Alpha = math.Clamp(bg.Alpha + ZShelter.GetFixedValue(5), 0, 40)
+				else
+					bg.Alpha = math.Clamp(bg.Alpha - ZShelter.GetFixedValue(5), 0, 40)
+				end
+				draw.RoundedBox(r, 0, 0, bg:GetWide(), bg:GetTall(), Color(30, 30, 30, 255))
+				draw.RoundedBox(r, 0, 0, bg:GetWide(), bg:GetTall(), Color(255, 255, 255, bg.Alpha))
+			end
+
+			function bg:OnMousePressed()
+				ZShelter.VoteKickMenu()
+			end
 		end
 
 		ui.Think = function()
@@ -98,8 +116,8 @@ function ZShelter.ToggleScoreboard(display)
 				ui:MakePopup()
 			end
 		end
-		local scl = 0.175
-		ui.InnerPanel = ZShelter.CreatePanel(ui, ScrW() * scl, ScrH() * scl, ScrW() * (1 - scl * 2), ScrH() * (1 - scl * 2), Color(0, 0, 0, 0))
+		local scl = 0.125
+		ui.InnerPanel = ZShelter.CreatePanel(ui, ScrW() * scl, (ScrH() * scl) + ScreenScaleH(32), ScrW() * (1 - scl * 2), ScrH() * (1 - scl * 2), Color(0, 0, 0, 0))
 		local tw, th, tx = ZShelter.CreateLabel(ui.InnerPanel, padding, padding, game.GetMap().." ["..ZShelter_GetTranslate("#Dif"..GetConVar("zshelter_difficulty"):GetInt()).."]", "ZShelter-ScoreboardTitleFont", Color(255, 255, 255, 255))
 		ui.Details = ZShelter.CreatePanel(ui.InnerPanel, 0, th + padding2x, ui.InnerPanel:GetWide(), ScreenScaleH(16), Color(40, 40, 40, 255), ScreenScaleH(6))
 		local tw, th, tx = ZShelter.CreateLabel(ui.InnerPanel, padding, padding, GetHostName(), "ZShelter-ScoreboardTitleFont", Color(255, 255, 255, 255))
@@ -118,16 +136,18 @@ function ZShelter.ToggleScoreboard(display)
 			{
 				title = "#Woods",
 				func = function(ply)
-					local var = ply:GetNWInt("Woods", 0)
+					local var = ply:GetNWInt("Woods", 0).." (-"..ply:GetNWInt("WoodsUsed", 0)..")"
 					return var
 				end,
+				sidepadding = ScreenScaleH(16),
 			},
 			{
 				title = "#Irons",
 				func = function(ply)
-					local var = ply:GetNWInt("Irons", 0)
+					local var = ply:GetNWInt("Irons", 0).." (-"..ply:GetNWInt("IronsUsed", 0)..")"
 					return var
 				end,
+				sidepadding = ScreenScaleH(16),
 			},
 			{
 				title = "#TK",
@@ -156,10 +176,11 @@ function ZShelter.ToggleScoreboard(display)
 		local XPos = {}
 		local nextX = ui.Details:GetWide() - padding3x
 		for k,v in pairs(rev) do
-			local tw, th, tx = ZShelter.CreateLabel(ui.Details, nextX, padding, ZShelter_GetTranslate(v.title), "ZShelter-ScoreboardDetailsFont", Color(255, 255, 255, 255))
+			local sidepadding = v.sidepadding || 0
+			local tw, th, tx = ZShelter.CreateLabel(ui.Details, nextX - sidepadding * 0.5, padding, ZShelter_GetTranslate(v.title), "ZShelter-ScoreboardDetailsFont", Color(255, 255, 255, 255))
 			XPos[v.title] = tx:GetX() - tw * 0.5
 			tx:SetX(tx:GetX() - tw)
-			nextX = nextX - (tw + padding3x)
+			nextX = nextX - (tw + padding3x + sidepadding)
 		end
 
 		local skillList = {}
@@ -180,7 +201,7 @@ function ZShelter.ToggleScoreboard(display)
 
 		local listing = ZShelter.CreateScroll(ui.InnerPanel, 0, th + padding3x + ui.Details:GetTall(), ui.InnerPanel:GetWide(),ui.InnerPanel:GetTall() - (th + padding3x + ui.Details:GetTall()), Color(0, 0, 0, 0))
 		local round = ScreenScaleH(4)
-		local baseheight = listing:GetTall() * 0.1
+		local baseheight = listing:GetTall() * 0.085
 		local out = ScreenScaleH(1)
 		local gap = ScreenScaleH(2)
 		local out2x = out * 2

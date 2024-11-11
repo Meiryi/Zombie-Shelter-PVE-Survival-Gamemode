@@ -445,8 +445,11 @@ function ZShelter.CreateBuilding(ply, data, vec, yaw)
 			scale = ply:GetNWFloat("TrapHPScale", 1)
 		end
 
-		if(ply:IsPlayer()) then -- Add this check so it won't error out when loading save files (ply will be a du)
+		if(ply:IsPlayer()) then -- Add this check so it won't error out when loading save files (ply will be a dummy entity)
 			ent:SetNWString("BuilderName", ply:Nick())
+
+			ply:SetNWInt("WoodsUsed", ply:GetNWInt("WoodsUsed", 0) + woods)
+			ply:SetNWInt("IronsUsed", ply:GetNWInt("IronsUsed", 0) + irons)
 		end
 
 		ent.Cate = data.category

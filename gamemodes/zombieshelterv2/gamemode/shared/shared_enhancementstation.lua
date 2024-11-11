@@ -47,6 +47,9 @@ if(SERVER) then
 		SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - cost, 0))
 		wep:SetNWInt("UG_"..enh.name, wep:GetNWInt("UG_"..enh.name, 0) + 1)
 
+		ply:SetNWInt("WoodsUsed", ply:GetNWInt("WoodsUsed", 0) + cost)
+		ply:SetNWInt("IronsUsed", ply:GetNWInt("IronsUsed", 0) + cost)
+
 		if(enh.upgradefunc) then
 			enh.upgradefunc(wep, ply)
 		end
@@ -296,11 +299,11 @@ ZShelter.Enhancements.Register({
 				util.Effect("exp_thanatos5_2", effectdata)
 
 			local wep = attacker:GetActiveWeapon()
-			local dmg = math.max(((wep.Primary.Damage || 80) * (wep.DamageScaling || 1)) * 0.25, 15)
+			local dmg = math.max(((wep.Primary.Damage || 80) * (wep.DamageScaling || 1)) * 0.35, 15)
 			local scale = 1 + (attacker:GetActiveWeapon():GetNWInt("UG_Explosive Rounds", 1) * 0.2)
 			--util.BlastDamage(attacker, attacker, victim:GetPos() + victim:OBBCenter(), 64 * scale, dmg * scale) -- Fucking chain reaction lmfao
 			local damage = dmg
-			for k,v in ipairs(ents.FindInSphere(victim:GetPos(), 64 * scale)) do
+			for k,v in ipairs(ents.FindInSphere(victim:GetPos(), 86 * scale)) do
 				if(!ZShelter.HurtableTarget(v) || v:Health() <= 0) then continue end
 				v.LastExplosionDamagedTime = CurTime() + 0.05
 				--ZShelter.DealNoScaleDamage(attacker, v, damage)

@@ -1328,6 +1328,18 @@ ZShelter.L("#Berserker", {
 	["zh-CN"] = "狂战士",
 })
 
+ZShelter.L("#Miscellaneous", {
+	["en"] = "Miscellaneous",
+	["bg"] = "Разни",
+	["de"] = "Verschiedenes",
+	["fr"] = "Divers",
+	["tr"] = "Çeşitli",
+	["ru"] = "Разное",
+	["vi"] = "Khác",
+	["zh-TW"] = "雜項",
+	["zh-CN"] = "杂项",
+})
+
 ZShelter.L("#Pistol", {
 	["en"] = "Pistol",
 	["bg"] = "Пистолет",

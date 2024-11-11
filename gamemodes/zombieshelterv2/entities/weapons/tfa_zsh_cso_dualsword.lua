@@ -316,7 +316,9 @@ function SWEP:Think2(...)
 		local vm = self.Owner:GetViewModel()
 		if(vm:GetSequence() == 4 && vm:GetCycle() >= 0.1) then
 			if(self.ShouldPlaySound) then
-				self.Owner:EmitSound("shigure/wink.mp3")
+				if(!self.Owner:KeyDown(IN_ATTACK2)) then
+					self.Owner:EmitSound("shigure/wink.mp3")
+				end
 				self.ShouldPlaySound = false
 			end
 		else
@@ -326,6 +328,7 @@ function SWEP:Think2(...)
 	BaseClass.Think2(self, ...)
 end
 
+SWEP.LastAttackTime = 0
 function SWEP:ChooseSecondaryAttack()
     local attacks = self:GetStatL("Secondary.Attacks") -- getting the SWEP.Primary.Attacks table
 
@@ -363,13 +366,20 @@ function SWEP:ChoosePrimaryAttack()
     if nextattack > 2 then -- reset the count if we're going beyond attacks count
         nextattack = 1
     end
+    self.LastAttackTime = CurTime()
     self:SetLastPrimaryAttackChoice(nextattack) -- remembering the current choice for next time
     return nextattack, attacks[nextattack] -- returning the key of SWEP.Primary.Attacks table and the chosen attack table itself
 end
 
 function SWEP:OnComboBreak() -- Preventing player from spamming attacks
-	self:SetNextPrimaryFire(CurTime() + 0.425)
-	self:SetNextSecondaryFire(CurTime() + 0.425)
+	local t = CurTime() - self.LastAttackTime
+	if(self:GetLastPrimaryAttackChoice() == 2 && t > 0.1 && t < 0.2) then
+		self:SetNextPrimaryFire(CurTime() + 0.2)
+		self:SetNextSecondaryFire(CurTime() + 0.2)
+	else
+		self:SetNextPrimaryFire(CurTime() + 0.45)
+		self:SetNextSecondaryFire(CurTime() + 0.45)
+	end
 end
 
 function SWEP:PreGatheringResource(res)

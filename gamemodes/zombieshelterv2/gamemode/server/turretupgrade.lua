@@ -39,6 +39,10 @@ net.Receive("ZShelter-UpgradeTurret", function(len, ply)
 	if(sethp) then
 		building:SetHealth(building:GetMaxHealth())
 	end
+
+	ply:SetNWInt("WoodsUsed", ply:GetNWInt("WoodsUsed", 0) + req_woods)
+	ply:SetNWInt("IronsUsed", ply:GetNWInt("IronsUsed", 0) + req_irons)
+	
 	building:SetNWInt("UpgradeCount", building:GetNWInt("UpgradeCount", 0) + 1)
 	ZShelter.SyncTurretLevel(building, building:GetNWInt("UpgradeCount", 0))
 	ZShelter.SyncHP(building, ply)
