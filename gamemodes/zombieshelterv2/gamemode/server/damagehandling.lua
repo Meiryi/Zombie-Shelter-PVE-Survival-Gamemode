@@ -21,7 +21,7 @@ function ZShelter.DealNoScaleDamage(attacker, victim, damage)
 		dmginfo:SetAttacker(attacker)
 		dmginfo:SetInflictor(attacker)
 		dmginfo:SetDamageCustom(8)
-	victim:TakeDamageInfo(dmginfo)
+	--victim:TakeDamageInfo(dmginfo)
 end
 
 function ZShelter.ApplyDamageMul(ent, id, mul, time, infinite)
@@ -79,6 +79,7 @@ end
 hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo)
 	local attacker = dmginfo:GetAttacker()
 	local damage = dmginfo:GetDamage()
+	
 	if(!IsValid(attacker) || !IsValid(target)) then return false end	
 
 	target.AttackedByTurrets = false

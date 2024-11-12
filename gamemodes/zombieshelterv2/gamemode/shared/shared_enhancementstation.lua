@@ -89,8 +89,9 @@ ZShelter.Enhancements.Register({
 	end,
 	callbacks = {
 		OnHit = function(attacker, victim, dmginfo)
-			local scale = attacker:GetActiveWeapon():GetNWInt("UG_Upgrade Damage", 1) * 0.1
-			ZShelter.DealNoScaleDamage(attacker, victim, dmginfo:GetDamage() * scale)
+			local scale = attacker:GetActiveWeapon():GetNWInt("UG_Damage Boost", 1) * 0.1
+			--ZShelter.DealNoScaleDamage(attacker, victim, dmginfo:GetDamage() * scale)
+			dmginfo:ScaleDamage(1 + scale)
 		end
 	},
 })
@@ -293,20 +294,28 @@ ZShelter.Enhancements.Register({
 	end,
 	callbacks = {
 		OnKill = function(attacker, victim)
-			if(victim.LastExplosionDamagedTime && victim.LastExplosionDamagedTime > CurTime()) then return end
+			if(victim.DoNotExplode) then return end -- Prevent chain reaction
 			local effectdata = EffectData()
 				effectdata:SetOrigin(victim:GetPos() + victim:OBBCenter())
 				util.Effect("exp_thanatos5_2", effectdata)
 
 			local wep = attacker:GetActiveWeapon()
-			local dmg = math.max(((wep.Primary.Damage || 80) * (wep.DamageScaling || 1)) * 0.35, 15)
+			local basedamage = wep.Primary.Damage
+			if(wep.Primary.Attacks) then
+				basedamage = wep.Primary.Attacks[math.random(1, #wep.Primary.Attacks)].dmg
+			end
+
+			local dmg = math.max(((basedamage || 80) * (wep.DamageScaling || 1)) * 0.35, 15)
 			local scale = 1 + (attacker:GetActiveWeapon():GetNWInt("UG_Explosive Rounds", 1) * 0.2)
 			--util.BlastDamage(attacker, attacker, victim:GetPos() + victim:OBBCenter(), 64 * scale, dmg * scale) -- Fucking chain reaction lmfao
 			local damage = dmg
 			for k,v in ipairs(ents.FindInSphere(victim:GetPos(), 86 * scale)) do
-				if(!ZShelter.HurtableTarget(v) || v:Health() <= 0) then continue end
+				if(!ZShelter.HurtableTarget(v) || v:Health() <= 0 || v == attacker) then continue end
 				v.LastExplosionDamagedTime = CurTime() + 0.05
-				--ZShelter.DealNoScaleDamage(attacker, v, damage)
+				if(v:Health() <= damage) then
+					v.DoNotExplode = true
+				end
+				ZShelter.DealNoScaleDamage(attacker, v, damage)
 			end
 		end
 	},
