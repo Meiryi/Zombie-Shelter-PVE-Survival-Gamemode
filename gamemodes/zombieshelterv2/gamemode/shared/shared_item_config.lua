@@ -180,6 +180,7 @@ function ZShelter.CreateDefaultItems()
 			ZShelter.AddItem("Explosive", "tfa_cso_at4ex", "AT4", 103, 84, 0.7, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 25, 5, 8, 4)
 
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_tritacknife", "Throwing Knife", 25, 25, 1, false, {"Silence"}, nil, 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_rockbreaker", "Construction Drill", 30, 33, 1, false, {"Transporting Drone", "Defense Matrix"}, nil, 0.0, -1, -1, 1)
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow", "Compound Bow", 20, 20, 1, false, {}, nil, 0.0, -1, -1, 1)
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow_v6", "Compound Bow EX", 35, 35, 1, false, {"Beginner Gun Mastery"}, nil, 0.0, -1, -1, 1)
 
