@@ -17,6 +17,10 @@ function ZShelter.GetPlayerCount() -- Because I used 'player' as a local variabl
 	return player.GetCount()
 end
 
+function ZShelter.HurtableTarget(v)
+	return v:IsNPC() || v:IsNextBot() || v:IsPlayer()
+end
+
 function ZShelter.IsRequirementMeet(player, building)
 	if(!building) then return false, false end
 	local woods = player:GetNWInt("Woods", 0)

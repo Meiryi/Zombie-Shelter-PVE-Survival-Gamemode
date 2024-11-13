@@ -36,7 +36,9 @@ function ZShelter.ApplyDamageMul(ent, id, mul, time, infinite)
 end
 
 function ZShelter.Ignite(victim, attacker, duration, damage)
+	if(victim.LastIgniteTarget == attacker && (victim.IgniteEndTime && victim.IgniteEndTime > CurTime() + duration)) then return end
 	victim:Ignite(duration)
+	victim.IgniteEndTime = CurTime() + duration
 	victim.IgniteDamage = damage
 	victim.LastIgniteTarget = attacker
 end

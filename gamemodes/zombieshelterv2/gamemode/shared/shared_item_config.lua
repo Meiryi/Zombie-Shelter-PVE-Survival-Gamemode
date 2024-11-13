@@ -175,14 +175,22 @@ function ZShelter.CreateDefaultItems()
 			ZShelter.AddItem("Heavy", "tfa_cso_broad", "Broad Divine", 145, 140, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 4)
 			ZShelter.AddItem("Heavy", "tfa_zsh_cso_m249phoenix", "M249 Phoenix", 180, 190, 1.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 4)
 
-			ZShelter.AddItem("Explosive", "tfa_cso_m79", "M79", 30, 35, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 15, -1, -1, 1)
-			ZShelter.AddItem("Explosive", "tfa_cso_rpg7", "RPG-7", 80, 75, 0.65, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 20, 5, 8, 3)
-			ZShelter.AddItem("Explosive", "tfa_cso_at4ex", "AT4", 103, 84, 0.7, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 25, 5, 8, 4)
+			ZShelter.AddItem("Explosive", "tfa_cso_m79", "M79", 30, 35, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 15, -1, -1, 1)
+
+			ZShelter.AddItem("Explosive", "tfa_zsh_cso_petrolboomer", "Petrol Boomer", 45, 50, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 15, 32, 1, 2)
+
+			ZShelter.AddItem("Explosive", "tfa_cso_rpg7", "RPG-7", 72, 60, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 20, 5, 5, 3)
+			ZShelter.AddItem("Explosive", "tfa_cso_milkorm32", "Milkor MGL", 87, 79, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 20, 36, 2, 3)
+
+			ZShelter.AddItem("Explosive", "tfa_cso_at4ex", "AT4", 103, 84, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 25, 5, 5, 4)
 
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_tritacknife", "Throwing Knife", 25, 25, 1, false, {"Silence"}, nil, 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_chainsaw", "Chainsaw", 32, 30, 1, false, {"Health Boost"}, nil, 0.0, -1, -1, 1)
+
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_rockbreaker", "Construction Drill", 30, 33, 1, false, {"Transporting Drone", "Defense Matrix"}, nil, 0.0, -1, -1, 1)
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow", "Compound Bow", 20, 20, 1, false, {}, nil, 0.0, -1, -1, 1)
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow_v6", "Compound Bow EX", 35, 35, 1, false, {"Beginner Gun Mastery"}, nil, 0.0, -1, -1, 1)
+
 
 	if(!file.Exists("zombie shelter v2/item.txt", "DATA")) then
 		ZShelter.WriteItemConfig()

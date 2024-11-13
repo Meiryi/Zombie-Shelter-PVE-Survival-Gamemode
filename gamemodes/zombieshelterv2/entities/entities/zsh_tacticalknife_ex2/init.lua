@@ -23,6 +23,8 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
+ENT.LastVector = nil
+
 function ENT:Initialize()
 	local mdl = self:GetModel()
 
@@ -40,17 +42,61 @@ function ENT:Initialize()
 
 	if (phys:IsValid()) then
 		phys:Wake()
-		phys:SetMass(1)
 		phys:AddGameFlag(FVPHYSICS_NO_IMPACT_DMG)
 	end
+
+	self:NextThink(CurTime())
 
 	self.DestroyTime = CurTime() + 3
 end
 
+local bounds = Vector(24, 24, 24)
 function ENT:Think()
 	if CurTime() > self.DestroyTime then
 		self:Remove()
+		return
 	end
+
+	if(self.LastVector) then
+		local lvec, cvec = self.LastVector, self:GetPos()
+		local tr = util.TraceHull({
+			start = lvec,
+			endpos = cvec,
+			mins = -bounds,
+			maxs = bounds,
+			filter = {"zsh_tacticalknife_ex2"},
+			ignoreWorld = true,
+		})
+		local ent = tr.Entity
+		if(IsValid(ent) && ent:Health() > 0 && ent:GetClass() != "zsh_tacticalknife_ex2" && ent != self.Owner) then
+			local dmgboost = 1
+			local dmg = 85
+			if(IsValid(self.Owner)) then
+				local dmginfo = DamageInfo()
+					dmginfo:SetDamage(dmg)
+					dmginfo:SetAttacker(self.Owner)
+					dmginfo:SetInflictor(self.Owner)
+					if(self.Owner.Callbacks && self.Owner.Callbacks.OnMeleeDamage) then
+						for k,v in pairs(self.Owner.Callbacks.OnMeleeDamage) do
+							v(self.Owner, ent, dmginfo, false)
+						end
+					end
+				if(!self.Owner.NextKnifeRegen || self.Owner.NextKnifeRegen < CurTime()) then
+					self.Owner:GiveAmmo(1, "pistol", true)
+					self.Owner.NextKnifeRegen = CurTime() + 0.5
+				end
+			end
+			ent:TakeDamage(dmg, self.Owner, self.Owner)
+			sound.Play("weapons/tfa_cso/kujang/hit"..math.random(1, 2)..".wav", ent:GetPos(), 100, 100, 1)
+			self:Remove()
+			return
+		end
+	end
+
+	self.LastVector = self:GetPos()
+
+	self:NextThink(CurTime())
+	return true
 end
 
 ENT.NextSound = 0
@@ -63,7 +109,7 @@ function ENT:PhysicsCollide(data, phys)
 	if(IsValid(ent) && ent:GetClass() != "zsh_tacticalknife_ex2") then
 		if(engine.TickCount() != self.LastHitTick) then -- Prevent double hits
 			local dmgboost = 1
-			local dmg = 50
+			local dmg = 85
 			if(IsValid(self.Owner)) then
 				local dmginfo = DamageInfo()
 					dmginfo:SetDamage(dmg)

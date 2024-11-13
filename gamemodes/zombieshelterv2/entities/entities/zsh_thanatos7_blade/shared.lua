@@ -42,7 +42,7 @@ function ENT:Initialize()
 		local mins, maxs = self:GetCollisionBounds()
 		self:SetCollisionBounds(mins * 0.5, maxs * 0.5)
     end
-    self.KillTime = CurTime() + 10
+    self.KillTime = CurTime() + 15
 end
 
 function ENT:Think()
@@ -61,7 +61,7 @@ function ENT:Think()
 				if(v == self || v == self.Owner) then continue end
 				local inf = self.Owner:GetActiveWeapon()
 				if(inf == nil) then inf = self.Owner end
-				v:TakeDamage(30, attacker, attacker)
+				v:TakeDamage(35, attacker, attacker)
 			end
 			self.DamageInterval = CurTime() + 0.1
 		end

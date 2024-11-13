@@ -343,7 +343,7 @@ function SWEP:ChooseSecondaryAttack()
         self:SetComboCount(0)
     end
 
-    if(CLIENT) then
+    if(CLIENT || game.SinglePlayer()) then
 	    local e = EffectData()
 	    	e:SetOrigin(self.Owner:EyePos())
 	    	e:SetFlags(1)

@@ -40,10 +40,6 @@ function ZShelter.ValidTarget(o, c)
 	return true
 end
 
-function ZShelter.HurtableTarget(v)
-	return v:IsNPC() || v:IsNextBot() || v:IsPlayer()
-end
-
 function ZShelter.ShouldDetonate(player, trap)
 	if(!IsValid(player)) then return true end
 	if(player.Callbacks && player.Callbacks.OnTrapDetonate) then
