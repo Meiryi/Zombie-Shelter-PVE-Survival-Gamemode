@@ -212,6 +212,11 @@ function ZShelter.IsMeleeWeapon(class)
 	return ZShelter.Melees[class]
 end
 
+function ZShelter.IsHoldingMelee(player)
+	local wep = player:GetActiveWeapon()
+	return IsValid(wep) && ZShelter.IsMeleeWeapon(wep:GetClass())
+end
+
 function ZShelter.RegisterMeleeWeapon(class)
 	ZShelter.Melees[class] = true
 end
@@ -222,5 +227,9 @@ ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_crowbar")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_clawhammer")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_skull9")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_mastercombatknife")
+
+for _, meleedata in pairs(ZShelter.RankMelees) do
+	ZShelter.RegisterMeleeWeapon(meleedata.class)
+end
 
 ZShelterAddWhitelistedEntity("obj_zshelter_shield")

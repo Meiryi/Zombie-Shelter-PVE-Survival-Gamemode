@@ -21,7 +21,7 @@ function ZShelter.DealNoScaleDamage(attacker, victim, damage)
 		dmginfo:SetAttacker(attacker)
 		dmginfo:SetInflictor(attacker)
 		dmginfo:SetDamageCustom(8)
-	--victim:TakeDamageInfo(dmginfo)
+	victim:TakeDamageInfo(dmginfo)
 end
 
 function ZShelter.ApplyDamageMul(ent, id, mul, time, infinite)
@@ -210,13 +210,6 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 			dmginfo:SetDamage(dmginfo:GetDamage() / dmgscale)
 			if(skip) then
 				return true
-			end
-		end
-		if(attacker.AttackNerfTime && attacker.AttackNerfTime > CurTime()) then
-			if(!IsValid(wep) || !ZShelter.IsMeleeWeapon(wep:GetClass())) then
-				if(!attacker.LastNerfTargets || !attacker.LastNerfTargets[target:EntIndex()]) then
-					dmginfo:SetDamage(dmginfo:GetDamage() * 0.35)
-				end
 			end
 		end
 		return

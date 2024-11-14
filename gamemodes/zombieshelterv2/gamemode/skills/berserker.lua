@@ -145,10 +145,10 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
-		attacker:SetHealth(math.min(attacker:GetMaxHealth(), attacker:Health() + attacker:GetNWFloat("VampireHeal", 4)))
+		attacker:SetHealth(math.min(attacker:GetMaxHealth(), attacker:Health() + attacker:GetNWFloat("VampireHeal", 10)))
 	end,
 	function(player, current)
-		player:SetNWFloat("VampireHeal", current * 4)
+		player:SetNWFloat("VampireHeal", current * 10)
 	end, 2, "vampire_2", 3, "Vampire")
 
 ZShelter.AddSkills(ClassName, "OnGiveMelee",
@@ -287,6 +287,17 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		player:SetNWFloat("ParryTime", 0.2 + (0.05 * current))
 	end, 2, "parry", 3, "Parry")
 
+ZShelter.AddSkills(ClassName, "MultipleHook", {
+		OnEnemyKilled = function(attacker, npc, AttackedByTurrets)
+			if(AttackedByTurrets) then return end
+			if(!ZShelter.IsHoldingMelee(attacker)) then return end
+			attacker:SetNWFloat("Sanity", math.min(attacker:GetNWFloat("Sanity", 0) + attacker:GetNWFloat("SanityRegenAmount", 4), 100))
+		end,
+	},
+	function(player, current)
+		player:SetNWFloat("SanityRegenAmount", 4 * current)
+	end, 2, "sanityonkill", 3, "SanityRegen")
+
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)
 		local ang = player:EyeAngles()
@@ -332,3 +343,25 @@ ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function()
 
 	end, 1, "dash", 4, "Flash Slash", nil, 20)
+
+--[[
+ZShelter.AddSkills(ClassName, "OnSkillCalled",
+	 function(player)
+		if(!player.Callbacks.OnTakingDamage) then
+			player.Callbacks.OnTakingDamage = {}
+		end
+		player.Callbacks.OnTakingDamage["GodmodeSkill"] = function(attacker, target, dmginfo)
+			if(attacker == target) then return end
+			ZShelter.DealNoScaleDamage(target, attacker, dmginfo:GetDamage() * 10)
+			return true
+		end
+		timer.Simple(15, function()
+			if(!IsValid(player)) then return end
+			player.Callbacks.OnTakingDamage["GodmodeSkill"] = nil
+		end)
+	end,
+	function(player, current)
+		return
+	end, 1, "", 4, "Godmode", nil, 50)
+
+]]

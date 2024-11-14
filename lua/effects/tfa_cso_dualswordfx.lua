@@ -15,7 +15,7 @@ function EFFECT:Init(effect_data)
     self.EffectModel = ClientsideModel(Models[self.SwordType])
     self.EffectModel:ResetSequence(self.SlashCount - 1)
     self.EffectModel:SetRenderMode(RENDERMODE_TRANSALPHA)
-    self.EffectModel.KillTime = CurTime() + 1.5
+    self.EffectModel.KillTime = CurTime() + 0.5
     table.insert(DrawList, {
         cycle = 0,
         alpha = 255,

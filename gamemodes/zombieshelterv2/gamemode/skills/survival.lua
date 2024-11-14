@@ -199,6 +199,7 @@ ZShelter.AddSkills(ClassName, "OnTrapDetonate",
 		player.MineExplodeCount = current
 	end, 2, "demoexpert", 3, "Demolitions Specialist")
 
+--[[ This skill is a meme
 ZShelter.AddSkills(ClassName, "OnRepairingTraps",
 	function(player, trapent)
 		local repair = player:GetNWFloat("TrapRepairSpeed", 1) * 6
@@ -210,6 +211,7 @@ ZShelter.AddSkills(ClassName, "OnRepairingTraps",
 	function(player, current)
 		player.TrapRepairRadius = current * 86
 	end, 2, "cr_survival", 3, "Slick Repairing")
+]]
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)

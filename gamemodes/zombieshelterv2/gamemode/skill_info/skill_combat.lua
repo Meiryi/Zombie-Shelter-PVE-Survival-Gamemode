@@ -471,13 +471,13 @@ ZShelter.AddInfo("Vampire", {
 		["de"] = "Vampir",
 	},
 	desc = {
-		["en"] = "Recovers health when damaging enemies with melee weapon, +4 HP per upgrade",
+		["en"] = "Recovers health when damaging enemies with melee weapon, +10 HP per upgrade",
 		["bg"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "使用近戰武器攻擊敵人時回復生命, 每升級一次回復 4 HP",
-		["zh-CN"] = "使用近战武器攻击敌人时回复生命, 每升一级回复 4 HP",
+		["zh-TW"] = "使用近戰武器攻擊敵人時回復生命, 每升級一次回復 10 HP",
+		["zh-CN"] = "使用近战武器攻击敌人时回复生命, 每升一级回复 10 HP",
 		["ru"] = "",
 		["de"] = "",
 	}

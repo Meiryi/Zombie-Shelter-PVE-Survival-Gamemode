@@ -33,6 +33,56 @@
 	Ако имате проблеми, можете да ми се обадите в стийм, благодаря че прочетохте това съобщение
 ]]
 
+ZShelter.AddInfo("Godmode", {
+	title = {
+		["en"] = "Godmode",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "無敵",
+		["zh-CN"] = "无敌",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Gain 15 seconds godmode, reflecting 1000% damage to attacker",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "獲得15秒無敵, 反彈1000%傷害給攻擊者",
+		["zh-CN"] = "获得15秒无敌, 反弹1000%伤害给攻击者",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("SanityRegen", {
+	title = {
+		["en"] = "Sanity Recovering",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "理智回復",
+		["zh-CN"] = "理智回复",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Recovers sanity when killing enemies, +4 per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "殺死敵人時回復理智, 每升級一次增加 4",
+		["zh-CN"] = "杀死敌人时回复理智, 每升级一次增加 4",
+		["ru"] = "",
+	}
+})
+
 ZShelter.AddInfo("Melee Damage Boost1x", {
 	title = {
 		["en"] = "Melee Damage Boost",
@@ -42,7 +92,7 @@ ZShelter.AddInfo("Melee Damage Boost1x", {
 		["tr"] = "",
 		["vi"] = "",
 		["zh-TW"] = "提升近戰武器傷害",
-		["zh-CN"] = "",
+		["zh-CN"] = "提升近战武器伤害",
 		["ru"] = "",
 	},
 	desc = {
@@ -67,7 +117,7 @@ ZShelter.AddInfo("Melee Damage Boost2x", {
 		["tr"] = "",
 		["vi"] = "",
 		["zh-TW"] = "提升近戰武器傷害",
-		["zh-CN"] = "",
+		["zh-CN"] = "提升近战武器伤害",
 		["ru"] = "",
 	},
 	desc = {
@@ -92,7 +142,7 @@ ZShelter.AddInfo("Melee Damage Boost3x", {
 		["tr"] = "",
 		["vi"] = "",
 		["zh-TW"] = "提升近戰武器傷害",
-		["zh-CN"] = "",
+		["zh-CN"] = "提升近战武器伤害",
 		["ru"] = "",
 	},
 	desc = {
