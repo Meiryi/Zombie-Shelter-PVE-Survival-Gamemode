@@ -441,7 +441,7 @@ function SWEP:Think2(...)
 		self:ClearStatCache()
 	elseif self:GetIronSightsProgress() > 0.5 and not self:GetCSO_SwitchState() then
 		self.TracerName = "cso_tra_cerberus"
-		self.Primary_TFA.Damage = 100
+		self.Primary_TFA.Damage = 50
 		self.Primary_TFA.DamageType = bit.bor(DMG_BLAST,DMG_AIRBOAT,DMG_ALWAYSGIB)
 		self.Primary_TFA.BlastRadius = 200
 		self.Primary_TFA.RPM = 180

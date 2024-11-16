@@ -350,9 +350,7 @@ function SWEP:Saw( damage, force, reach )
 	hull.start = pos
 	hull.endpos = pos + (ang * reach)
 	hull.filter = self.Owner
-	hull.mins = Vector(-16, -16, -16)
-	hull.maxs = Vector(16, 16, 16)
-	local slashtrace = util.TraceHull(hull)
+	local slashtrace = util.TraceLine(hull)
 
 	self.Owner:LagCompensation(false)
 

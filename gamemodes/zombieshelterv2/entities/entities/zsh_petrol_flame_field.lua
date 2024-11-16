@@ -45,8 +45,8 @@ if SERVER then
 			util.Effect("zshelter_petrol_flame_field", e)
 			for _, ent in ipairs(ents.FindInSphere(self:GetPos(), 300)) do
 				if(!ZShelter.HurtableTarget(ent) || ent == self.Owner) then continue end
-				ZShelter.Ignite(ent, self.Owner, 2, 10)
-				ent:TakeDamage(5, self.Owner, self)
+				ZShelter.Ignite(ent, self.Owner, 2, 5)
+				ent:TakeDamage(2, self.Owner, self)
 			end
 			self.NextParticleTime = CurTime() + 0.2
 		end

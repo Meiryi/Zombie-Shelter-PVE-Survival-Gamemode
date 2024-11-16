@@ -19,9 +19,19 @@ net.Receive("ZShelter-UltimateSkill", function(len, ply)
 	local skill = ply:GetNWString("Tier4Skill", "")
 	local skTable = ZShelter.SkillDatas[skill]
 	local cd = ply:GetNWFloat("UltimateCooldown", 0)
+	local bypass = false
+
 	if(skill == "" || !skTable) then return end
-	if(cd > CurTime()) then return end
-	ply:SetNWFloat("UltimateCooldown", CurTime() + skTable.cooldown)
+
+	if(skTable.callbackhook == "MultipleHook" && istable(skTable.callback) && skTable.callback.OnSkillRequestReceived) then
+		bypass = skTable.callback.OnSkillRequestReceived(ply)
+	end
+	if(cd > CurTime() && !bypass) then return end
+	if(bypass == -1) then return end
+
+	if(bypass != -2) then
+		ply:SetNWFloat("UltimateCooldown", CurTime() + skTable.cooldown)
+	end
 
 	if(skTable.callbackhook == "OnSkillCalled" && skTable.callback) then
 		skTable.callback(ply)

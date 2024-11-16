@@ -27,7 +27,7 @@ local m2 = Material("arknights/torappu/chenmo_02.png")
 local size1 = 24
 local size2 = 16
 function EFFECT:Render()
-    if(!IsValid(self) || !IsValid(self.Owner)) then return end
+    if(!IsValid(self) || !IsValid(self.Owner) || !self.pos) then return end
     local fraction = (SysTime() % 1)
     if(fraction > 0.5) then
         fraction = 1 - fraction

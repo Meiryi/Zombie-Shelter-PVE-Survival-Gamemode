@@ -110,6 +110,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	end
 
 	if(attacker:GetClass() == "entityflame" && dmginfo:IsDamageType(DMG_BURN) && IsValid(target.LastIgniteTarget)) then
+		if(target.IsBuilding) then return true end
 		dmginfo:SetDamage(target.IgniteDamage || 1)
 		dmginfo:SetAttacker(target.LastIgniteTarget)
 	end

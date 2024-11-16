@@ -46,16 +46,15 @@ ZShelter.AddInfo("Blazing Slash", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Attacking with melee weapon will summon flaming blade that dealing 1200 damage to all nearby enemies\nEffect can stack up to 3 times",
+		["en"] = "Attacking with melee weapon will summon flaming blade that dealing 1200 damage to all nearby enemies\nEffect can stack up to 3 times\nHold both left and right mouse button to active the skill",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "使用近戰武器攻擊將召喚火焰對附近敵人造成1200點傷害\n效果最多可疊加3次",
-		["zh-CN"] = "使用近战武器攻击将召唤火焰对附近敌人造成1200点伤害\n效果最多可叠加3次",
+		["zh-TW"] = "使用近戰武器攻擊將召喚火焰對附近敵人造成1200點傷害\n效果最多可疊加3次\n同時按住左右鍵使用技能",
+		["zh-CN"] = "使用近战武器攻击将召唤火焰对附近敌人造成1200点伤害\n效果最多可叠加3次\n同时按住左右键使用技能",
 		["ru"] = "",
-
 	}
 })
 

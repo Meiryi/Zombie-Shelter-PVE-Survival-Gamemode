@@ -5,14 +5,15 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		player:SetNWInt("ShatteringSlashCount", player:GetNWInt("ShatteringSlashCount", 0) + 1)
 	end,
 	OnSkillCalled_Client = function(player)
+		player:SetNWFloat("UltimateCooldown", CurTime() + 7)
 		player:SetNWInt("ShatteringSlashCount", player:GetNWInt("ShatteringSlashCount", 0) + 1)
 	end,
 	OnMeleeStrike = function(player, melee2)
 		local count = player:GetNWInt("ShatteringSlashCount", 0)
+		if((!player:KeyDown(IN_ATTACK) && melee2) || (!player:KeyDown(IN_ATTACK2) && !melee2)) then return end
 		if(count <= 0) then return end
-
 		if(count >= 3) then
-			player:SetNWFloat("UltimateCooldown", CurTime() + 15)
+			player:SetNWFloat("UltimateCooldown", CurTime() + 7)
 		end
 
 		player:EmitSound("shigure/slash_fire.wav", 40)
@@ -41,18 +42,31 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		end
 	end,
 	OnUltimateHUDPaint = function(x, y, w, h)
-		local cd = math.Round(LocalPlayer():GetNWFloat("UltimateCooldown", 0) - CurTime(), 1)
+		local cd = LocalPlayer():GetNWFloat("UltimateCooldown", 0) - CurTime()
 		local count = LocalPlayer():GetNWInt("ShatteringSlashCount", 0)
+		if(cd <= 0) then
+			local skill = ZShelter.SkillDatas[LocalPlayer():GetNWString("Tier4Skill", "")]
+			if(skill && LocalPlayer():GetNWInt("ShatteringSlashCount", 0) < 3) then
+				ZShelter.UltimateSkill(skill)
+			end
+		end
+		if(count >= 3) then -- quick fix because im lazy
+			LocalPlayer():SetNWFloat("UltimateCooldown", 0)
+		end
+		
 		if(count <= 0) then return end
 		local padding = ScreenScaleH(4)
 		draw.DrawText(count.."/".."3", "ZShelter-HUDElemFont", x + padding, y + padding, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 	end,
 	OnSkillPreCall = function()
-		return LocalPlayer():GetNWInt("ShatteringSlashCount", 0) < 3
+		return false
+	end,
+	OnSkillRequestReceived = function(player)
+		return true
 	end,
 	},
 	function(player, current)
-	end, 1, "slash", 4, "Blazing Slash", nil, 15)
+	end, 1, "slash", 4, "Blazing Slash", nil, 7)
 
 if(CLIENT) then
 	local slashmat = CreateMaterial("slashmaterial_9", "VertexLitGeneric", {
