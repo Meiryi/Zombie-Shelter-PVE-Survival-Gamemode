@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	$basetexture	"zsh\meiryi\trans"
+	$translucent 1
+}

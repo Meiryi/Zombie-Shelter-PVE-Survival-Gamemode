@@ -44,4 +44,8 @@ function ZShelter.UltimateSkill(skill)
 	net.Start("ZShelter-UltimateSkill")
 	net.SendToServer()
 	LocalPlayer():SetNWFloat("UltimateCooldown", CurTime() + skill.cooldown)
+
+	if(skill.callbackhook == "MultipleHook" && istable(skill.callback) && skill.callback.OnSkillCalled_Client) then
+		skill.callback.OnSkillCalled_Client(LocalPlayer())
+	end
 end

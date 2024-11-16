@@ -44,6 +44,7 @@ function ZShelter.Ignite(victim, attacker, duration, damage)
 end
 
 function ZShelter.StunEntity(ent, stuntime)
+	if(ent.StunTimer && ent.StunTimer > CurTime() && ent.StunTimer > CurTime() + stuntime) then return end -- Preventing stun timer getting reset
 	ent:NextThink(CurTime() + stuntime)
 	ent.StunTimer = CurTime() + stuntime
 	ent:StopMoving(true)

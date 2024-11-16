@@ -22,7 +22,12 @@ net.Receive("ZShelter-UltimateSkill", function(len, ply)
 	if(skill == "" || !skTable) then return end
 	if(cd > CurTime()) then return end
 	ply:SetNWFloat("UltimateCooldown", CurTime() + skTable.cooldown)
+
 	if(skTable.callbackhook == "OnSkillCalled" && skTable.callback) then
 		skTable.callback(ply)
+	else
+		if(skTable.callbackhook == "MultipleHook" && istable(skTable.callback) && skTable.callback.OnSkillCalled) then
+			skTable.callback.OnSkillCalled(ply)
+		end
 	end
 end)

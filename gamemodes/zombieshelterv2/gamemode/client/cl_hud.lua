@@ -570,14 +570,24 @@ function ZShelter.PaintHUD()
 
 	local skill = ply:GetNWString("Tier4Skill", "")
 	local skTable = ZShelter.SkillDatas[skill]
-	if(skill != "" && skTable && skTable.callbackhook == "OnSkillCalled") then
+	if(skill != "" && skTable && skTable.callbackhook == "OnSkillCalled" || (skTable && istable(skTable.callback) && skTable.callback.OnSkillCalled)) then
 		local bx, by = wide + padding * 2, oY
 		draw_RoundedBox(padding, bx, by, tall, tall, Color(30, 30, 30, 200))
 		local f = padding * 2
 		local cd = ply:GetNWFloat("UltimateCooldown", 0)
 		surface_SetDrawColor(255, 255, 255, 255)
 		if(!skillkeydown && input.IsKeyDown(92) && cd < CurTime()) then
-			ZShelter.UltimateSkill(skTable)
+			local canUseSkill = true
+			if(ply.Callbacks && ply.Callbacks.OnSkillPreCall) then
+				for k,v in pairs(ply.Callbacks.OnSkillPreCall) do
+					if(v() == false) then
+						canUseSkill = false
+					end
+				end
+			end
+			if(canUseSkill) then
+				ZShelter.UltimateSkill(skTable)
+			end
 		end
 		local pad = tall * 0.5
 		surface_SetMaterial(skTable.icon)
@@ -594,6 +604,11 @@ function ZShelter.PaintHUD()
 		else
 			surface_DrawTexturedRect(wide + padding * 3, oY + padding, tall - f, tall - f)
 			draw_DrawText("F1", "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+		end
+		if(ply.Callbacks && ply.Callbacks.OnUltimateHUDPaint) then
+			for k,v in pairs(ply.Callbacks.OnUltimateHUDPaint) do
+				v(bx, by, tall, tall)
+			end
 		end
 		skillkeydown = input.IsKeyDown(skillkey)
 	end

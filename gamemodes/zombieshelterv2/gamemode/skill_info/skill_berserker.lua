@@ -33,6 +33,32 @@
 	Ако имате проблеми, можете да ми се обадите в стийм, благодаря че прочетохте това съобщение
 ]]
 
+ZShelter.AddInfo("Blazing Slash", {
+	title = {
+		["en"] = "Blazing Slash",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "熾焰斬擊",
+		["zh-CN"] = "炽焰斩击",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Attacking with melee weapon will summon flaming blade that dealing 1200 damage to all nearby enemies\nEffect can stack up to 3 times",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "使用近戰武器攻擊將召喚火焰對附近敵人造成1200點傷害\n效果最多可疊加3次",
+		["zh-CN"] = "使用近战武器攻击将召唤火焰对附近敌人造成1200点伤害\n效果最多可叠加3次",
+		["ru"] = "",
+
+	}
+})
+
 ZShelter.AddInfo("Godmode", {
 	title = {
 		["en"] = "Godmode",

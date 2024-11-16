@@ -134,12 +134,6 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 		end
 		if(CLIENT) then return end
 		ZShelter.StunEntity(victim, t)
-		victim:SetSchedule(73)
-		--victim:SetPos(victim:GetPos())
-		timer.Simple(t, function()
-			if(!IsValid(victim)) then return end
-			victim:SetCondition(68)
-		end)
 	end, nil, 1, "stunning", 3, "Melee Stunning")
 
 ZShelter.AddSkills(ClassName, "OnMeleeDamage",
@@ -344,7 +338,6 @@ ZShelter.AddSkills(ClassName, "OnSkillCalled",
 
 	end, 1, "dash", 4, "Flash Slash", nil, 20)
 
---[[
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	 function(player)
 		if(!player.Callbacks.OnTakingDamage) then
@@ -362,6 +355,4 @@ ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	end,
 	function(player, current)
 		return
-	end, 1, "", 4, "Godmode", nil, 50)
-
-]]
+	end, 1, "godmode", 4, "Godmode", nil, 50)

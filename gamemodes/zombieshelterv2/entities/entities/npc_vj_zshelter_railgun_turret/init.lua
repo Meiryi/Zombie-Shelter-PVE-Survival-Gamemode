@@ -97,10 +97,7 @@ function ENT:Think()
 						e:SetEntity(v)
 					util.Effect("zshelter_defnerf", e)
 				end
-				self.AimTarget:NextThink(CurTime() + 0.65)
-				if(self.AimTarget.ClearGoal) then
-					self.AimTarget:ClearGoal()
-				end
+				ZShelter.StunEntity(self.AimTarget, 0.2)
 				local elec = EffectData()
 					elec:SetStart(targetPos)
 					elec:SetOrigin(self:GetAttachment(1).Pos)

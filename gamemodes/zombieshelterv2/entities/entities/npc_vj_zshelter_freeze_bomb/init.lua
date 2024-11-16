@@ -42,8 +42,10 @@ function ENT:Think()
 	else
 		for k,v in pairs(ents.FindInSphere(self:GetPos(), self.MaximumDistance)) do
 			if(!ZShelter.ValidTarget(self, v)) then continue end
-			v:NextThink(CurTime() + 10)
-			v.OriginalColor = v:GetColor()
+			ZShelter.StunEntity(v, 10)
+			if(!v.OriginalColor) then
+				v.OriginalColor = v:GetColor()
+			end
 			v:SetColor(Color(55, 55, 255, 255))
 			timer.Simple(10, function()
 				if(!IsValid(v)) then return end
