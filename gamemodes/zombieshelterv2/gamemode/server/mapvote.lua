@@ -91,7 +91,7 @@ function ZShelter.BroadcastEnd(victory, text, reason)
 		end
 	end
 	local ret = maps
-	if(GetGlobalInt("Day", 0) > 1 && file.Exists("zombie shelter v2/saves/"..game.GetMap()..".dat", "DATA")) then
+	if(GetGlobalInt("Day", 0) > 1 && file.Exists("zombie shelter v2/saves/"..game.GetMap()..".dat", "DATA") && !victory) then
 		ret = table.Add({"Restart from previous day"}, maps)
 	end
 	for k,v in pairs(ret) do

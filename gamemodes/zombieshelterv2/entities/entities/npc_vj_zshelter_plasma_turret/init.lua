@@ -95,6 +95,7 @@ function ENT:Think()
 			sound.Play("shigure/plasmatower_shoot_start.wav", self:GetPos(), 100, 100, 2)
 			sound.Play("shigure/plasmatower_shoot_start.wav", self:GetPos(), 100, 100, 2)
 			timer.Simple(1.5, function()
+				if(!IsValid(self)) then return end
 				if(!IsValid(enemy)) then
 					self:FindEnemy()
 					if(!IsValid(self.AimTarget)) then
