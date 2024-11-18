@@ -79,9 +79,9 @@ end
 ZShelter.Enhancements.Register({
 	name = "Damage Boost",
 	desc = "Increase weapon's damage by 10%",
-	price = 3,
-	price_step = 0.2,
-	price_scale = 0.4,
+	price = 7,
+	price_step = 0.1,
+	price_scale = 0.05,
 	maxUpgrade = 4,
 
 	condfunc = function(wep)
@@ -99,9 +99,9 @@ ZShelter.Enhancements.Register({
 ZShelter.Enhancements.Register({
 	name = "Firerate Boost",
 	desc = "Increase weapon's firerate by 5%",
-	price = 12,
-	price_step = 0.25,
-	price_scale = 0.25,
+	price = 9,
+	price_step = 0.15,
+	price_scale = 0.05,
 	maxUpgrade = 3,
 
 	condfunc = function(wep)
@@ -119,9 +119,9 @@ ZShelter.Enhancements.Register({
 ZShelter.Enhancements.Register({
 	name = "Steady Control",
 	desc = "Decrease weapon's recoil by 20%",
-	price = 12,
+	price = 9,
 	price_step = 0.1,
-	price_scale = 0.1,
+	price_scale = 0.05,
 	maxUpgrade = 2,
 
 	condfunc = function(wep)
@@ -149,8 +149,8 @@ ZShelter.Enhancements.Register({
 
 ZShelter.Enhancements.Register({
 	name = "Steady Line",
-	desc = "Decrease weapon's spready by 15%",
-	price = 14,
+	desc = "Decrease weapon's spread by 15%",
+	price = 9,
 	price_step = 0.15,
 	price_scale = 0.1,
 	maxUpgrade = 3,
@@ -175,9 +175,9 @@ ZShelter.Enhancements.Register({
 ZShelter.Enhancements.Register({
 	name = "Extended Magazine",
 	desc = "Increase magazine size by 20%",
-	price = 12,
-	price_step = 0.25,
-	price_scale = 0.15,
+	price = 10,
+	price_step = 0.05,
+	price_scale = 0.1,
 	maxUpgrade = 3,
 
 	condfunc = function(wep)
@@ -203,7 +203,7 @@ ZShelter.Enhancements.Register({
 	desc = "Make an smei-auto weapon into full-auto",
 	price = 20,
 	price_step = 0.1,
-	price_scale = 0.2,
+	price_scale = 0.0,
 	maxUpgrade = 1,
 
 	condfunc = function(wep)
@@ -223,9 +223,9 @@ ZShelter.Enhancements.Register({
 ZShelter.Enhancements.Register({
 	name = "Piercing Rounds",
 	desc = "Increase weapon's penetration by 20%",
-	price = 17,
-	price_step = 0.3,
-	price_scale = 0.1,
+	price = 10,
+	price_step = 0.25,
+	price_scale = 0.05,
 	maxUpgrade = 4,
 
 	condfunc = function(wep)
@@ -244,9 +244,9 @@ ZShelter.Enhancements.Register({
 ZShelter.Enhancements.Register({
 	name = "Ignition Strike",
 	desc = "Ignites enemy everytime you hit it, +1s duration and 5 damage per upgrade",
-	price = 20,
-	price_step = 0.25,
-	price_scale = 0.55,
+	price = 12,
+	price_step = 0.15,
+	price_scale = 0.05,
 	maxUpgrade = 2,
 
 	condfunc = function(wep)
@@ -265,8 +265,8 @@ ZShelter.Enhancements.Register({
 	name = "Frostbite",
 	desc = "Freezes enemy after specific amount of hits, +25% freeze buildup and duration per upgrade",
 	price = 35,
-	price_step = 0.4,
-	price_scale = 0.75,
+	price_step = 0.2,
+	price_scale = 0.25,
 	maxUpgrade = 3,
 
 	condfunc = function(wep)
@@ -286,7 +286,7 @@ ZShelter.Enhancements.Register({
 	desc = "Spawn a small explosion when killed enemy, +20% range per upgrade (Damage based on weapon)",
 	price = 75,
 	price_step = 0.4,
-	price_scale = 0.5,
+	price_scale = 0.2,
 	maxUpgrade = 2,
 
 	condfunc = function(wep)
@@ -294,7 +294,7 @@ ZShelter.Enhancements.Register({
 	end,
 	callbacks = {
 		OnKill = function(attacker, victim)
-			if(victim.DoNotExplode) then return end -- Prevent chain reaction
+			if(victim.DoNotExplode || (victim.LastExplosionDamagedTime && victim.LastExplosionDamagedTime > CurTime())) then return end -- Prevent chain reaction
 			local effectdata = EffectData()
 				effectdata:SetOrigin(victim:GetPos() + victim:OBBCenter())
 				util.Effect("exp_thanatos5_2", effectdata)

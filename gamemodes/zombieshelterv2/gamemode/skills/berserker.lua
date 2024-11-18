@@ -27,6 +27,7 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(CLIENT) then return end
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
+		if(victim.IsBoss) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_1")
 		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
 	end,
@@ -107,6 +108,7 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(CLIENT) then return end
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
+		if(victim.IsBoss) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_2")
 		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
 	end,
@@ -241,6 +243,7 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(CLIENT) then return end
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
+		if(victim.IsBoss) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_3")
 		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
 	end,

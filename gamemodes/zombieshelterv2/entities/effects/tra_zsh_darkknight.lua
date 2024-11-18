@@ -10,6 +10,13 @@ end
 
 function EFFECT:Init(data)
 	self.StartPos = self:GetTracerShootPos(data:GetStart(), data:GetEntity(), data:GetAttachment())
+	local wep = data:GetEntity()
+	if(IsValid(wep)) then
+		local owner = wep:GetOwner()
+		if(IsValid(owner) && data:GetStart() != owner:EyePos()) then
+			self.StartPos = data:GetStart()
+		end
+	end
 	self.EndPos = data:GetOrigin()
 	self.HitNormal = data:GetNormal() * -1
 	self.Color = Color(255, 255, 255, 100)

@@ -45,6 +45,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		local count = attacker:GetNWInt("ShatteringSlashCount", 0)
 		if(count <= 0) then return end
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
+		if(victim.IsBoss) then return end
 		if(SERVER) then
 			local dmgBoost = 0.15 * count
 			victim:TakeDamage(dmginfo:GetDamage() * dmgBoost, attacker, attacker)

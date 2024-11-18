@@ -106,12 +106,14 @@ hook.Add("OnEntityCreated", "ZShelter-ProjectileNoise", function(ent)
 		local class = ent:GetClass()
 		local owner = ent.Owner
 		if(!IsValid(owner) || !owner:IsPlayer()) then return end
-		if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || (owner.LastNoiseTime && owner.LastNoiseTime > CurTime())) && !bypassChecks) then return end
+		if((!GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || (owner.LastNoiseTime && owner.LastNoiseTime > CurTime())) && !bypassChecks) then return end
 		local wep = owner:GetActiveWeapon()
 		if(!IsValid(wep) || !wep.Primary || wep.Primary.Projectile != class) then return end
 		local scale = wep.VolumeMultiplier || 1
 		local noise = (2.5 * scale)
-		ZShelter.AddNoise(noise, owner)
+		if(!GetGlobalBool("Night", false)) then
+			ZShelter.AddNoise(noise, owner)
+		end
 		if(owner.Callbacks && owner.Callbacks.OnFireProjectile) then
 			for k,v in pairs(owner.Callbacks.OnFireProjectile) do
 				v(owner)
