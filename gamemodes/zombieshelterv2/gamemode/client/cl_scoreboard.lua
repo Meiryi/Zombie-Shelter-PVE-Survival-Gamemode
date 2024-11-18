@@ -164,7 +164,7 @@ function ZShelter.ToggleScoreboard(display)
 				end,
 			},
 			{
-				title = "Ping",
+				title = "#SB_Ping",
 				func = function(ply)
 					local var = ply:Ping()
 					return var
