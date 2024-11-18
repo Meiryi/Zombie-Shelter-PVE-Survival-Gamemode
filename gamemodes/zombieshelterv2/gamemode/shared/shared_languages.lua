@@ -2181,6 +2181,78 @@ ZShelter.L("#GeneratorCategory", {
 	["zh-CN"] = "发电机",
 })
 
+ZShelter.L("#SB_CopySteamID", {
+	["en"] = "Copy SteamID",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#SB_CopySteamID64", {
+	["en"] = "Copy SteamID64",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#SB_CopyProfileLink", {
+	["en"] = "Copy Profile Link",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#SB_CopyName", {
+	["en"] = "Copy Name",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#SB_Mute", {
+	["en"] = "Mute",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#SB_Unmute", {
+	["en"] = "Unmute",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
 
 local TemporaryUnsupportedLanguage = {
 
