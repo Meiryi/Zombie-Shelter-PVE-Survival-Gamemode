@@ -2037,6 +2037,138 @@ ZShelter.L("#BuildBy", {
 	["zh-CN"] = "由 <VAR> 建造",
 })
 
+ZShelter.L("#DeveloperTag", {
+	["en"] = "<VAR> [Dev]",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#DayStatpanel", {
+	["en"] = "Day",
+	["bg"] = "Ден",
+	["de"] = "Tag",
+	["fr"] = "Jour",
+	["tr"] = "Gün",
+	["ru"] = "День",
+	["vi"] = "Ngày",
+	["zh-TW"] = "第天",
+	["zh-CN"] = "第天",
+})
+
+ZShelter.L("#SB_Ping", {
+	["en"] = "Ping",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Skillpanel_Title", {
+	["en"] = "Skill Menu",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Skillpanel_Desc", {
+	["en"] = "Select a skill for more information!",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#SkillsTier_X", {
+	["en"] = "Tier : <VAR>",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#UpgradeLevel_X", {
+	["en"] = "Level <VAR>",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ShelterUpgradeDone", {
+	["en"] = "Done",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Ammocount_X", {
+	["en"] = "Ammos : <VAR> / <VAR>",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Evac5Min", {
+	["en"] = "Rescue will come in 5 minutes!",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#PlayerCalledevac", {
+	["en"] = "<VAR> Called for rescue!   [<VAR>/<VAR>]",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
 
 local TemporaryUnsupportedLanguage = {
 
