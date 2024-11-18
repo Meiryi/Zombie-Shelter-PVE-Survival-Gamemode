@@ -176,7 +176,7 @@ function ZShelter.SkillMenu()
 				local gap, tall = pa:GetTall() * 0.2, pa:GetTall() * 0.6
 				local _w = ScreenScaleH(1)
 				group.Paint = function()
-					draw.DrawText("Tier : "..i, "ZShelter-SkillDesc", 0, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
+					draw.DrawText(ZShelter_GetTranslate_Var("#SkillsTier_X", i), "ZShelter-SkillDesc", 0, 0, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT)
 					if(i != MaxTier) then
 						draw.RoundedBox(0, group:GetWide() - _w, gap, _w, tall, Color(20, 20, 20, 200))
 					end
