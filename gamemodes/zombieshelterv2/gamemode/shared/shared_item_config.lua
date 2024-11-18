@@ -188,8 +188,8 @@ function ZShelter.CreateDefaultItems()
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_chainsaw", "Chainsaw", 32, 30, 1, false, {"Health Boost"}, nil, 0.0, -1, -1, 1)
 
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_rockbreaker", "Construction Drill", 30, 33, 1, false, {"Transporting Drone", "Defense Matrix"}, nil, 0.0, -1, -1, 1)
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow", "Compound Bow", 20, 20, 1, false, {}, nil, 0.0, -1, -1, 1)
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow_v6", "Compound Bow EX", 35, 35, 1, false, {"Beginner Gun Mastery"}, nil, 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow", "Compound Bow", 38, 38, 1, false, {}, nil, 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow_v6", "Compound Bow EX", 55, 55, 1, false, {"Beginner Gun Mastery"}, nil, 0.0, -1, -1, 1)
 
 
 	if(!file.Exists("zombie shelter v2/item.txt", "DATA")) then

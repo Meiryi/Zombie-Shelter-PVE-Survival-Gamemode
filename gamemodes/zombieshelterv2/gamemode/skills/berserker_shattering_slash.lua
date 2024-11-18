@@ -41,6 +41,26 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 			end
 		end
 	end,
+	OnMeleeDamage = function(attacker, victim, dmginfo, melee2)
+		local count = attacker:GetNWInt("ShatteringSlashCount", 0)
+		if(count <= 0) then return end
+		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
+		if(SERVER) then
+			local dmgBoost = 0.15 * count
+			victim:TakeDamage(dmginfo:GetDamage() * dmgBoost, attacker, attacker)
+			if(count > 1) then
+				ZShelter.Ignite(victim, attacker, 3, 8)
+			end
+		end
+	end,
+	OnMeleeImpact = function(attacker, trace, melee2)
+		local count = attacker:GetNWInt("ShatteringSlashCount", 0)
+		if(count <= 0) then return end
+		local pos = trace.HitPos
+		local e = EffectData()
+			e:SetOrigin(pos)
+		util.Effect("zshelter_shatteringslash_impact", e)
+	end,
 	OnUltimateHUDPaint = function(x, y, w, h)
 		local cd = LocalPlayer():GetNWFloat("UltimateCooldown", 0) - CurTime()
 		local count = LocalPlayer():GetNWInt("ShatteringSlashCount", 0)
@@ -66,7 +86,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 	end,
 	},
 	function(player, current)
-	end, 1, "slash", 4, "Blazing Slash", nil, 7)
+	end, 1, "slash", 4, "Blazing Slash", nil, 8)
 
 if(CLIENT) then
 	local slashmat = CreateMaterial("slashmaterial_9", "VertexLitGeneric", {
@@ -101,18 +121,48 @@ if(CLIENT) then
 
 	local clr1 = Color(0, 0, 0, 255)
 	local clr2 = Color(255, 255, 255, 255)
+
+	local blend = 0
+	local flash_blend = 1
+	local flash_material = Material("models/debug/debugwhite")
+
 	hook.Add("PostDrawViewModel", "ZShelter_ShatteringSlashVFX", function(vm, ply, wpn)
-		if(draw || LocalPlayer():GetNWInt("ShatteringSlashCount") <= 0 || !ZShelter.IsHoldingMelee(LocalPlayer())) then
+		local count = LocalPlayer():GetNWInt("ShatteringSlashCount")
+
+		if(draw || count <= 0 || !ZShelter.IsHoldingMelee(LocalPlayer())) then
+			if(count <= 0) then
+				flash_blend = 1
+			end
 			return
 		end
+
 		render.SuppressEngineLighting(true)
 		render.MaterialOverride(slashmat)
 
 		draw = true
-		vm:DrawModel()
+		vm:DrawModel(3)
 		draw = false
 
 		render.MaterialOverride()
 		render.SuppressEngineLighting(false)
+		render.SetBlend(1)
+	end)
+
+	hook.Add("PostDrawOpaqueRenderables", "ZShelter_ShatteringSlashVFX", function()
+
+		render.SuppressEngineLighting(true)
+		render.MaterialOverride(slashmat)
+
+		for _, ent in ipairs(ents.GetAll()) do
+			if(!ent:IsWeapon()) then continue end
+			local owner = ent:GetOwner()
+			if(!IsValid(owner)) then continue end
+			if(ent != owner:GetActiveWeapon() || owner:GetNWInt("ShatteringSlashCount") <= 0 || !ZShelter.IsHoldingMelee(owner)) then continue end
+			ent:DrawModel()
+		end
+
+		render.MaterialOverride()
+		render.SuppressEngineLighting(false)
+
 	end)
 end

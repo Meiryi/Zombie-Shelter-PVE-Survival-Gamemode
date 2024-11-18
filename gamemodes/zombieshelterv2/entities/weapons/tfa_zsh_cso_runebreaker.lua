@@ -31,11 +31,12 @@ SWEP.PaPMats			= {}
 SWEP.Precision = 50
 SWEP.Secondary.MaxCombo = -1
 SWEP.Primary.MaxCombo = -1
-SWEP.BuildSpeed = 65
+SWEP.BuildSpeed = 100
 SWEP.OldStyleHit = true
+SWEP.GatheringAmount = 2
 
 SWEP.AOEDamage = true
-SWEP.AOERange_Primary = 24
+SWEP.AOERange_Primary = 32
 SWEP.AOERange_Secondary = 1
 
 SWEP.Offset = {

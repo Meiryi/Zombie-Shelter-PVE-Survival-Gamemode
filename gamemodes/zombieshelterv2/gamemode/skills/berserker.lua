@@ -174,7 +174,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 				player.ShieldEntity = ents.Create("obj_combat_shield")
 				player.ShieldEntity:SetOwner(player)
 				player.ShieldEntity:Spawn()
-				player.NextShieldTime = CurTime() + 10
+				player.NextShieldTime = CurTime() + 8
 				sound.Play("npc/scanner/combat_scan5.wav", player:GetPos(), 100, 100, 1)
 				return
 			else
@@ -189,7 +189,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 				sound.Play("npc/scanner/combat_scan5.wav", player:GetPos(), 100, 100, 1)
 				player:SetNWInt("ZShelter_ShieldState", math.min(player:GetNWInt("ZShelter_ShieldState", 0) + 1, player:GetNWInt("MaximumShieldCount", 0)))
 			end
-			player.NextShieldTime = CurTime() + 10
+			player.NextShieldTime = CurTime() + 8
 		end,
 		OnTakingDamage = function(attacker, victim, dmginfo, skip)
 			local state = victim:GetNWInt("ZShelter_ShieldState", 0)
@@ -208,8 +208,12 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 				sound.Play("weapons/physcannon/energy_disintegrate4.wav", victim:GetPos(), 100, 100, 1)
 				victim.ShieldEntity:Remove()
 			end
-			victim.NextShieldTime = CurTime() + 10
 			return block
+		end,
+		OnEnemyKilled = function(attacker, npc, AttackedByTurrets)
+			if(AttackedByTurrets) then return end
+			if(!ZShelter.IsHoldingMelee(attacker)) then return end
+			attacker.NextShieldTime = attacker.NextShieldTime - 1
 		end,
 		OnHUDPaint = function()
 			local ply = LocalPlayer()

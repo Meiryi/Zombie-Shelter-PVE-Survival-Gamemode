@@ -307,7 +307,7 @@ hook.Add( "Tick", "CSO_RunSkill", function(ply)
 				local vm = v["ply"]:GetViewModel(0)
 				local seq = vm:GetSequence()
 				if(!v["skill.started"]) then
-					if(seq != 0 && !(wep.LastSkillTriggeredTime && wep.LastSkillTriggeredTime > CurTime())) then
+					if(seq != 0) then
 						if(seq != v["skill.cached.seq"] && v["skill.nextsequence"]) then -- this is where I spent most time to figure out
 							if(v["skill.state"] == 10) then
 								if(seq == 4) then

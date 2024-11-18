@@ -696,14 +696,14 @@ ZShelter.AddInfo("Layered Defense", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Regenerates a shield every 8 seconds, shield breaks after taking any amount of damage\nWhen shield breaks, recover 7% of maximum health (Every layer provides extra 3% of health)\n+1 Layer per upgrade",
+		["en"] = "Regenerates a shield every 8 seconds, shield breaks after taking any amount of damage\nWhen shield breaks, recover 7% of maximum health (Every layer provides extra 3% of health)\n+1 Layer per upgrade\n-1 second cooldown per melee kills",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "每 8 秒恢復一層護盾, 受到任何傷害後護盾消失\n當護盾消失時, 恢復 7% 最大生命值 (每層提供額外 3% 生命值)\n每升級一次增加一層",
-		["zh-CN"] = "每 8 秒恢复一层护盾, 受到任何伤害后护盾消失\n当护盾消失时, 恢复 7% 最大生命值 (每层提供额外 3% 生命值)\n每升级一次增加一层",
+		["zh-TW"] = "每 8 秒回復一層護盾, 受到任何傷害後護盾破碎\n當護盾破碎時, 回復 7% 最大生命值 (每層提供額外 3% 最大生命值)\n每升級一次增加 1 層\n每次近戰擊殺減少 1 秒冷卻時間",
+		["zh-CN"] = "每 8 秒回复一层护盾, 受到任何伤害后护盾破碎\n当护盾破碎时, 回复 7% 最大生命值 (每层提供额外 3% 最大生命值)\n每升级一次增加 1 层\n每次近战击杀减少 1 秒冷却时间",
 		["ru"] = "",
 	}
 })

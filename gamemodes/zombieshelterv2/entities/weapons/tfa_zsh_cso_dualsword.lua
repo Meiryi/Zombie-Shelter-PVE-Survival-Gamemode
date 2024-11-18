@@ -178,9 +178,9 @@ sound.Add({
 SWEP.Secondary.Attacks = {
 	{
 		['act'] = ACT_VM_HITLEFT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 130, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-180,0,15), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 75, --This isn't overpowered enough, I swear!!
+		['dmg'] = 150, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.03, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -196,9 +196,9 @@ SWEP.Secondary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_HITRIGHT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 130, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(180,0,35), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 95, --This isn't overpowered enough, I swear!!
+		['dmg'] = 170, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.03, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -214,9 +214,9 @@ SWEP.Secondary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_PRIMARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 130, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-180,0,-35), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 95, --This isn't overpowered enough, I swear!!
+		['dmg'] = 190, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.03, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -232,9 +232,9 @@ SWEP.Secondary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_PULLBACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 120, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 130, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(180,0,17.5), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 105, --This isn't overpowered enough, I swear!!
+		['dmg'] = 220, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.03, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -396,20 +396,4 @@ local cd = 40
 function SWEP:OnSkillTriggered()
 	self.LastSkillTriggeredTime = CurTime() + cd
 	self:SetNWFloat("SkillTriggerTime", self.LastSkillTriggeredTime)
-end
-
-SWEP.Alpha = 0
-function SWEP:DrawHUD(...)
-	local fraction = math.Clamp((self:GetNWFloat("SkillTriggerTime", 0) - CurTime()) / cd, 0, 1)
-	--print(fraction)
-	if(fraction > 0) then
-		self.Alpha = math.Clamp(self.Alpha + ZShelter.GetFixedValue(15), 0, 255)
-	else
-		self.Alpha = math.Clamp(self.Alpha - ZShelter.GetFixedValue(15), 0, 255)
-	end
-	if(self.Alpha > 0) then
-		ZShelter:CircleTimerAnimation(ScrW() * 0.5, ScrH() * 0.5, ScreenScaleH(32), ScreenScaleH(1), 1, Color(0, 0, 0, self.Alpha * 0.33))
-		ZShelter:CircleTimerAnimation(ScrW() * 0.5, ScrH() * 0.5, ScreenScaleH(32), ScreenScaleH(1), fraction, Color(255, 255, 255, self.Alpha))
-	end
-	BaseClass.DrawHUD(self, ...)
 end

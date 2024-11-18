@@ -388,8 +388,8 @@ SWEP.Secondary.Ammo			= "none" -- Self explanitory, ammo type.
 SWEP.ConDamageMultiplier = 1
 
 SWEP.Secondary.BashDelay = 0.15
-SWEP.Secondary.BashDamage = 90
-SWEP.Secondary.BashLength = 70
+SWEP.Secondary.BashDamage = 220
+SWEP.Secondary.BashLength = 150
 SWEP.Secondary.Automatic			= true					-- Automatic/Semi Auto
 
 SWEP.Secondary.BashSound = Sound("common/null.wav")

@@ -131,6 +131,16 @@ function SWEP:PostTargetHit(melee2, target) end
 function SWEP:OnComboBreak() end
 function SWEP:PreGatheringResource(res) return true end
 function SWEP:PostAttack() end
+function SWEP:OnMeleeImpact(trace) end
+
+function SWEP:MeleeImpact(trace)
+	local ply = self.Owner
+	self:OnMeleeImpact(trace)
+	if(!ply.Callbacks || !ply.Callbacks.OnMeleeImpact) then return end
+	for k,v in pairs(ply.Callbacks.OnMeleeImpact) do
+		v(ply, trace, self.Melee2Attack)
+	end
+end
 
 function SWEP:SetupDataTables()
 	self:NetworkVar("Bool", 30, "VP")
@@ -243,6 +253,7 @@ function SWEP:ApplyDamage(trace, dmginfo, attk)
 	local melee2 = self.Melee2Attack
 	local ply = self.Owner
 	if(IsValid(ent)) then
+		self:MeleeImpact(trace)
 		if(ent:GetNWBool("IsResource", false)) then
             if(SERVER) then
             	for i = 1, self.GatheringAmount || 1 do
@@ -647,11 +658,13 @@ function SWEP:ArccwStyleMelee(attk)
     			end
     		end
     	else
+    		self:MeleeImpact(tr)
     		self:EmitSoundNet(attk.hitworld)
     	end
     	self:ApplyDamage(tr, damage, attk)
     else
     	if(tr.HitWorld) then
+    		self:MeleeImpact(tr)
     		self:EmitSoundNet(attk.hitworld)
     	end
     end
@@ -826,6 +839,7 @@ function SWEP:Strike(attk, precision)
 			self:ApplyDamage(v, damage)
 
 			if not hitWorld then
+				self:MeleeImpact(v)
 				self:SmackEffect(v, damage)
 
 				if attk.hitworld and not hitFlesh then

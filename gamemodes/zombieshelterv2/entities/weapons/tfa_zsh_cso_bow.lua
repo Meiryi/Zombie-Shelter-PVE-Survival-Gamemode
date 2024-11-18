@@ -10,15 +10,15 @@ SWEP.DrawCrosshair			= true		-- Draw the crosshair?
 SWEP.PrintName				= "Compound Bow"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 3				-- Slot in the weapon selection menu.  Subtract 1, as this starts at 0.
 SWEP.SlotPos				= 73			-- Position in the slot
-SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter if enabled in the GUI.
+SWEP.DrawAmmo				= false		-- Should draw the default HL2 ammo counter if enabled in the GUI.
 SWEP.DrawWeaponInfoBox			= false		-- Should draw the weapon info box
 SWEP.BounceWeaponIcon   		= 	false	-- Should the weapon icon bounce?
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.Weight				= 30			-- This controls how "good" the weapon is for autopickup.
 SWEP.Primary.Knockback = 0 
-SWEP.Primary.PenetrationMultiplier	= 5
-SWEP.Primary.HullSize = 1
+SWEP.Primary.PenetrationMultiplier	= 0.25
+SWEP.Primary.HullSize = 16
 SWEP.ProceduralHolsterTime = 0
 
 --[[WEAPON HANDLING]]--
@@ -387,6 +387,7 @@ if CLIENT then
 	SWEP.DrawWeaponSelection = TFA_CSO_DrawWeaponSelection
 end
 
+SWEP.Primary.AmmoConsumption = 0
 function SWEP:Initialize()
 	BaseClass.Initialize(self)
 
@@ -421,7 +422,7 @@ function SWEP:Think2(...)
 		if self:GetSilenced() then
 			self.Primary_TFA.Damage = 50
 			self.Primary_TFA.RPM = 120
-			self.Primary_TFA.AmmoConsumption = 1
+			self.Primary_TFA.AmmoConsumption = 0
 			self.Primary_TFA.NumShots = 1
 			self.MuzzleFlashEffect = ""
 			self.TracerName = "tra_bow"
@@ -430,7 +431,7 @@ function SWEP:Think2(...)
 		else
 			self.Primary_TFA.Damage = 330
 			self.Primary_TFA.RPM = 25
-			self.Primary_TFA.AmmoConsumption = 1
+			self.Primary_TFA.AmmoConsumption = 0
 			self.Primary_TFA.NumShots = 1
 			self.MuzzleFlashEffectSilenced = ""
 			self.TracerName = "tra_bow_charged"
@@ -455,7 +456,7 @@ if self:GetSilenced() then
 self:SetSilenced()
 			self.Primary_TFA.Damage = 80
 			self.Primary_TFA.RPM = 120
-			self.Primary_TFA.AmmoConsumption = 1
+			self.Primary_TFA.AmmoConsumption = 0
 			self.Primary_TFA.NumShots = 1
 			self.MuzzleFlashEffect = ""
 			self.TracerName = "tra_bow"
