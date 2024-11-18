@@ -2169,6 +2169,18 @@ ZShelter.L("#PlayerCalledevac", {
 	["zh-CN"] = "",
 })
 
+ZShelter.L("#GeneratorCategory", {
+	["en"] = "Generator",
+	["bg"] = "Генератор",
+	["de"] = "Generator",
+	["fr"] = "Générateur",
+	["tr"] = "Jeneratör",
+	["ru"] = "Генераторы",
+	["vi"] = "Máy Phát Điện",
+	["zh-TW"] = "發電機",
+	["zh-CN"] = "发电机",
+})
+
 
 local TemporaryUnsupportedLanguage = {
 
