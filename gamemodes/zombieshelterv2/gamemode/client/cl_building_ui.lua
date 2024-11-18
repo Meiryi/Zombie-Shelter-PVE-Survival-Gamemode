@@ -255,7 +255,7 @@ function ZShelter.MakeShelterTab(ui)
 					surface.DrawTexturedRect(0, offs, w, tall)
 					surface.DrawTexturedRect(0, offs + h - tall, w, tall)
 
-					draw.DrawText("Done", "ZShelter-MenuBig", base:GetWide() / 2, base:GetTall() * 0.45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+					draw.DrawText(ZShelter_GetTranslate("#ShelterUpgradeDone"), "ZShelter-MenuBig", base:GetWide() / 2, base:GetTall() * 0.45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 				end
 			end
 			break
