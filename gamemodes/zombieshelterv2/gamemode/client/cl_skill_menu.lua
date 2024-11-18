@@ -93,10 +93,10 @@ function ZShelter.SkillMenu()
 	ui.Classes = ZShelter.CreatePanel(ui, topPadding, topPadding, ScrW() - topPadding, ScrH() * 0.05, Color(0, 0, 0, 0))
 
 	ui.SkillDesc = ZShelter.CreatePanel(ui, topPadding, ScrH() * 0.25, ScrW(), ScrH() * 0.25, Color(0, 0, 0, 0))
-	local _, tw, title = ZShelter.CreateLabel(ui.SkillDesc, 0, 0, "Skill Menu", "ZShelter-SkillTitle", Color(255, 255, 255, 255))
+	local _, tw, title = ZShelter.CreateLabel(ui.SkillDesc, 0, 0, ZShelter_GetTranslate("#Skillpanel_Title"), "ZShelter-SkillTitle", Color(255, 255, 255, 255))
 		title:SetWide(ScrW())
 
-	local _, _, descr = ZShelter.CreateLabel(ui.SkillDesc, dockMargin, tw, "Select a skill for more information!", "ZShelter-SkillDesc", Color(255, 255, 255, 255))
+	local _, _, descr = ZShelter.CreateLabel(ui.SkillDesc, dockMargin, tw, ZShelter_GetTranslate("#Skillpanel_Desc"), "ZShelter-SkillDesc", Color(255, 255, 255, 255))
 
 	ui.SkillDesc.UpdateInfo = function(title_, desc)
 		if(!title_) then
