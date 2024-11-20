@@ -794,7 +794,7 @@ local func = {
 			local linewide, halfw = ScreenScaleH(6), ScreenScaleH(3)
 			statisticPanel.Statistic.Paint = function()
 				surface.SetDrawColor(255, 255, 255, 255)
-				draw.DrawText("Day", "ZShelter-GameUIDescription", lineGap, dayY, color_white, TEXT_ALIGN_CENTER)
+				draw.DrawText(ZShelter_GetTranslate("#DayStatpanel"), "ZShelter-GameUIDescription", lineGap, dayY, color_white, TEXT_ALIGN_CENTER)
 				draw.RoundedBox(0, 0, startY, wide, gap1x, color_white)
 				local totalPlays = 0
 				local totalFails = 0
@@ -967,7 +967,7 @@ local func = {
 									base.CheckDev = false
 								else
 									if(ZShelter.Names[k]) then
-										nick.UpdateText(ZShelter.Names[k].." [Dev]")
+										nick.UpdateText(ZShelter_GetTranslate_Var("#DeveloperTag", ZShelter.Names[k]))
 										nick:SetTextColor(Color(255, 185, 20, 255))
 									end
 								end

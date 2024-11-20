@@ -164,7 +164,7 @@ function ZShelter.ToggleScoreboard(display)
 				end,
 			},
 			{
-				title = "Ping",
+				title = "#SB_Ping",
 				func = function(ply)
 					local var = ply:Ping()
 					return var
@@ -322,17 +322,17 @@ function ZShelter.ToggleScoreboard(display)
 					upperLayer.DoRightClick = function()
 						local x, y = input.GetCursorPos()
 						local menu = ZShelter.CustomPopupMenu(base, x, y, ScrW() * 0.1, ScrH() * 0.1, Color(200, 200, 200, 255))
-						menu.AddOptions("Copy SteamID", function() SetClipboardText(steamid) end)
-						menu.AddOptions("Copy SteamID64", function() SetClipboardText(steamid64) end)
-						menu.AddOptions("Copy Profile Link", function() SetClipboardText(profile) end)	
-						menu.AddOptions("Copy Name", function() SetClipboardText(name) end)
+						menu.AddOptions(ZShelter_GetTranslate("#SB_CopySteamID"), function() SetClipboardText(steamid) end)
+						menu.AddOptions(ZShelter_GetTranslate("#SB_CopySteamID64"), function() SetClipboardText(steamid64) end)
+						menu.AddOptions(ZShelter_GetTranslate("#SB_CopyProfileLink"), function() SetClipboardText(profile) end)	
+						menu.AddOptions(ZShelter_GetTranslate("#SB_CopyName"), function() SetClipboardText(name) end)
 						if(IsValid(v)) then
 							if(v:IsMuted()) then
-								menu.AddOptions("Unmute", function()
+								menu.AddOptions(ZShelter_GetTranslate("#SB_Unmute"), function()
 									v:SetMuted(false)
 								end)
 							else
-								menu.AddOptions("Mute", function()
+								menu.AddOptions(ZShelter_GetTranslate("#SB_Mute"), function()
 									v:SetMuted(true)
 								end)
 							end
