@@ -437,13 +437,13 @@ function SWEP:Think2(...)
 		self:ClearStatCache()
 	elseif self:GetIronSightsProgress() > 0.5 and not self:GetCSO_SwitchState() then
 		self.TracerName = "cso_tra_lyc"
-		self.Primary_TFA.Damage = 140
+		self.Primary_TFA.Damage = 200
 		self.Primary_TFA.RPM = 325
 		self.Primary_TFA.AmmoConsumption = 1
 		self.Primary_TFA.NumShots = 1
-		self.Primary_TFA.KickUp	= 0.38	
+		self.Primary_TFA.KickUp	= 0.1	
         self.Primary_TFA.KickDown	= 0.3		
-        self.Primary_TFA.KickHorizontal	= 0.15	
+        self.Primary_TFA.KickHorizontal	= 0.025	
 		self.MuzzleFlashEffect = "cso_muz_lyc"
 		self:SetCSO_SwitchState(true)
 		self:ClearStatCache()

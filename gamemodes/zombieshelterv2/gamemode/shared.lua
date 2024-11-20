@@ -67,7 +67,11 @@ if(CLIENT) then
 	CreateConVar("zshelter_enable_hud", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable zombie shelter hud?")
 	CreateConVar("zshelter_client_enable_music", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable music?")
 	CreateConVar("zshelter_enable_menu_keys", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable keys to toggle menu?")
+
 	CreateConVar("zshelter_damage_number", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable damage number", 0, 1)
+	CreateConVar("zshelter_damage_popup", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable popup effect on damage numbers", 0, 1)
+	CreateConVar("zshelter_damage_dps", 0, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Show the DPS on the damage number", 0, 1)
+	CreateConVar("zshelter_damage_stay_time", 0.5, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Time for damage number to disappear", 0.25, 10)
 
 	CreateConVar("zshelter_thirdperson_distance", 128, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Distance for thirdperson", 32, 512)
 	CreateConVar("zshelter_thirdperson_offset", 16, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Offset for thirdperson", -64, 64)

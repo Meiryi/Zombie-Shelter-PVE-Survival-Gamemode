@@ -456,7 +456,7 @@ function SWEP:Think2(...)
         self.Primary_TFA.KickHorizontal	= 0.06
 		self.Primary_TFA.AmmoConsumption = 1
 		self.Primary_TFA.NumShots = 1
-		self.Primary_TFA.PenetrationMultiplier = 0.000
+		self.Primary_TFA.PenetrationMultiplier = 0.25
 		self.VolumeMultiplier = 2.5
 		self.DrawCrosshairIS = true
 		self.MuzzleFlashEffect = "cso_muz_dkn2"

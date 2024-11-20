@@ -187,6 +187,10 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 						v(attacker, target, dmginfo)
 					end
 				end
+
+				if(wep.ZShelter_OnHit) then
+					wep:ZShelter_OnHit(target, dmginfo)
+				end
 			end
 			if(!ismelee) then
 				local dmgscale = attacker:GetNWFloat("DamageScale", 1)

@@ -24,7 +24,7 @@ SWEP.ProceduralHolsterTime = 0
 
 --Firing related
 SWEP.Primary.Sound 			= Sound("Gunkata.Fire")				-- This is the sound of the weapon, when you shoot.
-SWEP.Primary.Damage		= 100					-- Damage, in standard damage points.
+SWEP.Primary.Damage		= 110					-- Damage, in standard damage points.
 SWEP.DamageType = DMG_BULLET --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
 SWEP.Primary.NumShots	= 1 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
 SWEP.Primary.Automatic			= true					-- Automatic/Semi Auto
@@ -427,46 +427,49 @@ end
 
 function SWEP:PrimaryAttack()
     --TFA.Enum.IDLE_DISABLED = no idle, TFA.Enum.IDLE_LUA = lua idle, TFA.Enum.IDLE_ANI = mdl idle, TFA.Enum.IDLE_BOTH = TFA.Enum.IDLE_ANI + TFA.Enum.IDLE_LUA
-    if self:Clip1() <= 0 then
-        return
-    end
-    if self.rd - 1 > CurTime() then
+    if self:Clip1() <= 0 || self.rd > CurTime() then
         return
     end
 
     local VModel = self.Owner:GetViewModel()
-    local Seq = VModel:LookupSequence("shoot")
-    local Seq2 = VModel:LookupSequence("shoot2")
-    local Seq3 = VModel:LookupSequence("shoot_last")
-    local Seq4 = VModel:LookupSequence("shoot2_last")
-    if self:Clip1() % 6 == 0 or self:Clip1() % 6 == 5 then
-        VModel:SendViewModelMatchingSequence(Seq)
-        self.MuzzleAttachment = "0"
+    --local Seq = VModel:LookupSequence("shoot") 2
+    --local Seq2 = VModel:LookupSequence("shoot2") 4
+    --local Seq3 = VModel:LookupSequence("shoot_last") 3
+    --local Seq4 = VModel:LookupSequence("shoot2_last") 5
+    local count = self:GetNWInt("CSO_ShootCount", 1)
+    if(count % 3 != 0 && count > 0) then
+    	if(self:GetNWBool("CSO_HandSide")) then
+			VModel:SendViewModelMatchingSequence(2)
+			self.MuzzleAttachment = "0"
+		else
+			VModel:SendViewModelMatchingSequence(4)
+			self.MuzzleAttachment = "2"
+		end
+	else
+		if(self:GetNWBool("CSO_HandSide")) then
+			VModel:SendViewModelMatchingSequence(3)
+			self.MuzzleAttachment = "0"
+		else
+			VModel:SendViewModelMatchingSequence(5)
+			self.MuzzleAttachment = "2"
+		end
     end
-    if self:Clip1() % 6 == 4 then
-        VModel:SendViewModelMatchingSequence(Seq3)
-        self.MuzzleAttachment = "0"
-        self.Hand = 2
-    end
-    if self:Clip1() % 6 == 3 or self:Clip1() % 6 == 2 then
-        VModel:SendViewModelMatchingSequence(Seq2)
-        self.MuzzleAttachment = "2"
-    end
-    if self:Clip1() % 6 == 1 then
-        VModel:SendViewModelMatchingSequence(Seq4)
-        self.MuzzleAttachment = "2"
 
-        self.Hand = 1
-    end
+    self:SetNWInt("CSO_ShootCount", count + 1)
+
     BaseClass.PrimaryAttack(self)
-    self.nextidle = CurTime() + 0.4
+
+    if(count % 3 == 0 && count > 0) then
+    	self:SetNWBool("CSO_HandSide", !self:GetNWBool("CSO_HandSide"))
+    	self:SetNWInt("CSO_ShootCount", 1)
+    	self:SetNextPrimaryFire(CurTime() + 0.2)
+    end
 end
 ------
 SWEP.rd = 0
 function SWEP:Reload()
-    if self:Ammo1() <= 0 then return
-    end
-    if self:Clip1() >= self.Primary.ClipSize then
+    if self:Ammo1() <= 0 then return end
+    if self:Clip1() >= self:GetMaxClip1() then
         return
     end
     if self.rd > CurTime() then
@@ -482,16 +485,17 @@ function SWEP:Reload()
         local VModel = self.Owner:GetViewModel()
         local Seq1 = VModel:LookupSequence("reload")
         local Seq2 = VModel:LookupSequence("reload2")
-        if self.Hand == 1 then
-            VModel:SendViewModelMatchingSequence(Seq1)
-        else
+        if(self:GetNWBool("CSO_HandSide")) then
             VModel:SendViewModelMatchingSequence(Seq2)
+        else
+            VModel:SendViewModelMatchingSequence(Seq1)
         end
     end
 
     timer.Simple(2, function()
 		self:CompleteReload()
-		self.Hand = 1
+		self:SetNWInt("CSO_ShootCount", 1)
+		self:SetNWBool("CSO_HandSide", true)
 	end)
 
     if SERVER then
@@ -499,72 +503,82 @@ function SWEP:Reload()
     end
 end
 
+local RightSideAnim = {
+	[8] = true,
+	[6] = true,
+	[5] = true,
+}
+local LeftSideAnim = {
+	[9] = true,
+	[3] = true,
+}
 function SWEP:Think()
+	if(!self.Owner:IsPlayer()) then return end
+	local VModel = self.Owner:GetViewModel()
+    if(self.BackToIdle && CurTime() - self.LastSecondaryAttackTime > 1) then
+    	self:Deploy()
+    	self:SetNWInt("c", 1)
+    	self.BackToIdle = false
+    end
+    local currentSequence = VModel:GetSequence()
+    if(RightSideAnim[currentSequence]) then
+    	self:SetNWInt("s", 3)
+    end
+    if(LeftSideAnim[currentSequence]) then
+		self:SetNWInt("s", 2)
+	end
     BaseClass.Think(self)
-    local VModel = self.Owner:GetViewModel()
-    local Seq1 = VModel:LookupSequence("idle")
-    local Seq2 = VModel:LookupSequence("idle2")
+end
 
-    if self.nextidle <= CurTime() and self.idle then
-        self.idle = false
-    end
-
-    if self.nextidle > CurTime() then
-        self.idle = true
-    end
+function SWEP:PostPrimaryAttack()
+	self.BackToIdle = false
 end
 
 function SWEP:Deploy()
-    self.nextidle = CurTime() + 1
-    BaseClass.Deploy(self)
-    local VModel = self.Owner:GetViewModel()
-    local Seq1 = VModel:LookupSequence("draw")
-    local Seq2 = VModel:LookupSequence("draw2")
-    if self.Hand == 2 then
-        VModel:SendViewModelMatchingSequence(Seq2)
-        return true
-    else
-        VModel:SendViewModelMatchingSequence(Seq1)
-        return true
-    end
+	local VModel = self.Owner:GetViewModel()
+	if(self:GetNWBool("CSO_HandSide")) then
+		VModel:SendViewModelMatchingSequence(8)
+	else
+		VModel:SendViewModelMatchingSequence(9)
+	end
+	return true
 end
 
-local function SetEntityStuff(ent1, ent2) -- Transfer most of the set things on entity 2 to entity 1
-    if not IsValid(ent1) or not IsValid(ent2) then
-        return false
-    end
-    ent1:SetModel("models/weapons/tfa_cso/ef_rainbowkata_man.mdl")
-
-    local ang = ent2:GetAngles()
-    ang.x = 0
-    ent1:SetAngles(ang)
-
-    ent1:SetSkin(ent2:GetSkin())
-    ent1:SetRenderMode(2)
-    ent1:SetColor(Color(255, 255, 255, 100))
+if(SERVER) then
+	util.AddNetworkString("TFA_CSO_GunkataSound")
+else
+	net.Receive("TFA_CSO_GunkataSound", function()
+		local ply = net.ReadEntity()
+		if(!IsValid(ply)) then return end
+		ply:EmitSound("Gunkata.Fire")
+	end)
 end
 
+function SWEP:BroadcastSound()
+	if(CLIENT) then
+		if(LocalPlayer():ShouldDrawLocalPlayer()) then
+			sound.Play("Gunkata.Fire", self.Owner:GetPos())
+		end
+		return
+	end
+	for _, ply in ipairs(player.GetAll()) do
+		if(ply == self.Owner) then continue end
+		net.Start("TFA_CSO_GunkataSound")
+		net.WriteEntity(self.Owner)
+		net.Send(ply)
+	end
+end
+
+SWEP.NextDamageTime = 0
+SWEP.BackToIdle = false
+SWEP.LastSecondaryAttackTime = 0
+SWEP.NextSoundTime = 0
+SWEP.NextShadowTime = 0
 function SWEP:SecondaryAttack()
 	local t, s, c = self:GetNWFloat("t", 0), self:GetNWInt("s", 1), self:GetNWInt("c", 1)
-
-    self:SetNextPrimaryFire(CurTime() + 0.1)
-
-    if self:Clip1() % 6 == 4 then
-        self.Hand = 2
-    end
-
-    if self:Clip1() % 6 == 1 then
-        self.Hand = 1
-    end
-
-    if self:Clip1() <= 0 then return end
-
+	if(self:Clip1() <= 0 || self.Owner:KeyDown(IN_ATTACK) || self:GetNextPrimaryFire() > CurTime()) then return end
     local VModel = self.Owner:GetViewModel()
-
     if self:Clip1() > 1 then
-        self:SetNextSecondaryFire(CurTime() + 0.1)
-
-        self.Owner:AnimRestartGesture(0, ACT_HL2MP_GESTURE_RANGE_ATTACK_MELEE, true)
 
         --[[
         if skilltime < CurTime() then
@@ -593,28 +607,37 @@ function SWEP:SecondaryAttack()
 			if(self:GetNWInt("c") > 1 + self.FakeViewmodelCount) then
 				self:SetNWInt("c", 1)
 			end
-			self:SetNWFloat("t", CurTime() + 0.25)
+			self:SetNWFloat("t", CurTime() + 0.275)
 		end
 
-        timer.Create( "gunkatadeploy"..self:EntIndex(), 1, 1, function()
-			if not IsValid(self) then return end
-			if not self.Owner:KeyPressed(IN_ATTACK2) then
-				self:Deploy()
-				self:SetNWInt("c", 1)
-			end
-		end)
-
-        if SERVER then
-            for k, v in pairs(ents.FindInSphere(self.Owner:GetPos(), 250)) do
-				if self:IsValidTarget(v) then
-					if v:Health() > 0 then
-						v:TakeDamage(GetConVar("sv_tfa_cso_dmg_gunslinger_rb"):GetInt(), self.Owner, self.Entity)
-						v:EmitSound("Gunkata.Hit"..math.random(1,2))
-					end
-				end
-            end
+        if(self.NextDamageTime < CurTime() && SERVER) then
+	        for k, v in pairs(ents.FindInSphere(self.Owner:GetPos(), 300)) do
+				if(!ZShelter.HurtableTarget(v) || v == self.Owner || v.IsBuilding || v:Health() <= 0) then continue end
+				v:TakeDamage(30, self.Owner, self)
+				v:EmitSound("Gunkata.Hit"..math.random(1,2))
+	        end
+	        ZShelter.AddNoise(1.5)
+            self.NextDamageTime = CurTime() + 0.1
         end
+
+        if(self.NextShadowTime < CurTime()) then
+	        local e = EffectData()
+	        	e:SetEntity(self.Owner)
+	        util.Effect("zshelter_gunkata_shadow", e)
+        	self.NextShadowTime = CurTime() + 0.33
+        end
+
+        if(self.NextSoundTime < CurTime()) then
+        	self:BroadcastSound()
+        	self.NextSoundTime = CurTime() + 0.2
+        end
+
+        self.BackToIdle = true
+        self.LastSecondaryAttackTime = CurTime()
     elseif self:Clip1() <= 1 then
+    	self.BackToIdle = false
+    	self:SetNextSecondaryFire(CurTime() + 0.4)
+    	self:SetClip1(0)
 	    self:HideAllViewModels()
     	self:SetNWInt("c", 1)
     	self:SetNWFloat("t", 0)
@@ -628,26 +651,29 @@ function SWEP:SecondaryAttack()
 				effectdata:SetEntity(self.Owner)
 				effectdata:SetOrigin(self.Owner:GetPos())
 				effectdata:SetAngles(Angle(0, 0, 0))
-				util.Effect("exp_gunkata", effectdata)
+				util.Effect("zshelter_exp_gunkata", effectdata)
 
 				for _, ent in ipairs(ents.FindInSphere(self.Owner:GetPos(), 300)) do
 					if(ent == self.Owner) then continue end
 					local vel = (ent:GetPos() - self.Owner:GetPos()):GetNormal() * 1024
-					vel.z = vel.z + 512
+					vel.z = vel.z + 128
 					ent:SetVelocity(vel)
 				end
 			end)
 
             timer.Simple(1, function()
 				self:CompleteReload()
-				self.Hand = 1
+				self:SetNWInt("CSO_ShootCount", 1)
 				self:Deploy()
 			end)
 
             self.Owner:SetAnimation(PLAYER_RELOAD)
         end
     end
-    self:TakePrimaryAmmo(1)
+    if(self:GetNWFloat("NextTakeAmmoTime", 0) < CurTime()) then
+    	self:TakePrimaryAmmo(1)
+    	self:SetNWFloat("NextTakeAmmoTime", CurTime() + 0.15)
+    end
 end
 
 function SWEP:SetFakeVMSequence(index, sequence)
@@ -662,26 +688,49 @@ end
 function SWEP:HideAllViewModels()
 	if(SERVER || !self.FakeViewmodels) then return end
 	for _, vms in ipairs(self.FakeViewmodels) do
+		vms.vm:SetSequence(0)
 		vms.vm:SetCycle(1)
 		vms.hands:SetCycle(1)
+		vms.vm:SetNoDraw(true)
+		vms.hands:SetNoDraw(true)
 	end
 end
 
-SWEP.FakeViewmodelCount = 2
+function SWEP:DrawHUD(...)
+	if(LocalPlayer():ShouldDrawLocalPlayer()) then
+		self:HideAllViewModels()
+	end
+	BaseClass.DrawHUD(self, ...)
+end
+
+SWEP.FakeViewmodelCount = 3
 SWEP.FakeViewmodelCycleMultiplier = 1
 local timescale = GetConVar("host_timescale")
 function SWEP:PostDrawViewModel(vm, weapon, ply)
 	if(!self.FakeViewmodels) then
 		self.FakeViewmodels = {}
-		for i = 1, self.FakeViewmodelCount do
-			local _vm = ClientsideModel(vm:GetModel())
-			local _hands = ClientsideModel(ply:GetHands():GetModel())
-			_vm:SetCycle(1)
-			table.insert(self.FakeViewmodels, {
-				vm = _vm,
-				hands = _hands
-			})
-		end
+		timer.Simple(0, function()
+			if(!IsValid(self)) then return end
+			for i = 1, self.FakeViewmodelCount do
+				local _vm = ClientsideModel(vm:GetModel())
+				local _hands = ClientsideModel(ply:GetHands():GetModel())
+				_vm:SetCycle(1)
+				local matrix = Matrix()
+				if(self.ViewModelFlip) then
+					matrix:Scale(Vector(1, -1, 1))
+				else
+					matrix:Scale(Vector(1, 1, 1))
+				end
+				_hands:SetParent(_vm)
+				_hands:AddEffects(EF_BONEMERGE)
+
+				_hands:EnableMatrix("RenderMultiply", matrix)
+				table.insert(self.FakeViewmodels, {
+					vm = _vm,
+					hands = _hands
+				})
+			end
+		end)
 	else
 		cam.IgnoreZ(true)
 		for index, vms in ipairs(self.FakeViewmodels) do
@@ -689,20 +738,8 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
 			vms.vm:SetPos(vm:GetPos())
 			vms.vm:SetAngles(vm:GetAngles())
 
-			vms.hands:SetPos(ply:GetHands():GetPos())
-			vms.hands:SetAngles(ply:GetHands():GetAngles())
-
-			local matrix = Matrix()
-			if(self.ViewModelFlip) then
-				matrix:Scale(Vector(1, -1, 1))
-			else
-				matrix:Scale(Vector(1, 1, 1))
-			end
-			vms.hands:SetParent(vms.vm)
-			vms.hands:AddEffects(EF_BONEMERGE)
-
-			vms.hands:EnableMatrix("RenderMultiply", matrix)
-			--vms.hands:DrawModel()
+			--vms.hands:SetPos(ply:GetHands():GetPos())
+			--vms.hands:SetAngles(ply:GetHands():GetAngles())
 
 			local draw = (vms.vm:GetCycle() >= 0.98)
 			vms.vm:SetNoDraw(draw)
@@ -720,6 +757,7 @@ function SWEP:Holster(...)
 		end
 		self.FakeViewmodels = nil
 	end
+	self.BackToIdle = false
 	return BaseClass.Holster(self, ...)
 end
 

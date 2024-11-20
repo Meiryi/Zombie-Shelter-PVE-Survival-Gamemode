@@ -399,9 +399,18 @@ function ZShelter.OpenWorktable()
 					local currentX = pa:GetWide() - (dockmargin + size)
 
 					local path = "zsh/icon/common.png"
+					local default = v.icon == "default"
 					if(v.icon && v.icon != "") then
-						if(file.Exists("materials/"..v.icon, "GAME")) then
-							path = v.icon
+						if(default) then
+							local t = (panel:GetTall() - th)
+							local size = t * 2
+							local offset = size - t
+							ZShelter.CreateImage(panel, dockmargin, panel:GetTall() * 0.5 - (offset * 0.5 + th), size, size, "entities/"..string.Replace(v.class, "zsh_", "")..".png", Color(255, 255, 255, 255))
+							path = ""
+						else
+							if(file.Exists("materials/"..v.icon, "GAME")) then
+								path = v.icon
+							end
 						end
 					else
 						if(file.Exists("materials/arccw/weaponicons/"..v.class..".vtf", "GAME")) then

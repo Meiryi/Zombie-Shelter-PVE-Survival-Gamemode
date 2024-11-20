@@ -571,13 +571,13 @@ ZShelter.AddInfo("Aim Assist", {
 		["de"] = "",
 	},
 	desc = {
-		["en"] = "Auto aims the enemy for you\nHold Mouse 4 to active",
+		["en"] = "Auto aims the enemy for you\nHold use key to active",
 		["bg"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "自動瞄準敵人\n按下滑鼠測鍵使用",
-		["zh-CN"] = "自动瞄准敌人\n按下滑鼠测键使用",
+		["zh-TW"] = "自動瞄準敵人\n按住使用鍵啟動",
+		["zh-CN"] = "自动瞄准敌人\n按住使用键激活",
 		["ru"] = "",
 		["de"] = "",
 	}

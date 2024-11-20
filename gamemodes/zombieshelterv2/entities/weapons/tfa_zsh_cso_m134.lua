@@ -25,9 +25,9 @@ SWEP.ProceduralHolsterTime = 0
 
 --Firing related
 SWEP.Primary.Sound 			= Sound("M134.Fire")				-- This is the sound of the weapon, when you shoot.
-SWEP.Primary.Damage		= 34					-- Damage, in standard damage points.
+SWEP.Primary.Damage		= 25					-- Damage, in standard damage points.
 SWEP.DamageType = bit.bor(DMG_AIRBOAT,DMG_MISSILEDEFENSE) --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
-SWEP.Primary.NumShots	= 1 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
+SWEP.Primary.NumShots	= 4 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
 SWEP.Primary.Automatic			= true					-- Automatic/Semi Auto
 SWEP.Primary.RPM				= 1500					-- This is in Rounds Per Minute / RPM
 SWEP.Primary.RPM_Semi				= 1500					-- RPM for semi-automatic or burst fire.  This is in Rounds Per Minute / RPM
@@ -59,14 +59,14 @@ SWEP.Primary.Ammo			= "ar2"					-- What kind of ammo.  Options, besides custom, 
 SWEP.DisableChambering = true --Disable round-in-the-chamber
 
 --Recoil Related
-SWEP.Primary.KickUp			= 0.1					-- This is the maximum upwards recoil (rise)
-SWEP.Primary.KickDown			= 0.1					-- This is the maximum downwards recoil (skeet)
-SWEP.Primary.KickHorizontal			= 0.1				-- This is the maximum sideways recoil (no real term)
+SWEP.Primary.KickUp			= 0.25					-- This is the maximum upwards recoil (rise)
+SWEP.Primary.KickDown			= 0.25					-- This is the maximum downwards recoil (skeet)
+SWEP.Primary.KickHorizontal			= 0.01				-- This is the maximum sideways recoil (no real term)
 SWEP.Primary.StaticRecoilFactor = 0.3 	--Amount of recoil to directly apply to EyeAngles.  Enter what fraction or percentage (in decimal form) you want.  This is also affected by a convar that defaults to 0.5.
 
 --Firing Cone Related
 
-SWEP.Primary.Spread		= .025					--This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
+SWEP.Primary.Spread		= .03					--This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
 SWEP.Primary.IronAccuracy = .00375	-- Ironsight accuracy, should be the same for shotguns
 
 --Unless you can do this manually, autodetect it.  If you decide to manually do these, uncomment this block and remove this line.
@@ -412,34 +412,6 @@ function SWEP:Think2( ... )
     local owner = self:GetOwner()
     local vm = owner:GetViewModel()
     local shooting = self:GetStatus() == TFA.GetStatus("shooting")
-    local reloading = self:GetStatus() == TFA.GetStatus("reloading")
-    local reloading_wait = self:GetStatus() == TFA.GetStatus("reloading_wait")
-    local draw = self:GetStatus() == 1
-    if(draw || reloading || reloading_wait) then
-    	self:SetNextPrimaryFire(CurTime() + 0.15)
-    end
-    if(owner:IsPlayer() && !CSO:BlockExtraAction(self) && self:Clip1() > 0) then
-    	if(!owner:KeyDown(1)) then
-    		if(self.__KeyDown) then
-	    		self:SetPlaybackRate(1)
-	    		self:SendViewModelAnim(ACT_VM_PRIMARYATTACK_EMPTY)
-	    		self:EmitSound(self.SpindownSound)
-	    		self:SetNextIdleAnim(CurTime() + self.SpinupTime)
-    		end
-			self.__KeyDown = false
-		else
-			if(!self.__KeyDown) then -- setup spin timer
-				self.rate = 0
-				self.ShoudPlaySound = false
-				self.SpinupTime = CurTime() + self.TargetSpinupTime
-				self:SetStatusEnd(self.SpinupTime)
-				CSO:ForceVMSequenceNoStatus(self, 6)
-			end
-			self.__KeyDown = true
-    	end
-    else
-    	self.__KeyDown = false
-    end
     if(!shooting) then -- check diff
     	if(self.CachedStatus == true) then
     		self:SendViewModelAnim(ACT_VM_PRIMARYATTACK_EMPTY)

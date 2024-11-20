@@ -1,14 +1,14 @@
 SWEP.Base				= "tfa_gun_base"
-SWEP.Category				= "TFA CS:O Rifles" --The category.  Please, just choose something generic or something I've already done if you plan on only doing like one swep.
-SWEP.Author				= "Kamikaze" --Author Tooltip
+SWEP.Category				= "TFA CS:O Sniper Rifles" --The category.  Please, just choose something generic or something I've already done if you plan on only doing like one swep.
+SWEP.Author				= "Anri" --Author Tooltip
 SWEP.Contact				= "" --Contact Info Tooltip
 SWEP.Purpose				= "" --Purpose Tooltip
 SWEP.Instructions				= "" --Instructions Tooltip
 SWEP.Spawnable				= true --Can you, as a normal user, spawn this?
 SWEP.AdminSpawnable			= true --Can an adminstrator spawn this?  Does not tie into your admin mod necessarily, unless its coded to allow for GMod's default ranks somewhere in its code.  Evolve and ULX should work, but try to use weapon restriction rather than these.
 SWEP.DrawCrosshair			= true		-- Draw the crosshair?
-SWEP.PrintName				= "SG552 Cerberus"		-- Weapon name (Shown on HUD)
-SWEP.Slot				= 2				-- Slot in the weapon selection menu.  Subtract 1, as this starts at 0.
+SWEP.PrintName				= "Thunderbolt"		-- Weapon name (Shown on HUD)
+SWEP.Slot				= 3				-- Slot in the weapon selection menu.  Subtract 1, as this starts at 0.
 SWEP.SlotPos				= 73			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter if enabled in the GUI.
 SWEP.DrawWeaponInfoBox			= false		-- Should draw the weapon info box
@@ -16,64 +16,64 @@ SWEP.BounceWeaponIcon   		= 	false	-- Should the weapon icon bounce?
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.Weight				= 30			-- This controls how "good" the weapon is for autopickup.
-SWEP.UseBallistics		= false			-- Enable Ballistics? If this gun uses special tracer effects, don't!
 SWEP.Primary.Knockback = 0 
+SWEP.Primary.PenetrationMultiplier	= 0
+SWEP.Primary.HullSize = 1.25
 SWEP.ProceduralHolsterTime = 0
-
--- nZombies Stuff
-SWEP.NZWonderWeapon		= true	-- Is this a Wonder-Weapon? If true, only one player can have it at a time. Cheats aren't stopped, though.
---SWEP.NZRePaPText		= "your text here"	-- When RePaPing, what should be shown? Example: Press E to your text here for 2000 points.
-SWEP.NZPaPName				= "Hades"
---SWEP.NZPaPReplacement 	= "tfa_cso_darkknight_v6"	-- If Pack-a-Punched, replace this gun with the entity class shown here.
-SWEP.NZPreventBox		= false	-- If true, this gun won't be placed in random boxes GENERATED. Users can still place it in manually.
-SWEP.NZTotalBlackList	= false	-- if true, this gun can't be placed in the box, even manually, and can't be bought off a wall, even if placed manually.
-SWEP.PaPMats			= {}
 
 --[[WEAPON HANDLING]]--
 
 --Firing related
-SWEP.Primary.Sound 			= Sound("SG552Cerberus.Fire")				-- This is the sound of the weapon, when you shoot.
-SWEP.Primary.Damage_Regular		= 90					-- Damage, in standard damage points.
-SWEP.Primary.Damage		= 75
-SWEP.DamageType = DMG_BULLET --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
-SWEP.Primary.Damage_Secondary		= 315				-- Damage, in standard damage points.
+SWEP.Primary.Sound 			= Sound("Thunderbolt.Fire")				-- This is the sound of the weapon, when you shoot.
+SWEP.Primary.Damage		= 4500					-- Damage, in standard damage points.
+SWEP.DamageType = bit.bor(DMG_BLAST,DMG_AIRBOAT,DMG_ALWAYSGIB) --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
+SWEP.Primary.BlastRadius	= 1
+SWEP.Primary.DamageTypeHandled = false 
 SWEP.Primary.NumShots	= 1 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
-SWEP.Primary.Automatic			= true					-- Automatic/Semi Auto
-SWEP.Primary.RPM				= 700					-- This is in Rounds Per Minute / RPM
-SWEP.Primary.RPM_Semi				= 700					-- RPM for semi-automatic or burst fire.  This is in Rounds Per Minute / RPM
-SWEP.FiresUnderwater = true
+SWEP.Primary.Automatic			= false					-- Automatic/Semi Auto
+SWEP.Primary.RPM				= 25					-- This is in Rounds Per Minute / RPM
+SWEP.Primary.RPM_Semi				= 25					-- RPM for semi-automatic or burst fire.  This is in Rounds Per Minute / RPM
+SWEP.FiresUnderwater = false
+
+-- nZombies Stuff
+SWEP.NZWonderWeapon		= false	-- Is this a Wonder-Weapon? If true, only one player can have it at a time. Cheats aren't stopped, though.
+--SWEP.NZRePaPText		= "your text here"	-- When RePaPing, what should be shown? Example: Press E to your text here for 2000 points.
+SWEP.NZPaPName				= "Hurricane"
+SWEP.NZPaPReplacement 	= "tfa_cso_thunderbolt_v6"	-- If Pack-a-Punched, replace this gun with the entity class shown here.
+SWEP.NZPreventBox		= true	-- If true, this gun won't be placed in random boxes GENERATED. Users can still place it in manually.
+SWEP.NZTotalBlackList	= false	-- if true, this gun can't be placed in the box, even manually, and can't be bought off a wall, even if placed manually. Only code can give this gun.
 
 -- Selective Fire Stuff
 
 SWEP.SelectiveFire		= false --Allow selecting your firemode?
-SWEP.DisableBurstFire	= false --Only auto/single?
+SWEP.DisableBurstFire	= true --Only auto/single?
 SWEP.OnlyBurstFire		= false --No auto, only burst/single?
 SWEP.DefaultFireMode 	= "" --Default to auto or whatev
 
 --Ammo Related
 
-SWEP.Primary.ClipSize			= 50					-- This is the size of a clip
-SWEP.Primary.DefaultClip			= 300				-- This is the number of bullets the gun gives you, counting a clip as defined directly above.
-SWEP.Primary.Ammo			= "ar2"					-- What kind of ammo.  Options, besides custom, include pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, and AirboatGun.
+SWEP.Primary.ClipSize			= -1					-- This is the size of a clip
+SWEP.Primary.DefaultClip			= 20				-- This is the number of bullets the gun gives you, counting a clip as defined directly above.
+SWEP.Primary.Ammo			= "AR2AltFire"					-- What kind of ammo.  Options, besides custom, include pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, and AirboatGun.
 --Pistol, buckshot, and slam like to ricochet. Use AirboatGun for a light metal peircing shotgun pellets
 
 SWEP.DisableChambering = true --Disable round-in-the-chamber
 
 --Recoil Related
-SWEP.Primary.KickUp			= 0.16					-- This is the maximum upwards recoil (rise)
-SWEP.Primary.KickDown			= 0.12					-- This is the maximum downwards recoil (skeet)
-SWEP.Primary.KickHorizontal			= 0.12				-- This is the maximum sideways recoil (no real term)
-SWEP.Primary.StaticRecoilFactor = 0 	--Amount of recoil to directly apply to EyeAngles.  Enter what fraction or percentage (in decimal form) you want.  This is also affected by a convar that defaults to 0.5.
+SWEP.Primary.KickUp			= 0.35					-- This is the maximum upwards recoil (rise)
+SWEP.Primary.KickDown			= 0.25					-- This is the maximum downwards recoil (skeet)
+SWEP.Primary.KickHorizontal			= 0.10					-- This is the maximum sideways recoil (no real term)
+SWEP.Primary.StaticRecoilFactor = 0.45 	--Amount of recoil to directly apply to EyeAngles.  Enter what fraction or percentage (in decimal form) you want.  This is also affected by a convar that defaults to 0.5.
 
 --Firing Cone Related
 
-SWEP.Primary.Spread		= .004					--This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
-SWEP.Primary.IronAccuracy = .003	-- Ironsight accuracy, should be the same for shotguns
+SWEP.Primary.Spread		= .010					--This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
+SWEP.Primary.IronAccuracy = .001	-- Ironsight accuracy, should be the same for shotguns
 
 --Unless you can do this manually, autodetect it.  If you decide to manually do these, uncomment this block and remove this line.
-SWEP.Primary.SpreadMultiplierMax = 3.5 --How far the spread can expand when you shoot.
-SWEP.Primary.SpreadIncrement = 0.75 --What percentage of the modifier is added on, per shot.
-SWEP.Primary.SpreadRecovery = 4 --How much the spread recovers, per second.
+--SWEP.Primary.SpreadMultiplierMax = 2.5 --How far the spread can expand when you shoot.
+--SWEP.Primary.SpreadIncrement = 1/3.5 --What percentage of the modifier is added on, per shot.
+--SWEP.Primary.SpreadRecovery = 3 --How much the spread recovers, per second.
 
 --Range Related
 SWEP.Primary.Range = -1 -- The distance the bullet can travel in source units.  Set to -1 to autodetect based on damage/rpm.
@@ -82,44 +82,48 @@ SWEP.Primary.RangeFalloff = 1 -- The percentage of the range the bullet damage s
 
 --Penetration Related
 
-SWEP.MaxPenetrationCounter=2 --The maximum number of ricochets.  To prevent stack overflows.
+SWEP.MaxPenetrationCounter =	20 --The maximum number of ricochets.  To prevent stack overflows.
 
 --Misc
-SWEP.IronRecoilMultiplier=0.9 --Multiply recoil by this factor when we're in ironsights.  This is proportional, not inversely.
-SWEP.CrouchRecoilMultiplier=0.65  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
-SWEP.JumpRecoilMultiplier=1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
+SWEP.IronRecoilMultiplier=0.85 --Multiply recoil by this factor when we're in ironsights.  This is proportional, not inversely.
+SWEP.CrouchRecoilMultiplier=0.5  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
+SWEP.JumpRecoilMultiplier=2  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
 SWEP.WallRecoilMultiplier=1.1  --Multiply recoil by this factor when we're changing state e.g. not completely ironsighted.  This is proportional, not inversely.
 SWEP.ChangeStateRecoilMultiplier=1.3  --Multiply recoil by this factor when we're crouching.  This is proportional, not inversely.
-SWEP.CrouchAccuracyMultiplier=0.75--Less is more.  Accuracy * 0.5 = Twice as accurate, Accuracy * 0.1 = Ten times as accurate
+SWEP.CrouchAccuracyMultiplier=0.5--Less is more.  Accuracy * 0.5 = Twice as accurate, Accuracy * 0.1 = Ten times as accurate
 SWEP.ChangeStateAccuracyMultiplier=1.5 --Less is more.  A change of state is when we're in the progress of doing something, like crouching or ironsighting.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
-SWEP.JumpAccuracyMultiplier= 5--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
-SWEP.WalkAccuracyMultiplier= 3--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
-SWEP.IronSightTime = 0.01 --The time to enter ironsights/exit it.
+SWEP.JumpAccuracyMultiplier=4--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
+SWEP.WalkAccuracyMultiplier=1.25--Less is more.  Accuracy * 2 = Half as accurate.  Accuracy * 5 = 1/5 as accurate
+SWEP.IronSightTime = 0 --The time to enter ironsights/exit it.
 SWEP.NearWallTime = 0.25 --The time to pull up  your weapon or put it back down
 SWEP.ToCrouchTime = 0.05 --The time it takes to enter crouching state
 SWEP.WeaponLength = 50 --Almost 3 feet Feet.  This should be how far the weapon sticks out from the player.  This is used for calculating the nearwall trace.
 SWEP.MoveSpeed = 1 --Multiply the player's movespeed by this.
-SWEP.IronSightsMoveSpeed = 1 --Multiply the player's movespeed by this when sighting.
+SWEP.IronSightsMoveSpeed = 0.8 --Multiply the player's movespeed by this when sighting.
 SWEP.SprintFOVOffset = 3.75 --Add this onto the FOV when we're sprinting.
 
 --[[PROJECTILES]]--
 
 SWEP.ProjectileEntity = nil --Entity to shoot
-SWEP.ProjectileVelocity = 0 --Entity to shoot's velocity
-SWEP.ProjectileModel = nil --Entity to shoot's model
+SWEP.ProjectileVelocity = 1624 --Entity to shoot's velocity
+SWEP.ProjectileModel = "models/weapons/sov_grenade.mdl" --Entity to shoot's model
 
 --[[VIEWMODEL]]--
 
-SWEP.ViewModel			= "models/weapons/tfa_cso/c_sg552_cerberus.mdl" --Viewmodel path
-SWEP.ViewModelFOV			= 75		-- This controls how big the viewmodel looks.  Less is more.
+SWEP.ViewModel			= "models/weapons/tfa_cso/c_thunderbolt.mdl" --Viewmodel path
+SWEP.ViewModelFOV			= 80		-- This controls how big the viewmodel looks.  Less is more.
 SWEP.ViewModelFlip			= true		-- Set this to true for CSS models, or false for everything else (with a righthanded viewmodel.)
 SWEP.UseHands = true --Use gmod c_arms system.
 SWEP.VMPos = Vector(0,0,0) --The viewmodel positional offset, constantly.  Subtract this from any other modifications to viewmodel position.
 SWEP.VMAng = Vector(0,0,0) --The viewmodel angular offset, constantly.   Subtract this from any other modifications to viewmodel angle.
 
+SWEP.Attachments = {
+    [1] = { atts = { "cso_thunderbolt_leaf","cso_thunderbolt22" } },
+}
+
 --[[WORLDMODEL]]--
 
-SWEP.WorldModel			= "models/weapons/tfa_cso/w_sg552_cerberus.mdl" -- I couldn't compile the Dark Knight's worldmodel either... why me
+SWEP.WorldModel			= "models/weapons/tfa_cso/w_thunderbolt.mdl" -- Weapon world model path
 
 SWEP.HoldType 				= "ar2"		-- This is how others view you carrying the weapon. Options include:
 -- normal melee melee2 fist knife smg ar2 pistol rpg physgun grenade shotgun crossbow slam passive
@@ -127,45 +131,53 @@ SWEP.HoldType 				= "ar2"		-- This is how others view you carrying the weapon. O
 
 SWEP.Offset = { --Procedural world model animation, defaulted for CS:S purposes.
 		Pos = {
-		Up = -4.5,
+		Up = -5,
 		Right = 1,
-		Forward = 7,
+		Forward = 12.5,
 		},
 		Ang = {
 		Up = 90,
-		Right = -180,
-		Forward = -15
+		Right = 0,
+		Forward = 195
 		},
-		Scale = 1.2
+		Scale = 1
 }
 
 SWEP.ThirdPersonReloadDisable=false --Disable third person reload?  True disables.
 
 --[[SCOPES]]--
 
-SWEP.BoltAction			= false  --Unscope/sight after you shoot?
-SWEP.Scoped				= false  --Draw a scope overlay?
+SWEP.BoltAction			= true  --Unscope/sight after you shoot?
+SWEP.Scoped				= true  --Draw a scope overlay?
 
 SWEP.ScopeOverlayThreshold = 0.875 --Percentage you have to be sighted in to see the scope.
-SWEP.BoltTimerOffset = 0.15 --How long you stay sighted in after shooting, with a bolt action.
+SWEP.BoltTimerOffset = 0 --How long you stay sighted in after shooting, with a bolt action.
 
 SWEP.ScopeScale = 0.5 --Scale of the scope overlay
-SWEP.ReticleScale = 0.7 --Scale of the reticle overlay
+SWEP.ReticleScale = 1.3 --Scale of the reticle overlay
 
 --GDCW Overlay Options.  Only choose one.
 
 SWEP.Secondary.UseACOG			= false	 --Overlay option
 SWEP.Secondary.UseMilDot			= false			 --Overlay option
-SWEP.Secondary.UseSVD			= true		 --Overlay option
+SWEP.Secondary.UseSVD			= false		 --Overlay option
 SWEP.Secondary.UseParabolic		= false		 --Overlay option
 SWEP.Secondary.UseElcan			= false	 --Overlay option
 SWEP.Secondary.UseGreenDuplex		= false		 --Overlay option
+
+if CLIENT then
+	SWEP.Secondary.ScopeTable = {
+		scopetex = surface.GetTextureID("scope/scope_square"),
+		reticletex = surface.GetTextureID("scope/sfscope_spinner"),
+		dottex = surface.GetTextureID("scope/sfscope_bak")
+	}
+end
 
 --[[SHOTGUN CODE]]--
 
 SWEP.Shotgun = false --Enable shotgun style reloading.
 
-SWEP.ShellTime			= .35 -- For shotguns, how long it takes to insert a shell.
+SWEP.ShellTime			= 0.9 -- For shotguns, how long it takes to insert a shell.
 
 --[[SPRINTING]]--
 
@@ -176,20 +188,9 @@ SWEP.RunSightsAng = Vector(-16.223, -35.562, 0)
 
 SWEP.data 				= {}
 SWEP.data.ironsights			= 1 --Enable Ironsights
-SWEP.Secondary.IronFOV			= 70					-- How much you 'zoom' in. Less is more!  Don't have this be <= 0.  A good value for ironsights is like 70.
-SWEP.DrawCrosshairIS = true
+SWEP.Secondary.IronFOV			= 15					-- How much you 'zoom' in. Less is more!  Don't have this be <= 0.  A good value for ironsights is like 70.
 
-SWEP.IronSightsReloadEnabled = false -- Enable ADS reload animations support (requires animations to be enabled in SWEP.Animations)
-
-SWEP.Sights_Mode = TFA.Enum.LOCOMOTION_ANI -- LOCOMOTION_ANI = mdl, LOCOMOTION_HYBRID = ani + lua, LOCOMOTION_LUA = lua only
-SWEP.IronAnimation = {
-    ["loop"] = {
-        ["type"] = TFA.Enum.ANIMATION_SEQ, -- Sequence or act
-        ["value"] = "idle", -- Number for act, String/Number for sequence
-    } -- Looping Animation
-}
-
-SWEP.IronSightsPos = Vector(0, 0, 0)
+SWEP.IronSightsPos = Vector(7.212, -3.109, 1.309)
 SWEP.IronSightsAng = Vector(0, 0, 0)
 
 --[[INSPECTION]]--
@@ -221,10 +222,21 @@ SWEP.SprintHoldTypeOverride=""  --This variable overrides the sprint holdtype, c
 --[[VIEWMODEL BLOWBACK]]--
 
 SWEP.BlowbackEnabled = false --Enable Blowback?
-SWEP.BlowbackVector = Vector(-0.225,-1,0) --Vector to move bone <or root> relative to bone <or view> orientation.
+SWEP.BlowbackVector = Vector(0,-20,0) --Vector to move bone <or root> relative to bone <or view> orientation.
 SWEP.BlowbackCurrentRoot = 0 --Amount of blowback currently, for root
 SWEP.BlowbackCurrent = 0 --Amount of blowback currently, for bones
 SWEP.Blowback_Only_Iron = false --Only do blowback on ironsights
+SWEP.Blowback_PistolMode = false --Do we recover from blowback when empty?
+SWEP.Blowback_Shell_Enabled = false
+SWEP.Blowback_Shell_Effect = "RifleShellEject"
+
+--[[VIEWMODEL BLOWBACK]]--
+
+SWEP.BlowbackEnabled = false --Enable Blowback?
+SWEP.BlowbackVector = Vector(0,-2,0) --Vector to move bone <or root> relative to bone <or view> orientation.
+SWEP.BlowbackCurrentRoot = 0 --Amount of blowback currently, for root
+SWEP.BlowbackCurrent = 0 --Amount of blowback currently, for bones
+SWEP.Blowback_Only_Iron = true --Only do blowback on ironsights
 SWEP.Blowback_PistolMode = false --Do we recover from blowback when empty?
 SWEP.Blowback_Shell_Enabled = false
 SWEP.Blowback_Shell_Effect = "RifleShellEject"
@@ -234,25 +246,16 @@ SWEP.Blowback_Shell_Effect = "RifleShellEject"
 SWEP.ForceDryFireOff = true --Disables dryfire.  Set to false to enable them.
 SWEP.DisableIdleAnimations = false --Disables idle animations.  Set to false to enable them.
 SWEP.ForceEmptyFireOff = true --Disables empty fire animations.  Set to false to enable them.
-SWEP.StatusLengthOverride = {
-	[ACT_VM_RELOAD] = 40 / 30
-}
-
---Impact Effects
-SWEP.ImpactEffect = nil--Impact Effect
-SWEP.ImpactDecal = nil--Impact Decal
-SWEP.Primary.ImpactEffect = nil
 
 --If you really want, you can remove things from SWEP.actlist and manually enable animations and set their lengths.
 
 SWEP.SequenceEnabled = {} --Self explanitory.  This can forcefully enable or disable a certain ACT_VM
 SWEP.SequenceLength = {}  --This controls the length of a certain ACT_VM
-SWEP.SequenceLengthOverride={
-//	[ACT_VM_RELOAD] = 2,
-}
+SWEP.SequenceLengthOverride={} --Override this if you want to change the length of a sequence but not the next idle
+
 --[[EFFECTS]]--
 
-
+SWEP.Primary.ImpactEffect = ""
 
 --Muzzle Flash
 
@@ -263,12 +266,12 @@ SWEP.ShellAttachment			= "2" 		-- Should be "2" for CSS models or "shell" for hl
 SWEP.DoMuzzleFlash = true --Do a muzzle flash?
 SWEP.CustomMuzzleFlash = true --Disable muzzle anim events and use our custom flashes?
 SWEP.AutoDetectMuzzleAttachment = false --For multi-barrel weapons, detect the proper attachment?
-SWEP.MuzzleFlashEffect = "cso_muz_cerberus" --Change to a string of your muzzle flash effect.  Copy/paste one of the existing from the base.
+SWEP.MuzzleFlashEffect = "tfa_muzzleflash_gauss" --Change to a string of your muzzle flash effect.  Copy/paste one of the existing from the base.
 
 --Tracer Stuff
 
 SWEP.Tracer				= 0		--Bullet tracer.  TracerName overrides this.
-SWEP.TracerName 		= "cso_tra_cerberus" 	--Change to a string of your tracer name.  Can be custom.
+SWEP.TracerName 		= "cso_tra_thunbolt" 	--Change to a string of your tracer name.  Can be custom.
 								--There is a nice example at https://github.com/garrynewman/garrysmod/blob/master/garrysmod/gamemodes/base/entities/effects/tooltracer.lua
 SWEP.TracerCount 		= 1 	--0 disables, otherwise, 1 in X chance
 
@@ -386,74 +389,34 @@ SWEP.Secondary.DefaultClip			= 0					-- Default ammo to give...
 SWEP.Secondary.Automatic			= false					-- Automatic/Semi Auto
 SWEP.Secondary.Ammo			= "none" -- Self explanitory, ammo type.
 
+--Convar support
+
+SWEP.ConDamageMultiplier = 1
+
 SWEP.Base				= "tfa_gun_base"
 
 DEFINE_BASECLASS(SWEP.Base)
 function SWEP:Holster( ... )
-	self:StopSound("SG552Cerberus.Idle")
+	self:StopSound("ThunderBolt.Idle")
 	return BaseClass.Holster(self,...)
 end
 if CLIENT then
-	SWEP.WepSelectIconCSO = Material("vgui/killicons/tfa_cso_cerberus")
+	SWEP.WepSelectIconCSO = Material("vgui/killicons/tfa_cso_thunderbolt")
 	SWEP.DrawWeaponSelection = TFA_CSO_DrawWeaponSelection
 end
 
-function SWEP:Initialize()
-	BaseClass.Initialize(self)
-
-	self.StatCache_Blacklist["Primary.Damage"] = true
-	self.StatCache_Blacklist["Primary.DamageType"] = true
-	self.StatCache_Blacklist["Primary.BlastRadius"] = true
-	self.StatCache_Blacklist["Primary.RPM"] = true
-	self.StatCache_Blacklist["Primary.KickUp"] = true
-	self.StatCache_Blacklist["Primary.KickDown"] = true
-	self.StatCache_Blacklist["Primary.KickHorizontal"] = true
-	self.StatCache_Blacklist["Primary.Spread"] = true
-	self.StatCache_Blacklist["Primary.DamageType"] = true
-	self.StatCache_Blacklist["DrawCrosshairIS"] = true
-	self.StatCache_Blacklist["TracerName"] = true
-	self.StatCache_Blacklist["MuzzleFlashEffect"] = true
-	self.StatCache_Blacklist["Primary.ImpactEffect"] = true
-
-	self:ClearStatCache()
+function SWEP:ZShelter_OnHit(target, dmginfo)
+	if(!target:IsNPC() || target.IsBuilding) then return end
+	ZShelter.StunEntity(target, 1)
 end
 
-function SWEP:SetupDataTables()
-	BaseClass.SetupDataTables(self)
-	
-	self:NetworkVarTFA("Bool", "CSO_SwitchState")
-end
-
-function SWEP:Think2(...)
-	if self:GetIronSightsProgress() <= 0.5 and self:GetCSO_SwitchState() then
-		self.Primary_TFA.Damage = 75
-		self.Primary_TFA.DamageType = DMG_BULLET
-		self.Primary_TFA.BlastRadius = nil
-		self.TracerName = "cso_tra_cerberus"
-		self.Primary_TFA.RPM = 700
-		self.Primary_TFA.KickUp	= 0.16	
-        self.Primary_TFA.KickDown	= 0.12		
-        self.Primary_TFA.KickHorizontal	= 0.12	
-		self.DrawCrosshairIS = false
-		self.Primary_TFA.ImpactEffect = nil
-		self.VolumeMultiplier = 0.8
-		self:SetCSO_SwitchState(false)
-		self:ClearStatCache()
-	elseif self:GetIronSightsProgress() > 0.5 and not self:GetCSO_SwitchState() then
-		self.TracerName = "cso_tra_cerberus"
-		self.Primary_TFA.Damage = 150
-		self.Primary_TFA.DamageType = bit.bor(DMG_BLAST,DMG_AIRBOAT,DMG_ALWAYSGIB)
-		self.Primary_TFA.BlastRadius = 256
-		self.Primary_TFA.RPM = 180
-		self.Primary_TFA.KickUp	= 0.48	
-        self.Primary_TFA.KickDown	= 0.36		
-        self.Primary_TFA.KickHorizontal	= 0.12	
-		self.DrawCrosshairIS = true
-		self.Primary_TFA.ImpactEffect = "cerberus_claw"
-		self.VolumeMultiplier = 4
-		self:SetCSO_SwitchState(true)
-		self:ClearStatCache()
-	end
-
-	BaseClass.Think2(self, ...)
+function SWEP:FinishHolster(...)
+  self:SetIronSightsProgress(0)
+  
+  if CLIENT then
+      self.IronSightsProgressUnpredicted = 0
+      self.IronSightsProgressUnpredicted2 = 0
+      self.IronSightsProgressUnpredicted3 = 0
+  end
+  return BaseClass.FinishHolster(self, ...)
 end

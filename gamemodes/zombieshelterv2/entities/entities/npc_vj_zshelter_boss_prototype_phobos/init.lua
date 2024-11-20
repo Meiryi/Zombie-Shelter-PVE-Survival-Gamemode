@@ -168,7 +168,7 @@ function ENT:CustomOnThink()
 							if(v:IsPlayer()) then
 								local vel = self:GetAngles():Forward() * 1024
 								v:SetVelocity(vel + Vector(0, 0, 400))
-								v:TakeDamage((v:GetMaxHealth() * 0.5) + 35, nil, nil)
+								v:TakeDamage(95, self, self)
 							end
 							self.HitPlayers[index] = true
 						end

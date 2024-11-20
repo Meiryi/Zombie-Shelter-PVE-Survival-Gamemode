@@ -158,7 +158,7 @@ function ENT:CustomOnThink()
 				local dmg = 20 * (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.03))
 				vel.z = 0
 				self:SetVelocity(vel)
-				for k,v in ipairs(ents.FindInSphere(self:GetPos(), 200)) do
+				for k,v in ipairs(ents.FindInSphere(self:GetPos(), 170)) do
 					if(!v.IsBuilding && !v:IsPlayer()) then continue end
 					local index = v:EntIndex()
 					if(v.IsBuilding) then
@@ -168,7 +168,7 @@ function ENT:CustomOnThink()
 							if(v:IsPlayer()) then
 								local vel = self:GetAngles():Forward() * 1024
 								v:SetVelocity(vel + Vector(0, 0, 400))
-								v:TakeDamage((v:GetMaxHealth() * 0.5) + 35, nil, nil)
+								v:TakeDamage(95, self, self)
 							end
 							self.HitPlayers[index] = true
 						end

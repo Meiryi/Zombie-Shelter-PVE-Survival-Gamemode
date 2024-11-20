@@ -246,17 +246,25 @@ end
 
 local dmgs = {}
 local cvar = GetConVar("zshelter_damage_number")
+local popup_cvar = GetConVar("zshelter_damage_popup")
+local dps_cvar = GetConVar("zshelter_damage_dps")
+local staytime_cvar = GetConVar("zshelter_damage_stay_time")
 net.Receive("ZShelter-DamageNumber", function()
 	if(cvar:GetInt() == 0) then return end
 	local eindex = net.ReadInt(32)
 	local dmg = net.ReadInt(32)
 	local vec = net.ReadVector()
 	local offset = ScreenScaleH(24)
-	local time = 0.5
+	local time = staytime_cvar:GetFloat()
+	local start_time = SysTime()
+	local popup = popup_cvar:GetInt() == 1
+	local dps = dps_cvar:GetInt() == 1
+
 	if(dmgs[eindex]) then
 		local prev = dmgs[eindex]
+		local dmg_total = prev.damage + dmg
 		local new = {
-			damage = dmg + prev.damage,
+			damage = dmg_total,
 			prev = "(+"..dmg..")",
 			time = SysTime() + time,
 			alpha = 255,
@@ -268,6 +276,11 @@ net.Receive("ZShelter-DamageNumber", function()
 			current_scale = 0,
 
 			pos = vec,
+			popup = popup,
+			dps = dps,
+			dps_val = math.Round(dmg_total / (SysTime() - prev.stime), 2),
+			dps_update = 0,
+			stime = prev.stime,
 		}
 
 		dmgs[eindex] = new
@@ -277,6 +290,8 @@ net.Receive("ZShelter-DamageNumber", function()
 			time = SysTime() + time,
 			alpha = 0,
 
+			prev = "",
+
 			target_offs = offset,
 			current_offs = 0,
 
@@ -284,25 +299,42 @@ net.Receive("ZShelter-DamageNumber", function()
 			current_scale = 0,
 
 			pos = vec,
+			popup = popup,
+			dps = dps,
+			dps_update = 0,
+			dps_val = dmg,
+			stime = start_time,
 		}
 	end
 end)
 
 function ZShelter.PaintDamageNumber()
 	local sw, sh = ScrW() * 0.5, ScrH() * 0.5
+	local systime = SysTime()
 	for k,v in pairs(dmgs) do
-		if(v.time < SysTime()) then
-			v.alpha = math_Clamp(v.alpha - ZShelter.GetFixedValue(35), 0, 255)
-			v.current_offs = math_Clamp(v.current_offs - ZShelter.GetFixedValue(v.current_offs * 0.165), 0, v.target_offs)
-			v.current_scale = math_Clamp(v.current_scale - ZShelter.GetFixedValue(v.current_scale * 0.165), 0, v.target_scale)
-			if(v.alpha <= 0) then
-				dmgs[k] = nil
+		if(v.popup) then
+			if(v.time < systime) then
+				v.current_offs = math_Clamp(v.current_offs - ZShelter.GetFixedValue(v.current_offs * 0.165), 0, v.target_offs)
+				v.current_scale = math_Clamp(v.current_scale - ZShelter.GetFixedValue(v.current_scale * 0.165), 0, v.target_scale)
+			else
+				v.current_offs = math_Clamp(v.current_offs + ZShelter.GetFixedValue((v.target_offs - v.current_offs) * 0.165), 0, v.target_offs)
+				v.current_scale = math_Clamp(v.current_scale + ZShelter.GetFixedValue((v.target_scale - v.current_scale) * 0.165), 0, v.target_scale)
 			end
 		else
-			v.alpha = math_Clamp(v.alpha + ZShelter.GetFixedValue(50), 0, 255)
-			v.current_offs = math_Clamp(v.current_offs + ZShelter.GetFixedValue((v.target_offs - v.current_offs) * 0.165), 0, v.target_offs)
-			v.current_scale = math_Clamp(v.current_scale + ZShelter.GetFixedValue((v.target_scale - v.current_scale) * 0.165), 0, v.target_scale)
+			v.current_offs = v.target_offs
+			v.current_scale = v.target_scale
 		end
+
+		if(v.time < systime) then
+			v.alpha = math_Clamp(v.alpha - ZShelter.GetFixedValue(35), 0, 255)
+			if(v.alpha <= 0) then
+				dmgs[k] = nil
+				continue
+			end
+		else
+			v.alpha = math_Clamp(v.alpha + ZShelter.GetFixedValue(35), 0, 255)
+		end
+
 		local pos = v.pos:ToScreen()
 		local matrix = Matrix()
 
@@ -311,12 +343,19 @@ function ZShelter.PaintDamageNumber()
 		matrix:Translate(-Vector(pos.x, pos.y))
 
 		cam.PushModelMatrix(matrix)
-		draw.DrawText(v.damage, "ZShelter-HUDDamageFont", pos.x, pos.y - v.current_offs, Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
-		--[[
-		if(v.prev) then
-			draw.DrawText(v.prev, "ZShelter-HUDDamageSmallFont", pos.x, pos.y - (v.current_offs - ScreenScaleH(10)), Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
-		end
-		]]
+			draw.DrawText(v.damage, "ZShelter-HUDDamageFont", pos.x, pos.y - v.current_offs, Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
+			--[[
+			if(v.prev) then
+				draw.DrawText(v.prev, "ZShelter-HUDDamageSmallFont", pos.x, pos.y - (v.current_offs - ScreenScaleH(10)), Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
+			end
+			]]
+			if(v.dps) then
+				if(v.dps_update < systime) then
+					v.dps_val = math.Round(v.damage / (SysTime() - v.stime), 1)
+					v.dps_update = systime + 0.1
+				end
+				draw.DrawText("DPS: "..v.dps_val.." "..v.prev, "ZShelter-HUDDamageSmallFont", pos.x, pos.y - (v.current_offs - ScreenScaleH(10)), Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
+			end
 		cam.PopModelMatrix()
 	end
 end

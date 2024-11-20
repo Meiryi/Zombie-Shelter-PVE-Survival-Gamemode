@@ -111,7 +111,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		local wep = ply:GetActiveWeapon()
 		if(IsValid(wep)) then
 			local firerate = wep:GetNextPrimaryFire() - CurTime()
-			wep:SetNextPrimaryFire(CurTime() + (firerate * ply:GetNWFloat("FRate", 1)))
+			--wep:SetNextPrimaryFire(CurTime() + (firerate * ply:GetNWFloat("FRate", 1))) it seems that this will bug out the weapon
 		end
 	end,
 	},
@@ -327,7 +327,7 @@ local finalTarget = nil
 ZShelter.AddSkills(ClassName, "CreateMove",
 	function(ply, cmd)
 		ply = LocalPlayer()
-		local keydown = input.IsMouseDown(MOUSE_4)
+		local keydown = ply:KeyDown(IN_USE)
 		if(!keydown) then return end
 		local eyepos = ply:EyePos()
 		local eyeangles = ply:EyeAngles()
@@ -396,7 +396,7 @@ if(CLIENT) then
 	local entsAlpha = {}
 	hook.Add("HUDPaint", "ZShelter_DrawAimbotFOV", function()
 		if(LocalPlayer():GetNWInt("SK_Aim Assist", 0) == 0) then return end
-		local keydown = input.IsMouseDown(MOUSE_4)
+		local keydown = LocalPlayer():KeyDown(IN_USE)
 		if(keydown) then
 			alpha = math.Clamp(alpha + ZShelter.GetFixedValue(25), 0, 255)
 		else
