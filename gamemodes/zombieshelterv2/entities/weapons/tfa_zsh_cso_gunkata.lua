@@ -27,9 +27,9 @@ SWEP.Primary.Sound 			= Sound("Gunkata.Fire")				-- This is the sound of the wea
 SWEP.Primary.Damage		= 110					-- Damage, in standard damage points.
 SWEP.DamageType = DMG_BULLET --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
 SWEP.Primary.NumShots	= 1 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
-SWEP.Primary.Automatic			= true					-- Automatic/Semi Auto
+SWEP.Primary.Automatic			= false					-- Automatic/Semi Auto
 SWEP.Primary.RPM				= 700					-- This is in Rounds Per Minute / RPM
-SWEP.Primary.RPM_Semi				= 300					-- RPM for semi-automatic or burst fire.  This is in Rounds Per Minute / RPM
+SWEP.Primary.RPM_Semi				= 500					-- RPM for semi-automatic or burst fire.  This is in Rounds Per Minute / RPM
 SWEP.FiresUnderwater = true
 
 -- nZombies Stuff
@@ -44,13 +44,8 @@ SWEP.NZTotalBlackList	= false	-- if true, this gun can't be placed in the box, e
 
 SWEP.SelectiveFire		= false --Allow selecting your firemode?
 SWEP.DisableBurstFire	= false --Only auto/single?
-SWEP.OnlyBurstFire		= true --No auto, only burst/single?
+SWEP.OnlyBurstFire		= false --No auto, only burst/single?
 SWEP.DefaultFireMode 	= "" --Default to auto or whatev
-SWEP.Primary.BurstDelay = 0.25
-SWEP.FireModes = {
-	"3Burst",
-
-}
 
 --Ammo Related
 
@@ -426,45 +421,45 @@ function SWEP:Initialize(...) -- initialize variables
 end
 
 function SWEP:PrimaryAttack()
-    --TFA.Enum.IDLE_DISABLED = no idle, TFA.Enum.IDLE_LUA = lua idle, TFA.Enum.IDLE_ANI = mdl idle, TFA.Enum.IDLE_BOTH = TFA.Enum.IDLE_ANI + TFA.Enum.IDLE_LUA
-    if self:Clip1() <= 0 || self.rd > CurTime() then
+    if(self:Clip1() <= 0 || self.rd - 1 > CurTime()) then
         return
     end
 
     local VModel = self.Owner:GetViewModel()
-    --local Seq = VModel:LookupSequence("shoot") 2
-    --local Seq2 = VModel:LookupSequence("shoot2") 4
-    --local Seq3 = VModel:LookupSequence("shoot_last") 3
-    --local Seq4 = VModel:LookupSequence("shoot2_last") 5
-    local count = self:GetNWInt("CSO_ShootCount", 1)
-    if(count % 3 != 0 && count > 0) then
-    	if(self:GetNWBool("CSO_HandSide")) then
-			VModel:SendViewModelMatchingSequence(2)
-			self.MuzzleAttachment = "0"
-		else
-			VModel:SendViewModelMatchingSequence(4)
-			self.MuzzleAttachment = "2"
-		end
-	else
-		if(self:GetNWBool("CSO_HandSide")) then
-			VModel:SendViewModelMatchingSequence(3)
-			self.MuzzleAttachment = "0"
-		else
-			VModel:SendViewModelMatchingSequence(5)
-			self.MuzzleAttachment = "2"
-		end
-    end
+    local Seq = VModel:LookupSequence("shoot")
+    local Seq2 = VModel:LookupSequence("shoot2")
+    local Seq3 = VModel:LookupSequence("shoot_last")
+    local Seq4 = VModel:LookupSequence("shoot2_last")
 
-    self:SetNWInt("CSO_ShootCount", count + 1)
+    local extend = false
+
+    if self:Clip1() % 6 == 0 or self:Clip1() % 6 == 5 then
+        VModel:SendViewModelMatchingSequence(Seq)
+        self.MuzzleAttachment = "0"
+    end
+    if self:Clip1() % 6 == 4 then
+        VModel:SendViewModelMatchingSequence(Seq3)
+        self.MuzzleAttachment = "0"
+        self:SetNWBool("CSO_HandSide", false)
+    end
+    if self:Clip1() % 6 == 3 or self:Clip1() % 6 == 2 then
+        VModel:SendViewModelMatchingSequence(Seq2)
+        self.MuzzleAttachment = "2"
+    end
+    if self:Clip1() % 6 == 1 then
+        VModel:SendViewModelMatchingSequence(Seq4)
+         self:SetNWBool("CSO_HandSide", true)
+        self.MuzzleAttachment = "2"
+    end
 
     BaseClass.PrimaryAttack(self)
-
-    if(count % 3 == 0 && count > 0) then
-    	self:SetNWBool("CSO_HandSide", !self:GetNWBool("CSO_HandSide"))
-    	self:SetNWInt("CSO_ShootCount", 1)
-    	self:SetNextPrimaryFire(CurTime() + 0.2)
-    end
+    self.nextidle = CurTime() + 0.4
 end
+
+function SWEP:PostPrimaryAttack()
+    self.BackToIdle = false
+end
+
 ------
 SWEP.rd = 0
 function SWEP:Reload()
@@ -493,6 +488,7 @@ function SWEP:Reload()
     end
 
     timer.Simple(2, function()
+    	if(!IsValid(self)) then return end
 		self:CompleteReload()
 		self:SetNWInt("CSO_ShootCount", 1)
 		self:SetNWBool("CSO_HandSide", true)
@@ -530,13 +526,9 @@ function SWEP:Think()
     BaseClass.Think(self)
 end
 
-function SWEP:PostPrimaryAttack()
-	self.BackToIdle = false
-end
-
 function SWEP:Deploy()
 	local VModel = self.Owner:GetViewModel()
-	if(self:GetNWBool("CSO_HandSide")) then
+	if(!self:GetNWBool("CSO_HandSide")) then
 		VModel:SendViewModelMatchingSequence(8)
 	else
 		VModel:SendViewModelMatchingSequence(9)
@@ -579,7 +571,6 @@ function SWEP:SecondaryAttack()
 	if(self:Clip1() <= 0 || self.Owner:KeyDown(IN_ATTACK) || self:GetNextPrimaryFire() > CurTime()) then return end
     local VModel = self.Owner:GetViewModel()
     if self:Clip1() > 1 then
-
         --[[
         if skilltime < CurTime() then
 			self:SetNWInt("skill", skill + 1)
@@ -634,7 +625,7 @@ function SWEP:SecondaryAttack()
 
         self.BackToIdle = true
         self.LastSecondaryAttackTime = CurTime()
-    elseif self:Clip1() <= 1 then
+    if self:Clip1() <= 3 then
     	self.BackToIdle = false
     	self:SetNextSecondaryFire(CurTime() + 0.4)
     	self:SetClip1(0)
@@ -670,9 +661,10 @@ function SWEP:SecondaryAttack()
             self.Owner:SetAnimation(PLAYER_RELOAD)
         end
     end
+end
     if(self:GetNWFloat("NextTakeAmmoTime", 0) < CurTime()) then
-    	self:TakePrimaryAmmo(1)
-    	self:SetNWFloat("NextTakeAmmoTime", CurTime() + 0.15)
+    	self:SetClip1(math.Clamp(math.floor((self:Clip1() - 1) / 2) * 2, 0, self:GetMaxClip1()))
+    	self:SetNWFloat("NextTakeAmmoTime", CurTime() + 0.375)
     end
 end
 
@@ -710,7 +702,7 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
 	if(!self.FakeViewmodels) then
 		self.FakeViewmodels = {}
 		timer.Simple(0, function()
-			if(!IsValid(self)) then return end
+			if(!IsValid(self) || !self.FakeViewmodels) then return end
 			for i = 1, self.FakeViewmodelCount do
 				local _vm = ClientsideModel(vm:GetModel())
 				local _hands = ClientsideModel(ply:GetHands():GetModel())
