@@ -597,6 +597,7 @@ function ZShelter.SpawnNightEnemiesNoLimit()
 end
 
 function ZShelter.AddAwakeThinker(boss)
+	local dst = ZShelter.BossTriggerDistance
 	local thinker = ents.Create("obj_internal_thinker")
 		thinker:SetOwner(boss)
 		thinker:Spawn()
@@ -606,8 +607,9 @@ function ZShelter.AddAwakeThinker(boss)
 				return
 			end
 			for k,v in pairs(player.GetAll()) do
-				if(!ZShelter.ValidatePlayerDistance(boss, v, 512)) then continue end
+				if(!ZShelter.ValidatePlayerDistance(boss, v, dst)) then continue end
 				boss:NextThink(CurTime())
+				boss:SetNWBool("ZShelterBossAwake", true)
 				boss.Awake = true
 			end
 			thinker:NextThink(CurTime() + 0.2)
@@ -633,6 +635,7 @@ function ZShelter.SetupTreasureArea()
 				boss:NextThink(CurTime() + 1024000)
 
 				ZShelter.AddAwakeThinker(boss)
+				boss:SetNWBool("ZShelterBoss", true)
 				boss.IsBoss = true
 				boss.Awake = false
 				boss.IsZShelterEnemy = true

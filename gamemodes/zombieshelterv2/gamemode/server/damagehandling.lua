@@ -170,6 +170,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 
 	if(target.IsBoss && !target.Awake) then
 		target:NextThink(CurTime())
+		target:SetNWBool("ZShelterBossAwake", true)
 		target.Awake = true
 	end
 

@@ -226,16 +226,6 @@ function ZShelter.DrawPowerOutage()
 	local offs = size / 2
 	surface_SetMaterial(currentImage)
 
-	if(shouldDisplay) then
-		for k,v in pairs(ents.GetAll()) do
-			if(!v:IsNPC()) then continue end
-			local pos = v:GetPos()
-			local offs = Vector(0, 0, v:EyePos().z)
-			local p1, p2, p3 = pos:ToScreen(), pos:ToScreen(), pos:ToScreen()
-			draw.DrawText(v:GetClass(), "DermaDefault", p3.x, p3.y, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
-		end
-	end
-
 	for _, building in pairs(ents.FindInSphere(LocalPlayer():GetPos(), 1024)) do
 		if(building:GetNWFloat("StunTime", 0) < CurTime()) then continue end
 		if(!building:GetNWBool("IsBuilding", false)) then continue end
@@ -814,4 +804,24 @@ hook.Add("HUDPaint", "ZShelter-HUD", function()
 	ZShelter.PaintNotify()
 	ZShelter.PaintDamageNumber()
 	ZShelter.DrawPowerOutage()
+end)
+
+local bossringColor = Color(255, 0, 0, 120)
+local nextGetAllTime = 0
+local npcs = {}
+hook.Add("PreDrawOpaqueRenderables", "ZShelter-DrawBossRings", function()
+	local time = SysTime()
+	if(nextGetAllTime < time) then -- I don't like running ents.GetAll() every frame, It's not good for performance
+		npcs = {}
+		for _, ent in ipairs(ents.GetAll()) do
+			if(!ent:IsNPC() || ent:IsDormant() || !ent:GetNWBool("ZShelterBoss") || ent:GetNWBool("ZShelterBossAwake")) then continue end
+			table.insert(npcs, ent)
+		end
+		nextGetAllTime = time + 1
+	end
+
+	for _, ent in ipairs(npcs) do
+		if(!IsValid(ent)) then continue end
+		ZShelter.MaskedSphereRing(ent:GetPos(), ZShelter.BossTriggerDistance, 24, 2, bossringColor)
+	end
 end)

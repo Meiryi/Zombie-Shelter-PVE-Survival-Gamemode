@@ -85,7 +85,7 @@ hook.Add("HUDPaint", "ZShelter-Pings", function()
 		net.WriteVector(tr.HitPos)
 		net.WriteEntity(ent)
 		net.SendToServer()
-		nextping = SysTime() + 3
+		nextping = SysTime() + 0.5
 	end
 
 	surface.SetMaterial(mat)

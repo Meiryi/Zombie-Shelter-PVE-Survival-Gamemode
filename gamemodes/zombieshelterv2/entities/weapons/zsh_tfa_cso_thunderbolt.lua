@@ -18,7 +18,7 @@ SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.Weight				= 30			-- This controls how "good" the weapon is for autopickup.
 SWEP.Primary.Knockback = 0 
 SWEP.Primary.PenetrationMultiplier	= 0
-SWEP.Primary.HullSize = 1.25
+SWEP.Primary.HullSize = 8
 SWEP.ProceduralHolsterTime = 0
 
 --[[WEAPON HANDLING]]--
@@ -82,7 +82,7 @@ SWEP.Primary.RangeFalloff = 1 -- The percentage of the range the bullet damage s
 
 --Penetration Related
 
-SWEP.MaxPenetrationCounter =	20 --The maximum number of ricochets.  To prevent stack overflows.
+SWEP.MaxPenetrationCounter =	4 --The maximum number of ricochets.  To prevent stack overflows.
 
 --Misc
 SWEP.IronRecoilMultiplier=0.85 --Multiply recoil by this factor when we're in ironsights.  This is proportional, not inversely.
@@ -271,7 +271,7 @@ SWEP.MuzzleFlashEffect = "tfa_muzzleflash_gauss" --Change to a string of your mu
 --Tracer Stuff
 
 SWEP.Tracer				= 0		--Bullet tracer.  TracerName overrides this.
-SWEP.TracerName 		= "cso_tra_thunbolt" 	--Change to a string of your tracer name.  Can be custom.
+SWEP.TracerName 		= "zsh_cso_tra_thunbolt" 	--Change to a string of your tracer name.  Can be custom.
 								--There is a nice example at https://github.com/garrynewman/garrysmod/blob/master/garrysmod/gamemodes/base/entities/effects/tooltracer.lua
 SWEP.TracerCount 		= 1 	--0 disables, otherwise, 1 in X chance
 
@@ -408,6 +408,10 @@ end
 function SWEP:ZShelter_OnHit(target, dmginfo)
 	if(!target:IsNPC() || target.IsBuilding) then return end
 	ZShelter.StunEntity(target, 1)
+end
+
+function SWEP:PostPrimaryAttack()
+	self:EmitSound("npc/scanner/scanner_electric1.wav", 100, 100, 1)
 end
 
 function SWEP:FinishHolster(...)

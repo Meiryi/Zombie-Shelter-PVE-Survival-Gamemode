@@ -12,6 +12,7 @@
 	昼夜求生 v2.0 by Meiryi  / Meika / Shiro / Shigure
 	任何形式的编辑是不被允许的 (包括模式的名称), 若有问题请在Steam上联络我
 ]]
+ZShelter.AmmoCapacity = 300
 
 function ZShelter.GiveMelee(player)
 	if(player.Callbacks.OnGiveMelee) then
@@ -156,9 +157,8 @@ hook.Add("EntityFireBullets", "ZShelter-PlayerShootBullets", function(ent, data)
 	ent.LastExecTime = CurTime() + 0.01
 end)
 
-local capacity = 240
 hook.Add("PlayerAmmoChanged", "ZShelter-AmmoCheck", function(ply, ammoID, oldCount, newCount)
-	local c = ply:GetNWFloat("ZShelter-AmmoCapacity", 1) * capacity
+	local c = ply:GetNWFloat("ZShelter-AmmoCapacity", 1) * ZShelter.AmmoCapacity
 	if(newCount >= c) then
 		ply:SetAmmo(c, ammoID)
 	end

@@ -116,6 +116,7 @@ ZShelter.GameVersion = "1.1.0"
 ZShelter.ConfigVersion = "1.1.0" -- DANGER, MODIFY THIS WILL RESET CONFIGS
 ZShelter.BasePath = "zombieshelterv2/gamemode/"
 ZShelter.MaximumDifficulty = 9
+ZShelter.BossTriggerDistance = 512
 
 ZShelter.ClientLoadOrder = {
 	[1] = "gui",

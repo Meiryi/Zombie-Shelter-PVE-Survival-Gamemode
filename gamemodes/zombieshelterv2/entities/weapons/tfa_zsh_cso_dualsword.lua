@@ -275,7 +275,7 @@ SWEP.Primary.Attacks = {
 		['dir'] = Vector(0,90,0), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dmg'] = 200, --Nope!! Not overpowered!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
-		['delay'] = 0.05, --Delay
+		['delay'] = 0.07, --Delay
 		['spr'] = true, --Allow attack while sprinting?
 		['snd'] = "TFABaseMelee.Null", -- Sound ID
 		['snd_delay'] = 0.05,
@@ -380,6 +380,13 @@ function SWEP:OnComboBreak() -- Preventing player from spamming attacks
 		self:SetNextPrimaryFire(CurTime() + 0.45)
 		self:SetNextSecondaryFire(CurTime() + 0.45)
 	end
+end
+
+function SWEP:Deploy(...)
+	BaseClass.Deploy(self, ...)
+	self:SetNextPrimaryFire(CurTime() + 0.05)
+	self:SetNextSecondaryFire(CurTime() + 0.05)
+	self:SetStatusEnd(CurTime() + 0.05)
 end
 
 function SWEP:PreGatheringResource(res)

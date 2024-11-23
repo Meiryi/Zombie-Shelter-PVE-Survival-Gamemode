@@ -788,6 +788,19 @@ ZShelter.L("#Resource Generator", {
 	["zh-CN"] = "资源生成器",
 })
 
+ZShelter.L("#Resource Converter", {
+	["en"] = "Resource Converter",
+	["bg"] = "Конвертор на ресурси",
+	["de"] = "Ressourcenkonverter",
+	["fr"] = "Convertisseur de Ressources",
+	["tr"] = "Kaynak Dönüştürücü",
+	["ru"] = "Конвертер ресурсов",
+	["vi"] = "Máy Chuyển Đổi Tài Nguyên",
+	["zh-TW"] = "資源轉換器",
+	["zh-CN"] = "资源转换器",
+})
+
+
 ZShelter.L("#Healing Station", {
 	["en"] = "Healing Station",
 	["bg"] = "Станция за лечение",

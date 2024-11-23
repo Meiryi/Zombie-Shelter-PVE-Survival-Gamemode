@@ -113,7 +113,7 @@ function ZShelter.ImageAnimation(a)
 end
 
 local clr = Color(0, 0, 0, 0)
-function ZShelter.MaskedSphereRing(pos, radius, steps, thickness, color, outside, outsideColor)
+function ZShelter.MaskedSphereRing(pos, radius, steps, thickness, color)
 	cam.IgnoreZ(false)
 	render.SetStencilEnable(true)
 	render.SetStencilCompareFunction(STENCIL_ALWAYS)

@@ -31,6 +31,7 @@ function ZShelter.TriggerHorde()
 	for k,v in ipairs(ents.GetAll()) do
 		if(!v:IsNPC() || v.Awake == nil) then continue end
 		v.Awake = true
+		v:SetNWBool("ZShelterBossAwake", true)
 		v:NextThink(CurTime())
 	end
 end
