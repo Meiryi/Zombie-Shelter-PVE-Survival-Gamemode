@@ -35,7 +35,7 @@ SWEP.Precision = 50
 SWEP.Secondary.MaxCombo = -1
 SWEP.Primary.MaxCombo = -1
 SWEP.MoveSpeed = 1.2 --Multiply the player's movespeed by this.
-SWEP.BuildSpeed = 35
+SWEP.BuildSpeed = 55
 SWEP.OldStyleHit = true
 
 SWEP.AOEDamage = true
@@ -394,9 +394,8 @@ end
 function SWEP:PreGatheringResource(res)
 	if(self.Melee2Attack) then
 		local lastattack = self:GetLastSecondaryAttackChoice()
-		return lastattack <= 1
+		return lastattack % 2 == 0
 	else
-		local lastattack = self:GetLastPrimaryAttackChoice()
-		return lastattack <= 1
+		return true
 	end
 end

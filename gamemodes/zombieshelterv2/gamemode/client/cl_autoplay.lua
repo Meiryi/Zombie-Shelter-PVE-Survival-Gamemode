@@ -9,6 +9,13 @@ concommand.Add("zshelter_afk", function()
 	ZShelter.SyncAFK(true)
 end)
 
+local tr = {collisiongroup = COLLISION_GROUP_WORLD, output = {}}
+function util.IsInWorld(pos)
+	tr.start = pos
+	tr.endpos = pos
+	return !util.TraceLine(tr).HitWorld
+end
+
 -- ZShelter.GeneratePath(GetGlobalEntity("ShelterEntity"):GetPos())
 local prev_vec = nil
 local path_interrupted = false
@@ -267,6 +274,22 @@ ZShelter.AFKCheckKeys = {
 	IN_JUMP,
 }
 
+-- x = right, y = forward, z = up
+ZShelter.BuildingOriginFix = {
+	Worktable = Vector(0, -32, 0)
+}
+
+function ZShelter.GetFixedOrigin(ent)
+	local name = ent:GetNWString("Name")
+	local pos = ent:GetPos()
+	if(!ZShelter.BuildingOriginFix[name]) then return pos end
+	local offset = ZShelter.BuildingOriginFix[name]
+		pos = pos + ent:GetRight() * offset.x
+		pos = pos + ent:GetForward() * offset.y
+		pos = pos + ent:GetUp() * offset.z
+	return pos
+end
+
 local nextcheckAFKTime = 0
 local checkunafk = true
 local lastmovetime = SysTime()
@@ -364,6 +387,19 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 		near_shelter = shelter_entity:GetPos():Distance(ppos) < 1024
 		in_shelter = shelter_entity:GetPos():Distance(ppos) < 150
 		shelter_valid = true
+	end
+
+	if(in_shelter) then
+		if(nextresourcedesposit < systime) then
+			for _, restype in ipairs({"Woods", "Irons"}) do
+				net.Start("ZShelter-Storage")
+				net.WriteString(restype)
+				net.WriteBool(false)
+				net.WriteInt(capacity, 8)
+				net.SendToServer()
+			end
+			nextresourcedesposit = systime + 0.33
+		end
 	end
 
 	if(#ents_inrange > 0) then
@@ -558,10 +594,12 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 					local shelterpos = shelter_entity:GetPos()
 					for _, building in ipairs(ents.GetAll()) do
 						if(!building:GetNWBool("IsBuilding") || building:GetNWBool("IsBait")) then continue end
-						local dst = building:GetPos():Distance(shelterpos)
+						local origin = ZShelter.GetFixedOrigin(building)
+						local dst = origin:Distance(shelterpos)
 						if(dst > 1024) then continue end
 						if(blacklistedbuilding[building.UniqueID]) then continue end
 						if(building:Health() >= building:GetMaxHealth()) then continue end
+						if(!util.IsInWorld(origin)) then continue end
 						target_building = building
 						break
 					end
@@ -635,7 +673,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 						end
 					end
 				else
-					if(ZShelter.ArrivedDestination(ppos, target_building:GetPos())) then
+					if(ZShelter.ArrivedDestination(ppos, ZShelter.GetFixedOrigin(target_building))) then
 						ZShelter.SwitchToMelee(ucmd)
 						local ang = (target_building:GetPos() - pepos):Angle()
 						local lerp = LerpAngle(tick_interval * 2.5, pang, ang)
@@ -680,7 +718,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 						end
 					else
 						timeoutbuildingtime = systime
-						ZShelter.GeneratePath(target_building:GetPos())
+						ZShelter.GeneratePath(ZShelter.GetFixedOrigin(target_building))
 					end
 				end
 			end
@@ -690,10 +728,12 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 			local shelterpos = shelter_entity:GetPos()
 			for _, building in ipairs(ents.GetAll()) do
 				if(!building:GetNWBool("IsBuilding") || building:GetNWBool("IsBait")) then continue end
-				local dst = building:GetPos():Distance(shelterpos)
+				local origin = ZShelter.GetFixedOrigin(building)
+				local dst = origin:Distance(shelterpos)
 				if(dst > 1024) then continue end
 				if(blacklistedbuilding[building.UniqueID]) then continue end
 				if(building:Health() >= building:GetMaxHealth()) then continue end
+				if(!util.IsInWorld(origin)) then continue end
 				target_building = building
 				break
 			end
@@ -831,7 +871,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 				end
 			end
 		else
-			if(ZShelter.ArrivedDestination(ppos, target_building:GetPos())) then
+			if(ZShelter.ArrivedDestination(ppos, ZShelter.GetFixedOrigin(target_building))) then
 				ZShelter.SwitchToMelee(ucmd)
 				local ang = (target_building:GetPos() - pepos):Angle()
 				local newang = Angle(-89, ang.y, 0)
@@ -882,7 +922,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 				end
 			else
 				timeoutbuildingtime = systime
-				ZShelter.GeneratePath(target_building:GetPos())
+				ZShelter.GeneratePath(ZShelter.GetFixedOrigin(target_building))
 			end
 		end
 	end

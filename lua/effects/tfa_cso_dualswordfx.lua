@@ -30,11 +30,12 @@ local AngleFix = {
     Angle(0, 0, 0),
     Angle(0, 0, 0),
 }
-hook.Add("PostDrawOpaqueRenderables", "TFA_CSO_DualSwordFX", function()
+hook.Add("PostRender", "TFA_CSO_DualSwordFX", function()
     local ply = LocalPlayer()
     if(!IsValid(ply) || !ply:Alive()) then return end
     local vm = ply:GetViewModel()
     local offset = vm:GetPos() - ply:EyePos()
+    cam.Start3D()
     cam.IgnoreZ(true)
     for _, fxs in ipairs(DrawList) do
         local fx = fxs.fx
@@ -58,8 +59,11 @@ hook.Add("PostDrawOpaqueRenderables", "TFA_CSO_DualSwordFX", function()
         local angleFix = AngleFix[fx:GetSequence()] || angle_zero
         fx:SetAngles(LocalPlayer():EyeAngles() + angleFix)
         fx:SetCycle(fxs.cycle)
-        fx:DrawModel()
+        if(!ply:ShouldDrawLocalPlayer()) then
+            fx:DrawModel()
+        end
     end
+    cam.End3D()
     cam.IgnoreZ(false)
     render.SetBlend(1)
 end)

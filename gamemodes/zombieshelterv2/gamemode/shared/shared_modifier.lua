@@ -424,7 +424,7 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "Ultimate aids game experience",
-	scoreMul = 1.65,
+	scoreMul = 4,
 
 	hooks = {
 		ZShelterGameStarted = function()
