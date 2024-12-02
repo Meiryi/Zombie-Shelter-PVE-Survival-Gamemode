@@ -157,7 +157,7 @@ function ZShelter.CreateDefaultItems()
 			ZShelter.AddItem("Sniper Rifle", "tfa_cso_bendita", "Bendita", 60, 54, 1.15, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 6, -1, -1, 3)
 
 			ZShelter.AddItem("Sniper Rifle", "tfa_cso_destroyer", "Destroyer", 89, 82, 0.7, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 20, -1, -1, 4)
-			ZShelter.AddItem("Sniper Rifle", "zsh_tfa_cso_thunderbolt", "Thunderbolt", 102, 98, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 30, -1, -1, 4)
+			ZShelter.AddItem("Sniper Rifle", "zsh_tfa_cso_thunderbolt", "Thunderbolt", 102, 98, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 30, -1, -1, 4)
 
 			ZShelter.AddItem("Heavy", "tfa_cso_mg42", "MG42", 18, 20, 1.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 1)
 			ZShelter.AddItem("Heavy", "tfa_cso_mk48", "MK48", 22, 26, 1.35, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 1)
