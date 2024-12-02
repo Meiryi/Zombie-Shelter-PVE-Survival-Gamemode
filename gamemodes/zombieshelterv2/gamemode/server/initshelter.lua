@@ -120,7 +120,7 @@ function ZShelter.InitShelter()
 				e:Remove()
 				return
 			end
-			for k,v in pairs(ents.FindInSphere(shelter:GetPos(), 1024)) do
+			for k,v in pairs(ents.FindInSphere(shelter:GetPos(), 1500)) do
 				if(!v:IsPlayer() || !v:Alive()) then continue end
 				ZShelter.AddSanity(v, 15)
 				v:SetNWFloat("SanityCostImmunityTime", CurTime() + 3)

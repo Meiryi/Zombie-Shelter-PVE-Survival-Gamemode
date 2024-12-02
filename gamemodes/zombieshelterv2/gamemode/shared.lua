@@ -225,10 +225,27 @@ end)
 
 local cvar = GetConVar("zshelter_friendly_fire")
 hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
+	if(cvar:GetInt() == 0) then
+		if(ent1:IsPlayer() && ent2:IsPlayer()) then return false end
+	end
 	if(CLIENT) then
 		if(ent1:IsPlayer() && ZShelter.IsAFKing && ent2:GetNWBool("IsBuilding")) then return false end
 		if(ent2:IsPlayer() && ZShelter.IsAFKing && ent1:GetNWBool("IsBuilding")) then return false end
 		return
+	end
+	if(ent1.PathTester) then
+		if(ent2.IsPlayerBarricade) then
+			return true
+		else
+			return false
+		end
+	end
+	if(ent2.PathTester) then
+		if(ent1.IsPlayerBarricade) then
+			return true
+		else
+			return false
+		end
 	end
 	if(ent1.IsTurret && ent2.IsTurret) then
 		return false
@@ -269,9 +286,6 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 				return true
 			end
 		end
-	end
-	if(cvar:GetInt() == 0) then
-		if(ent1:IsPlayer() && ent2:IsPlayer()) then return false end
 	end
 	if(ent1:GetNWBool("IsTurret", false) && ent2:IsPlayer()) then
 		return false

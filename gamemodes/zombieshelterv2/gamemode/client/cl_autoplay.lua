@@ -385,7 +385,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 	end
 
 	if(IsValid(shelter_entity)) then
-		near_shelter = shelter_entity:GetPos():Distance(ppos) < 1024
+		near_shelter = shelter_entity:GetPos():Distance(ppos) < 1500
 		in_shelter = shelter_entity:GetPos():Distance(ppos) < 150
 		shelter_valid = true
 	end
@@ -606,7 +606,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 						if(!building:GetNWBool("IsBuilding") || building:GetNWBool("IsBait")) then continue end
 						local origin = ZShelter.GetFixedOrigin(building)
 						local dst = origin:Distance(shelterpos)
-						if(dst > 1024) then continue end
+						if(dst > 1500) then continue end
 						if(blacklistedbuilding[building.UniqueID]) then continue end
 						if(building:Health() >= building:GetMaxHealth()) then continue end
 						if(!util.IsInWorld(origin)) then continue end
@@ -740,7 +740,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 				if(!building:GetNWBool("IsBuilding") || building:GetNWBool("IsBait")) then continue end
 				local origin = ZShelter.GetFixedOrigin(building)
 				local dst = origin:Distance(shelterpos)
-				if(dst > 1024) then continue end
+				if(dst > 1500) then continue end
 				if(blacklistedbuilding[building.UniqueID]) then continue end
 				if(building:Health() >= building:GetMaxHealth()) then continue end
 				if(!util.IsInWorld(origin)) then continue end
