@@ -686,7 +686,12 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 					if(ZShelter.ArrivedDestination(ppos, ZShelter.GetFixedOrigin(target_building))) then
 						ZShelter.SwitchToMelee(ucmd)
 						local ang = (target_building:GetPos() - pepos):Angle()
-						local lerp = LerpAngle(tick_interval * 2.5, pang, ang)
+						local offset = ang.x
+						if(target_building == shelter_entity) then
+							offset = -89
+						end
+						local newang = Angle(offset, ang.y, 0)
+						local lerp = LerpAngle(tick_interval * 2.5, pang, newang)
 						ucmd:SetViewAngles(Angle(lerp.x, lerp.y, 0))
 						if(target_building:Health() >= target_building:GetMaxHealth()) then
 							target_building = nil
