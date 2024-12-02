@@ -225,7 +225,11 @@ end)
 
 local cvar = GetConVar("zshelter_friendly_fire")
 hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
-	if(CLIENT) then return end
+	if(CLIENT) then
+		if(ent1:IsPlayer() && ZShelter.IsAFKing && ent2:GetNWBool("IsBuilding")) then return false end
+		if(ent2:IsPlayer() && ZShelter.IsAFKing && ent1:GetNWBool("IsBuilding")) then return false end
+		return
+	end
 	if(ent1.IsTurret && ent2.IsTurret) then
 		return false
 	end

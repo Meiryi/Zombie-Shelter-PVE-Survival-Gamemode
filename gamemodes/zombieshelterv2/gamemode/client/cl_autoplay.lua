@@ -76,6 +76,16 @@ local vis = function(ent1, ent2)
 	}).Fraction
 end
 
+local bvis = function(ent1, ent2)
+	return util.TraceLine({
+		start = ent1:EyePos(),
+		endpos = ent2:GetPos() + ent2:OBBCenter(),
+		filter = function(ent)
+			return ent:GetNWBool("IsMapBarricade")
+		end,
+	}).Fraction == 1
+end
+
 local vvis = function(ent1, ent2)
 	return util.TraceLine({
 		start = ent1:EyePos(),
@@ -258,6 +268,7 @@ ZShelter.AFKCheckKeys = {
 }
 
 local nextcheckAFKTime = 0
+local checkunafk = false
 local lastmovetime = SysTime()
 hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 	if(!ZShelter.IsAFKing) then
@@ -283,6 +294,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 		return
 	end
 
+	if(checkunafk) then
 		if(ucmd:GetMouseX() != 0 || ucmd:GetMouseY() != 0) then
 			ZShelter.SyncAFK(false)
 			return
@@ -294,6 +306,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 				return
 			end
 		end
+	end
 
 	--if(!ZShelter.CurrentPath) then return end
 	local systime = SysTime()
@@ -355,13 +368,13 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 
 	if(#ents_inrange > 0) then
 		local dst = -1
-		local pre_range = 190 * ping
-		local melee_range = 150 * ping
-		local back_range = 120 * ping
+		local pre_range = 190
+		local melee_range = 150
+		local back_range = 120
 		for k, v in pairs(ents_inrange) do
 			if(!v:GetNWBool("IsZShelterEnemy") || v:Health() <= 0) then continue end
 			local dist = v:GetPos():Distance(ppos)
-			if(dist > pre_range) then continue end
+			if(dist > pre_range || (!bvis(ply, v))) then continue end
 			if(dst == -1 || dist < dst) then
 				dst = dist
 				target_enemy_melee = v
@@ -436,7 +449,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 		local mdst = ppos:Distance(lastmovevec)
 		local vel = ply:GetVelocity():Length2D()
 		
-		if(vel > 5) then
+		if(vel > 10) then
 			lastmovingtime = systime
 		end
 
@@ -795,7 +808,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 					ZShelter.SwitchToGun(ucmd)
 					local punchangle = ply:GetViewPunchAngles()
 					local aimangle = ((enemy:GetPos() + enemy:OBBCenter()) - pepos):Angle() - punchangle * 0.5
-					local lerp = LerpAngle(tick_interval * 2, pang, aimangle)
+					local lerp = LerpAngle(tick_interval * 3, pang, aimangle)
 					ucmd:SetViewAngles(Angle(lerp.x, lerp.y, 0))
 					if(ZShelter.CompareTraceEntity(ply, enemy)) then
 						local wep = ply:GetActiveWeapon()
