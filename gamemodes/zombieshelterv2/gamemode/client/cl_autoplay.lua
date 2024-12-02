@@ -268,7 +268,7 @@ ZShelter.AFKCheckKeys = {
 }
 
 local nextcheckAFKTime = 0
-local checkunafk = false
+local checkunafk = true
 local lastmovetime = SysTime()
 hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 	if(!ZShelter.IsAFKing) then
@@ -373,6 +373,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 		local back_range = 120
 		for k, v in pairs(ents_inrange) do
 			if(!v:GetNWBool("IsZShelterEnemy") || v:Health() <= 0) then continue end
+			if(v:GetNWBool("ZShelterBoss") && !v:GetNWBool("ZShelterBossAwake")) then continue end
 			local dist = v:GetPos():Distance(ppos)
 			if(dist > pre_range || (!bvis(ply, v))) then continue end
 			if(dst == -1 || dist < dst) then
