@@ -457,6 +457,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:PostPrimaryAttack()
+	self:HideAllViewModels()
     self.BackToIdle = false
 end
 
@@ -475,6 +476,8 @@ function SWEP:Reload()
     self.nextidle = CurTime() + 2
     self:SetNextPrimaryFire(CurTime() + 2)
     self:SetNextSecondaryFire(CurTime() + 2)
+
+    self:HideAllViewModels()
 
     if SERVER then
         local VModel = self.Owner:GetViewModel()
@@ -669,6 +672,15 @@ end
 end
 
 function SWEP:SetFakeVMSequence(index, sequence)
+	if(game.SinglePlayer()) then -- I fucking hate singleplayer
+		if(SERVER) then
+			self:CallOnClient("SetFakeVMSequence", index..","..sequence)
+		else
+			local var = string.Explode(",", index)
+			index = tonumber(var[1])
+			sequence = var[2]
+		end
+	end
 	if(SERVER || !self.FakeViewmodels) then return end
 	local vm = self.FakeViewmodels[index].vm
 	if(IsValid(vm)) then
@@ -678,6 +690,9 @@ function SWEP:SetFakeVMSequence(index, sequence)
 end
 
 function SWEP:HideAllViewModels()
+	if(game.SinglePlayer()) then
+		self:CallOnClient("HideAllViewModels", "")
+	end
 	if(SERVER || !self.FakeViewmodels) then return end
 	for _, vms in ipairs(self.FakeViewmodels) do
 		vms.vm:SetSequence(0)
@@ -742,7 +757,7 @@ function SWEP:PostDrawViewModel(vm, weapon, ply)
 end
 
 function SWEP:Holster(...)
-	if(CLIENT && self.FakeViewmodels) then
+	if((CLIENT || game.SinglePlayer()) && self.FakeViewmodels) then
 		for _, vms in ipairs(self.FakeViewmodels) do
 			vms.vm:Remove()
 			vms.hands:Remove()
@@ -754,7 +769,7 @@ function SWEP:Holster(...)
 end
 
 function SWEP:OnRemove()
-	if(SERVER || !self.FakeViewmodels) then return end
+	if((SERVER && !game.SinglePlayer()) || !self.FakeViewmodels) then return end
 	for _, vms in ipairs(self.FakeViewmodels) do
 		vms.vm:Remove()
 		vms.hands:Remove()

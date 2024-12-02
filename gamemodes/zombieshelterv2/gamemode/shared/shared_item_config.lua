@@ -179,6 +179,7 @@ function ZShelter.CreateDefaultItems()
 			ZShelter.AddItem("Heavy", "tfa_cso_broad", "Broad Divine", 145, 140, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 4)
 			ZShelter.AddItem("Heavy", "tfa_zsh_cso_m249phoenix", "M249 Phoenix", 180, 190, 1.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 4)
 
+			ZShelter.AddItem("Explosive", "tfa_zsh_cso_chaingrenade", "Decoy Grenade", 20, 20, 1, true, {"Beginner Gun Mastery"}, "default", 5, -1, -1, 1)
 			ZShelter.AddItem("Explosive", "tfa_cso_m79", "M79", 30, 35, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 15, -1, -1, 1)
 
 			ZShelter.AddItem("Explosive", "tfa_zsh_cso_petrolboomer", "Petrol Boomer", 45, 50, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 15, 32, 1, 2)

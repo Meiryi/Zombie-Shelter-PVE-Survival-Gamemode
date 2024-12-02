@@ -38,6 +38,14 @@ hook.Add("Move", "ZShelter-PlayerThink", function(ply, mv)
 		ply.NextTick = CurTime() + 1
 	else
 		if(ply.NextTick < CurTime()) then
+			if(ply.AFKing) then
+				if(GetGlobalBool("Night")) then
+					ply:RemoveFlags(FL_NOTARGET)
+				else
+					ply:AddFlags(FL_NOTARGET)
+				end
+			end
+
 			if(ply.Callbacks.OnSecondPassed) then
 				for k,v in pairs(ply.Callbacks.OnSecondPassed) do
 					v(ply)

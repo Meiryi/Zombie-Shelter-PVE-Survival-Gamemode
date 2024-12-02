@@ -1,4 +1,5 @@
 DEFINE_BASECLASS("tfa_bash_base")
+SWEP.IsZShelterMeleeWeapon = true
 SWEP.DrawCrosshair = false
 SWEP.SlotPos = 72
 SWEP.Slot = 0

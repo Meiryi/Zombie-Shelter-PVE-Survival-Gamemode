@@ -18,6 +18,7 @@ util.AddNetworkString("ZShelter-SendVote")
 util.AddNetworkString("ZShelter-SendDiffVote")
 util.AddNetworkString("ZShelter-SyncDiffVote")
 util.AddNetworkString("ZShelter-SyncVote")
+util.AddNetworkString("ZShelter-VoteChat")
 
 ZShelter.CurrentVotes = {}
 ZShelter.CurrentDiffVotes = {}
@@ -30,6 +31,15 @@ ZShelter.VotePlayers = 1
 ZShelter.VotedPlayers = 0
 ZShelter.PlayTime = 0
 ZShelter.StartTime = -1
+
+net.Receive("ZShelter-VoteChat", function(len, ply)
+	local str = net.ReadString()
+
+	net.Start("ZShelter-VoteChat")
+	net.WriteEntity(ply)
+	net.WriteString(str)
+	net.Broadcast()
+end)
 
 net.Receive("ZShelter-SendDiffVote", function(len, ply)
 	local diff = net.ReadInt(32)

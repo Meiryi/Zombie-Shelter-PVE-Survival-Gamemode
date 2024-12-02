@@ -171,6 +171,7 @@ function ENT:PostInitialize()
 	self:CapabilitiesClear()
 	self:CapabilitiesAdd(CAP_MOVE_GROUND)
 	self:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
+	self:SetNWBool("IsZShelterEnemy", true)
 end
 
 local math_cos = math.cos

@@ -253,6 +253,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		if(attacker.DamageNerfTime && attacker.DamageNerfTime > CurTime()) then
 			damage = math.max(damage * 0.5, 1)
 		end
+		dmginfo:SetDamage(damage)
 		if(attacker:GetNWBool("DurabilitySystem", false)) then
 			if(!attacker.LastDurabilityCostTime) then
 				attacker.LastDurabilityCostTime = 0
@@ -264,9 +265,10 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		end
 		local player = attacker:GetOwner()
 		local dmgscale = player:GetNWFloat("TurretDamageScale", 1)
+		local bonusdamage = 0
 		if(player.Callbacks && player.Callbacks.OnBuildingDealDamage) then
 			for k,v in pairs(player.Callbacks.OnBuildingDealDamage) do
-				v(attacker, dmginfo, target)
+				bonusdamage = bonusdamage + (v(attacker, dmginfo, target) || 0)
 			end
 		end
 		if(attacker.IsTrap) then
@@ -274,7 +276,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		end
 		dmginfo:SetAttacker(player)
 		dmginfo:SetInflictor(player)
-		dmginfo:SetDamage(damage * (dmgscale * addScale))
+		dmginfo:SetDamage((damage + bonusdamage) * (dmgscale * addScale))
 		attacker:SetNWInt("ZShelter_DamageDealt", attacker:GetNWInt("ZShelter_DamageDealt", 0) + dmginfo:GetDamage())
 		if(attacker.IsTurret) then
 			target.AttackedByTurrets = true

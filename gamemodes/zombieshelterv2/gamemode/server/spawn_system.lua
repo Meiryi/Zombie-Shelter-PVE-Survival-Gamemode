@@ -607,7 +607,7 @@ function ZShelter.AddAwakeThinker(boss)
 				return
 			end
 			for k,v in pairs(player.GetAll()) do
-				if(!ZShelter.ValidatePlayerDistance(boss, v, dst)) then continue end
+				if(!ZShelter.ValidatePlayerDistance(boss, v, dst) || v.AFKing) then continue end
 				boss:NextThink(CurTime())
 				boss:SetNWBool("ZShelterBossAwake", true)
 				boss.Awake = true
@@ -636,6 +636,7 @@ function ZShelter.SetupTreasureArea()
 
 				ZShelter.AddAwakeThinker(boss)
 				boss:SetNWBool("ZShelterBoss", true)
+				boss:SetNWBool("IsZShelterEnemy", true)
 				boss.IsBoss = true
 				boss.Awake = false
 				boss.IsZShelterEnemy = true
@@ -714,6 +715,7 @@ end
 hook.Add("ZShelter-EnemyCreated", "ZShelter-ApplyMutation", function(enemy, night)
 	enemy:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
 	enemy:SetLagCompensated(true)
+	enemy:SetNWBool("IsZShelterEnemy", true)
 	if(enemy.WepClass && enemy.WepClass != "none") then
 		enemy:Give(enemy.WepClass)
 	end

@@ -43,6 +43,7 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 	wep.AmmoCapacity = data.ammo_capacity || -1
 	wep.AmmoRegenSpeed = data.ammoregen || -1
 	wep.Category = data.category
+	wep:SetNWBool("zsh_shootable_weapon", true)
 	wep:SetNWInt("zsh_index", index1)
 	wep:SetNWInt("zsh_woods", data.woods)
 	wep:SetNWInt("zsh_irons", data.irons)

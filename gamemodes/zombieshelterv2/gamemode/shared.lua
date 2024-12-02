@@ -225,14 +225,27 @@ end)
 
 local cvar = GetConVar("zshelter_friendly_fire")
 hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
+	if(CLIENT) then return end
 	if(ent1.IsTurret && ent2.IsTurret) then
 		return false
 	end
 	if(ent2.IsTurret && ent1.IsTurret) then
 		return false
 	end
-	if(ent1.OnlyCollideToBarricade) then
-		if(!ent2.IsPlayerBarricade) then
+	if((ent1.ForceNoCollide || ent1.AFKing) && (ent2.IsBarricade || ent2.IsBuilding)) then
+		return false
+	end
+	if((ent2.ForceNoCollide || ent2.AFKing) && (ent1.IsBarricade || ent1.IsBuilding)) then
+		return false
+	end
+	if(ent1.AFKing && ent2.IsPlayerBarricade) then
+		return false
+	end
+	if(ent2.AFKing && ent1.IsPlayerBarricade) then
+		return false
+	end
+	if(ent1.OnlyCollideToBarricade || ent1.AFKing) then
+		if(!ent2.IsPlayerBarricade && ent1.IsShelter) then
 			return false
 		else
 			if(ent2.IsShelter) then
@@ -242,7 +255,7 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 			end
 		end
 	end
-	if(ent2.OnlyCollideToBarricade) then
+	if(ent2.OnlyCollideToBarricade || ent2.AFKing) then
 		if(!ent1.IsPlayerBarricade && ent1.IsShelter) then
 			return false
 		else
@@ -266,12 +279,6 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 		return false
 	end
 	if(ent2.IgnoreCollision && ent1:IsNPC()) then
-		return false
-	end
-	if(ent1.ForceNoCollide && ent2.IsBarricade) then
-		return false
-	end
-	if(ent2.ForceNoCollide && ent1.IsBarricade) then
 		return false
 	end
 	if(ent1.NoCollide && ent2.IsTurret) then

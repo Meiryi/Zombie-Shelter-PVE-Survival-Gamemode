@@ -314,12 +314,14 @@ SWEP.ShouldPlaySound = false
 function SWEP:Think2(...)
 	if(CLIENT) then
 		local vm = self.Owner:GetViewModel()
-		if(vm:GetSequence() == 4 && vm:GetCycle() >= 0.1) then
-			if(self.ShouldPlaySound) then
-				if(!self.Owner:KeyDown(IN_ATTACK2)) then
-					self.Owner:EmitSound("shigure/wink.mp3")
+		if(vm:GetSequence() == 4) then
+			if(vm:GetCycle() >= 0.1) then
+				if(self.ShouldPlaySound) then
+					if(!self.Owner:KeyDown(IN_ATTACK2)) then
+						self.Owner:EmitSound("shigure/wink.mp3")
+					end
+					self.ShouldPlaySound = false
 				end
-				self.ShouldPlaySound = false
 			end
 		else
 			self.ShouldPlaySound = true
@@ -343,7 +345,7 @@ function SWEP:ChooseSecondaryAttack()
         self:SetComboCount(0)
     end
 
-    if(CLIENT || game.SinglePlayer()) then
+    if((CLIENT || game.SinglePlayer()) && IsFirstTimePredicted()) then
 	    local e = EffectData()
 	    	e:SetOrigin(self.Owner:EyePos())
 	    	e:SetFlags(1)
@@ -397,10 +399,4 @@ function SWEP:PreGatheringResource(res)
 		local lastattack = self:GetLastPrimaryAttackChoice()
 		return lastattack <= 1
 	end
-end
-
-local cd = 40
-function SWEP:OnSkillTriggered()
-	self.LastSkillTriggeredTime = CurTime() + cd
-	self:SetNWFloat("SkillTriggerTime", self.LastSkillTriggeredTime)
 end

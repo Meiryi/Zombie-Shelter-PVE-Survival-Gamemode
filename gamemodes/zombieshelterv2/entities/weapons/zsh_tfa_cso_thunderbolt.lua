@@ -25,7 +25,7 @@ SWEP.ProceduralHolsterTime = 0
 
 --Firing related
 SWEP.Primary.Sound 			= Sound("Thunderbolt.Fire")				-- This is the sound of the weapon, when you shoot.
-SWEP.Primary.Damage		= 4500					-- Damage, in standard damage points.
+SWEP.Primary.Damage		= 2700					-- Damage, in standard damage points.
 SWEP.DamageType = bit.bor(DMG_BLAST,DMG_AIRBOAT,DMG_ALWAYSGIB) --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
 SWEP.Primary.BlastRadius	= 1
 SWEP.Primary.DamageTypeHandled = false 
