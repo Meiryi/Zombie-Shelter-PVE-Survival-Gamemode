@@ -9,10 +9,11 @@ concommand.Add("zshelter_afk", function()
 	ZShelter.SyncAFK(true)
 end)
 
+local offs = Vector(0, 0, 1)
 local tr = {collisiongroup = COLLISION_GROUP_WORLD, output = {}}
 function util.IsInWorld(pos)
 	tr.start = pos
-	tr.endpos = pos
+	tr.endpos = pos + offs
 	return !util.TraceLine(tr).HitWorld
 end
 
@@ -281,7 +282,7 @@ ZShelter.BuildingOriginFix = {
 
 function ZShelter.GetFixedOrigin(ent)
 	local name = ent:GetNWString("Name")
-	local pos = ent:GetPos()
+	local pos = ent:GetPos() + Vector(0, 0, math.min(ent:OBBCenter().z * 0.5, distance_z_tolerance))
 	if(!ZShelter.BuildingOriginFix[name]) then return pos end
 	local offset = ZShelter.BuildingOriginFix[name]
 		pos = pos + ent:GetRight() * offset.x
@@ -498,6 +499,15 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 				blacklistedresource[target_resource.UniqueID] = true
 				target_resource = nil
 			end
+			if(IsValid(target_building)) then
+				if(!target_building.UniqueID) then
+					target_building.UniqueID = math.random(1, 214000000)
+				end
+				blacklistedbuilding[target_building.UniqueID] = true
+				target_building = nil
+			end
+			ZShelter.CurrentPath = {}
+			return
 		end
 
 		lastmovevec = ppos
