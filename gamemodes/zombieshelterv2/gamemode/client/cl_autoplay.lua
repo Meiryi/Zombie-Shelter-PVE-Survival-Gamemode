@@ -147,6 +147,10 @@ net.Receive("ZShelter_PathFinder_GetPath", function()
 	ZShelter.CurrentFollowingIndex = 1
 end)
 
+ZShelter.BlacklistedBuildingClasses = {
+	npc_vj_zshelter_shelter_hitbox = true,
+}
+
 local resources = {
 	obj_resource_wood = "Woods",
 	obj_resource_iron = "Irons",
@@ -603,7 +607,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 				if(near_shelter && shelter_valid) then
 					local shelterpos = shelter_entity:GetPos()
 					for _, building in ipairs(ents.GetAll()) do
-						if(!building:GetNWBool("IsBuilding") || building:GetNWBool("IsBait")) then continue end
+						if(!building:GetNWBool("IsBuilding") || ZShelter.BlacklistedBuildingClasses[building:GetClass()] || building:GetNWBool("IsBait")) then continue end
 						local origin = ZShelter.GetFixedOrigin(building)
 						local dst = origin:Distance(shelterpos)
 						if(dst > 1500) then continue end
@@ -742,7 +746,7 @@ hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 		if(near_shelter && shelter_valid) then
 			local shelterpos = shelter_entity:GetPos()
 			for _, building in ipairs(ents.GetAll()) do
-				if(!building:GetNWBool("IsBuilding") || building:GetNWBool("IsBait")) then continue end
+				if(!building:GetNWBool("IsBuilding") || ZShelter.BlacklistedBuildingClasses[building:GetClass()] || building:GetNWBool("IsBait")) then continue end
 				local origin = ZShelter.GetFixedOrigin(building)
 				local dst = origin:Distance(shelterpos)
 				if(dst > 1500) then continue end
