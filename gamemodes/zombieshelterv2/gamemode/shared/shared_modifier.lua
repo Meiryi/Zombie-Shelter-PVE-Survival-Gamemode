@@ -457,7 +457,7 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 		ZShelterGameStarted = function()
 			GetConVar("zshelter_difficulty"):SetInt(9)
 			ZShelter.StartedDifficulty = GetConVar("zshelter_difficulty"):GetInt()
-			SetGlobalInt("Time", 420)
+			SetGlobalInt("Time", 390)
 			SetGlobalFloat("EnemySpawnTimeMul", GetGlobalFloat("EnemySpawnTimeMul", 1) * 0.85)
 
 			ZShelter.EnemyConfig = {}
