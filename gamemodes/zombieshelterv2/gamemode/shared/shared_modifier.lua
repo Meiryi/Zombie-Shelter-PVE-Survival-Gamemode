@@ -423,7 +423,7 @@ ZShelter.Modifiers.Register("Enemy running on day", {
 ZShelter.Modifiers.Register("Hardcore mode", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "The ulmiate aids game experience",
+	desc = "THE ULTIMATE AIDS GAME EXPERIENCE",
 	scoreMul = 4,
 
 	hooks = {
