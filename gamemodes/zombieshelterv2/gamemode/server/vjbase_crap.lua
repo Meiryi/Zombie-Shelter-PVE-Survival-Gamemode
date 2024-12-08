@@ -68,6 +68,7 @@ function VJ_PriorToKilled(self, dmginfo, hitgroup) -- Remove dead body if they a
 
 	self:CustomOnPriorToKilled(dmginfo, hitgroup)
 	self:SetCollisionGroup(1)
+	self:CollisionRulesChanged()
 	self:RunGibOnDeathCode(dmginfo, hitgroup)
 	self:PlaySoundSystem("Death")
 

@@ -307,6 +307,7 @@ end)
 hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflictor)
 	if(!IsValid(npc)) then return end
 	npc:SetCollisionGroup(10)
+	npc:CollisionRulesChanged()
 	if(npc.IsBoss && !npc.KilledBySystem) then
 		ZShelter.SpawnLootboxVec(npc:GetPos())
 	end

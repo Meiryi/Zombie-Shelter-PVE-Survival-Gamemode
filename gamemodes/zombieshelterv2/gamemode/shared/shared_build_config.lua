@@ -222,10 +222,12 @@ ZShelter.AddBuildItem("Barricade",  "Metal Gate",  3,  10,  2,  2200,  "prop_phy
 		self:SetPlaybackRate(5)
 		if(self.OpenTime && self.OpenTime > CurTime()) then
 			self:SetCollisionGroup(2)
+			self:CollisionRulesChanged()
 			self:SetSequence(3)
 		else
 			if(self.OpenTime && CurTime() - self.OpenTime > 0.15) then
 				self:SetCollisionGroup(0)
+				self:CollisionRulesChanged()
 			end
 			self:SetSequence(1)
 		end
@@ -247,10 +249,12 @@ ZShelter.AddBuildItem("Barricade",  "Concrete Gate",  4,  12,  2,  4000,  "prop_
 		self:SetPlaybackRate(5)
 		if(self.OpenTime && self.OpenTime > CurTime()) then
 			self:SetCollisionGroup(2)
+			self:CollisionRulesChanged()
 			self:SetSequence(3)
 		else
 			if(self.OpenTime && CurTime() - self.OpenTime > 0.15) then
 				self:SetCollisionGroup(0)
+				self:CollisionRulesChanged()
 			end
 			self:SetSequence(1)
 		end
