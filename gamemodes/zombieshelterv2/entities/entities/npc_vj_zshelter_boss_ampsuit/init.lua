@@ -32,6 +32,8 @@ ENT.WorldShakeOnMoveRadius = 1000
 ENT.WorldShakeOnMoveDuration = 0.25
 ENT.WorldShakeOnMoveFrequency = 100
 ENT.SightAngle = 180
+ENT.NoPush = true
+ENT.NextMeleeAttackTime = 1.25
 
 	-- ====== Control Variables ====== --
 ENT.FindEnemy_UseSphere = false
@@ -105,8 +107,19 @@ ENT.NoPush = true
 
 ENT.MovementAnimationType = 2
 
+ENT.MoveSpeed = 240
+ENT.NextMoveTime = 0
 function ENT:CustomOnInitialize()
 	self:SetCollisionBounds(Vector(30, 30, 100), Vector(-30, -30, 0))
+	function self:OverrideMove(interval)
+		if(!self:IsMoving() || self.NextMoveTime > CurTime()) then return true end
+		local pos, tpos = self:GetPos(), self:GetCurWaypointPos()
+		if(tpos == Vector(0, 0, 0)) then return end
+		local dir = tpos - pos
+		dir:Normalize()
+		dir.z = 0
+		self:SetLocalVelocity(dir * self.MoveSpeed)
+	end
 end
 
 function ENT:CustomOnLeapAttackVelocityCode()
@@ -127,6 +140,8 @@ ENT.LaserAngleFix = 0
 
 ENT.IsDoingFlameSkill = false
 ENT.IsDoingLaserSkill = false
+ENT.IsDoingSkill = false
+ENT.NoUnstuckChecks = true
 
 local trbounds = Vector(8, 8, 8)
 function ENT:CustomOnThink()
@@ -137,8 +152,16 @@ function ENT:CustomOnThink()
 		self.SetSkillTime = false
 	end
 
+	self.IsDoingSkill = (self.IsDoingFlameSkill || self.IsDoingLaserSkill)
+
 	local enemy = self:GetEnemy()
 	local visible = (IsValid(enemy) && self:Visible(enemy))
+
+	if(self.IsDoingFlameSkill || self.IsDoingLaserSkill) then
+		self.StunImmunity = true
+	else
+		self.StunImmunity = false
+	end
 
 	if(self.NextFlameSkillTime < CurTime() && !self.IsDoingLaserSkill && visible) then
 		self.FlameSkillDuration = CurTime() + 6
@@ -227,18 +250,6 @@ function ENT:CustomOnThink()
 
 	self.IsDoingFlameSkill = self.FlameSkillDuration > CurTime()
 	self.IsDoingLaserSkill = self.LaserSkillDuration > CurTime()
-end
-
-ENT.MoveSpeed = 625
-ENT.NextMoveTime = 0
-function ENT:OverrideMove(interval)
-	if(!self:IsMoving() || self.NextMoveTime > CurTime()) then return true end
-	local pos, tpos = self:GetPos(), self:GetCurWaypointPos()
-	if(tpos == Vector(0, 0, 0)) then return end
-	local dir = tpos - pos
-	dir:Normalize()
-	dir.z = 0
-	self:SetLocalVelocity(dir * self.MoveSpeed)
 end
 
 function ENT:CustomOnMeleeAttack_BeforeChecks(seed)

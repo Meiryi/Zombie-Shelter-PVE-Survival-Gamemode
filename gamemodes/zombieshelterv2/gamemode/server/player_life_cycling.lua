@@ -98,7 +98,7 @@ end)
 hook.Add("PlayerDeath", "ZShelter-PlayerDeath", function(ply, inflictor, attacker)
 	ZShelter.CreateBackpack(ply:GetPos(), ply:GetNWInt("Woods", 0), ply:GetNWInt("Irons", 0))
 	ZShelter.ResetResources(ply)
-	local time = 15 + (GetGlobalInt("Day", 1) * 1.5) * (1 + (0.055 * GetConVar("zshelter_difficulty"):GetInt()))
+	local time = hook.Call("ZShelter_GetRespawnTime") || 15 + (GetGlobalInt("Day", 1) * 1.5) * (1 + (0.055 * GetConVar("zshelter_difficulty"):GetInt()))
 	if(GetGlobalBool("GameStarted")) then
 		ply:SetNWFloat("RespawnTime", CurTime() + time)
 		timer.Simple(time, function()

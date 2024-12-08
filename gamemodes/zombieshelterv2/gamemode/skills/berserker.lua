@@ -29,7 +29,8 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
 		if(victim.IsBoss) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_1")
-		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
+		local oDamage = dmginfo:GetDamage()
+		dmginfo:SetDamage(oDamage + (oDamage * mul))
 	end,
 	function(player, current)
 		player:SetNWFloat("MeleeDamageBoost_1", current * 0.3)
@@ -110,7 +111,8 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
 		if(victim.IsBoss) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_2")
-		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
+		local oDamage = dmginfo:GetDamage()
+		dmginfo:SetDamage(oDamage + (oDamage * mul))
 	end,
 	function(player, current)
 		player:SetNWFloat("MeleeDamageBoost_2", current * 0.5)
@@ -245,7 +247,8 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
 		if(victim.IsBoss) then return end
 		local mul = attacker:GetNWFloat("MeleeDamageBoost_3")
-		victim:TakeDamage(dmginfo:GetDamage() * mul, attacker, attacker)
+		local oDamage = dmginfo:GetDamage()
+		dmginfo:SetDamage(oDamage + (oDamage * mul))
 	end,
 	function(player, current)
 		player:SetNWFloat("MeleeDamageBoost_3", current * 0.4)
@@ -292,11 +295,11 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		OnEnemyKilled = function(attacker, npc, AttackedByTurrets)
 			if(AttackedByTurrets) then return end
 			if(!ZShelter.IsHoldingMelee(attacker)) then return end
-			attacker:SetNWFloat("Sanity", math.min(attacker:GetNWFloat("Sanity", 0) + attacker:GetNWFloat("SanityRegenAmount", 4), 100))
+			attacker:SetNWFloat("Sanity", math.min(attacker:GetNWFloat("Sanity", 0) + attacker:GetNWFloat("SanityRegenAmount", 1.5), 100))
 		end,
 	},
 	function(player, current)
-		player:SetNWFloat("SanityRegenAmount", 4 * current)
+		player:SetNWFloat("SanityRegenAmount", 1.5 * current)
 	end, 2, "sanityonkill", 3, "SanityRegen")
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",

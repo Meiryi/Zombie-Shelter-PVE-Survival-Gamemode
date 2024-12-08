@@ -643,6 +643,10 @@ function ZShelter.SetupTreasureArea()
 
 				boss:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
 			ZShelter.BossRecord[k] = boss
+			if(ZShelter.BossHealthCards[bossdata.class]) then
+				boss:SetNWBool("ZShelterDisplayHP", true)
+			end
+
 			if(bossdata.noclear) then
 				boss.ImmunityNightDamage = true
 			end

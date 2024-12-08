@@ -190,6 +190,18 @@ function ZShelterVisible_NPCVec(self, vec, target) -- This is costy
 	return true
 end
 
+function ZShelter.CreatePathHelper(ent)
+	timer.Simple(0, function()
+		if(!IsValid(ent)) then return end
+		local helper = ents.Create("logic_zshelter_path_helper")
+			helper:Spawn()
+			helper:SetOwner(ent)
+			helper:SetPos(ent:GetPos())
+
+		ent.PathHelper = helper
+	end)
+end
+
 function ZShelter.ValidatePlayerDistance(self, player, distance)
 	return player:Alive() && self:GetPos():Distance(player:GetPos()) <= distance
 end

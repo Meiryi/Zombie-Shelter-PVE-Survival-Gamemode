@@ -1,0 +1,6 @@
+"UnLitGeneric"
+{
+    $basetexture    "models\weapons\tfa_cso\halogun\$20@004halogun_projectile"
+    $additive        "1"
+	$nocull "1"
+}

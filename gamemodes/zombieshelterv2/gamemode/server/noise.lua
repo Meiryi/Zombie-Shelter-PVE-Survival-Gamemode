@@ -26,15 +26,35 @@ end)
 function ZShelter.TriggerHorde()
 	ZShelter.PlayMusic(GetConVarString("zshelter_music_horde"))
 	ZShelter.PanicEnemySpawnTime = CurTime() + 4 + (GetConVar("zshelter_difficulty"):GetInt() * 0.55)
-	immunitySounds = SysTime() + 60
+	immunitySounds = SysTime() + GetGlobalInt("Time") + 1
 	ZShelter.ToggleBarricadeCollision(true)
-	for k,v in ipairs(ents.GetAll()) do
-		if(!v:IsNPC() || v.Awake == nil) then continue end
-		v.Awake = true
-		v:SetNWBool("ZShelterBossAwake", true)
-		v:NextThink(CurTime())
-	end
+	hook.Run("ZShelter_TriggerHorde")
 end
+
+hook.Add("ZShelter_TriggerHorde", "ZShelter_SpawnHordeBoss", function()
+	local ret = hook.Call("ZShelter_PreTriggerHorde")
+	if(ret == true) then return end
+
+	local bossdata = ZShelter.TreasureAreaEnemy
+	local pos = ZShelter.ValidRaiderSpawnPoints[math.random(1, #ZShelter.ValidRaiderSpawnPoints)]
+	if(table.Count(bossdata) <= 0 || !pos) then return end
+	local boss = ents.Create(bossdata.class)
+		boss.damage = bossdata.attack * 2
+		boss:Spawn()
+		boss:SetPos(pos)
+		boss:SetMaxHealth(bossdata.hp * 2.5)
+		boss:SetHealth(bossdata.hp * 2.5)
+		boss:SetRenderMode(RENDERMODE_TRANSCOLOR)
+		boss:SetColor(Color(255, 0, 0, 255))
+
+		boss:SetNWBool("IsZShelterEnemy", true)
+		boss:SetNWBool("ZShelterDisplayHP", true)
+		boss.IsBoss = true
+		boss.IsZShelterEnemy = true
+
+		boss:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
+		boss.ImmunityNightDamage = true
+end)
 
 function ZShelter.AddNoise(amount, player)
 	if((immunitySounds > SysTime() || GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted", false) || GetGlobalBool("Rescuing") || ZShelter.PanicEnemySpawnTime > CurTime()) && !bypassChecks) then return end

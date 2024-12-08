@@ -1,4 +1,4 @@
-SWEP.Base = "tfa_melee_base"
+SWEP.Base = "tfa_zsh_melee_base"
 SWEP.Category = "TFA CS:O Melees"
 SWEP.PrintName = "Miracle Prism Sword"
 SWEP.Author				= "Kamikaze" --Author Tooltip
@@ -37,6 +37,13 @@ SWEP.PaPMats			= {}
 SWEP.Precision = 50
 SWEP.Secondary.MaxCombo = -1
 SWEP.Primary.MaxCombo = -1
+
+SWEP.BuildSpeed = 30
+SWEP.OldStyleHit = true
+
+SWEP.AOEDamage = true
+SWEP.AOERange_Primary = 24
+SWEP.AOERange_Secondary = 48
 
 SWEP.Offset = {
 		Pos = {
@@ -134,9 +141,9 @@ sound.Add({
 SWEP.Primary.Attacks = {
 	{
 		['act'] = ACT_VM_PULLBACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 26*5, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-180,0,65), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 500, --This isn't overpowered enough, I swear!!
+		['dmg'] = 130, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.03, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -152,9 +159,9 @@ SWEP.Primary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_HITLEFT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 26*5, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(180,0,65), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 500, --This isn't overpowered enough, I swear!!
+		['dmg'] = 140, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.03, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -170,9 +177,9 @@ SWEP.Primary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_HITRIGHT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 26*5, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(-120,0,-130), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 500, --This isn't overpowered enough, I swear!!
+		['dmg'] = 150, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.03, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -188,9 +195,9 @@ SWEP.Primary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_PRIMARYATTACK, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 26*5, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 150, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(100,0,-120), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 500, --This isn't overpowered enough, I swear!!
+		['dmg'] = 160, --This isn't overpowered enough, I swear!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
 		['delay'] = 0.03, --Delay
 		['spr'] = true, --Allow attack while sprinting?
@@ -243,8 +250,59 @@ function SWEP:SecondaryAttack()
 	return
 end
 
-function SWEP:ChargedSlash()
+SWEP.NextSDTime = 0
+SWEP.SlashDamage = 150
+function SWEP:ChargedThink()
+	if(CLIENT) then return end
+	local hastarget = false
+	local playsd = self.NextSDTime < CurTime()
+	local index = self.Owner:EntIndex()
+	for _, ent in ipairs(ents.FindInSphere(self.Owner:GetPos(), 400)) do
+		if((!ent:IsNPC() && !ent:IsPlayer() && !ent:IsNextBot()) || ent:Health() <= 0 || ent == self.Owner) then continue end
+		if(playsd) then
+			sound.Play("weapons/tfa_cso/magicknife/magic_start.wav", ent:GetPos(), 70, 100, 1)
+		end
+		local k = index.."miracle_prism_exp"
+		if(!IsValid(ent[k])) then
+			local e = ents.Create("zsh_sprite_miracle_prism")
+				e:Spawn()
+				e:SetPos(ent:GetPos())
+				e:SetOwner(ent)
+				e.Creator = self.Owner
+				e.Damage = self.SlashDamage
+				e._Inflictor = self
+				e.StartTime = CurTime()
+				e.KillTime = CurTime() + 0.25
+			ent[k] = e
+		else
+			local e = ent[k]
+			if(e.KillAnim) then
+				ent[k] = nil
+				continue
+			end
+			e.KillTime = CurTime() + 0.25
+		end
+		hastarget = true
+	end
+	if(hastarget && self.NextSDTime < CurTime()) then
+		self.NextSDTime = CurTime() + 1
+	end
+end
 
+SWEP.MinimumTimeRequired = 1
+function SWEP:Slash(charged)
+	if(!charged || CLIENT) then return end
+	local owner = self.Owner
+	timer.Simple(0.1, function()
+		if(!IsValid(owner)) then return end
+		for _, ent in ipairs(ents.FindByClass("zsh_sprite_miracle_prism")) do
+			if(CurTime() - (ent.StartTime || CurTime()) < self.MinimumTimeRequired) then
+				ent:End()
+			else
+				ent:Slash()
+			end
+		end
+	end)
 end
 
 SWEP.__KeyDown = false
@@ -256,11 +314,13 @@ SWEP.FullyCharged = false
 function SWEP:Think2(...)
 	if(SERVER || ((CLIENT || game.SinglePlayer()) && IsFirstTimePredicted())) then
 		local keydown = self.Owner:KeyDown(IN_ATTACK2)
-		if(self.NextChargeTime > CurTime()) then
+
+		if(self.NextChargeTime > CurTime() || self:GetStatus() == 1) then
 			keydown = false
 		end
 		local vm = self.Owner:GetViewModel()
 		if(keydown) then
+			self.Melee2Attack = true
 			local t = CurTime() - self.StartChargeTime
 			if(t <= 0.6) then
 				vm:SetSequence(13)
@@ -281,6 +341,7 @@ function SWEP:Think2(...)
 						self.NextSD = CurTime() + 0.5
 					end
 					vm:SetSequence(10)
+					self:ChargedThink()
 					self.FullyCharged = true
 				end
 			end
@@ -292,12 +353,31 @@ function SWEP:Think2(...)
 				if(self.FullyCharged) then
 					vm:SetSequence(12)
 					self:EmitSound("weapons/tfa_cso/magicknife/charge_attack2.wav")
-					self:ChargedSlash()
 				else
 					vm:SetSequence(11)
 					self:EmitSound("weapons/tfa_cso/magicknife/slash"..math.random(1, 4)..".wav")
 				end
-				self:Strike(self.Primary.Attacks[1], 12)
+				self:Slash(self.FullyCharged)
+				self:Strike({
+					['act'] = ACT_VM_PULLBACK,
+					['len'] = 180,
+					['dir'] = Vector(-180,0,65),
+					['dmg'] = 350,
+					['force'] = 150,
+					['dmgtype'] = DMG_SLASH,
+					['delay'] = 0.03,
+					['spr'] = true,
+					['snd'] = "TFABaseMelee.Null",
+					['snd_delay'] = 0.035,
+					["viewpunch"] = Angle(0,0,0),
+					['end'] = 0.35,
+					['hull'] = 32,
+					['direction'] = "F",
+					['hitflesh'] = "PrismSword.HitFleshSlash",
+					['hitworld'] = "PrismSword.HitWall",
+					['maxhits'] = 25
+				}, 12)
+				self.Owner:SetAnimation(PLAYER_ATTACK1)
 			end
 			self.StartPlaySD = false
 			self.FullyCharged = false
@@ -308,6 +388,23 @@ function SWEP:Think2(...)
 
 		BaseClass.Think2(self, ...)
 	end
+end
+
+function SWEP:PostAttack()
+	if(self.Melee2Attack) then
+		self.NextChargeTime = CurTime() + 1.5
+	else
+		self.NextChargeTime = CurTime() + 1
+	end
+end
+
+function SWEP:Holster(...)
+	return true
+end
+
+function SWEP:Deploy(...)
+	self.StartChargeTime = CurTime()
+	BaseClass.Deploy(self, ...)
 end
 
 function SWEP:SetupDataTables(...)

@@ -298,10 +298,11 @@ end
 local nextcheckAFKTime = 0
 local checkunafk = true
 local lastmovetime = SysTime()
+local cvar = GetConVar("zshelter_enable_afk_bot")
 hook.Add("CreateMove", "ZShelter_Player_Controller", function(ucmd)
 	if(!ZShelter.IsAFKing) then
 		local ply = LocalPlayer()
-		if(ucmd:GetMouseX() != 0 || ucmd:GetMouseY() != 0) then
+		if(ucmd:GetMouseX() != 0 || ucmd:GetMouseY() != 0 || cvar:GetInt() == 0) then
 			lastmovetime = SysTime()
 		end
 

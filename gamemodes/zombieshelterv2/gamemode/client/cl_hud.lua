@@ -480,6 +480,8 @@ end
 
 local shouldDraw = true
 local nextCheckTime = 0
+local hpbartargets = {}
+local nextgettarget = 0
 function ZShelter.PaintHUD()
 	local centX, centY = ScrW() * 0.5, ScrH() * 0.5
 	local padding = ScreenScaleH(6)
@@ -494,6 +496,44 @@ function ZShelter.PaintHUD()
 	local barX = startX + padding3x + imagesx
 	local resWide, resTall = wide, tall * 0.35 
 	local ply, pos = LocalPlayer(), LocalPlayer():GetPos()
+
+	if(nextgettarget < SysTime()) then
+		hpbartargets = {}
+		for _, ent in ipairs(ents.GetAll()) do
+			if(!ent:GetNWBool("ZShelterDisplayHP") || (ent:GetNWBool("ZShelterBoss") && !ent:GetNWBool("ZShelterBossAwake"))) then continue end
+			table.insert(hpbartargets, ent)
+		end
+		nextgettarget = SysTime() + 0.1
+	end
+
+	if(#hpbartargets > 0) then
+		local wide, tall, outline, gap = ScrW() * 0.6, ScreenScaleH(6), 1, 2
+		local x, y = ScrW() * 0.5 - wide * 0.5, ScrH() * 0.1625
+		local inner_x, inner_y = x + outline + gap, y + outline + gap
+		local inner_w, inner_h = wide - ((outline + gap) * 2), tall - ((outline + gap) * 2)
+		local card_w = ScreenScaleH(70)
+		local card_h = card_w * 0.86
+		local card_x, card_y = x, y - card_h
+		local next_y = y
+		local next_card_x = card_x
+		for _, boss in ipairs(hpbartargets) do
+			if(!IsValid(boss) || boss:Health() <= 0) then continue end
+			local mat = ZShelter.BossHealthCards[boss:GetClass()]
+			if(mat) then
+				surface.SetMaterial(mat)
+				surface.SetDrawColor(255, 255, 255, 255)
+				surface.DrawTexturedRect(next_card_x, card_y + tall, card_w, card_h)
+			end
+
+			local fraction = math.Clamp(boss:Health() / boss:GetMaxHealth(), 0, 1)
+			local fraction_clr = math.Clamp(boss:Health() / (boss:GetMaxHealth() * 0.33), 0, 1)
+			draw.RoundedBox(0, x, next_y, wide, tall, Color(30, 30, 30, 255))
+			draw.RoundedBox(0, inner_x, next_y + outline + gap, inner_w * fraction, inner_h, Color(255, 255 * fraction_clr, 255 * fraction_clr, 255))
+
+			next_card_x = next_card_x + card_w * 0.75 + gap
+			next_y = next_y + tall + gap
+		end
+	end
 
 	for k,v in ipairs(player.GetAll()) do
 		if(!v:Alive() || v == ply) then continue end

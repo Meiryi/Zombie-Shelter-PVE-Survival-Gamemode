@@ -55,7 +55,10 @@ function ZShelter.ApplyMutation(ent, mutation)
 end
 
 hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
-	if(ent.IsVJBaseSNPC && !ent.IsBuilding && !ent.IsDefaultBase && !ent.NoUnstuckChecks) then
+	if(ZShelter.RegisteredBossClasses[ent:GetClass()]) then
+		ent:SetNWBool("ZShelterDisplayHP", true)
+	end
+	if(ent.IsVJBaseSNPC && !ent.IsBuilding && !ent.IsDefaultBase) then
 		ent.StuckTimer = 0
     	ent.OverrideMove = function(self, finv)
 			if(ent.StuckTimer < CurTime()) then
@@ -68,10 +71,12 @@ hook.Add("OnEntityCreated", "ZShelter-CreationCheck", function(ent)
 						filter = ent,
 					}
 					local ret = util.TraceHull(tr).Entity
-					if(IsValid(ret.Entity) && !ret.Entity.IsBuilding) then
+					if(IsValid(ret.Entity) && !ret.Entity.IsBuilding && !ent.IsDoingSkill) then
 						ent:SetAngles(Angle(0, math.random(-180, 180), 0))
 						ent:SetLocalVelocity(ent:GetMoveVelocity() + ent:GetAngles():Forward() * 1500)
-						ent:VJ_ACT_PLAYACTIVITY(ent.AnimTbl_Run, true, 0.25, false, 0)
+						if(!ent.NoUnstuckChecks) then
+							ent:VJ_ACT_PLAYACTIVITY(ent.AnimTbl_Run, true, 0.25, false, 0)
+						end
 						ent.LastStuckTime = CurTime() + 3
 						ent.NextChaseTime = CurTime() + 0.55
 					end

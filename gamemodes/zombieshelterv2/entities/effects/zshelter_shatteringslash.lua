@@ -75,3 +75,7 @@ function EFFECT:Think()
 
     return self.CycleTime > SysTime()
 end
+
+function EFFECT:Render()
+    return
+end

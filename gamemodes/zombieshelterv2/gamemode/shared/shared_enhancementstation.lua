@@ -105,7 +105,7 @@ ZShelter.Enhancements.Register({
 	maxUpgrade = 3,
 
 	condfunc = function(wep)
-		return wep:GetMaxClip1() > 1
+		return wep:GetMaxClip1() > 1 && !wep.CantBoostFirerate
 	end,
 	callbacks = {
 		OnFireWeapon= function(attacker, weapon)

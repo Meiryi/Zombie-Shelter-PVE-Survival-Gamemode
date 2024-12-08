@@ -682,6 +682,8 @@ function SWEP:Strike(attk, precision)
     end
 	if(oldstyle) then
 		self:ArccwStyleMelee(attk)
+		self:PostAttack()
+		return
 	end
 
 	local reach = 32 + attk.len

@@ -18,7 +18,7 @@ function EFFECT:Init(effect_data)
     self.EffectModel.KillTime = CurTime() + 0.5
     table.insert(DrawList, {
         cycle = 0,
-        alpha = 255,
+        alpha = 170,
         fx = self.EffectModel,
     })
     self.EffectModel:SetNoDraw(true)
@@ -44,7 +44,7 @@ hook.Add("PostRender", "TFA_CSO_DualSwordFX", function()
             continue
         else
             if(!fx.KillTime || fx.KillTime < CurTime()) then
-                fxs.alpha = math.max(fxs.alpha - (510 * RealFrameTime()), 0)
+                fxs.alpha = math.max(fxs.alpha - (200 * RealFrameTime()), 0)
                 if(fxs.alpha <= 0) then
                     fx:Remove()
                     table.remove(DrawList, _)

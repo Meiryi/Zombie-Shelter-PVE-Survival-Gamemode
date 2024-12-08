@@ -43,7 +43,7 @@ ZShelter.AddSkills(ClassName, "OnGiveMelee",
 ZShelter.AddSkills(ClassName, "MultipleHook", {
 	OnFireBullets = function(player, bulletdata)
 		local wep = player:GetActiveWeapon()
-		if(!IsValid(wep)) then return end
+		if(!IsValid(wep) || wep.CantSaveAmmo) then return end
 		local seed = math.random(1, 100)
 		if(seed <= player:GetNWInt("SaveChance", 15)) then
 			wep:SetClip1(wep:Clip1() + 1)
@@ -101,7 +101,7 @@ ZShelter.AddSkills(ClassName, nil, nil,
 ZShelter.AddSkills(ClassName, "MultipleHook", {
 	OnFireBullets = function(ply, bulletdata)
 		local wep = ply:GetActiveWeapon()
-		if(IsValid(wep)) then
+		if(IsValid(wep) && !wep.CantBoostFirerate) then
 			local firerate = wep:GetNextPrimaryFire() - CurTime()
 			wep:SetNextPrimaryFire(CurTime() + (firerate * ply:GetNWFloat("FRate", 1)))
 		end

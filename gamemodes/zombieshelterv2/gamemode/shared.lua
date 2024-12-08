@@ -62,9 +62,11 @@ CreateConVar("zshelter_debug_disable_building_damage", 0, FCVAR_NOTIFY + FCVAR_R
 CreateConVar("zshelter_debug_instant_build", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Instant build stuffs", 0, 1)
 
 CreateConVar("zshelter_server_category_name", "", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Name for server listing category, leave empty for default one")
+CreateConVar("zshelter_weapon_balance", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE + FCVAR_REPLICATED, "Enable weapon balancing", 0, 1)
 
 if(CLIENT) then
 	CreateConVar("zshelter_enable_hud", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable zombie shelter hud?")
+	CreateConVar("zshelter_enable_afk_bot", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable AFK bot?")
 	CreateConVar("zshelter_client_enable_music", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable music?")
 	CreateConVar("zshelter_enable_menu_keys", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable keys to toggle menu?")
 
@@ -232,6 +234,38 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 		if(ent1:IsPlayer() && ZShelter.IsAFKing && ent2:GetNWBool("IsBuilding")) then return false end
 		if(ent2:IsPlayer() && ZShelter.IsAFKing && ent1:GetNWBool("IsBuilding")) then return false end
 		return
+	end
+	if(ent1.IsHugeEnemy) then
+		if(ent2:IsPlayer() || ent2.IsTurret || ent2.IsPlayerBarricade) then
+			return true
+		else
+			if(ent2.IsBarricade) then
+				return false
+			end
+		end
+	end
+	if(ent2.IsHugeEnemy) then
+		if(ent1:IsPlayer() || ent1.IsTurret || ent1.IsPlayerBarricade) then
+			return true
+		else
+			if(ent1.IsBarricade) then
+				return false
+			end
+		end
+	end
+	if(ent1.PathHelper) then
+		if(ent2.IsPlayerBarricade || ent2.IsBarricade || (ent2 == ent1:GetOwner())) then
+			return true
+		else
+			return false
+		end
+	end
+	if(ent2.PathHelper) then
+		if(ent1.IsPlayerBarricade || ent1.IsBarricade || (ent1 == ent2:GetOwner())) then
+			return true
+		else
+			return false
+		end
 	end
 	if(ent1.PathTester) then
 		if(ent2.IsPlayerBarricade) then
