@@ -14,6 +14,7 @@
 ]]
 
 util.AddNetworkString("ZShelter-DamageNumber")
+util.AddNetworkString("ZShelter_PlayerHurt")
 
 function ZShelter.DealNoScaleDamage(attacker, victim, damage)
 	local dmginfo = DamageInfo()
@@ -390,11 +391,17 @@ hook.Add("Tick", "ZShelter-SendDamage", function()
 end)
 
 hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo, took)
-	if(!took) then return end
 	local attacker = dmginfo:GetAttacker()
 	local inflictor = dmginfo:GetInflictor()
-	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
 	local damage = dmginfo:GetDamage()
+	if(IsValid(target) && target:IsPlayer() && target:Alive() && damage >= 0) then
+		net.Start("ZShelter_PlayerHurt")
+		net.WriteEntity(attacker)
+		net.Send(target)
+	end
+
+	if(!took) then return end
+	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
 	local pos = dmginfo:GetDamagePosition()
 	local mins, maxs = target:GetModelBounds()
 	mins.z = 0
@@ -405,6 +412,7 @@ hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo,
 	if(pos == Vector(0, 0, 0) || (IsValid(inflictor) && p1:Distance(p2) < dst)) then
 		pos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z * 0.5)
 	end
+
 	ZShelter.AddDamageNumber(attacker, target:EntIndex(), damage, pos)
 end)
 

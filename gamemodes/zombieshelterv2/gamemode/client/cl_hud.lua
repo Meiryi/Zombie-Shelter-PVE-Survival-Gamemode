@@ -363,7 +363,12 @@ local elem = {
 	["CHudHealth"] = true,
 	["CHudBattery"] = true,
 }
+local blacklist = {
+	CHudPoisonDamageIndicator = true,
+	CHudDamageIndicator = true,
+}
 hook.Add("HUDShouldDraw", "ZShelter-HideHUD", function(name)
+	if(blacklist[name]) then return false end
 	if(!shouldenablehud) then return end
 	if(elem[name]) then
 		return false
@@ -475,6 +480,66 @@ function ZShelter.PaintNotify()
 		surface_SetMaterial(v.material)
 		surface_DrawTexturedRect(x, v.cy, v.tall, v.tall)
 		nextY = nextY + gap + v.tall
+	end
+end
+
+
+local directions = {
+	[0] = {
+		alpha = 0,
+		offset = Vector(-0.5, -1.25, 0),
+		material = Material("zsh/damageindicator/damage_up.png", "smooth"),
+	},
+	[90] = {
+		alpha = 0,
+		offset = Vector(0.25, -0.5, 0),
+		material = Material("zsh/damageindicator/damage_right.png", "smooth"),
+	},
+	[-90] = {
+		alpha = 0,
+		offset = Vector(-1.25, -0.5, 0),
+		material = Material("zsh/damageindicator/damage_left.png", "smooth"),
+	},
+	[180] = {
+		alpha = 0,
+		offset = Vector(-0.5, 0.25, 0),
+		material = Material("zsh/damageindicator/damage_down.png", "smooth"),
+	},
+}
+net.Receive("ZShelter_PlayerHurt", function()
+	local player = LocalPlayer()
+	local attacker = net.ReadEntity()
+	if(!IsValid(player) || player != LocalPlayer()) then return end
+	local angle = -1
+	if(IsValid(attacker)) then
+		angle = math.NormalizeAngle(math.Round((player:EyeAngles().y - (math.NormalizeAngle((attacker:GetPos() - player:GetPos()):Angle().y))) / 90, 0) * 90)
+	end
+	if(angle == -180) then
+		angle = 180
+	end
+	if(angle == -1) then
+		for _, dir in pairs(directions) do
+			directions[_].alpha = 255
+		end
+	else
+		if(directions[angle]) then
+			directions[angle].alpha = 255
+		end
+	end
+end)
+
+function ZShelter.PaintDamageIndicator()
+	local centerX, centerY = ScrW() * 0.5, ScrH() * 0.5
+	local size = ScreenScaleH(64)
+	local half = size * 0.5
+
+	for _, dir in pairs(directions) do
+		if(!dir.material) then continue end
+		if(dir.alpha <= 0) then continue end
+		surface.SetDrawColor(255, 255, 255, dir.alpha)
+		surface.SetMaterial(dir.material)
+		surface.DrawTexturedRect(centerX + (dir.offset.x * size), centerY + (dir.offset.y * size), size, size)
+		dir.alpha = math.Clamp(dir.alpha - (700 * RealFrameTime()), 0, 255)
 	end
 end
 
@@ -843,6 +908,7 @@ hook.Add("HUDPaint", "ZShelter-HUD", function()
 	ZShelter.PaintHUD()
 	ZShelter.PaintNotify()
 	ZShelter.PaintDamageNumber()
+	ZShelter.PaintDamageIndicator()
 	ZShelter.DrawPowerOutage()
 end)
 

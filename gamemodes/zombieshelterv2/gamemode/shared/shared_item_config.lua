@@ -81,10 +81,11 @@ function ZShelter.CreateDefaultItems()
 			ZShelter.AddItem("Pistol", "tfa_cso_balrog1", "Barlog 1", 20, 16, 3, true, {}, "default", 2.25, -1, -1, 2)
 			ZShelter.AddItem("Pistol", "tfa_cso_vulcanus1", "Vulcanus 1", 21, 20, 2, true, {}, "default", 0.35, -1, -1, 2)
 			ZShelter.AddItem("Pistol", "tfa_cso_ddeagle", "Duel Desert Eagle", 30, 30, 0.7, true, {}, "default", 0.35, -1, -1, 2)
+			ZShelter.AddItem("Pistol", "tfa_zsh_cso_cyclone", "Cyclone", 30, 30, 1, true, {}, "default", 1, -1, -1, 2)
 			ZShelter.AddItem("Pistol", "tfa_zsh_cso_thanatos1", "Thanatos 1", 45, 42, 1, true, {}, "default", 1.5, -1, -1, 2)
 
 			ZShelter.AddItem("Pistol", "tfa_cso_m950_attack", "M950", 25, 21, 1.5, true, {}, "default", 0.35, -1, -1, 3)
-			ZShelter.AddItem("Pistol", "tfa_cso_cyclone", "Cyclone", 30, 30, 1, true, {}, "default", 1, -1, -1, 3)
+			ZShelter.AddItem("Pistol", "tfa_zsh_cso_star_taylor", "Star Taylor", 40, 43, 1, true, {}, "default", 1, -1, -1, 3)
 
 			ZShelter.AddItem("Pistol", "tfa_zsh_cso_desperado", "Desperado", 48, 55, 1, true, {}, "default", 2.25, -1, -1, 4)
 			ZShelter.AddItem("Pistol", "tfa_zsh_cso_gunkata", "Dual Baretta Gunslinger", 70, 68, 1, true, {}, "default", 1.5, -1, -1, 4)

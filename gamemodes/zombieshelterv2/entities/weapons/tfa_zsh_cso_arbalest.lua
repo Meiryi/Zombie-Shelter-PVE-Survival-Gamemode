@@ -381,12 +381,12 @@ SWEP.LaserAnimation = {
 		["type"] = TFA.Enum.ANIMATION_SEQ, --Sequence or act
 		["value"] = "shootb_start", --Number for act, String/Number for sequence
 		["transition"] = true
-	}, --Inward transition
+	},
 	["loop"] = {
 		["type"] = TFA.Enum.ANIMATION_SEQ, --Sequence or act
 		["value"] = "shootb_loop", --Number for act, String/Number for sequence
 		["is_idle"] = true
-	},--looping animation
+	},
 	["loop_2"] = {
 		["type"] = TFA.Enum.ANIMATION_SEQ,
 		["value"] = 7,
@@ -396,7 +396,12 @@ SWEP.LaserAnimation = {
 		["type"] = TFA.Enum.ANIMATION_SEQ, --Sequence or act
 		["value"] = "shootb_end", --Number for act, String/Number for sequence
 		["transition"] = true
-	} --Outward transition
+	},
+	["end_2"] = {
+		["type"] = TFA.Enum.ANIMATION_SEQ,
+		["value"] = 8,
+		["is_idle"] = true
+	},
 }
 
 SWEP.LaserSound_Loop = "Halogun.ShootB_Loop"
@@ -513,12 +518,17 @@ function SWEP:LaserThink()
 	   end
 	elseif stat == TFA.GetStatus("laser_attack") and ( ( not self.Owner:KeyDown(IN_ATTACK2) ) or self:Ammo2() <= 0 or self:GetSprinting() ) then
 	   self:SetStatus( TFA.GetStatus("laser_end") )
+	   local t = CurTime() - self.HoldTime
 	   if self.LaserAnimation["end"] then
-		  _,tanim = self:PlayAnimation( self.LaserAnimation["end"] )
+		  if(t > 2) then
+		  	_,tanim = self:PlayAnimation(self.LaserAnimation["end_2"])
+		  	self:EmitSound("weapons/tfa_cso/halogun/exp.wav")
+		  else
+		  	_,tanim = self:PlayAnimation( self.LaserAnimation["end"] )
+		  end
 	   else
 		  _,tanim = self:ChooseIdleAnim()
 	   end
-	   local t = CurTime() - self.HoldTime
 	   local ht = 2
 	   local damage = 250
 	   if(t > ht) then
@@ -537,7 +547,11 @@ function SWEP:LaserThink()
 	   				local dmg = DamageInfo()
 	   					dmg:SetAttacker(self.Owner)
 	   					dmg:SetInflictor(self)
-	   					dmg:SetDamage(damage)
+	   					if(ent.IsBoss) then
+	   						dmg:SetDamage(damage * 8)
+	   					else
+	   						dmg:SetDamage(damage)
+	   					end
 	   					dmg:SetDamageType(DMG_BLAST)
 	   					dmg:SetDamagePosition(ent:GetPos() + ent:OBBCenter())
 
@@ -674,6 +688,10 @@ function SWEP:Laser( damage, force, reach )
 	end
 
 	local dmg = 20
+	local t = CurTime() - self.HoldTime
+	if(t > 2) then
+		dmg = 30
+	end
 	for entindex, _ in pairs(hits) do
 		local ent = Entity(entindex)
 		if(!IsValid(ent)) then continue end
