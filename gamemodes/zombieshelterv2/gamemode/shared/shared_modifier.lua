@@ -33,7 +33,7 @@ if(SERVER) then
 		if(GetGlobalBool("GameStarted")) then return end
 		local str = net.ReadString()
 		local voted = ply:GetNWBool(str.."Voted", false)
-
+		if(GetGlobalInt("Day") > 1) then return end
 		if(voted) then
 			ply:SetNWBool(str.."Voted", false)
 		else

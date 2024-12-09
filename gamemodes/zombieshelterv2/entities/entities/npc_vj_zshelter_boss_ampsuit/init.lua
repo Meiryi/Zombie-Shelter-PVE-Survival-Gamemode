@@ -235,9 +235,9 @@ function ENT:CustomOnThink()
 
 		local ent = tr.Entity
 		if(IsValid(ent) && (ent:IsPlayer() || ent.IsBuilding)) then
-			local dmg = 60 * (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.1))
+			local dmg = 50 * (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.1))
 			if(ent.IsBuilding) then
-				dmg = dmg * 0.33
+				dmg = dmg * 0.15
 			end
 			ZShelter.DealNoScaleDamage(self, ent, dmg)
 		end

@@ -256,24 +256,28 @@ function ENT:CustomOnThink()
 					self:VJ_ACT_PLAYACTIVITY("zbs_dash", true, 1, false)
 				end
 				local vel = self:GetAngles():Forward() * 2048
-				local dmg = (1 + GetConVar("zshelter_difficulty"):GetInt() * 0.1) * 15
+				local dmg = (1 + GetConVar("zshelter_difficulty"):GetInt() * 0.06) * 10
 				self:SetLocalVelocity(vel)
 				if(self.NextFootStep < CurTime()) then
 					sound.Play("zombi/fallentitan/footstep"..math.random(1, 2)..".wav", self:GetPos(), 120, 100, 1)
 					self.NextFootStep = CurTime() + 0.2
 				end
-				for k,v in ipairs(ents.FindInSphere(self:GetPos(), 180)) do
+				for k,v in ipairs(ents.FindInSphere(self:GetPos(), 120)) do
 					if(!v.IsBuilding && !v:IsPlayer()) then continue end
 					local index = v:EntIndex()
 					if(v.IsBuilding) then
-						ZShelter.ApplyDamageFast(v, 30, true)
+						if(v.IsPlayerBarricade) then
+							ZShelter.ApplyDamageFast(v, 100, true)
+						else
+							ZShelter.ApplyDamageFast(v, 3, true)
+						end
 					else
 						if(!self.HitPlayers[index]) then
 							self.HitPlayers[index] = 0
 						end
 						if(v:IsPlayer()) then
 							if(self.HitPlayers[index] < CurTime()) then
-								v:TakeDamage(math.Clamp(v:GetMaxHealth() * 0.15, dmg, dmg * 2), v, v)
+								v:TakeDamage(dmg, v, v)
 								self.HitPlayers[index] = CurTime() + 0.1
 							end
 							v:SetVelocity(-v:GetVelocity() + vel + Vector(0, 0, -400))
@@ -287,14 +291,14 @@ function ENT:CustomOnThink()
 					self:VJ_ACT_PLAYACTIVITY("zbs_cannon1", true, 2, false)
 					sound.Play("zombi/fallentitan/zbs_cannon1.wav", self:GetPos(), 140, 100, 1)
 
-					for i = 1, math.random(1, 2) do
+					for i = 1, math.random(1, 3) do
 						local anglerand = 8
 						local missile = ents.Create("obj_fallentitan_missile")
 							missile:SetPos(self:GetAttachment(1).Pos)
 							missile:SetAngles(self:GetAngles() + Angle(math.random(-anglerand, anglerand), math.random(-anglerand, anglerand), 0))
 							missile:SetOwner(self)
 							missile:Spawn()
-							missile.damage = 12 + (GetConVar("zshelter_difficulty"):GetInt() * 1.5)
+							missile.damage = 15 + (GetConVar("zshelter_difficulty"):GetInt() * 1.5)
 
 							local phys = missile:GetPhysicsObject()
 

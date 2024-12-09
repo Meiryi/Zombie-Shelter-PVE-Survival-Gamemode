@@ -17,11 +17,13 @@ if SERVER then
 		util.SpriteTrail(self, 0, Color(255, 255, 255, 255), false, 10, 1, 1, 1/(15+1)*0.5, "trails/smoke.vmt")
 	end
 
+	ENT.Executed = false
 	function ENT:PhysicsCollide()
+		if(self.Executed) then return end
 		for k,v in ipairs(ents.FindInSphere(self:GetPos(), 200)) do
 			if(!v.IsBuilding && !v:IsPlayer()) then continue end
 			if(v.IsBuilding) then
-				ZShelter.ApplyDamageFast(v, self.damage * 0.65, true, true)
+				ZShelter.ApplyDamageFast(v, self.damage * 0.4, true, true)
 			else
 				v:TakeDamage(self.damage, self, self)
 			end
@@ -30,6 +32,8 @@ if SERVER then
 		local e = EffectData()
 			e:SetOrigin(self:GetPos())
 			util.Effect("Explosion", e)
+
 		self:Remove()
+		self.Executed = true
 	end
 end
