@@ -86,6 +86,13 @@ function ZShelter.ToggleBarricadeCollision(toggle)
 			v:SetColor(Color(255, 255, 255, 255))
 		end
 	end
+	for k,v in pairs(ents.FindByClass("func_breakable")) do
+		if(!IsValid(v)) then continue end
+		v.IsBarricade = true
+		v.IgnoreCollision = toggle
+		print(v.IgnoreCollision)
+		v:CollisionRulesChanged()
+	end
 end
 
 function ZShelter.OnNightSwitch()

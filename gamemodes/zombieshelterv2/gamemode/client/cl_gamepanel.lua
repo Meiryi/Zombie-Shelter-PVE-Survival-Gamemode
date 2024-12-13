@@ -227,9 +227,9 @@ local serverlist = {
 		maxplayers = 10,
 	},
 	{
-		host = "AnoZombie Shelter FR/EU | CUSTOM | FUN | DISCORD.GG/ANOMALIE",
-		address = "194.69.160.47:27043",
-		maxplayers = 32,
+		host = "STUDIO 缔造者 Q群:682625923",
+		address = "47.113.148.193:27017",
+		maxplayers = 8,
 	},
 }
 

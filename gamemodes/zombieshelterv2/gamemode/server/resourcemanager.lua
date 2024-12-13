@@ -19,6 +19,13 @@ function ZShelter.RemoveFromResList(index)
 	ZShelter.ResourceList[index] = nil
 end
 
+local resourceToSpawn = {
+	"obj_resource_wood", "obj_resource_iron"
+}
+local resClasses = {
+	obj_resource_wood = true,
+	obj_resource_iron = true,
+}
 function ZShelter.ClearResources()
 	local day = GetGlobalInt("Day", 1)
 	for k,v in pairs(ZShelter.ResourceList) do
@@ -38,13 +45,16 @@ function ZShelter.ClearResources()
 			ZShelter.ResourceList[k] = nil
 		end
 	end
+
+	for _, res in ipairs(ents.GetAll()) do
+		if(resClasses[res:GetClass()]) then
+			res:Remove()
+		end
+	end
 end
 
 ZShelter.ClearResources()
 
-local resourceToSpawn = {
-	"obj_resource_wood", "obj_resource_iron"
-}
 local resourceMaxAmount = {
 	obj_resource_wood = 6,
 	obj_resource_iron = 4,
@@ -52,7 +62,7 @@ local resourceMaxAmount = {
 
 function ZShelter.SpawnBonusResource()
 	for k,v in pairs(ents.FindByClass("info_zshelter_resource_bonus_area")) do
-		ZShelter.RandomResourceVec(v:GetPos() + Vector(0, 0, 5), 8)
+		ZShelter.RandomResourceVec(v:GetPos() + Vector(0, 0, 5), 10)
 	end
 end
 
@@ -147,7 +157,7 @@ function ZShelter.SpawnLootbox()
 	end
 end
 
-local rand = 400
+local rand = 350
 function ZShelter.RandomResourceVec(vec, amount)
 	for i = 1, amount do
 		local pos = util.QuickTrace(vec + Vector(math.random(-rand, rand), math.random(-rand, rand), 16), Vector(0, 0, -256)).HitPos
@@ -164,8 +174,6 @@ function ZShelter.RandomResourceVec(vec, amount)
 			res.Amount = amount
 			res.IsResource = true
 			res:SetNWBool("IsResource", true)
-
-		ZShelter.ResourceList[res:EntIndex()] = res
 	end
 end
 

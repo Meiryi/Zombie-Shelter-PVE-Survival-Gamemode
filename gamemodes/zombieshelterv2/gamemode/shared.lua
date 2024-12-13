@@ -327,7 +327,7 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 	if(ent2:GetNWBool("IsTurret", false) && ent1:IsPlayer()) then
 		return false
 	end
-	if((ent1.IgnoreCollision) && ent2:IsNPC()) then
+	if(ent1.IgnoreCollision && ent2:IsNPC()) then
 		return false
 	end
 	if(ent2.IgnoreCollision && ent1:IsNPC()) then

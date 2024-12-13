@@ -394,7 +394,7 @@ local v3 = 0
 local skillkey = 92
 local skillkeydown = false
 local spawnAlpha = 0
-local run = false
+local run = true
 local shouldWarn = false
 local pts = {}
 local calpha = 0
@@ -915,6 +915,41 @@ end)
 local bossringColor = Color(255, 0, 0, 120)
 local nextGetAllTime = 0
 local npcs = {}
+local mat = Material("models/debug/debugwhite")
+hook.Add("PreDrawTranslucentRenderables", "ZShelter-RenderBreakables", function()
+	local maxalpha = 0.8
+	local actualalpha = 1
+	local fraction = SysTime() % 2 / 2
+	if(fraction > 0.5) then
+		fraction = 1 - fraction
+	end
+	if(GetGlobalBool("Night")) then
+		maxalpha = 0.15
+		actualalpha = 0.85
+	end
+	local alpha = fraction * maxalpha
+	local color = Color(255, 255, 255, actualalpha * 255)
+	render.SetColorModulation(0.6, 0.3, 0.3)
+	for _, ent in ipairs(ents.FindByClass("func_breakable")) do
+		ent:SetNoDraw(true)
+		render.OverrideDepthEnable(true, false)
+		render.SetBlend(actualalpha)
+		ent:SetColor(color)
+		ent:DrawModel()
+
+		render.SetBlend(alpha)
+		render.OverrideDepthEnable(true, true)
+		ent:SetRenderMode(RENDERGROUP_TRANSLUCENT)
+		ent:SetMaterial("models/debug/debugwhite")
+		ent:DrawModel()
+
+		ent:SetMaterial("")
+	end
+	render.SetBlend(1)
+	render.SetColorModulation(1, 1, 1)
+	render.OverrideDepthEnable(false, true)
+end)
+
 hook.Add("PreDrawOpaqueRenderables", "ZShelter-DrawBossRings", function()
 	local time = SysTime()
 	if(nextGetAllTime < time) then -- I don't like running ents.GetAll() every frame, It's not good for performance

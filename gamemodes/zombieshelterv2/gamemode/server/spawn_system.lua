@@ -150,6 +150,7 @@ function ZShelter.SetupSpawnPoints()
 	local st = SysTime()
 	local shelterPos = ZShelter.Shelter:GetPos()
 	local aa, bb = shelterPos + Vector(-safeDistance, -safeDistance, -safeDistance), shelterPos + Vector(safeDistance, safeDistance, safeDistance)
+	local shelterindex = ZShelter.ShelterIndex || -1
 	for k,v in pairs(ZShelter.AiNodes) do
 		v = v + Vector(0, 0, 3)
 		if(qtrace(shelterPos, v)) then continue end
@@ -174,6 +175,7 @@ function ZShelter.SetupSpawnPoints()
 		print("---- Dedicated spawnpoints found ----")
 		ZShelter.ValidRaiderSpawnPoints = {}
 		for k,v in pairs(dedicated) do
+			if(shelterindex != -1 && v.ShelterIndex != shelterindex) then continue end
 			print("Added spawn point", v:GetPos())
 			table.insert(ZShelter.ValidRaiderSpawnPoints, v:GetPos())
 		end
@@ -199,7 +201,7 @@ function ZShelter.SetupSpawnPoints()
 end
 
 function ZShelter.BroadcastPoints()
-	local data, len = ZShelter.CompressTable(ZShelter.ResourceSpawnPoint)
+	local data, len = ZShelter.CompressTable(ZShelter.ValidRaiderSpawnPoints)
 	net.Start("ZShelter-SendPoints")
 	net.WriteUInt(len, 32)
 	net.WriteData(data, len)

@@ -84,7 +84,6 @@ end
 hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo)
 	local attacker = dmginfo:GetAttacker()
 	local damage = dmginfo:GetDamage()
-	
 	if(!IsValid(attacker) || !IsValid(target)) then return false end	
 
 	target.AttackedByTurrets = false
@@ -394,7 +393,7 @@ hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo,
 	local attacker = dmginfo:GetAttacker()
 	local inflictor = dmginfo:GetInflictor()
 	local damage = dmginfo:GetDamage()
-	if(IsValid(target) && target:IsPlayer() && target:Alive() && damage >= 0) then
+	if(IsValid(target) && target:IsPlayer() && target:Alive() && damage >= 0 && took) then
 		net.Start("ZShelter_PlayerHurt")
 		net.WriteEntity(attacker)
 		net.Send(target)
@@ -402,6 +401,11 @@ hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo,
 
 	if(!took) then return end
 	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
+
+	if(IsValid(target) && target:GetClass() == "func_breakable") then
+		ZShelter.SyncHP(target, attacker)
+	end
+
 	local pos = dmginfo:GetDamagePosition()
 	local mins, maxs = target:GetModelBounds()
 	mins.z = 0

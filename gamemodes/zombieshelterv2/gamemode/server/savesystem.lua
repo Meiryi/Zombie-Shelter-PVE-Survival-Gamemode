@@ -20,6 +20,7 @@ function ZShelter.SaveGame()
 			health = shelter:Health(),
 			maxhealth = shelter:GetMaxHealth(),
 			model = shelter:GetModel(),
+			shelterindex = ZShelter.ShelterIndex,
 		},
 	}
 
@@ -251,6 +252,7 @@ function ZShelter.CreateSaveShelter(shelterData)
 		shelter:SetMaxHealth(shelterData.maxhealth)
 
 		ZShelter.Shelter = shelter
+		ZShelter.ShelterIndex = shelterData.shelterindex || -1
 		ZShelter.ShelterInited = true
 		ZShelter.Shelter.IsBuilding = true
 		ZShelter.SpawnPos = shelter:GetPos() + (ZShelter.Shelter:GetAngles():Right() * 25 - ZShelter.Shelter:GetAngles():Forward() * 175)
