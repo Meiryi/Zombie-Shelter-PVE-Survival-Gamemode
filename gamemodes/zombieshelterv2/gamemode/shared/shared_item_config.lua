@@ -14,6 +14,7 @@
 ]]
 
 ZShelter.ItemConfig = {}
+ZShelter.ItemConfig_Debug = {}
 
 function ZShelter.SortItemConfig()
 	table.sort(ZShelter.ItemConfig, function(a,b) return (a.woods + a.irons) < (b.woods + b.irons) end)
@@ -50,7 +51,7 @@ function ZShelter.ConvertConfigToCode()
 end
 
 function ZShelter.AddItem(category, class, title, woods, irons, damage, no_ammo_supply, requiredskills, icon, volume, ammocapacity, ammoregen, shelterlevel, requiredLevel)
-	table.insert(ZShelter.ItemConfig, {
+	local data = {
 		category = category,
 		title = title,
 		class = class,
@@ -65,7 +66,11 @@ function ZShelter.AddItem(category, class, title, woods, irons, damage, no_ammo_
 		volume = volume,
 		shelterlevel = shelterlevel,
 		requiredLevel = requiredLevel || 0,
-	})
+	}
+	table.insert(ZShelter.ItemConfig, data)
+
+	local index = util.CRC(title..class)
+	ZShelter.ItemConfig_Debug[index] = data
 end
 
 function ZShelter.CreateDefaultItems()

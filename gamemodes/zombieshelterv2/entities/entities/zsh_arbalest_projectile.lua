@@ -35,7 +35,7 @@ if SERVER then
 			ent:SetVelocity(ent:GetVelocity() * -1 + vel + Vector(0, 0, 64)) -- No escape for you lol
 		end
 
-		local dmg = 50
+		local dmg = 70
 		if(self.HitTargets[ent:EntIndex()] < CurTime()) then
 			if(ent:IsPlayer() || (ent:IsNPC() && !ent.IsBuilding) || ent:IsNextBot()) then
 				local attacker = self:GetOwner()

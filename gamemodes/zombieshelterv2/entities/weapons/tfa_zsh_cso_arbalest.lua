@@ -687,10 +687,10 @@ function SWEP:Laser( damage, force, reach )
 		end
 	end
 
-	local dmg = 20
+	local dmg = 25
 	local t = CurTime() - self.HoldTime
 	if(t > 2) then
-		dmg = 30
+		dmg = 50
 	end
 	for entindex, _ in pairs(hits) do
 		local ent = Entity(entindex)

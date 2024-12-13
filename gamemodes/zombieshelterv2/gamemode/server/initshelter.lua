@@ -223,7 +223,7 @@ end
 ZShelter.Barricades = ZShelter.Barricades || {}
 function ZShelter.CreateBarricades()
 	local scale = (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.15))
-	local scale_breakable = (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.2))
+	local scale_breakable = (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.175))
 	local hp = 25000 * scale
 
 	for _, barricade in ipairs(ents.FindByClass("func_breakable")) do

@@ -49,6 +49,7 @@ if SERVER then
 		local hitent = data.HitEntity
 		if(IsValid(hitent) && hitent:IsPlayer()) then
 			hitent:TakeDamage(300, hitent, hitent)
+			self:Remove()
 			return
 		end
 		local owent = self.Owner and self.Owner or self

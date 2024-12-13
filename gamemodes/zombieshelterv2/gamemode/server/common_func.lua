@@ -68,7 +68,7 @@ end
 
 function ZShelter.CalcStartSkillPoints(amount)
 	if(amount <= 2) then
-		return 3
+		return 5 - amount
 	else
 		local pla = (amount - 2)
 		return math.max(3 - pla, 0)

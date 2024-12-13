@@ -251,7 +251,7 @@ ZShelter.Modifiers.Register("No skill boxes", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "No skillboxes will spawn",
-	scoreMul = 1.2,
+	scoreMul = 1.4,
 
 	hooks = {
 		ZShelterGameStarted = function()
@@ -264,7 +264,7 @@ ZShelter.Modifiers.Register("Increased amount of zombie", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "+100% Amount of zombies",
-	scoreMul = 1.15,
+	scoreMul = 1.5,
 
 	hooks = {
 		ZShelterGameStarted = function()
@@ -277,7 +277,7 @@ ZShelter.Modifiers.Register("Increased spawn rate", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "+100% Spawn rate",
-	scoreMul = 1.15,
+	scoreMul = 1.5,
 
 	hooks = {
 		ZShelterGameStarted = function()
@@ -291,7 +291,7 @@ ZShelter.Modifiers.Register("Less skillpoints", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "Gain skilpoints every 2 days",
-	scoreMul = 1.2,
+	scoreMul = 1.4,
 
 	hooks = {
 		["ZShelter-DaySwitch"] = function()
@@ -360,7 +360,7 @@ ZShelter.Modifiers.Register("Less time", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "-25% Day and night time",
-	scoreMul = 1.1,
+	scoreMul = 1.2,
 
 	hooks = {
 		ZShelterGameStarted = function()
@@ -373,7 +373,7 @@ ZShelter.Modifiers.Register("Increased enemy attack damage", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "+50% Enemy attack damage",
-	scoreMul = 1.1,
+	scoreMul = 1.35,
 
 	hooks = {
 		OnEntityCreated = function(ent)
@@ -424,7 +424,7 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "THE ULTIMATE AIDS GAME EXPERIENCE",
-	scoreMul = 4,
+	scoreMul = 5,
 
 	hooks = {
 		ZShelter_GetRespawnTime = function()
@@ -457,8 +457,12 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 		ZShelterGameStarted = function()
 			GetConVar("zshelter_difficulty"):SetInt(9)
 			ZShelter.StartedDifficulty = GetConVar("zshelter_difficulty"):GetInt()
-			SetGlobalInt("Time", 390)
+			SetGlobalInt("Time", 480)
 			SetGlobalFloat("EnemySpawnTimeMul", GetGlobalFloat("EnemySpawnTimeMul", 1) * 0.85)
+
+			for _, ply in ipairs(player.GetAll()) do
+				ply:SetNWInt("SkillPoints", ply:GetNWInt("SkillPoints") + 1)
+			end
 
 			ZShelter.EnemyConfig = {}
 
@@ -467,7 +471,6 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 			ZShelter.AddEnemy(1, false, true, true, "npc_vj_zshelter_heavy_boss", "none", 100, 45, 20000, -1, -1, 200, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(4, false, true, true, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 30000, -1, -1, 200, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(8, false, true, true, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 40000, -1, -1, 200, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-
 
 			ZShelter.AddEnemy(1, false, false, false, "npc_vj_zshelter_common_h", "none", 100, 12, 110, -1, -1, 8, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(1, true, false, false, "npc_vj_zshelter_common_h", "none", 100, 12, 110, -1, -1, 8, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
@@ -502,12 +505,10 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 			ZShelter.AddEnemy(15, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 3, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(20, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 5, CurMinDifficulty, CurMaxDifficulty)
 
-			ZShelter.AddEnemy(1, true, false, false, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 8000, 3, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(2, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 9000, 3, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 50, 10000, 4, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 15000, 6, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 50, 8000, 4, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 85, 8000, 6, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 20, 6000, 10, -1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(8, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 19000, 9, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(8, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 17000, 9, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 65, 20000, 11, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 20000, 11, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(12, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 24000, 13, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
