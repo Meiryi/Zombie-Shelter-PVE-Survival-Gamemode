@@ -128,6 +128,7 @@ ZShelter.L("#BuildingHint", {
 	["zh-CN"] = "[左键] 建造  |  [R] 旋转  |  [右键] 取消",
 })
 
+--[[
 ZShelter.L("#BuildHints", {
 	["en"] = "[B] Build Menu  |  [F2] Game Menu  |  [F6] Config Menu",
 	["bg"] = "[B] Меню за строеж  |  [F2] Меню на играта  |  [F6] Меню за настройки",
@@ -138,6 +139,43 @@ ZShelter.L("#BuildHints", {
 	["vi"] = "[B] Menu Xây Dựng  |  [F2] Menu Trò Chơi  |  [F6] Menu Cấu Hình",
 	["zh-TW"] = "[B] 建造清單  |  [F2] 遊戲介面 |  [F6] 設定介面",
 	["zh-CN"] = "[B] 建造菜单  |  [F2] 模式菜单 |  [F6] 设置菜单",
+})
+]]
+
+ZShelter.L("#Hint_Menu", {
+	["en"] = "Build Menu",
+	["bg"] = "Меню за строеж",
+	["de"] = "Baumenü",
+	["fr"] = "Menu de Construction",
+	["tr"] = "Yapı Menüsü",
+	["ru"] = "Постройки",
+	["vi"] = "Menu Xây Dựng",
+	["zh-TW"] = "建造清單",
+	["zh-CN"] = " 建造菜单",
+})
+
+ZShelter.L("#Hint_Game", {
+	["en"] = "Game Menu",
+	["bg"] = "Меню на играта",
+	["de"] = "Spielmenü",
+	["fr"] = "Menu du Jeu",
+	["tr"] = "Oyun Menüsü",
+	["ru"] = "Меню игры",
+	["vi"] = "Menu Trò Chơi",
+	["zh-TW"] = "遊戲介面",
+	["zh-CN"] = "模式菜单",
+})
+
+ZShelter.L("#Hint_Config", {
+	["en"] = "Config Menu",
+	["bg"] = "Меню за настройки",
+	["de"] = "Konfigmenü",
+	["fr"] = "Menu de Configuration",
+	["tr"] = "Konfig Menüsü",
+	["ru"] = "Конфигурация",
+	["vi"] = "Menu Cấu Hình",
+	["zh-TW"] = "設定介面",
+	["zh-CN"] = "设置菜单",
 })
 
 ZShelter.L("#Shelter", {

@@ -710,7 +710,7 @@ function ZShelter.PaintHUD()
 		local f = padding * 2
 		local cd = ply:GetNWFloat("UltimateCooldown", 0)
 		surface_SetDrawColor(255, 255, 255, 255)
-		if(!skillkeydown && input.IsKeyDown(92) && cd < CurTime()) then
+		if(!skillkeydown && input.IsKeyDown(ZShelter.Keybinds.Skill || 92) && cd < CurTime()) then
 			local canUseSkill = true
 			if(ply.Callbacks && ply.Callbacks.OnSkillPreCall) then
 				for k,v in pairs(ply.Callbacks.OnSkillPreCall) do
@@ -723,6 +723,7 @@ function ZShelter.PaintHUD()
 				ZShelter.UltimateSkill(skTable)
 			end
 		end
+		local key = string.upper(input.GetKeyName(ZShelter.Keybinds.Skill || 92))
 		local pad = tall * 0.5
 		surface_SetMaterial(skTable.icon)
 		if(cd > CurTime()) then
@@ -734,17 +735,17 @@ function ZShelter.PaintHUD()
 			ZShelter:CircleTimerAnimation(bx + pad, by + pad, rad, padding3x, fraction, Color(255, 255, 255, 255))
 			draw_DrawText(string.format("%1.1f", math.Round(time, 1)), "ZShelter-HUDElemFont", bx + pad, by + pad - padding, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 			surface_SetMaterial(skTable.icon)
-			draw_DrawText("F1", "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(100, 100, 100, 100), TEXT_ALIGN_CENTER)
+			draw_DrawText(key, "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(100, 100, 100, 100), TEXT_ALIGN_CENTER)
 		else
 			surface_DrawTexturedRect(wide + padding * 3, oY + padding, tall - f, tall - f)
-			draw_DrawText("F1", "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+			draw_DrawText(key, "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 		end
 		if(ply.Callbacks && ply.Callbacks.OnUltimateHUDPaint) then
 			for k,v in pairs(ply.Callbacks.OnUltimateHUDPaint) do
 				v(bx, by, tall, tall)
 			end
 		end
-		skillkeydown = input.IsKeyDown(skillkey)
+		skillkeydown = input.IsKeyDown(ZShelter.Keybinds.Skill || 92)
 	end
 
 	local ply = LocalPlayer()

@@ -44,6 +44,14 @@ function ZShelter.CraftWeapon(ply, data)
 	wep:SetNWInt("zsh_woods", data.woods)
 	wep:SetNWInt("zsh_irons", data.irons)
 
+	wep.RequiredSkills = {}
+
+	if(data.requiredskills) then
+		for k, v in pairs(data.requiredskills) do
+			table.insert(wep.RequiredSkills, v)
+		end
+	end
+
 	ply:PickupWeapon(wep)
 	ply:GiveAmmo(wep:GetMaxClip1(), wep:GetPrimaryAmmoType(), true)
 end
@@ -68,6 +76,20 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 
 	SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - data.woods, 0))
 	SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - data.irons, 0))
+end)
+
+hook.Add("PlayerCanPickupWeapon", "ZShelter-PickupWeapon", function(ply, weapon)
+	if(weapon.RequiredSkills) then
+		for k, v in pairs(weapon.RequiredSkills) do
+			local skills = string.Explode(",", v)
+			for _, skill in ipairs(skills) do
+				if(ply:GetNWInt("SK_"..skill, 0) <= 0) then
+					return false
+				end
+			end
+		end
+	end
+	return true
 end)
 
 concommand.Add("zshelter_debug_giveweapon", function(ply, cmd, arg)

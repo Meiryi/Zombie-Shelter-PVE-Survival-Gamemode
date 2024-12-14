@@ -230,6 +230,12 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 	if(cvar:GetInt() == 0) then
 		if(ent1:IsPlayer() && ent2:IsPlayer()) then return false end
 	end
+	if(ent1:GetNWBool("IsTurret", false) && ent2:IsPlayer()) then
+		return false
+	end
+	if(ent2:GetNWBool("IsTurret", false) && ent1:IsPlayer()) then
+		return false
+	end
 	if(CLIENT) then
 		if(ent1:IsPlayer() && ZShelter.IsAFKing && ent2:GetNWBool("IsBuilding")) then return false end
 		if(ent2:IsPlayer() && ZShelter.IsAFKing && ent1:GetNWBool("IsBuilding")) then return false end
@@ -320,12 +326,6 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 				return true
 			end
 		end
-	end
-	if(ent1:GetNWBool("IsTurret", false) && ent2:IsPlayer()) then
-		return false
-	end
-	if(ent2:GetNWBool("IsTurret", false) && ent1:IsPlayer()) then
-		return false
 	end
 	if(ent1.IgnoreCollision && ent2:IsNPC()) then
 		return false
