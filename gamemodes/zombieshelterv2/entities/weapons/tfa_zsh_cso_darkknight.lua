@@ -38,7 +38,7 @@ SWEP.Primary.Damage		= SWEP.Primary.Damage_Regular
 SWEP.DamageType = DMG_BULLET --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
 SWEP.Primary.DamageTypeHandled = false
 SWEP.Primary.BlastRadius	= 0 
-SWEP.Primary.Damage_Secondary		= 140				-- Damage, in standard damage points.
+SWEP.Primary.Damage_Secondary		= 250				-- Damage, in standard damage points.
 SWEP.Primary.NumShots	= 1 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
 SWEP.Primary.Automatic			= true					-- Automatic/Semi Auto
 SWEP.Primary.RPM				= 700					-- This is in Rounds Per Minute / RPM
@@ -84,6 +84,7 @@ SWEP.Primary.RangeFalloff = 1 -- The percentage of the range the bullet damage s
 
 --Penetration Related
 
+SWEP.Primary.PenetrationMultiplier = 1
 SWEP.MaxPenetrationCounter=2 --The maximum number of ricochets.  To prevent stack overflows.
 
 --Misc
@@ -438,6 +439,7 @@ function SWEP:Think2(...)
         self.Primary_TFA.KickHorizontal	= 0.03
 		self.Primary_TFA.AmmoConsumption = 1
 		self.Primary_TFA.NumShots = 1
+		self.Primary_TFA.PenetrationMultiplier = 0.75
 		self.VolumeMultiplier = 0.8
 		self.DrawCrosshairIS = false
 		self.MuzzleFlashEffect = "cso_muz_dkn"
@@ -446,14 +448,15 @@ function SWEP:Think2(...)
 	elseif self:GetIronSightsProgress() > 0.5 and not self:GetCSO_SwitchState() then
 		self.TracerName = "tra_zsh_darkknight"
 		self.Primary_TFA.DamageType = bit.bor(DMG_BLAST,DMG_BULLET)
-		self.Primary_TFA.Damage = self.Primary_TFA.Damage_Secondary
+		self.Primary_TFA.Damage = 200
 		self.Primary_TFA.Sound = Sound("DarkKnight.Fire2")
-		self.Primary_TFA.RPM = 300
-		self.Primary_TFA.KickUp	= 0.4
+		self.Primary_TFA.RPM = 270
+		self.Primary_TFA.KickUp	= 0.3
         self.Primary_TFA.KickDown	= 0.28
         self.Primary_TFA.KickHorizontal	= 0.06
 		self.Primary_TFA.AmmoConsumption = 1
 		self.Primary_TFA.NumShots = 1
+		self.Primary_TFA.PenetrationMultiplier = 0.25
 		self.VolumeMultiplier = 2.5
 		self.DrawCrosshairIS = true
 		self.MuzzleFlashEffect = "cso_muz_dkn2"

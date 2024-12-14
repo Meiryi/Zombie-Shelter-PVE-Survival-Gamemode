@@ -349,6 +349,7 @@ function ZShelter.AddBait(building)
 		bait:Spawn()
 		bait:SetCollisionGroup(1)
 		bait:SetNWBool("IsBuilding", true)
+		bait:SetNWBool("IsBait", true)
 		bait:SetNWBool("NoPlayerDamage", true)
 		bait:SetNWBool("Completed", true)
 		bait:SetNoDraw(true)
@@ -537,6 +538,12 @@ function ZShelter.CreateBuilding(ply, data, vec, yaw)
 
 		if(tdata.buildspeed) then
 			ent.bspeed = tdata.buildspeed
+		end
+
+		if(tdata.nwvars) then
+			for index, var in pairs(tdata.nwvars) do
+				ent:SetNWString(index, var)
+			end
 		end
 
 		if(tdata.durability) then

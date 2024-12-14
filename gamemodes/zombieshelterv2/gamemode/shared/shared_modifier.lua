@@ -33,7 +33,7 @@ if(SERVER) then
 		if(GetGlobalBool("GameStarted")) then return end
 		local str = net.ReadString()
 		local voted = ply:GetNWBool(str.."Voted", false)
-
+		if(GetGlobalInt("Day") > 1) then return end
 		if(voted) then
 			ply:SetNWBool(str.."Voted", false)
 		else
@@ -251,7 +251,7 @@ ZShelter.Modifiers.Register("No skill boxes", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "No skillboxes will spawn",
-	scoreMul = 1.2,
+	scoreMul = 1.4,
 
 	hooks = {
 		ZShelterGameStarted = function()
@@ -264,7 +264,7 @@ ZShelter.Modifiers.Register("Increased amount of zombie", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "+100% Amount of zombies",
-	scoreMul = 1.15,
+	scoreMul = 1.5,
 
 	hooks = {
 		ZShelterGameStarted = function()
@@ -277,7 +277,7 @@ ZShelter.Modifiers.Register("Increased spawn rate", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "+100% Spawn rate",
-	scoreMul = 1.15,
+	scoreMul = 1.5,
 
 	hooks = {
 		ZShelterGameStarted = function()
@@ -291,7 +291,7 @@ ZShelter.Modifiers.Register("Less skillpoints", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "Gain skilpoints every 2 days",
-	scoreMul = 1.2,
+	scoreMul = 1.4,
 
 	hooks = {
 		["ZShelter-DaySwitch"] = function()
@@ -360,7 +360,7 @@ ZShelter.Modifiers.Register("Less time", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "-25% Day and night time",
-	scoreMul = 1.1,
+	scoreMul = 1.2,
 
 	hooks = {
 		ZShelterGameStarted = function()
@@ -373,7 +373,7 @@ ZShelter.Modifiers.Register("Increased enemy attack damage", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "+50% Enemy attack damage",
-	scoreMul = 1.1,
+	scoreMul = 1.35,
 
 	hooks = {
 		OnEntityCreated = function(ent)
@@ -423,31 +423,130 @@ ZShelter.Modifiers.Register("Enemy running on day", {
 ZShelter.Modifiers.Register("Hardcore mode", {
 	category = "Increase Difficulty",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "Ultimate aids game experience",
-	scoreMul = 1.65,
+	desc = "THE ULTIMATE AIDS GAME EXPERIENCE",
+	scoreMul = 5,
 
 	hooks = {
-		ZShelterGameStarted = function()
-			for k,v in ipairs(player.GetAll()) do
-				v:SetNWInt("SkillPoints", 0)
-				ZShelter.ApplyDamageMul(v, "Hardcore_Debuff", 0.9, 32767, true)
-			end
-			SetGlobalInt("Time", 150)
+		ZShelter_GetRespawnTime = function()
+			return GetGlobalInt("Time")
+		end,
+		ZShelter_PreTriggerHorde = function()
+			local classes = {"npc_vj_zshelter_boss_fallen_titan", "npc_vj_zshelter_boss_prototype_phobos_siege", "npc_vj_zshelter_boss_ampsuit"}
+			for i = 1, 3 do
+				local pos = ZShelter.ValidRaiderSpawnPoints[math.random(1, #ZShelter.ValidRaiderSpawnPoints)]
+				if(!pos) then return true end
+				local boss = ents.Create(classes[math.random(1, #classes)])
+					boss.damage = 80
+					boss:Spawn()
+					boss:SetPos(pos)
+					boss:SetMaxHealth(40000)
+					boss:SetHealth(40000)
+					boss:SetRenderMode(RENDERMODE_TRANSCOLOR)
+					boss:SetColor(Color(255, 0, 0, 255))
 
-			SetGlobalFloat("EnemySpawnMul", GetGlobalFloat("EnemySpawnMul", 1) * 1.75)
-			SetGlobalFloat("EnemySpawnTimeMul", GetGlobalFloat("EnemySpawnTimeMul", 1) * 0.75)
-			SetGlobalFloat("ResourceMul", GetGlobalFloat("ResourceMul", 1) * 0.5)
-			SetGlobalInt("EnemySpawnForwardDay", GetGlobalInt("EnemySpawnForwardDay", 0) + 2)
+					boss:SetNWBool("IsZShelterEnemy", true)
+					boss:SetNWBool("ZShelterDisplayHP", true)
+					boss.IsBoss = true
+					boss.IsZShelterEnemy = true
+
+					boss:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
+					boss.ImmunityNightDamage = true
+			end
+			return true
+		end,
+		ZShelterGameStarted = function()
 			GetConVar("zshelter_difficulty"):SetInt(9)
 			ZShelter.StartedDifficulty = GetConVar("zshelter_difficulty"):GetInt()
-		end,
+			SetGlobalInt("Time", 480)
+			SetGlobalFloat("EnemySpawnTimeMul", GetGlobalFloat("EnemySpawnTimeMul", 1) * 0.85)
 
-		PlayerSpawn = function(ply)
-			ZShelter.ApplyDamageMul(ply, "Hardcore_Debuff", 0.9, 32767, true)
-		end,
+			for _, ply in ipairs(player.GetAll()) do
+				ply:SetNWInt("SkillPoints", ply:GetNWInt("SkillPoints") + 1)
+			end
 
-		PostPlayerDeath = function(ply)
-			ply:SetNWFloat("RespawnTime", CurTime() + GetGlobalInt("Time"))
+			ZShelter.EnemyConfig = {}
+
+			local CurMinDifficulty, CurMaxDifficulty = 9, 9
+			-- day, night_or_day, isboss, noclear, class, mutation, chance, attack, hp, end_day, maxamount, hp_boost_day, color, max_exists, min_difficulty, max_difficulty
+			ZShelter.AddEnemy(1, false, true, true, "npc_vj_zshelter_heavy_boss", "none", 100, 45, 20000, -1, -1, 200, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(4, false, true, true, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 30000, -1, -1, 200, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(8, false, true, true, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 40000, -1, -1, 200, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+
+			ZShelter.AddEnemy(1, false, false, false, "npc_vj_zshelter_common_h", "none", 100, 12, 110, -1, -1, 8, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(1, true, false, false, "npc_vj_zshelter_common_h", "none", 100, 12, 110, -1, -1, 8, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(1, false, false, false, "npc_vj_zshelter_common_o", "none", 100, 14, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(1, true, false, false, "npc_vj_zshelter_common_o", "none", 100, 14, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(1, false, false, false, "npc_vj_zshelter_light_h", "none", 100, 13, 110, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(1, true, false, false, "npc_vj_zshelter_light_h", "none", 100, 13, 110, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(1, false, false, false, "npc_vj_zshelter_light_o", "none", 100, 13, 140, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(1, true, false, false, "npc_vj_zshelter_light_o", "none", 100, 13, 140, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(2, true, false, false, "npc_vj_zshelter_dog", "none", 100, 15, 150, -1, -1, 8, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(3, false, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(3, false, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_boomer_h", "none", 100, 25, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_boomer_h", "none", 100, 25, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_boomer_o", "none", 100, 25, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_boomer_o", "none", 100, 25, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+
+			ZShelter.AddEnemy(1, false, false, false, "npc_vj_zshelter_common_h_grenade", "none", 100, 10, 150, -1, -1, 0, Color(55, 255, 55, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(1, true, false, false, "npc_vj_zshelter_common_h_grenade", "none", 100, 10, 150, -1, -1, 0, Color(55, 255, 55, 255), 3, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(2, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 3, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(8, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(9, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 3, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(15, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 3, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(20, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 5, CurMinDifficulty, CurMaxDifficulty)
+
+			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 50, 8000, 4, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 85, 8000, 6, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 20, 6000, 10, -1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(8, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 17000, 9, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 65, 20000, 11, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 20000, 11, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(12, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 24000, 13, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(12, true, false, false, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 24000, 13, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(13, true, false, false, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 24000, 14, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(14, true, false, false, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 25000, 15, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(14, true, false, false, "npc_vj_zshelter_boss_oberon", "none", 100, 85, 25000, 15, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(15, true, false, false, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 24000, 16, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(15, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 85, 24000, 16, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+
+			ZShelter.AddEnemy(16, true, false, false, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 24000, 18, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(17, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 85, 24000, 18, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+
+			ZShelter.AddEnemy(18, true, false, false, "npc_vj_zshelter_boss_oberon", "none", 100, 85, 24000, 20, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(19, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 85, 24000, 20, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+
+			ZShelter.AddEnemy(20, true, false, false, "npc_vj_zshelter_boss_prototype_phobos_siege", "none", 100, 85, 24000, -1, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(20, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 85, 24000, -1, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(20, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 85, 24000, -1, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+
+			ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 20, 7000, 14, -1, 0, Color(255, 255, 255, 255), 2, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(14, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 20, 8000, 17, -1, 0, Color(255, 255, 255, 255), 3, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(17, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 20, 8000, -1, -1, 0, Color(255, 255, 255, 255), 4, CurMinDifficulty, CurMaxDifficulty)
+
+			ZShelter.AddEnemy(1, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 2200, 3, 1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 2600, 5, 2, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3000, 8, 4, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(8, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3000, 11, 6, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(11, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3200, 13, 8, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(13, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3400, 15, 10, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(15, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3400, 17, 14, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(17, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3400, -1, 20, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+
+			SetGlobalBool("BP_Mending Tower", true)
+			SetGlobalBool("BP_Freeze Tower", true)
+
+			ZShelter.SpawnResources(130)
+			ZShelter.FilteEnemy()
 		end,
 	},
 })

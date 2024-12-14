@@ -37,13 +37,17 @@ function ENT:Think()
 			if(!ZShelter.ValidatePlayerDistance(self, v, 86)) then continue end
 			local wep = v:GetActiveWeapon()
 			if(!IsValid(wep) || wep:GetPrimaryAmmoType() == -1 || !wep.CanGetAmmoSupply || (wep.AmmoRegenSpeed != -1 && wep.NextAmmoRegen && wep.NextAmmoRegen > CurTime())) then continue end
+			local plyCapacity = ZShelter.AmmoCapacity * v:GetNWFloat("ZShelter-AmmoCapacity", 1)
+			local currentAmmos = v:GetAmmoCount(wep:GetPrimaryAmmoType())
+			if(currentAmmos >= plyCapacity) then continue end
 			if(wep.AmmoCapacity == -1) then
 				local ammos = math.min(wep:GetMaxClip1() * 2, self:GetNWInt("CurrentAmmos", 3000))
 				if(ammos <= 1) then
 					ammos = math.min(1, self:GetNWInt("CurrentAmmos", 3000))
 				end
 				v:GiveAmmo(ammos, wep:GetPrimaryAmmoType(), true)
-				self:SetNWInt("CurrentAmmos", math.max(self:GetNWInt("CurrentAmmos", 3000) - ammos, 0))
+				local take = math.Clamp(ammos, 0, plyCapacity - currentAmmos)
+				self:SetNWInt("CurrentAmmos", math.max(self:GetNWInt("CurrentAmmos", 3000) - take, 0))
 			else
 				local ammos = 1
 				local cammos = v:GetAmmoCount(wep:GetPrimaryAmmoType())

@@ -25,7 +25,7 @@ SWEP.ProceduralHolsterTime = 0
 --
 --Firing related
 SWEP.Primary.Sound = Sound("Desperado.Fire") -- This is the sound of the weapon, when you shoot.
-SWEP.Primary.Damage = 50 -- Damage, in standard damage points.
+SWEP.Primary.Damage = 120 -- Damage, in standard damage points.
 SWEP.DamageType = DMG_BULLET --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
 SWEP.Primary.NumShots = 1 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
 SWEP.Primary.Automatic = true -- Automatic/Semi Auto

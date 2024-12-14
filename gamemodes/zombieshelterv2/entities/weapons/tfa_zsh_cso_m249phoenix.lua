@@ -25,7 +25,7 @@ SWEP.ProceduralHolsterTime = 0
 --Firing related
 SWEP.Primary.Sound 			= Sound("M249P.Fire")				-- This is the sound of the weapon, when you shoot.
 SWEP.Primary.Damage_Regular		= 90					-- Damage, in standard damage points.
-SWEP.Primary.Damage		= 85
+SWEP.Primary.Damage		= 140
 SWEP.DamageType = DMG_BULLET --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
 SWEP.Primary.DamageTypeHandled = false
 SWEP.Primary.BlastRadius	= 0 
@@ -55,7 +55,7 @@ SWEP.FireModes = {"Auto"}
 
 --Ammo Related
 
-SWEP.Primary.ClipSize			= 100					-- This is the size of a clip
+SWEP.Primary.ClipSize			= 120					-- This is the size of a clip
 SWEP.Primary.DefaultClip			= 300				-- This is the number of bullets the gun gives you, counting a clip as defined directly above.
 SWEP.Primary.Ammo			= "ar2"					-- What kind of ammo.  Options, besides custom, include pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, and AirboatGun.
 --Pistol, buckshot, and slam like to ricochet. Use AirboatGun for a light metal peircing shotgun pellets
@@ -71,7 +71,7 @@ SWEP.Primary.StaticRecoilFactor = 0.2 	--Amount of recoil to directly apply to E
 --Firing Cone Related
 
 SWEP.Primary.Spread		= .005					--This is hip-fire acuracy.  Less is more (1 is horribly awful, .0001 is close to perfect)
-SWEP.Primary.IronAccuracy = .0025	-- Ironsight accuracy, should be the same for shotguns
+SWEP.Primary.IronAccuracy = .035	-- Ironsight accuracy, should be the same for shotguns
 
 --Unless you can do this manually, autodetect it.  If you decide to manually do these, uncomment this block and remove this line.
 SWEP.Primary.SpreadMultiplierMax = 4.5 --How far the spread can expand when you shoot.
@@ -437,6 +437,7 @@ function SWEP:Initialize()
 	self.StatCache_Blacklist["Primary.Sound"] = true
 	self.StatCache_Blacklist["Primary.RPM"] = true
 	self.StatCache_Blacklist["Primary.Spread"] = true
+	self.StatCache_Blacklist["Primary_TFA.Spread"] = true
 	self.StatCache_Blacklist["Primary.DamageType"] = true
 	self.StatCache_Blacklist["Primary.AmmoConsumption"] = true
 	self.StatCache_Blacklist["Primary.NumShots"] = true
@@ -456,7 +457,7 @@ end
 
 function SWEP:Think2(...)
 	if self:GetIronSightsProgress() <= 0.5 and self:GetCSO_SwitchState() then
-		self.Primary_TFA.Damage = 85
+		self.Primary_TFA.Damage = 135
 		self.Primary_TFA.Sound = Sound("M249P.Fire")
 		self.TracerName = "cso_tra_m249phoenix"
 		self.Primary_TFA.DamageType = DMG_BULLET
@@ -469,12 +470,12 @@ function SWEP:Think2(...)
 		self:ClearStatCache()
 	elseif self:GetIronSightsProgress() > 0.5 and not self:GetCSO_SwitchState() then
 		self.TracerName = "tra_zsh_m249phoenix"
-		self.Primary_TFA.Damage = 210
+		self.Primary_TFA.Damage = 100
 		self.Primary_TFA.DamageType = bit.bor(DMG_BLAST,DMG_AIRBOAT)
 		self.Primary_TFA.Sound = Sound("M249P.Fire2")
-		self.Primary_TFA.RPM = 120
+		self.Primary_TFA.RPM = 100
 		self.Primary_TFA.AmmoConsumption = 1
-		self.Primary_TFA.NumShots = 1
+		self.Primary_TFA.NumShots = 6
 		self.DrawCrosshairIS = true
 		self.MuzzleFlashEffect = "cso_muz_m249phoenix"
 		self:SetCSO_SwitchState(true)

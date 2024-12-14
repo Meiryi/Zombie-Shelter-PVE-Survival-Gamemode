@@ -559,8 +559,33 @@ ZShelter.AddInfo("Defense Matrix", {
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "",
-		["zh-CN"] = "",
+		["zh-TW"] = "當你將槍塔放置在彼此附近時增加防禦\n每升級一次增加 25% 最大傷害抵抗",
+		["zh-CN"] = "当你将枪塔放置在彼此附近时增加防御\n每升级一次增加 25% 最大伤害抵抗",
+		["ru"] = "",
+	}
+})
+
+ZShelter.AddInfo("Offensive Matrix", {
+	title = {
+		["en"] = "Offensive Matrix",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "攻擊矩陣",
+		["zh-CN"] = "攻击矩阵",
+		["ru"] = "",
+	},
+	desc = {
+		["en"] = "Increases turret's attack damage when you place them near each other\n+13% Maximum attack damage per upgrade",
+		["bg"] = "",
+		["de"] = "",
+		["fr"] = "",
+		["tr"] = "",
+		["vi"] = "",
+		["zh-TW"] = "當你將槍塔放置在彼此附近時增加攻擊傷害\n每升級一次增加 13% 最大攻擊傷害",
+		["zh-CN"] = "当你将枪塔放置在彼此附近时增加攻击伤害\n每升级一次增加 13% 最大攻击伤害",
 		["ru"] = "",
 	}
 })
@@ -578,14 +603,14 @@ ZShelter.AddInfo("Armor Repairing", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Allow you to repair teammate's armor by hitting them with melee\n+7.5 Armor per upgrade",
+		["en"] = "Allow you to repair teammate's armor by hitting them with melee\n+20 Armor per upgrade",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "可以使用近戰武器修復隊友的護甲\n每升級一次增加 7.5 護甲",
-		["zh-CN"] = "可以使用近战武器修复队友的护甲\n每升级一次增加 7.5 护甲",
+		["zh-TW"] = "可以使用近戰武器修復隊友的護甲\n每升級一次增加 20 護甲",
+		["zh-CN"] = "可以使用近战武器修复队友的护甲\n每升级一次增加 20 护甲",
 		["ru"] = "",
 	}
 })

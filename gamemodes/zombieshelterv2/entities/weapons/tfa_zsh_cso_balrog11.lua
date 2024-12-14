@@ -49,7 +49,7 @@ SWEP.DefaultFireMode 	= "" --Default to auto or whatev
 
 --Ammo Related
 
-SWEP.Primary.ClipSize			= 7					-- This is the size of a clip
+SWEP.Primary.ClipSize			= 10					-- This is the size of a clip
 SWEP.Primary.DefaultClip			= 77				-- This is the number of bullets the gun gives you, counting a clip as defined directly above.
 SWEP.Primary.Ammo			= "buckshot"					-- What kind of ammo.  Options, besides custom, include pistol, 357, smg1, ar2, buckshot, slam, SniperPenetratedRound, and AirboatGun.  
 --Pistol, buckshot, and slam like to ricochet. Use AirboatGun for a light metal peircing shotgun pellets
@@ -464,14 +464,14 @@ function SWEP:SecondaryAttack()
     end
 end
 
-SWEP.Secondary.MaxAmmo = 7
+SWEP.Secondary.MaxAmmo = 10
 
 SWEP.NextGen = 0
 
 function SWEP:PostPrimaryAttack()
     self.NextGen = self.NextGen + 1
 	if SERVER then
-		if self.NextGen >= 4 and self:Ammo2() < 7 then
+		if self.NextGen >= 4 and self:Ammo2() < 10 then
 			self.Owner:GiveAmmo(1, self.Secondary.Ammo, true)
 			self:PlaySound("weapons/tfa_cso/balrog11/charge.wav")
 			self:CallOnClient("PlaySound", "weapons/tfa_cso/balrog11/charge.wav")
@@ -479,6 +479,11 @@ function SWEP:PostPrimaryAttack()
 		end
 	end
     BaseClass.PostPrimaryAttack(self)
+end
+
+function SWEP:LoadShell()
+	self:SetClip1(math.min(self:Clip1() + 1, self:GetMaxClip1()))
+	return BaseClass.LoadShell(self)
 end
 
 if CLIENT then

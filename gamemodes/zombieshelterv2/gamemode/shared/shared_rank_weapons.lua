@@ -146,6 +146,7 @@ ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_clawhammer")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_skull9")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_mastercombatknife")
 ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_tritacknife")
+ZShelter.RegisterMeleeWeapon("tfa_zsh_cso_miracle_prism")
 
 for _, meleedata in pairs(ZShelter.RankMelees) do
 	ZShelter.RegisterMeleeWeapon(meleedata.class)

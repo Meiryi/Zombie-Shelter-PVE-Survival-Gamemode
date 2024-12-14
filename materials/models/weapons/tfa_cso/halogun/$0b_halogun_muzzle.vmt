@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	$basetexture	"models\weapons\tfa_cso\halogun\$0b_halogun_muzzle"
+	$additive		1
+    $nocull		1
+}

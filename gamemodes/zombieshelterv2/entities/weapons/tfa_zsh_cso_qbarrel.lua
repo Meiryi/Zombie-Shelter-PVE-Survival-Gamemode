@@ -395,7 +395,7 @@ function SWEP:SecondaryAttack( ... )
             BaseClass.PrimaryAttack( self, ... )
             self:SendViewModelAnim( ACT_VM_SECONDARYATTACK )
             if(SERVER) then
-            	ZShelter.AddNoise(85)
+            	ZShelter.AddNoise(60)
             end
         elseif self:GetOwner():KeyDown(IN_ATTACK2) then
 		    self.Primary_TFA.Damage = 25

@@ -1,4 +1,5 @@
 DEFINE_BASECLASS("tfa_bash_base")
+SWEP.IsZShelterMeleeWeapon = true
 SWEP.DrawCrosshair = false
 SWEP.SlotPos = 72
 SWEP.Slot = 0
@@ -681,6 +682,8 @@ function SWEP:Strike(attk, precision)
     end
 	if(oldstyle) then
 		self:ArccwStyleMelee(attk)
+		self:PostAttack()
+		return
 	end
 
 	local reach = 32 + attk.len
@@ -1156,8 +1159,14 @@ SWEP.DisplayCTime = 0
 SWEP.DisplayAlpha = 255
 SWEP.DisplayString = "#BuildHints"
 function SWEP:DrawHUDBackground()
+	--[[
+		#Hint_Menu
+		#Hint_Game
+		#Hint_Config
+	]]
     if(self.DisplayCTime < CurTime()) then
-        self.DisplayString = ZShelter_GetTranslate("#BuildHints")
+        self.DisplayString = "["..string.upper(input.GetKeyName(ZShelter.Keybinds.BuildMenu)).."] "..ZShelter_GetTranslate("#Hint_Menu").." | ["..string.upper(input.GetKeyName(ZShelter.Keybinds.GameUI)).."] "..ZShelter_GetTranslate("#Hint_Game").." | ["..string.upper(input.GetKeyName(ZShelter.Keybinds.ConfigMenu)).."] "..ZShelter_GetTranslate("#Hint_Config")
+		
         self.DisplayCTime = CurTime() + 1
     end
     draw.DrawText(self.DisplayString, "ZShelter-HUDWeapon", ScrW() * 0.5, ScrH() * 0.935, color_white, TEXT_ALIGN_CENTER)

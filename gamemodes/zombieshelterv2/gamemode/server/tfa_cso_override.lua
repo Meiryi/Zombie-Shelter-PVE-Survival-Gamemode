@@ -70,7 +70,7 @@ function GetSwordDamage(ply)
 	local wList = {
 		["tfa_cso_budgetsword"] = GetConVar("sv_tfa_cso_budgetsword_skill_damage"):GetInt(),
 		["tfa_cso_dualsword"] = GetConVar("sv_tfa_cso_dualsword_skill_damage"):GetInt(),
-		["tfa_zsh_cso_dualsword"] = 35,
+		["tfa_zsh_cso_dualsword"] = 40,
 		["tfa_cso_dualsword_rb"] = GetConVar("sv_tfa_cso_dualsword_rb_skill_damage"):GetInt(),
 	}
 	return wList[pWep:GetClass()]

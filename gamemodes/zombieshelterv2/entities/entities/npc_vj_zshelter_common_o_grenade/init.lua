@@ -103,7 +103,7 @@ end
 ENT.NextGrenadeTime = 0
 function ENT:CustomOnThink()
 	local enemy = self:GetTarget() 
-	if(IsValid(enemy) && ZShelterVisibleNPC(self, enemy) && self:GetPos():Distance(enemy:GetPos()) < 2048) then
+	if(IsValid(enemy) && ZShelterVisibleNPC(self, enemy) && self:GetPos():Distance(enemy:GetPos()) < 1300) then
 		if(self.NextGrenadeTime < CurTime()) then
 			self:GrenadeSkill(enemy)
 			self:VJ_ACT_PLAYACTIVITY("zbs_shoot_grenade_idle1", false, false)

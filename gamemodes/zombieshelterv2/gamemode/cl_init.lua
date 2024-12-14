@@ -14,6 +14,15 @@
 ]]
 
 ZShelter = ZShelter || {}
+ZShelter.Keybinds = {
+	["BuildMenu"] = 12,
+	["SkillMenu"] = 24,
+	["ConfigMenu"] = 97,
+	["DropGun"] = 17,
+	["Ready"] = 95,
+	["GameUI"] = 93,
+	["Skill"] = 92,
+}
 
 AddCSLuaFile()
 include("shared.lua")

@@ -105,8 +105,12 @@ function ZShelter.CheckStart()
 			for k,v in pairs(player.GetAll()) do
 				v:Freeze(false)
 			end
+
+			hook.Run("ZShelterGameStarted")
+			
 			ZShelter.FilteEnemy()
 			ZShelter.SetupTreasureArea()
+			ZShelter.SpawnBonusResource()
 			ZShelter.SpawnLootbox()
 			ZShelter.StartTime = CurTime()
 			net.Start("ZShelter-StartMessage")
@@ -114,7 +118,6 @@ function ZShelter.CheckStart()
 			ZShelter.StartedDifficulty = GetConVar("zshelter_difficulty"):GetInt()
 			SetGlobalBool("GameStarted", true)
 			SetGlobalInt("TStart", CurTime())
-			hook.Run("ZShelterGameStarted")
 		end)
 		SetGlobalBool("RunSequence", false)
 		SetGlobalBool("ReadyState", false)

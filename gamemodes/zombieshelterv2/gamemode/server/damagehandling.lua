@@ -14,6 +14,7 @@
 ]]
 
 util.AddNetworkString("ZShelter-DamageNumber")
+util.AddNetworkString("ZShelter_PlayerHurt")
 
 function ZShelter.DealNoScaleDamage(attacker, victim, damage)
 	local dmginfo = DamageInfo()
@@ -44,6 +45,7 @@ function ZShelter.Ignite(victim, attacker, duration, damage)
 end
 
 function ZShelter.StunEntity(ent, stuntime)
+	if(ent.StunImmunity || (ent.StunImmunityTime && ent.StunImmunityTime > CurTime())) then return end
 	if(ent.StunTimer && ent.StunTimer > CurTime() && ent.StunTimer > CurTime() + stuntime) then return end -- Preventing stun timer getting reset
 	ent:NextThink(CurTime() + stuntime)
 	ent.StunTimer = CurTime() + stuntime
@@ -82,7 +84,6 @@ end
 hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo)
 	local attacker = dmginfo:GetAttacker()
 	local damage = dmginfo:GetDamage()
-	
 	if(!IsValid(attacker) || !IsValid(target)) then return false end	
 
 	target.AttackedByTurrets = false
@@ -170,6 +171,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 
 	if(target.IsBoss && !target.Awake) then
 		target:NextThink(CurTime())
+		target:SetNWBool("ZShelterBossAwake", true)
 		target.Awake = true
 	end
 
@@ -186,6 +188,10 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 					for k,v in pairs(wep.Callbacks.OnHit) do
 						v(attacker, target, dmginfo)
 					end
+				end
+
+				if(wep.ZShelter_OnHit) then
+					wep:ZShelter_OnHit(target, dmginfo)
 				end
 			end
 			if(!ismelee) then
@@ -248,6 +254,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		if(attacker.DamageNerfTime && attacker.DamageNerfTime > CurTime()) then
 			damage = math.max(damage * 0.5, 1)
 		end
+		dmginfo:SetDamage(damage)
 		if(attacker:GetNWBool("DurabilitySystem", false)) then
 			if(!attacker.LastDurabilityCostTime) then
 				attacker.LastDurabilityCostTime = 0
@@ -259,9 +266,10 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		end
 		local player = attacker:GetOwner()
 		local dmgscale = player:GetNWFloat("TurretDamageScale", 1)
+		local bonusdamage = 0
 		if(player.Callbacks && player.Callbacks.OnBuildingDealDamage) then
 			for k,v in pairs(player.Callbacks.OnBuildingDealDamage) do
-				v(attacker, dmginfo, target)
+				bonusdamage = bonusdamage + (v(attacker, dmginfo, target) || 0)
 			end
 		end
 		if(attacker.IsTrap) then
@@ -269,7 +277,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		end
 		dmginfo:SetAttacker(player)
 		dmginfo:SetInflictor(player)
-		dmginfo:SetDamage(damage * (dmgscale * addScale))
+		dmginfo:SetDamage((damage + bonusdamage) * (dmgscale * addScale))
 		attacker:SetNWInt("ZShelter_DamageDealt", attacker:GetNWInt("ZShelter_DamageDealt", 0) + dmginfo:GetDamage())
 		if(attacker.IsTurret) then
 			target.AttackedByTurrets = true
@@ -299,6 +307,7 @@ end)
 hook.Add("OnNPCKilled", "ZShelter-EntityKilled", function(npc, attacker, inflictor)
 	if(!IsValid(npc)) then return end
 	npc:SetCollisionGroup(10)
+	npc:CollisionRulesChanged()
 	if(npc.IsBoss && !npc.KilledBySystem) then
 		ZShelter.SpawnLootboxVec(npc:GetPos())
 	end
@@ -381,11 +390,22 @@ hook.Add("Tick", "ZShelter-SendDamage", function()
 end)
 
 hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo, took)
-	if(!took) then return end
 	local attacker = dmginfo:GetAttacker()
 	local inflictor = dmginfo:GetInflictor()
-	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
 	local damage = dmginfo:GetDamage()
+	if(IsValid(target) && target:IsPlayer() && target:Alive() && damage >= 0 && took) then
+		net.Start("ZShelter_PlayerHurt")
+		net.WriteEntity(attacker)
+		net.Send(target)
+	end
+
+	if(!took) then return end
+	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
+
+	if(IsValid(target) && target:GetClass() == "func_breakable") then
+		ZShelter.SyncHP(target, attacker)
+	end
+
 	local pos = dmginfo:GetDamagePosition()
 	local mins, maxs = target:GetModelBounds()
 	mins.z = 0
@@ -396,6 +416,7 @@ hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo,
 	if(pos == Vector(0, 0, 0) || (IsValid(inflictor) && p1:Distance(p2) < dst)) then
 		pos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z * 0.5)
 	end
+
 	ZShelter.AddDamageNumber(attacker, target:EntIndex(), damage, pos)
 end)
 

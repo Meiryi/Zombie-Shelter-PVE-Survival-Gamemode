@@ -202,13 +202,17 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 		upgradeHoldTime = CurTime()
 	end
 
-	if(IsValid(entity) && entity:GetNWBool("IsBuilding", false) && !entity:GetNWBool("NoHUD", false)) then
+	if((IsValid(entity) && entity:GetNWBool("IsBuilding", false) && !entity:GetNWBool("NoHUD", false)) || (IsValid(entity) && entity:GetClass() == "func_breakable")) then
 		local health = entity:GetNWInt("ZShelter-Health", entity:Health())
 		if(!entity.hlen || !entity.olen) then
 			entity.hlen = health
 			entity.olen = 0
 		end
-		local name = ZShelter_GetTranslate("#"..entity:GetNWString("Name", "Friendly Building"))
+		local nwname = entity:GetNWString("Name", "Friendly Building")
+		if(entity:GetClass() == "func_breakable") then
+			nwname = "Barricade"
+		end
+		local name = ZShelter_GetTranslate("#"..nwname)
 		if(entity == GetGlobalEntity("ShelterEntity")) then
 			name = ZShelter_GetTranslate_Var("#ShelterNick", GetGlobalInt("ShelterLevel", 0) + 1)
 		end

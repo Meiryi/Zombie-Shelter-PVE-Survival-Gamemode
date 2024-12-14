@@ -226,16 +226,6 @@ function ZShelter.DrawPowerOutage()
 	local offs = size / 2
 	surface_SetMaterial(currentImage)
 
-	if(shouldDisplay) then
-		for k,v in pairs(ents.GetAll()) do
-			if(!v:IsNPC()) then continue end
-			local pos = v:GetPos()
-			local offs = Vector(0, 0, v:EyePos().z)
-			local p1, p2, p3 = pos:ToScreen(), pos:ToScreen(), pos:ToScreen()
-			draw.DrawText(v:GetClass(), "DermaDefault", p3.x, p3.y, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
-		end
-	end
-
 	for _, building in pairs(ents.FindInSphere(LocalPlayer():GetPos(), 1024)) do
 		if(building:GetNWFloat("StunTime", 0) < CurTime()) then continue end
 		if(!building:GetNWBool("IsBuilding", false)) then continue end
@@ -246,17 +236,25 @@ end
 
 local dmgs = {}
 local cvar = GetConVar("zshelter_damage_number")
+local popup_cvar = GetConVar("zshelter_damage_popup")
+local dps_cvar = GetConVar("zshelter_damage_dps")
+local staytime_cvar = GetConVar("zshelter_damage_stay_time")
 net.Receive("ZShelter-DamageNumber", function()
 	if(cvar:GetInt() == 0) then return end
 	local eindex = net.ReadInt(32)
 	local dmg = net.ReadInt(32)
 	local vec = net.ReadVector()
 	local offset = ScreenScaleH(24)
-	local time = 0.5
+	local time = staytime_cvar:GetFloat()
+	local start_time = SysTime()
+	local popup = popup_cvar:GetInt() == 1
+	local dps = dps_cvar:GetInt() == 1
+
 	if(dmgs[eindex]) then
 		local prev = dmgs[eindex]
+		local dmg_total = prev.damage + dmg
 		local new = {
-			damage = dmg + prev.damage,
+			damage = dmg_total,
 			prev = "(+"..dmg..")",
 			time = SysTime() + time,
 			alpha = 255,
@@ -268,6 +266,11 @@ net.Receive("ZShelter-DamageNumber", function()
 			current_scale = 0,
 
 			pos = vec,
+			popup = popup,
+			dps = dps,
+			dps_val = math.Round(dmg_total / (SysTime() - prev.stime), 2),
+			dps_update = 0,
+			stime = prev.stime,
 		}
 
 		dmgs[eindex] = new
@@ -277,6 +280,8 @@ net.Receive("ZShelter-DamageNumber", function()
 			time = SysTime() + time,
 			alpha = 0,
 
+			prev = "",
+
 			target_offs = offset,
 			current_offs = 0,
 
@@ -284,25 +289,42 @@ net.Receive("ZShelter-DamageNumber", function()
 			current_scale = 0,
 
 			pos = vec,
+			popup = popup,
+			dps = dps,
+			dps_update = 0,
+			dps_val = dmg,
+			stime = start_time,
 		}
 	end
 end)
 
 function ZShelter.PaintDamageNumber()
 	local sw, sh = ScrW() * 0.5, ScrH() * 0.5
+	local systime = SysTime()
 	for k,v in pairs(dmgs) do
-		if(v.time < SysTime()) then
-			v.alpha = math_Clamp(v.alpha - ZShelter.GetFixedValue(35), 0, 255)
-			v.current_offs = math_Clamp(v.current_offs - ZShelter.GetFixedValue(v.current_offs * 0.165), 0, v.target_offs)
-			v.current_scale = math_Clamp(v.current_scale - ZShelter.GetFixedValue(v.current_scale * 0.165), 0, v.target_scale)
-			if(v.alpha <= 0) then
-				dmgs[k] = nil
+		if(v.popup) then
+			if(v.time < systime) then
+				v.current_offs = math_Clamp(v.current_offs - ZShelter.GetFixedValue(v.current_offs * 0.165), 0, v.target_offs)
+				v.current_scale = math_Clamp(v.current_scale - ZShelter.GetFixedValue(v.current_scale * 0.165), 0, v.target_scale)
+			else
+				v.current_offs = math_Clamp(v.current_offs + ZShelter.GetFixedValue((v.target_offs - v.current_offs) * 0.165), 0, v.target_offs)
+				v.current_scale = math_Clamp(v.current_scale + ZShelter.GetFixedValue((v.target_scale - v.current_scale) * 0.165), 0, v.target_scale)
 			end
 		else
-			v.alpha = math_Clamp(v.alpha + ZShelter.GetFixedValue(50), 0, 255)
-			v.current_offs = math_Clamp(v.current_offs + ZShelter.GetFixedValue((v.target_offs - v.current_offs) * 0.165), 0, v.target_offs)
-			v.current_scale = math_Clamp(v.current_scale + ZShelter.GetFixedValue((v.target_scale - v.current_scale) * 0.165), 0, v.target_scale)
+			v.current_offs = v.target_offs
+			v.current_scale = v.target_scale
 		end
+
+		if(v.time < systime) then
+			v.alpha = math_Clamp(v.alpha - ZShelter.GetFixedValue(35), 0, 255)
+			if(v.alpha <= 0) then
+				dmgs[k] = nil
+				continue
+			end
+		else
+			v.alpha = math_Clamp(v.alpha + ZShelter.GetFixedValue(35), 0, 255)
+		end
+
 		local pos = v.pos:ToScreen()
 		local matrix = Matrix()
 
@@ -311,12 +333,19 @@ function ZShelter.PaintDamageNumber()
 		matrix:Translate(-Vector(pos.x, pos.y))
 
 		cam.PushModelMatrix(matrix)
-		draw.DrawText(v.damage, "ZShelter-HUDDamageFont", pos.x, pos.y - v.current_offs, Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
-		--[[
-		if(v.prev) then
-			draw.DrawText(v.prev, "ZShelter-HUDDamageSmallFont", pos.x, pos.y - (v.current_offs - ScreenScaleH(10)), Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
-		end
-		]]
+			draw.DrawText(v.damage, "ZShelter-HUDDamageFont", pos.x, pos.y - v.current_offs, Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
+			--[[
+			if(v.prev) then
+				draw.DrawText(v.prev, "ZShelter-HUDDamageSmallFont", pos.x, pos.y - (v.current_offs - ScreenScaleH(10)), Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
+			end
+			]]
+			if(v.dps) then
+				if(v.dps_update < systime) then
+					v.dps_val = math.Round(v.damage / (SysTime() - v.stime), 1)
+					v.dps_update = systime + 0.1
+				end
+				draw.DrawText("DPS: "..v.dps_val.." "..v.prev, "ZShelter-HUDDamageSmallFont", pos.x, pos.y - (v.current_offs - ScreenScaleH(10)), Color(255, 25, 25, v.alpha), TEXT_ALIGN_CENTER)
+			end
 		cam.PopModelMatrix()
 	end
 end
@@ -334,7 +363,12 @@ local elem = {
 	["CHudHealth"] = true,
 	["CHudBattery"] = true,
 }
+local blacklist = {
+	CHudPoisonDamageIndicator = true,
+	CHudDamageIndicator = true,
+}
 hook.Add("HUDShouldDraw", "ZShelter-HideHUD", function(name)
+	if(blacklist[name]) then return false end
 	if(!shouldenablehud) then return end
 	if(elem[name]) then
 		return false
@@ -360,7 +394,7 @@ local v3 = 0
 local skillkey = 92
 local skillkeydown = false
 local spawnAlpha = 0
-local run = false
+local run = true
 local shouldWarn = false
 local pts = {}
 local calpha = 0
@@ -449,8 +483,70 @@ function ZShelter.PaintNotify()
 	end
 end
 
+
+local directions = {
+	[0] = {
+		alpha = 0,
+		offset = Vector(-0.5, -1.25, 0),
+		material = Material("zsh/damageindicator/damage_up.png", "smooth"),
+	},
+	[90] = {
+		alpha = 0,
+		offset = Vector(0.25, -0.5, 0),
+		material = Material("zsh/damageindicator/damage_right.png", "smooth"),
+	},
+	[-90] = {
+		alpha = 0,
+		offset = Vector(-1.25, -0.5, 0),
+		material = Material("zsh/damageindicator/damage_left.png", "smooth"),
+	},
+	[180] = {
+		alpha = 0,
+		offset = Vector(-0.5, 0.25, 0),
+		material = Material("zsh/damageindicator/damage_down.png", "smooth"),
+	},
+}
+net.Receive("ZShelter_PlayerHurt", function()
+	local player = LocalPlayer()
+	local attacker = net.ReadEntity()
+	if(!IsValid(player) || player != LocalPlayer()) then return end
+	local angle = -1
+	if(IsValid(attacker)) then
+		angle = math.NormalizeAngle(math.Round((player:EyeAngles().y - (math.NormalizeAngle((attacker:GetPos() - player:GetPos()):Angle().y))) / 90, 0) * 90)
+	end
+	if(angle == -180) then
+		angle = 180
+	end
+	if(angle == -1) then
+		for _, dir in pairs(directions) do
+			directions[_].alpha = 255
+		end
+	else
+		if(directions[angle]) then
+			directions[angle].alpha = 255
+		end
+	end
+end)
+
+function ZShelter.PaintDamageIndicator()
+	local centerX, centerY = ScrW() * 0.5, ScrH() * 0.5
+	local size = ScreenScaleH(64)
+	local half = size * 0.5
+
+	for _, dir in pairs(directions) do
+		if(!dir.material) then continue end
+		if(dir.alpha <= 0) then continue end
+		surface.SetDrawColor(255, 255, 255, dir.alpha)
+		surface.SetMaterial(dir.material)
+		surface.DrawTexturedRect(centerX + (dir.offset.x * size), centerY + (dir.offset.y * size), size, size)
+		dir.alpha = math.Clamp(dir.alpha - (700 * RealFrameTime()), 0, 255)
+	end
+end
+
 local shouldDraw = true
 local nextCheckTime = 0
+local hpbartargets = {}
+local nextgettarget = 0
 function ZShelter.PaintHUD()
 	local centX, centY = ScrW() * 0.5, ScrH() * 0.5
 	local padding = ScreenScaleH(6)
@@ -465,6 +561,44 @@ function ZShelter.PaintHUD()
 	local barX = startX + padding3x + imagesx
 	local resWide, resTall = wide, tall * 0.35 
 	local ply, pos = LocalPlayer(), LocalPlayer():GetPos()
+
+	if(nextgettarget < SysTime()) then
+		hpbartargets = {}
+		for _, ent in ipairs(ents.GetAll()) do
+			if(!ent:GetNWBool("ZShelterDisplayHP") || (ent:GetNWBool("ZShelterBoss") && !ent:GetNWBool("ZShelterBossAwake"))) then continue end
+			table.insert(hpbartargets, ent)
+		end
+		nextgettarget = SysTime() + 0.1
+	end
+
+	if(#hpbartargets > 0) then
+		local wide, tall, outline, gap = ScrW() * 0.6, ScreenScaleH(6), 1, 2
+		local x, y = ScrW() * 0.5 - wide * 0.5, ScrH() * 0.1625
+		local inner_x, inner_y = x + outline + gap, y + outline + gap
+		local inner_w, inner_h = wide - ((outline + gap) * 2), tall - ((outline + gap) * 2)
+		local card_w = ScreenScaleH(70)
+		local card_h = card_w * 0.86
+		local card_x, card_y = x, y - card_h
+		local next_y = y
+		local next_card_x = card_x
+		for _, boss in ipairs(hpbartargets) do
+			if(!IsValid(boss) || boss:Health() <= 0) then continue end
+			local mat = ZShelter.BossHealthCards[boss:GetClass()]
+			if(mat) then
+				surface.SetMaterial(mat)
+				surface.SetDrawColor(255, 255, 255, 255)
+				surface.DrawTexturedRect(next_card_x, card_y + tall, card_w, card_h)
+			end
+
+			local fraction = math.Clamp(boss:Health() / boss:GetMaxHealth(), 0, 1)
+			local fraction_clr = math.Clamp(boss:Health() / (boss:GetMaxHealth() * 0.33), 0, 1)
+			draw.RoundedBox(0, x, next_y, wide, tall, Color(30, 30, 30, 255))
+			draw.RoundedBox(0, inner_x, next_y + outline + gap, inner_w * fraction, inner_h, Color(255, 255 * fraction_clr, 255 * fraction_clr, 255))
+
+			next_card_x = next_card_x + card_w * 0.75 + gap
+			next_y = next_y + tall + gap
+		end
+	end
 
 	for k,v in ipairs(player.GetAll()) do
 		if(!v:Alive() || v == ply) then continue end
@@ -576,7 +710,7 @@ function ZShelter.PaintHUD()
 		local f = padding * 2
 		local cd = ply:GetNWFloat("UltimateCooldown", 0)
 		surface_SetDrawColor(255, 255, 255, 255)
-		if(!skillkeydown && input.IsKeyDown(92) && cd < CurTime()) then
+		if(!skillkeydown && input.IsKeyDown(ZShelter.Keybinds.Skill || 92) && cd < CurTime()) then
 			local canUseSkill = true
 			if(ply.Callbacks && ply.Callbacks.OnSkillPreCall) then
 				for k,v in pairs(ply.Callbacks.OnSkillPreCall) do
@@ -589,6 +723,7 @@ function ZShelter.PaintHUD()
 				ZShelter.UltimateSkill(skTable)
 			end
 		end
+		local key = string.upper(input.GetKeyName(ZShelter.Keybinds.Skill || 92))
 		local pad = tall * 0.5
 		surface_SetMaterial(skTable.icon)
 		if(cd > CurTime()) then
@@ -600,17 +735,17 @@ function ZShelter.PaintHUD()
 			ZShelter:CircleTimerAnimation(bx + pad, by + pad, rad, padding3x, fraction, Color(255, 255, 255, 255))
 			draw_DrawText(string.format("%1.1f", math.Round(time, 1)), "ZShelter-HUDElemFont", bx + pad, by + pad - padding, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 			surface_SetMaterial(skTable.icon)
-			draw_DrawText("F1", "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(100, 100, 100, 100), TEXT_ALIGN_CENTER)
+			draw_DrawText(key, "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(100, 100, 100, 100), TEXT_ALIGN_CENTER)
 		else
 			surface_DrawTexturedRect(wide + padding * 3, oY + padding, tall - f, tall - f)
-			draw_DrawText("F1", "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+			draw_DrawText(key, "ZShelter-HUDElemFont", bx + tall * 0.85, by + tall * 0.8, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 		end
 		if(ply.Callbacks && ply.Callbacks.OnUltimateHUDPaint) then
 			for k,v in pairs(ply.Callbacks.OnUltimateHUDPaint) do
 				v(bx, by, tall, tall)
 			end
 		end
-		skillkeydown = input.IsKeyDown(skillkey)
+		skillkeydown = input.IsKeyDown(ZShelter.Keybinds.Skill || 92)
 	end
 
 	local ply = LocalPlayer()
@@ -774,5 +909,61 @@ hook.Add("HUDPaint", "ZShelter-HUD", function()
 	ZShelter.PaintHUD()
 	ZShelter.PaintNotify()
 	ZShelter.PaintDamageNumber()
+	ZShelter.PaintDamageIndicator()
 	ZShelter.DrawPowerOutage()
+end)
+
+local bossringColor = Color(255, 0, 0, 120)
+local nextGetAllTime = 0
+local npcs = {}
+local mat = Material("models/debug/debugwhite")
+hook.Add("PreDrawTranslucentRenderables", "ZShelter-RenderBreakables", function()
+	local maxalpha = 0.8
+	local actualalpha = 1
+	local fraction = SysTime() % 2 / 2
+	if(fraction > 0.5) then
+		fraction = 1 - fraction
+	end
+	if(GetGlobalBool("Night")) then
+		maxalpha = 0.15
+		actualalpha = 0.85
+	end
+	local alpha = fraction * maxalpha
+	local color = Color(255, 255, 255, actualalpha * 255)
+	render.SetColorModulation(0.6, 0.3, 0.3)
+	for _, ent in ipairs(ents.FindByClass("func_breakable")) do
+		ent:SetNoDraw(true)
+		render.OverrideDepthEnable(true, false)
+		render.SetBlend(actualalpha)
+		ent:SetColor(color)
+		ent:DrawModel()
+
+		render.SetBlend(alpha)
+		render.OverrideDepthEnable(true, true)
+		ent:SetRenderMode(RENDERGROUP_TRANSLUCENT)
+		ent:SetMaterial("models/debug/debugwhite")
+		ent:DrawModel()
+
+		ent:SetMaterial("")
+	end
+	render.SetBlend(1)
+	render.SetColorModulation(1, 1, 1)
+	render.OverrideDepthEnable(false, true)
+end)
+
+hook.Add("PreDrawOpaqueRenderables", "ZShelter-DrawBossRings", function()
+	local time = SysTime()
+	if(nextGetAllTime < time) then -- I don't like running ents.GetAll() every frame, It's not good for performance
+		npcs = {}
+		for _, ent in ipairs(ents.GetAll()) do
+			if(!ent:IsNPC() || ent:IsDormant() || !ent:GetNWBool("ZShelterBoss") || ent:GetNWBool("ZShelterBossAwake")) then continue end
+			table.insert(npcs, ent)
+		end
+		nextGetAllTime = time + 1
+	end
+
+	for _, ent in ipairs(npcs) do
+		if(!IsValid(ent)) then continue end
+		ZShelter.MaskedSphereRing(ent:GetPos(), ZShelter.BossTriggerDistance, 24, 2, bossringColor)
+	end
 end)

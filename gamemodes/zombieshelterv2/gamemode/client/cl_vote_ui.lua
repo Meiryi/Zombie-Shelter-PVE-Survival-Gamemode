@@ -197,7 +197,7 @@ local func = {
 		local avatarSize = pa:GetTall() * 0.2
 		local totalWide = 0
 		local startX = pa:GetWide() / 2
-		local startY = padding + th + padding + margin + padding
+		local startY = padding + th + padding
 		local av = ZShelter.CircleAvatar(pa, startX, startY, avatarSize, avatarSize, player, 186)
 		startX = startX + avatarSize + margin
 		totalWide = totalWide + avatarSize + margin
@@ -212,7 +212,7 @@ local func = {
 		local size = pa:GetWide() / #list
 		local currentX = size / 2
 		local playtime = string.FormattedTime(ZShelter.PlayTime, "%02i:%02i")
-		local _, _, timestr = ZShelter.CreateLabel(pa, pa:GetWide() * 0.5, pa:GetTall() * 0.34, ZShelter_GetTranslate_Var("#TotalPlayTime", playtime), "ZShelter-SummeryTime", Color(255, 255, 255, 255))
+		local _, _, timestr = ZShelter.CreateLabel(pa, pa:GetWide() * 0.5, pa:GetTall() * 0.32, ZShelter_GetTranslate_Var("#TotalPlayTime", playtime), "ZShelter-SummeryTime", Color(255, 255, 255, 255))
 		timestr:CentHor()
 		local listing = ZShelter.CreateScroll(pa, 0, startY + ScreenScaleH(8) + padding * 2, pa:GetWide(), pa:GetTall() - (startY + ScreenScaleH(8) + padding * 2), Color(0, 0, 0, 0))
 		local avatarbg = pa:Add("AvatarImage")
@@ -431,12 +431,91 @@ function ZShelter.VoteUI(victory, text, reason)
 		end
 	end
 
-	local scl = 0.125
+	local scl = 0.175
 	ui.VoteMenu = ZShelter.CreatePanel(ui, ScrW() * scl, ScrH() * scl, ScrW() * (1 - scl * 2), ScrH() * (1 - scl * 2), Color(0, 0, 0, 0))
 	ui.VoteMenu.oX = (ScrW() * 0.5 - ui.VoteMenu:GetWide() / 2) + ScrW()
 	ui.VoteMenu:SetX(ui.VoteMenu.oX + ScrW())
 	ui.VoteMenu.Head = ZShelter.CreatePanel(ui.VoteMenu, 0, 0, ui.VoteMenu:GetWide(), ScreenScaleH(24), Color(40, 40, 40, 255))
 	ui.VoteMenu.Body = ZShelter.CreatePanel(ui.VoteMenu, 0, ui.VoteMenu.Head:GetTall(), ui.VoteMenu:GetWide(), ui.VoteMenu:GetTall() - ui.VoteMenu.Head:GetTall(), Color(30, 30, 30, 255))
+
+	local gap = ScreenScaleH(8)
+	ui.ChatMenu = ZShelter.CreatePanel(ui, ui.VoteMenu:GetX() - (ScrW() * scl), ui.VoteMenu:GetY(), (ScrW() * scl) - gap, ui.VoteMenu:GetTall(), Color(30, 30, 30, 255))
+	local margin = ScreenScaleH(4)
+	local headersize = ScreenScaleH(24)
+	local entrysize = ScreenScaleH(24)
+	local _, _, chat = ZShelter.CreateLabel(ui.ChatMenu, margin, margin, "Chat", "ZShelter-SummeryButton", Color(255, 255, 255, 255))
+	chat:SetY((headersize - chat:GetTall()) * 0.5)
+	ui.ChatMenu.Chat = ZShelter.CreateScroll(ui.ChatMenu, margin, headersize + margin, ui.ChatMenu:GetWide() - (margin * 2), ui.ChatMenu:GetTall() - ((margin * 2) + headersize + entrysize), Color(20, 20, 20, 255))
+	local entry = ZShelter.CreateTextEntry(ui.ChatMenu, margin, ui.ChatMenu.Chat:GetY() + ui.ChatMenu.Chat:GetTall(), ui.ChatMenu.Chat:GetWide(), entrysize - margin, "ZShelter-SummeryStats", Color(25, 25, 25, 255), Color(255, 255, 255, 255), "Type something", "string")
+	function entry:OnEnter(val)
+		if(#val <= 0) then
+			return
+		end
+		local hasstr = false
+		for i = 1, #val do
+			if(val[i] != " ") then
+				hasstr = true
+				break
+			end
+		end
+		if(!hasstr) then
+			return
+		end
+
+		net.Start("ZShelter-VoteChat")
+		net.WriteString(val)
+		net.SendToServer()
+
+		entry:SetText("")
+	end
+
+	local chat = ui.ChatMenu.Chat
+	local msgSize = ScreenScaleH(16)
+	local padding = ScreenScaleH(2)
+	chat.AddNewMsg = function(ply, msg)
+		local base = ZShelter.CreatePanel(chat, 0, 0, chat:GetWide(), msgSize, Color(25, 25, 25, 255))
+		local av = vgui.Create("AvatarImage", base)
+			av:SetPlayer(ply, 64)
+			av:SetSize(msgSize, msgSize)
+			base:Dock(TOP)
+			base:DockMargin(0, 0, 0, padding)
+			local stringarea = ZShelter.CreatePanel(base, msgSize, 0, base:GetWide(), base:GetTall(), Color(0, 0, 0, 0))
+			local message = ply:Nick()..": "..msg
+			local tmp = ""
+			local newmsg = ""
+			for i = 1, #message do
+				tmp = tmp..message[i]
+				local w, h = ZShelter.GetTextSize("ZShelter-SummeryStats", tmp)
+				if(w > stringarea:GetWide() - msgSize * 2) then
+					newmsg = newmsg.."\n"..tmp
+					tmp = ""
+				end
+			end
+			if(#newmsg <= 0) then
+				newmsg = message
+			end
+			local _, tall = ZShelter.GetTextSize("ZShelter-SummeryStats", newmsg)
+			tall = math.max(tall, msgSize)
+			local _, _, text = ZShelter.CreateLabel(stringarea, padding, padding, newmsg, "ZShelter-SummeryStats", Color(255, 255, 255, 255))
+			base:SetTall(tall + padding * 2)
+			stringarea:SetTall(tall)
+			text:SetY((base:GetTall() * 0.5) - (text:GetTall() * 0.5))
+			base.Paint = function()
+				draw.RoundedBox(0, 0, 0, base:GetWide(), base:GetTall(), Color(25, 25, 25, 255))
+			end
+			av:SetY((base:GetTall() * 0.5) - (av:GetTall() * 0.5))
+			if((math.abs(chat.MaximumScroll - chat:GetVBar():GetScroll())) < ScreenScaleH(2)) then
+				chat.CurrrentScroll = chat:GetVBar().CanvasSize + base:GetTall()
+			end
+	end
+	net.Receive("ZShelter-VoteChat", function()
+		if(!IsValid(chat)) then return end
+		local ply = net.ReadEntity()
+		local str = net.ReadString()
+		if(!IsValid(ply)) then return end
+		chat.AddNewMsg(ply, str)
+	end)
+
 	ui.Container = ZShelter.CreatePanelContainer(ui.VoteMenu.Body, 0, 0, ui.VoteMenu.Body:GetWide(), ui.VoteMenu.Body:GetTall(), Color(0, 0, 0, 0))
 
 	local _, _, countdown = ZShelter.CreateLabel(ui.VoteMenu.Head, ui.VoteMenu.Head:GetWide(), ui.VoteMenu.Head:GetTall() / 2, math.max(ZShelter.CountDown, 0), "ZShelter-SummeryDesc", Color(255, 255, 255, 255))
@@ -508,6 +587,7 @@ function ZShelter.VoteUI(victory, text, reason)
 		local scale2 = math.Clamp(1 - ((ui.TextMoveTime - SysTime()) / ui.TextStayTime), 0, 1)
 		local lerpX = math.ease.InOutQuad(scale2) * ScrW()
 		ui.VoteMenu:SetX(ui.VoteMenu.oX - lerpX)
+		ui.ChatMenu:SetX(ui.VoteMenu:GetX() - (ui.ChatMenu:GetWide() + gap))
 		ui.TextX = center - lerpX
 	end
 

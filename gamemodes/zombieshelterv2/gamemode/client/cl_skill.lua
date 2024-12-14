@@ -28,13 +28,13 @@ net.Receive("ZShelter-AddSkillCallback", function()
 		if(!LocalPlayer().Callbacks[skTable.callbackhook]) then
 			LocalPlayer().Callbacks[skTable.callbackhook] = {}
 		end
-		table.insert(LocalPlayer().Callbacks[skTable.callbackhook], skTable.callback)
+		LocalPlayer().Callbacks[skTable.callbackhook][skTable.title] = skTable.callback
 	else
 		for callbackhook, callback in pairs(skTable.callback) do
 			if(!LocalPlayer().Callbacks[callbackhook]) then
 				LocalPlayer().Callbacks[callbackhook] = {}
 			end
-			table.insert(LocalPlayer().Callbacks[callbackhook], callback)
+			LocalPlayer().Callbacks[callbackhook][skTable.title] = callback
 		end
 	end
 end)

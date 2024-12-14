@@ -38,11 +38,11 @@ ZShelter.AddSkills(ClassName, "OnMeleeDamage",
 	function(attacker, victim, dmginfo, melee2)
 		if(!IsValid(victim) || !victim:IsPlayer() || CLIENT) then return end
 		local maxArmor = victim:GetMaxArmor()
-		local gain = attacker:GetNWInt("ArmorRepairAmount", 7.5)
+		local gain = attacker:GetNWInt("ArmorRepairAmount", 20)
 		victim:SetArmor(math.min(victim:Armor() + math.floor(gain), maxArmor))
 	end,
 	function(player, current)
-		player:SetNWInt("ArmorRepairAmount", current * 7.5)
+		player:SetNWInt("ArmorRepairAmount", current * 20)
 	end, 2, "armor_repair", 1, "Armor Repairing")
 
 ZShelter.AddSkills(ClassName, nil, nil,
@@ -286,6 +286,64 @@ ZShelter.AddSkills(ClassName, "MultipleHook",
 	function(player, current)
 		player:SetNWFloat("DefenseMul", current * 0.25)
 	end, 2, "matrix", 3, "Defense Matrix")
+
+local material2 = Material("zsh/icon/attack.png")
+ZShelter.AddSkills(ClassName, "MultipleHook",
+	{
+		OnTurretsChanged = function(player)
+			local st = SysTime()
+			local max = player:GetNWFloat("AttackMul", 0.2)
+			for _, v in pairs(ZShelter.TrackedTurrets) do
+				if(!v.Builder == player) then continue end
+				v.AttackMul = 0
+				local pos = v:GetPos()
+				for _, ent in pairs(ZShelter.TrackedTurrets) do
+					if(v.AttackMul >= max || ent.Builder != player || ent == v) then continue end
+					if(ent:GetPos():Distance(pos) < 200) then
+						v.AttackMul = v.AttackMul + 0.05
+					end
+				end
+				v.AttackMul = math.min(v.AttackMul, max)
+				v:SetNWFloat("AttackMul", v.AttackMul)
+			end
+		end,
+		OnBuildingDealDamage = function(attacker, dmginfo, target)
+			local mul = attacker.AttackMul || 1
+			return dmginfo:GetDamage() * mul
+		end,
+		OnHUDPaint = function()
+			local turret = LocalPlayer():GetEyeTrace().Entity
+			if(!turret:GetNWBool("IsTurret") || turret:GetPos():Distance(LocalPlayer():GetPos()) > 768) then return end
+			local pos = (turret:GetPos() + turret:OBBCenter()):ToScreen()
+			local x, y = pos.x, pos.y
+			local size = ScreenScaleH(14)
+			local hasdef = LocalPlayer():GetNWInt("SK_Defense Matrix") > 0
+			local offset = 0
+			if(hasdef) then
+				offset = ScreenScaleH(24)
+			end
+			surface.SetMaterial(material2)
+			surface.SetDrawColor(255, 255, 255, 255)
+			surface.DrawTexturedRect(x - size * 0.5, y - size * 0.5 + offset, size, size)
+			local atk = math.Round(turret:GetNWFloat("AttackMul", 0) * 100, 2)
+			draw.DrawText(atk.."%", "ZShelter-HUDElemFont", x, y + size * 0.5 + offset, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+			for k,v in ipairs(ents.FindInSphere(turret:GetPos(), 200)) do
+				if(!v:GetNWBool("IsBuilding") || !v:GetNWBool("IsTurret")) then continue end
+				local pos = (v:GetPos() + v:OBBCenter()):ToScreen()
+				local _x, _y = pos.x, pos.y + offset
+				surface.DrawLine(x, y + offset, _x, _y)
+				surface.DrawTexturedRect(_x - size * 0.5, _y - size * 0.5, size, size)
+			end
+			cam.Start3D()
+				local bounds = Vector(200, 200, 1)
+				render.SetColorMaterial()
+				render.DrawBox(turret:GetPos(), angle_zero, -bounds, bounds, Color(235, 50, 120, 10), true)
+			cam.End3D()
+		end,
+	},
+	function(player, current)
+		player:SetNWFloat("AttackMul", current * 0.13)
+	end, 3, "attack_matrix", 3, "Offensive Matrix")
 
 ZShelter.AddSkills(ClassName, "OnSkillCalled",
 	function(player)

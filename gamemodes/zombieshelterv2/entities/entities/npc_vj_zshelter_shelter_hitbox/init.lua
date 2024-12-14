@@ -17,5 +17,6 @@ function ENT:Think()
 	if(!IsValid(self:GetOwner())) then
 		self:Remove()
 	end
+	self:SetNWBool("IsBait", true)
 	self:SetNoDraw(true)
 end

@@ -25,6 +25,10 @@ local keys = {
 	["GameUI"] = 93,
 }
 
+function ZShelter.DropGun()
+	RunConsoleCommand("zshelter_drop_weapon")
+end
+
 function ZShelter.ClearMenus()
 	for k,v in pairs(ZShelter.Menus) do
 		if(!IsValid(v)) then
@@ -41,11 +45,13 @@ function ZShelter.AddMenu(ui)
 end
 
 hook.Add("Think", "ZShelter-KeyPressHandler", function()
-	if(gui.IsConsoleVisible() || ZShelter.BlockMenu || ZShelter.ChatOpened || GetConVar("zshelter_enable_menu_keys"):GetInt() != 1) then return end
-	for k,v in next, keys do
+	if(gui.IsConsoleVisible() || IsValid(ZShelter.GamePanel) || ZShelter.BlockMenu || ZShelter.ChatOpened || GetConVar("zshelter_enable_menu_keys"):GetInt() != 1) then return end
+	for k,v in next, ZShelter.Keybinds do
 		if(input.IsKeyDown(v)) then
 			if(!ZShelter.KeyStates[v]) then
-				ZShelter[k]()
+				if(ZShelter[k]) then
+					ZShelter[k]()
+				end
 				ZShelter.KeyStates[v] = true
 			end
 		else

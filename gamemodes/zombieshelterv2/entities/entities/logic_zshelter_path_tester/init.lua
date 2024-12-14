@@ -23,6 +23,7 @@ function ENT:Initialize()
 	self:DrawShadow(false)
 	self:SetCollisionBounds(Vector(-16, -16, 0), Vector(16, 16, 16))
 
+	self.PathTester = true
 	self.ForceNoCollide = true
 	self.NoCollide = true
 	self.IgnoreCollision = true

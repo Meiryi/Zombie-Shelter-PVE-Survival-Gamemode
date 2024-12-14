@@ -150,6 +150,7 @@ function ZShelter.SetupSpawnPoints()
 	local st = SysTime()
 	local shelterPos = ZShelter.Shelter:GetPos()
 	local aa, bb = shelterPos + Vector(-safeDistance, -safeDistance, -safeDistance), shelterPos + Vector(safeDistance, safeDistance, safeDistance)
+	local shelterindex = ZShelter.ShelterIndex || -1
 	for k,v in pairs(ZShelter.AiNodes) do
 		v = v + Vector(0, 0, 3)
 		if(qtrace(shelterPos, v)) then continue end
@@ -174,6 +175,7 @@ function ZShelter.SetupSpawnPoints()
 		print("---- Dedicated spawnpoints found ----")
 		ZShelter.ValidRaiderSpawnPoints = {}
 		for k,v in pairs(dedicated) do
+			if(shelterindex != -1 && v.ShelterIndex != shelterindex) then continue end
 			print("Added spawn point", v:GetPos())
 			table.insert(ZShelter.ValidRaiderSpawnPoints, v:GetPos())
 		end
@@ -199,7 +201,7 @@ function ZShelter.SetupSpawnPoints()
 end
 
 function ZShelter.BroadcastPoints()
-	local data, len = ZShelter.CompressTable(ZShelter.ResourceSpawnPoint)
+	local data, len = ZShelter.CompressTable(ZShelter.ValidRaiderSpawnPoints)
 	net.Start("ZShelter-SendPoints")
 	net.WriteUInt(len, 32)
 	net.WriteData(data, len)
@@ -597,6 +599,7 @@ function ZShelter.SpawnNightEnemiesNoLimit()
 end
 
 function ZShelter.AddAwakeThinker(boss)
+	local dst = ZShelter.BossTriggerDistance
 	local thinker = ents.Create("obj_internal_thinker")
 		thinker:SetOwner(boss)
 		thinker:Spawn()
@@ -606,8 +609,9 @@ function ZShelter.AddAwakeThinker(boss)
 				return
 			end
 			for k,v in pairs(player.GetAll()) do
-				if(!ZShelter.ValidatePlayerDistance(boss, v, 512)) then continue end
+				if(!ZShelter.ValidatePlayerDistance(boss, v, dst) || v.AFKing) then continue end
 				boss:NextThink(CurTime())
+				boss:SetNWBool("ZShelterBossAwake", true)
 				boss.Awake = true
 			end
 			thinker:NextThink(CurTime() + 0.2)
@@ -633,12 +637,18 @@ function ZShelter.SetupTreasureArea()
 				boss:NextThink(CurTime() + 1024000)
 
 				ZShelter.AddAwakeThinker(boss)
+				boss:SetNWBool("ZShelterBoss", true)
+				boss:SetNWBool("IsZShelterEnemy", true)
 				boss.IsBoss = true
 				boss.Awake = false
 				boss.IsZShelterEnemy = true
 
 				boss:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
 			ZShelter.BossRecord[k] = boss
+			if(ZShelter.BossHealthCards[bossdata.class]) then
+				boss:SetNWBool("ZShelterDisplayHP", true)
+			end
+
 			if(bossdata.noclear) then
 				boss.ImmunityNightDamage = true
 			end
@@ -711,6 +721,7 @@ end
 hook.Add("ZShelter-EnemyCreated", "ZShelter-ApplyMutation", function(enemy, night)
 	enemy:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
 	enemy:SetLagCompensated(true)
+	enemy:SetNWBool("IsZShelterEnemy", true)
 	if(enemy.WepClass && enemy.WepClass != "none") then
 		enemy:Give(enemy.WepClass)
 	end

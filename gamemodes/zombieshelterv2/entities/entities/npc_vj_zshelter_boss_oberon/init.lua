@@ -30,6 +30,7 @@ ENT.WorldShakeOnMoveRadius = 1000
 ENT.WorldShakeOnMoveDuration = 0.25
 ENT.WorldShakeOnMoveFrequency = 100
 ENT.SightAngle = 180
+ENT.NoPush = true
 
 	-- ====== Control Variables ====== --
 ENT.FindEnemy_UseSphere = false

@@ -156,6 +156,42 @@ surface.CreateFont("ZShelter-GameUIModifierDesc", {
 	outline = false,
 })
 
+surface.CreateFont("ZShelter-GameUIKeybindTitle", {
+	font = "Arial",
+	extended = false,
+	size = ScreenScaleH(18),
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
+surface.CreateFont("ZShelter-GameUIKeybindDesc", {
+	font = "Arial",
+	extended = false,
+	size = ScreenScaleH(14),
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
 local devs_steamid = {
 	["76561199185181296"] = true,
 	["76561198987271516"] = true,
@@ -227,9 +263,9 @@ local serverlist = {
 		maxplayers = 10,
 	},
 	{
-		host = "AnoZombie Shelter FR/EU | CUSTOM | FUN | DISCORD.GG/ANOMALIE",
-		address = "194.69.160.47:27043",
-		maxplayers = 32,
+		host = "STUDIO 缔造者 Q群:682625923",
+		address = "47.113.148.193:27017",
+		maxplayers = 8,
 	},
 }
 
@@ -1078,6 +1114,101 @@ local func = {
 	},
 	]]
 	{
+		title = "Settings",
+		func = function(ui)
+			local gap = ScreenScaleH(4)
+			local dockmargin = ScreenScaleH(2)
+			local scroll = ZShelter.CreateScroll(ui, gap, gap, ui:GetWide() - gap * 2, ui:GetTall() - gap * 2, Color(25, 25, 25, 255))
+
+			local currentSelectedKeybind = nil
+			local keybinds = {}
+
+			function addkeybind(title, index)
+				local key = ZShelter.Keybinds[index]
+				if(!key) then return end
+				local base = ZShelter.CreatePanel(scroll, 0, 0, scroll:GetWide(), scroll:GetTall() * 0.1, Color(15, 15, 15, 255))
+					base:Dock(TOP)
+					base:DockMargin(0, 0, 0, dockmargin)
+
+					local _, _, title = ZShelter.CreateLabel(base, gap, base:GetTall() * 0.5, title, "ZShelter-GameUIKeybindTitle", Color(255, 255, 255, 255))
+					title.CentVer()
+					local _, _, key_t = ZShelter.CreateLabel(base, base:GetWide(), base:GetTall() * 0.5, input.GetKeyName(tonumber(key)), "ZShelter-GameUIKeybindTitle", Color(255, 255, 255, 255))
+					key_t.CentVer()
+					key_t:SetX(key_t:GetX() - (key_t:GetWide() + gap))
+
+					base.WarningTime = 0
+					base.WarningAlpha = 0
+					base.Paint = function()
+						draw.RoundedBox(0, 0, 0, base:GetWide(), base:GetTall(), Color(15, 15, 15, 255))
+						if(currentSelectedKeybind == base) then
+							draw.RoundedBox(0, 0, 0, base:GetWide(), base:GetTall(), Color(255, 255, 255, 50))
+						end
+						if(base.WarningTime > SysTime()) then
+							base.WarningAlpha = math.Clamp(base.WarningAlpha + ZShelter.GetFixedValue(25), 0, 80)
+						else
+							base.WarningAlpha = math.Clamp(base.WarningAlpha - ZShelter.GetFixedValue(10), 0, 80)
+						end
+
+						if(base.WarningAlpha > 0) then
+							draw.RoundedBox(0, 0, 0, base:GetWide(), base:GetTall(), Color(255, 0, 0, base.WarningAlpha))
+						end
+					end
+
+					function base:OnMousePressed()
+						if(currentSelectedKeybind == base) then
+							currentSelectedKeybind = nil
+						else
+							currentSelectedKeybind = base
+						end
+					end
+
+					base.BindKey = function(key)
+						ZShelter.WriteKeybind(index, key)
+						key_t.UpdateText(input.GetKeyName(ZShelter.Keybinds[index]))
+						key_t:SetX(base:GetWide() - (key_t:GetWide() + gap))
+					end
+
+					base.GetKey = function()
+						return ZShelter.Keybinds[index]
+					end
+
+				keybinds[index] = base
+			end
+
+			scroll.Think = function()
+				if(!IsValid(currentSelectedKeybind)) then return end
+				for i = 0, 160 do
+					if(input.IsKeyDown(i)) then
+						for _, keybind in pairs(keybinds) do
+							if(keybind.GetKey() != i) then continue end
+							keybind.WarningTime = SysTime() + 0.1
+							return
+						end
+						currentSelectedKeybind.BindKey(i)
+						currentSelectedKeybind = nil
+						return
+					end
+				end
+			end
+
+			--[[
+				["BuildMenu"] = 12,
+				["SkillMenu"] = 24,
+				["ConfigMenu"] = 97,
+				["Ready"] = 95,
+				["GameUI"] = 93,
+				["Skill"] = 101,
+			]]
+			addkeybind("Game UI", "GameUI")
+			addkeybind("Build Menu", "BuildMenu")
+			addkeybind("Skill Menu", "SkillMenu")
+			addkeybind("Config Menu", "ConfigMenu")
+			addkeybind("Ready", "Ready")
+			addkeybind("Active Skill", "Skill")
+			addkeybind("Drop Weaoon", "DropGun")
+		end,
+	},
+	{
 		title = "Discord",
 		clickfunc = function()
 			gui.OpenURL("https://discord.gg/XMZQpDavbU")
@@ -1109,7 +1240,7 @@ function ZShelter.GameUI()
 			surface.DrawTexturedRect(_half, _half, half, half)
 		end
 		local gap = ScreenScaleH(1)
-		local wide = ui:GetWide() * 0.135
+		local wide = ui:GetWide() * 0.125
 		local nextX = 0
 		for k,v in ipairs(func) do
 			if(GetConVar("zshelter_enable_ranks"):GetInt() == 0 && k == 1) then continue end

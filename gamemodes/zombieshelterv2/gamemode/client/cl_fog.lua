@@ -36,6 +36,7 @@ local ch = {
 	prop_physics_multiplayer = true,
 	obj_resource_wood = true,
 	obj_resource_iron = true,
+	CLuaEffect = true,
 }
 
 local fogmat = Material("gm_construct/color_room")

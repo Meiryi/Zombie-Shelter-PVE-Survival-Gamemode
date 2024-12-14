@@ -14,6 +14,7 @@
 ]]
 
 ZShelter.Shelter = ZShelter.Shelter || nil
+ZShelter.ShelterIndex = ZShelter.ShelterIndex || -1
 ZShelter.SpawnPos = ZShelter.SpawnPos || nil
 ZShelter.FogController = ZShelter.FogController || nil
 ZShelter.MapEntitiesCreatedBySystem = ZShelter.MapEntitiesCreatedBySystem || {}
@@ -72,6 +73,7 @@ function ZShelter.InitShelter()
 
 	local pos = Vector(0, 0, 0)
 	local angle = Angle(0, 0, 0)
+	local index = -1
 	local lists = {}
 	for k,v in pairs(ents.FindByClass("info_zshelter_shelter_position")) do
 		table.insert(lists, v)
@@ -81,6 +83,7 @@ function ZShelter.InitShelter()
 	local selected = lists[math.random(1, #lists)]
 	pos = selected:GetPos()
 	angle = selected:GetAngles()
+	index = selected.ShelterIndex
 
 	if(pos == Vector(0, 0, 0)) then return end
 
@@ -120,7 +123,7 @@ function ZShelter.InitShelter()
 				e:Remove()
 				return
 			end
-			for k,v in pairs(ents.FindInSphere(shelter:GetPos(), 1024)) do
+			for k,v in pairs(ents.FindInSphere(shelter:GetPos(), 1500)) do
 				if(!v:IsPlayer() || !v:Alive()) then continue end
 				ZShelter.AddSanity(v, 15)
 				v:SetNWFloat("SanityCostImmunityTime", CurTime() + 3)
@@ -136,6 +139,7 @@ function ZShelter.InitShelter()
 		end
 
 		ZShelter.Shelter = shelter
+		ZShelter.ShelterIndex = index
 		ZShelter.ShelterInited = true
 		ZShelter.Shelter.IsBuilding = true
 		ZShelter.SpawnPos = shelter:GetPos() + (ZShelter.Shelter:GetAngles():Right() * 25 - ZShelter.Shelter:GetAngles():Forward() * 175)
@@ -170,6 +174,8 @@ function ZShelter.RecreateBarricades()
 			barricade:SetMaxHealth(hp)
 			barricade:SetHealth(hp)
 			barricade:SetNWBool("IsBuilding", true)
+			barricade:SetNWBool("IsBait", true)
+			barricade:SetNWBool("IsMapBarricade", true)
 			barricade:SetNWBool("Completed", true)
 			barricade:SetNWString("Name", "Barricade")
 			barricade:SetRenderMode(RENDERMODE_TRANSCOLOR)
@@ -216,7 +222,19 @@ end
 
 ZShelter.Barricades = ZShelter.Barricades || {}
 function ZShelter.CreateBarricades()
-	local hp = 25000 * (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.15))
+	local scale = (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.15))
+	local scale_breakable = (1 + (GetConVar("zshelter_difficulty"):GetInt() * 0.175))
+	local hp = 25000 * scale
+
+	for _, barricade in ipairs(ents.FindByClass("func_breakable")) do
+		if(!barricade.OriginalHealth) then
+			barricade.OriginalHealth = barricade:GetMaxHealth()
+		end
+		local health = barricade.OriginalHealth * scale_breakable
+		barricade:SetMaxHealth(health)
+		barricade:SetHealth(health)
+	end
+
 	for k,v in pairs(ents.FindByClass("prop_zshelter_obstacle")) do
 		if(IsValid(ZShelter.Barricades[k])) then continue end
 		local barricade = ents.Create("prop_physics")
@@ -311,6 +329,13 @@ end)
 
 hook.Add("PlayerSpawn", "ZShelter-SetEntity", function()
 	SetGlobalEntity("ShelterEntity", ZShelter.Shelter)
+end)
+
+hook.Add("OnEntityCreated", "ZShelter-SetBreakables", function(ent)
+	if(ent:GetClass() == "func_breakable") then
+		ent.IsBarricade = true
+		ent:SetCustomCollisionCheck(true)
+	end
 end)
 
 ZShelter.SetupFog()

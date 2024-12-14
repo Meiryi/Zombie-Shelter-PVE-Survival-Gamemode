@@ -62,12 +62,18 @@ CreateConVar("zshelter_debug_disable_building_damage", 0, FCVAR_NOTIFY + FCVAR_R
 CreateConVar("zshelter_debug_instant_build", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Instant build stuffs", 0, 1)
 
 CreateConVar("zshelter_server_category_name", "", FCVAR_NOTIFY + FCVAR_ARCHIVE, "Name for server listing category, leave empty for default one")
+CreateConVar("zshelter_weapon_balance", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE + FCVAR_REPLICATED, "Enable weapon balancing", 0, 1)
 
 if(CLIENT) then
 	CreateConVar("zshelter_enable_hud", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable zombie shelter hud?")
+	CreateConVar("zshelter_enable_afk_bot", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable AFK bot?")
 	CreateConVar("zshelter_client_enable_music", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable music?")
 	CreateConVar("zshelter_enable_menu_keys", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable keys to toggle menu?")
+
 	CreateConVar("zshelter_damage_number", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable damage number", 0, 1)
+	CreateConVar("zshelter_damage_popup", 1, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Enable popup effect on damage numbers", 0, 1)
+	CreateConVar("zshelter_damage_dps", 0, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Show the DPS on the damage number", 0, 1)
+	CreateConVar("zshelter_damage_stay_time", 0.5, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Time for damage number to disappear", 0.25, 10)
 
 	CreateConVar("zshelter_thirdperson_distance", 128, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Distance for thirdperson", 32, 512)
 	CreateConVar("zshelter_thirdperson_offset", 16, FCVAR_LUA_CLIENT + FCVAR_ARCHIVE, "Offset for thirdperson", -64, 64)
@@ -112,6 +118,7 @@ ZShelter.GameVersion = "1.1.0"
 ZShelter.ConfigVersion = "1.1.0" -- DANGER, MODIFY THIS WILL RESET CONFIGS
 ZShelter.BasePath = "zombieshelterv2/gamemode/"
 ZShelter.MaximumDifficulty = 9
+ZShelter.BossTriggerDistance = 512
 
 ZShelter.ClientLoadOrder = {
 	[1] = "gui",
@@ -220,14 +227,86 @@ end)
 
 local cvar = GetConVar("zshelter_friendly_fire")
 hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
+	if(cvar:GetInt() == 0) then
+		if(ent1:IsPlayer() && ent2:IsPlayer()) then return false end
+	end
+	if(ent1:GetNWBool("IsTurret", false) && ent2:IsPlayer()) then
+		return false
+	end
+	if(ent2:GetNWBool("IsTurret", false) && ent1:IsPlayer()) then
+		return false
+	end
+	if(CLIENT) then
+		if(ent1:IsPlayer() && ZShelter.IsAFKing && ent2:GetNWBool("IsBuilding")) then return false end
+		if(ent2:IsPlayer() && ZShelter.IsAFKing && ent1:GetNWBool("IsBuilding")) then return false end
+		return
+	end
+	if(ent1.IsHugeEnemy) then
+		if(ent2:IsPlayer() || ent2.IsTurret || ent2.IsPlayerBarricade) then
+			return true
+		else
+			if(ent2.IsBarricade) then
+				return false
+			end
+		end
+	end
+	if(ent2.IsHugeEnemy) then
+		if(ent1:IsPlayer() || ent1.IsTurret || ent1.IsPlayerBarricade) then
+			return true
+		else
+			if(ent1.IsBarricade) then
+				return false
+			end
+		end
+	end
+	if(ent1.PathHelper) then
+		if(ent2.IsPlayerBarricade || ent2.IsBarricade || (ent2 == ent1:GetOwner())) then
+			return true
+		else
+			return false
+		end
+	end
+	if(ent2.PathHelper) then
+		if(ent1.IsPlayerBarricade || ent1.IsBarricade || (ent1 == ent2:GetOwner())) then
+			return true
+		else
+			return false
+		end
+	end
+	if(ent1.PathTester) then
+		if(ent2.IsPlayerBarricade) then
+			return true
+		else
+			return false
+		end
+	end
+	if(ent2.PathTester) then
+		if(ent1.IsPlayerBarricade) then
+			return true
+		else
+			return false
+		end
+	end
 	if(ent1.IsTurret && ent2.IsTurret) then
 		return false
 	end
 	if(ent2.IsTurret && ent1.IsTurret) then
 		return false
 	end
-	if(ent1.OnlyCollideToBarricade) then
-		if(!ent2.IsPlayerBarricade) then
+	if((ent1.ForceNoCollide || ent1.AFKing) && (ent2.IsBarricade || ent2.IsBuilding)) then
+		return false
+	end
+	if((ent2.ForceNoCollide || ent2.AFKing) && (ent1.IsBarricade || ent1.IsBuilding)) then
+		return false
+	end
+	if(ent1.AFKing && ent2.IsPlayerBarricade) then
+		return false
+	end
+	if(ent2.AFKing && ent1.IsPlayerBarricade) then
+		return false
+	end
+	if(ent1.OnlyCollideToBarricade || ent1.AFKing) then
+		if(!ent2.IsPlayerBarricade && ent1.IsShelter) then
 			return false
 		else
 			if(ent2.IsShelter) then
@@ -237,7 +316,7 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 			end
 		end
 	end
-	if(ent2.OnlyCollideToBarricade) then
+	if(ent2.OnlyCollideToBarricade || ent2.AFKing) then
 		if(!ent1.IsPlayerBarricade && ent1.IsShelter) then
 			return false
 		else
@@ -248,25 +327,10 @@ hook.Add("ShouldCollide", "ZShelter-Collide", function(ent1, ent2)
 			end
 		end
 	end
-	if(cvar:GetInt() == 0) then
-		if(ent1:IsPlayer() && ent2:IsPlayer()) then return false end
-	end
-	if(ent1:GetNWBool("IsTurret", false) && ent2:IsPlayer()) then
-		return false
-	end
-	if(ent2:GetNWBool("IsTurret", false) && ent1:IsPlayer()) then
-		return false
-	end
-	if((ent1.IgnoreCollision) && ent2:IsNPC()) then
+	if(ent1.IgnoreCollision && ent2:IsNPC()) then
 		return false
 	end
 	if(ent2.IgnoreCollision && ent1:IsNPC()) then
-		return false
-	end
-	if(ent1.ForceNoCollide && ent2.IsBarricade) then
-		return false
-	end
-	if(ent2.ForceNoCollide && ent1.IsBarricade) then
 		return false
 	end
 	if(ent1.NoCollide && ent2.IsTurret) then

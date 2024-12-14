@@ -222,10 +222,12 @@ ZShelter.AddBuildItem("Barricade",  "Metal Gate",  3,  10,  2,  2200,  "prop_phy
 		self:SetPlaybackRate(5)
 		if(self.OpenTime && self.OpenTime > CurTime()) then
 			self:SetCollisionGroup(2)
+			self:CollisionRulesChanged()
 			self:SetSequence(3)
 		else
 			if(self.OpenTime && CurTime() - self.OpenTime > 0.15) then
 				self:SetCollisionGroup(0)
+				self:CollisionRulesChanged()
 			end
 			self:SetSequence(1)
 		end
@@ -247,10 +249,12 @@ ZShelter.AddBuildItem("Barricade",  "Concrete Gate",  4,  12,  2,  4000,  "prop_
 		self:SetPlaybackRate(5)
 		if(self.OpenTime && self.OpenTime > CurTime()) then
 			self:SetCollisionGroup(2)
+			self:CollisionRulesChanged()
 			self:SetSequence(3)
 		else
 			if(self.OpenTime && CurTime() - self.OpenTime > 0.15) then
 				self:SetCollisionGroup(0)
+				self:CollisionRulesChanged()
 			end
 			self:SetSequence(1)
 		end
@@ -265,6 +269,9 @@ ZShelter.AddBuildItem("Barricade",  "Concrete Barricade",  4,  6,  0,  3300,  "p
 ZShelter.AddBuildItem("Barricade",  "Reinforced Concrete Wall",  4,  6,  0,  5500,  "prop_physics",  "models/shigure/shelter_b_wall03.mdl",  3,  Vector(0, 0, 0), {buildspeed = 5.5})
 
 ZShelter.AddBuildItem("Recovery",  "Healing Station",  5,  5,  0,  250,  "prop_physics",  "models/shigure/medibed.mdl",  0,  Vector(0, 0, 15), {
+	nwvars = {
+		IsHealingStation = true,
+	},
 	thinkfunc = function(self)
 		local heal = 5 + (3 * self:GetNWInt("UpgradeCount", 0))
 		for k,v in pairs(player.GetAll()) do
@@ -279,6 +286,9 @@ ZShelter.AddBuildItem("Recovery",  "Healing Station",  5,  5,  0,  250,  "prop_p
 	upgradecount = 2,
 })
 ZShelter.AddBuildItem("Recovery",  "Armor Box",  5,  15,  0,  250,  "prop_physics",  "models/zshelter/bg_armorbox_group.mdl",  0,  Vector(0, 0, 0), {
+	nwvars = {
+		IsArmorBox = true,
+	},
 	thinkfunc = function(self)
 		local heal = 5 + (2 * self:GetNWInt("UpgradeCount", 0))
 		for k,v in pairs(player.GetAll()) do
@@ -294,6 +304,9 @@ ZShelter.AddBuildItem("Recovery",  "Armor Box",  5,  15,  0,  250,  "prop_physic
 	cboxoffset = true,
 })
 ZShelter.AddBuildItem("Recovery",  "Ammo Supply Crate",  3,  15,  0,  300,  "obj_structure_ammo_crate",  "models/zshelter/shelter_b_ammobox01.mdl",  0,  Vector(0, 0, 0), {
+	nwvars = {
+		IsAmmoSupplyCreate = true,
+	},
 	maxamount = 2,
 })
 ZShelter.AddBuildItem("Recovery",  "Campfire",  2,  1,  0,  50,  "prop_physics",  "models/galaxy/rust/campfire.mdl",  0,  Vector(0, 0, 0), {
@@ -337,10 +350,19 @@ ZShelter.AddBuildItem("GeneratorCategory",  "Generator",  5,  5,  0, 120,  "prop
 			SetGlobalInt("Powers", GetGlobalInt("Powers", 0) + powergain)
 		end
 	}, {}, nil)
-ZShelter.AddBuildItem("GeneratorCategory",  "Resource Generator",  12,  12,  65,  300,  "obj_structure_resource_generator",  "models/props_wasteland/laundry_washer003.mdl",  0,  Vector(0, 0, 25), {
+ZShelter.AddBuildItem("GeneratorCategory",  "Resource Generator",  12,  12,  65,  200,  "obj_structure_resource_generator",  "models/props_wasteland/laundry_washer003.mdl",  0,  Vector(0, 0, 25), {
 	maxamount = 2,
 }, {"Advanced Engineering"})
+ZShelter.AddBuildItem("Generator",  "Resource Converter",  16,  16,  10,  200,  "obj_structure_resource_converter",  "models/props_combine/combine_generator01.mdl",  0,  Vector(0, 0, 90), {
+	upgradable = true,
+	upgrade_attackscale = 0,
+	upgrade_healthscale = 0,
+	upgradecount = 2,
+}, {"Advanced Engineering"})
 ZShelter.AddBuildItem("Storage",  "Basic Storage",  4,  6,  0,  600,  "prop_physics",  "models/items/ammocrate_ar2.mdl",  0,  Vector(0, 0, 15), {
+	nwvars = {
+		IsStorage = true,
+	},
 	onuse = function(player, building)
 		if(!building:GetNWBool("Completed")) then return end
 		net.Start("ZShelter-OpenStorage")
@@ -355,6 +377,9 @@ ZShelter.AddBuildItem("Storage",  "Basic Storage",  4,  6,  0,  600,  "prop_phys
 	end
 })
 ZShelter.AddBuildItem("Storage",  "Medium Storage",  7,  11,  0,  750,  "prop_physics",  "models/shigure/shelter_b_warehouse01.mdl",  1,  Vector(0, 0, 0), {
+	nwvars = {
+		IsStorage = true,
+	},
 	onuse = function(player, building)
 		if(!building:GetNWBool("Completed")) then return end
 		net.Start("ZShelter-OpenStorage")
@@ -369,6 +394,9 @@ ZShelter.AddBuildItem("Storage",  "Medium Storage",  7,  11,  0,  750,  "prop_ph
 	end
 })
 ZShelter.AddBuildItem("Storage",  "Large Storage",  10,  16,  0,  1050,  "prop_physics",  "models/nickmaps/rostok/p19_casa2.mdl",  2,  Vector(0, 0, 75), {
+	nwvars = {
+		IsStorage = true,
+	},
 	onuse = function(player, building)
 		if(!building:GetNWBool("Completed")) then return end
 		net.Start("ZShelter-OpenStorage")
@@ -384,6 +412,9 @@ ZShelter.AddBuildItem("Storage",  "Large Storage",  10,  16,  0,  1050,  "prop_p
 })
 ZShelter.AddBuildItem("Public Construction",  "Worktable",  20,  24,  0,  700,  "prop_physics",  "models/zshelter/shelter_b_tool01.mdl",  0,  Vector(0, 0, 0), {
 	bait = true,
+	nwvars = {
+		IsWorktable = true,
+	},
 	onuse = function(player, building)
 		if(!building:GetNWBool("Completed")) then return end
 		net.Start("ZShelter-OpenWorktable")

@@ -30,11 +30,7 @@ net.Receive("ZShelter-UncraftWeapon", function(len, ply)
 	end
 end)
 
-net.Receive("ZShelter-Worktable", function(len, ply)
-	local index1 = net.ReadInt(32)
-	local data = ZShelter.ItemConfig[index1]
-	if(!data || !ZShelter.CanCraftWeapon(ply, data) || ply:HasWeapon(data.class)) then return end
-
+function ZShelter.CraftWeapon(ply, data)
 	local wep = ents.Create(data.class)
 	wep:Spawn()
 	wep.DamageScaling = data.dmgscale
@@ -43,12 +39,29 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 	wep.AmmoCapacity = data.ammo_capacity || -1
 	wep.AmmoRegenSpeed = data.ammoregen || -1
 	wep.Category = data.category
+	wep:SetNWBool("zsh_shootable_weapon", true)
 	wep:SetNWInt("zsh_index", index1)
 	wep:SetNWInt("zsh_woods", data.woods)
 	wep:SetNWInt("zsh_irons", data.irons)
 
+	wep.RequiredSkills = {}
+
+	if(data.requiredskills) then
+		for k, v in pairs(data.requiredskills) do
+			table.insert(wep.RequiredSkills, v)
+		end
+	end
+
 	ply:PickupWeapon(wep)
 	ply:GiveAmmo(wep:GetMaxClip1(), wep:GetPrimaryAmmoType(), true)
+end
+
+net.Receive("ZShelter-Worktable", function(len, ply)
+	local index1 = net.ReadInt(32)
+	local data = ZShelter.ItemConfig[index1]
+	if(!data || !ZShelter.CanCraftWeapon(ply, data) || ply:HasWeapon(data.class)) then return end
+
+	ZShelter.CraftWeapon(ply, data)
 
 	ply:SetNWInt("WoodsUsed", ply:GetNWInt("WoodsUsed", 0) + data.woods)
 	ply:SetNWInt("IronsUsed", ply:GetNWInt("IronsUsed", 0) + data.irons)
@@ -63,4 +76,31 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 
 	SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - data.woods, 0))
 	SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - data.irons, 0))
+end)
+
+hook.Add("PlayerCanPickupWeapon", "ZShelter-PickupWeapon", function(ply, weapon)
+	if(weapon.RequiredSkills) then
+		for k, v in pairs(weapon.RequiredSkills) do
+			local skills = string.Explode(",", v)
+			for _, skill in ipairs(skills) do
+				if(ply:GetNWInt("SK_"..skill, 0) <= 0) then
+					return false
+				end
+			end
+		end
+	end
+	return true
+end)
+
+concommand.Add("zshelter_debug_giveweapon", function(ply, cmd, arg)
+	local index = arg[1]
+	local data = ZShelter.ItemConfig_Debug[index]
+	if(!data) then return end
+	ZShelter.CraftWeapon(ply, data)
+end)
+
+concommand.Add("zshelter_drop_weapon", function(ply, cmd, arg)
+	local wep = ply:GetActiveWeapon()
+	if(!IsValid(wep) || ZShelter.IsMeleeWeapon(wep:GetClass())) then return end
+	ply:DropWeapon(wep)
 end)

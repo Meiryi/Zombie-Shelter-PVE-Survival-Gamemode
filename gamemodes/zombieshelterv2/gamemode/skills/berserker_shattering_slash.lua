@@ -5,7 +5,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		player:SetNWInt("ShatteringSlashCount", player:GetNWInt("ShatteringSlashCount", 0) + 1)
 	end,
 	OnSkillCalled_Client = function(player)
-		player:SetNWFloat("UltimateCooldown", CurTime() + 7)
+		player:SetNWFloat("UltimateCooldown", CurTime() + 6)
 		player:SetNWInt("ShatteringSlashCount", player:GetNWInt("ShatteringSlashCount", 0) + 1)
 	end,
 	OnMeleeStrike = function(player, melee2)
@@ -13,7 +13,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		if((!player:KeyDown(IN_ATTACK) && melee2) || (!player:KeyDown(IN_ATTACK2) && !melee2)) then return end
 		if(count <= 0) then return end
 		if(count >= 3) then
-			player:SetNWFloat("UltimateCooldown", CurTime() + 7)
+			player:SetNWFloat("UltimateCooldown", CurTime() + 6)
 		end
 
 		player:EmitSound("shigure/slash_fire.wav", 40)
@@ -45,6 +45,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 		local count = attacker:GetNWInt("ShatteringSlashCount", 0)
 		if(count <= 0) then return end
 		if(!victim:IsNPC() && !victim:IsNextBot() && !victim:IsPlayer()) then return end
+		if(victim.IsBoss) then return end
 		if(SERVER) then
 			local dmgBoost = 0.15 * count
 			victim:TakeDamage(dmginfo:GetDamage() * dmgBoost, attacker, attacker)
@@ -86,7 +87,7 @@ ZShelter.AddSkills(ClassName, "MultipleHook", {
 	end,
 	},
 	function(player, current)
-	end, 1, "slash", 4, "Blazing Slash", nil, 8)
+	end, 1, "slash", 4, "Blazing Slash", nil, 6)
 
 if(CLIENT) then
 	local slashmat = CreateMaterial("slashmaterial_9", "VertexLitGeneric", {

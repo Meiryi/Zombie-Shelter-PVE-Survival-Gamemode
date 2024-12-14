@@ -236,6 +236,7 @@ function SWEP:ChoosePrimaryAttack()
     return nextattack, attacks[nextattack] -- returning the key of SWEP.Primary.Attacks table and the chosen attack table itself
 end
 
+--[[
 function SWEP:PreGatheringResource(res)
 	if(self.Melee2Attack) then
 		return true
@@ -244,6 +245,7 @@ function SWEP:PreGatheringResource(res)
 		return (lastattack == 1 || lastattack == 3)
 	end
 end
+]]
 
 SWEP.EnemyHit = {}
 function SWEP:OnTargetHit(melee2, target, attk)

@@ -68,7 +68,7 @@ end
 
 function ZShelter.CalcStartSkillPoints(amount)
 	if(amount <= 2) then
-		return 3
+		return 5 - amount
 	else
 		local pla = (amount - 2)
 		return math.max(3 - pla, 0)
@@ -188,6 +188,18 @@ function ZShelterVisible_NPCVec(self, vec, target) -- This is costy
 	local ent = util.TraceLine(tr).Entity
 	if(IsValid(ent) && ent.IsBuilding && !ent.IsTurret) then return false end -- Is blocked by barricades
 	return true
+end
+
+function ZShelter.CreatePathHelper(ent)
+	timer.Simple(0, function()
+		if(!IsValid(ent)) then return end
+		local helper = ents.Create("logic_zshelter_path_helper")
+			helper:Spawn()
+			helper:SetOwner(ent)
+			helper:SetPos(ent:GetPos())
+
+		ent.PathHelper = helper
+	end)
 end
 
 function ZShelter.ValidatePlayerDistance(self, player, distance)

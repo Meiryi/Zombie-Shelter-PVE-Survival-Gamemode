@@ -35,7 +35,7 @@ SWEP.Precision = 50
 SWEP.Secondary.MaxCombo = -1
 SWEP.Primary.MaxCombo = -1
 SWEP.MoveSpeed = 1.2 --Multiply the player's movespeed by this.
-SWEP.BuildSpeed = 35
+SWEP.BuildSpeed = 55
 SWEP.OldStyleHit = true
 
 SWEP.AOEDamage = true
@@ -253,7 +253,7 @@ SWEP.Secondary.Attacks = {
 SWEP.Primary.Attacks = {
 	{
 		['act'] = ACT_VM_MISSLEFT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 180, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 200, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(0,90,0), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dmg'] = 180, --Nope!! Not overpowered!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
@@ -271,11 +271,11 @@ SWEP.Primary.Attacks = {
 	},
 	{
 		['act'] = ACT_VM_MISSRIGHT, -- Animation; ACT_VM_THINGY, ideally something unique per-sequence
-		['len'] = 180, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
+		['len'] = 200, -- Trace source; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
 		['dir'] = Vector(0,90,0), -- Trace dir/length; X ( +right, -left ), Y ( +forward, -back ), Z ( +up, -down )
-		['dmg'] = 200, --Nope!! Not overpowered!!
+		['dmg'] = 300, --Nope!! Not overpowered!!
 		['dmgtype'] = DMG_SLASH, --DMG_SLASH,DMG_CRUSH, etc.
-		['delay'] = 0.05, --Delay
+		['delay'] = 0.07, --Delay
 		['spr'] = true, --Allow attack while sprinting?
 		['snd'] = "TFABaseMelee.Null", -- Sound ID
 		['snd_delay'] = 0.05,
@@ -314,12 +314,14 @@ SWEP.ShouldPlaySound = false
 function SWEP:Think2(...)
 	if(CLIENT) then
 		local vm = self.Owner:GetViewModel()
-		if(vm:GetSequence() == 4 && vm:GetCycle() >= 0.1) then
-			if(self.ShouldPlaySound) then
-				if(!self.Owner:KeyDown(IN_ATTACK2)) then
-					self.Owner:EmitSound("shigure/wink.mp3")
+		if(vm:GetSequence() == 4) then
+			if(vm:GetCycle() >= 0.1) then
+				if(self.ShouldPlaySound) then
+					if(!self.Owner:KeyDown(IN_ATTACK2)) then
+						self.Owner:EmitSound("shigure/wink.mp3")
+					end
+					self.ShouldPlaySound = false
 				end
-				self.ShouldPlaySound = false
 			end
 		else
 			self.ShouldPlaySound = true
@@ -343,7 +345,7 @@ function SWEP:ChooseSecondaryAttack()
         self:SetComboCount(0)
     end
 
-    if(CLIENT || game.SinglePlayer()) then
+    if((CLIENT || game.SinglePlayer()) && IsFirstTimePredicted()) then
 	    local e = EffectData()
 	    	e:SetOrigin(self.Owner:EyePos())
 	    	e:SetFlags(1)
@@ -382,18 +384,18 @@ function SWEP:OnComboBreak() -- Preventing player from spamming attacks
 	end
 end
 
+function SWEP:Deploy(...)
+	BaseClass.Deploy(self, ...)
+	self:SetNextPrimaryFire(CurTime() + 0.05)
+	self:SetNextSecondaryFire(CurTime() + 0.05)
+	self:SetStatusEnd(CurTime() + 0.05)
+end
+
 function SWEP:PreGatheringResource(res)
 	if(self.Melee2Attack) then
 		local lastattack = self:GetLastSecondaryAttackChoice()
-		return lastattack <= 1
+		return lastattack % 2 == 0
 	else
-		local lastattack = self:GetLastPrimaryAttackChoice()
-		return lastattack <= 1
+		return true
 	end
-end
-
-local cd = 40
-function SWEP:OnSkillTriggered()
-	self.LastSkillTriggeredTime = CurTime() + cd
-	self:SetNWFloat("SkillTriggerTime", self.LastSkillTriggeredTime)
 end

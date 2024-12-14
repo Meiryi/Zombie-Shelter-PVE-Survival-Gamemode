@@ -55,7 +55,7 @@ if(!safeCtrlS || !ZShelter.VarInited) then
 	SetGlobalFloat("NoiseLevel", 0)
 	SetGlobalFloat("ReadyTime", -1)
 	SetGlobalBool("GameStarted", false)
-	SetGlobalEntity("ShelterEntity", nil)
+	--SetGlobalEntity("ShelterEntity", nil)
 
 	if(ZShelter.ClearEnemies) then
 		ZShelter.ClearEnemies()

@@ -26,14 +26,35 @@ end)
 function ZShelter.TriggerHorde()
 	ZShelter.PlayMusic(GetConVarString("zshelter_music_horde"))
 	ZShelter.PanicEnemySpawnTime = CurTime() + 4 + (GetConVar("zshelter_difficulty"):GetInt() * 0.55)
-	immunitySounds = SysTime() + 60
+	immunitySounds = SysTime() + GetGlobalInt("Time") + 1
 	ZShelter.ToggleBarricadeCollision(true)
-	for k,v in ipairs(ents.GetAll()) do
-		if(!v:IsNPC() || v.Awake == nil) then continue end
-		v.Awake = true
-		v:NextThink(CurTime())
-	end
+	hook.Run("ZShelter_TriggerHorde")
 end
+
+hook.Add("ZShelter_TriggerHorde", "ZShelter_SpawnHordeBoss", function()
+	local ret = hook.Call("ZShelter_PreTriggerHorde")
+	if(ret == true) then return end
+
+	local bossdata = ZShelter.TreasureAreaEnemy
+	local pos = ZShelter.ValidRaiderSpawnPoints[math.random(1, #ZShelter.ValidRaiderSpawnPoints)]
+	if(table.Count(bossdata) <= 0 || !pos) then return end
+	local boss = ents.Create(bossdata.class)
+		boss.damage = bossdata.attack * 2
+		boss:Spawn()
+		boss:SetPos(pos)
+		boss:SetMaxHealth(bossdata.hp * 2.5)
+		boss:SetHealth(bossdata.hp * 2.5)
+		boss:SetRenderMode(RENDERMODE_TRANSCOLOR)
+		boss:SetColor(Color(255, 0, 0, 255))
+
+		boss:SetNWBool("IsZShelterEnemy", true)
+		boss:SetNWBool("ZShelterDisplayHP", true)
+		boss.IsBoss = true
+		boss.IsZShelterEnemy = true
+
+		boss:SetCollisionGroup(COLLISION_GROUP_NPC_SCRIPTED)
+		boss.ImmunityNightDamage = true
+end)
 
 function ZShelter.AddNoise(amount, player)
 	if((immunitySounds > SysTime() || GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted", false) || GetGlobalBool("Rescuing") || ZShelter.PanicEnemySpawnTime > CurTime()) && !bypassChecks) then return end
@@ -106,12 +127,14 @@ hook.Add("OnEntityCreated", "ZShelter-ProjectileNoise", function(ent)
 		local class = ent:GetClass()
 		local owner = ent.Owner
 		if(!IsValid(owner) || !owner:IsPlayer()) then return end
-		if((GetGlobalBool("Night", false) || !GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || (owner.LastNoiseTime && owner.LastNoiseTime > CurTime())) && !bypassChecks) then return end
+		if((!GetGlobalBool("GameStarted") || GetGlobalBool("Rescuing") || immunitySounds > SysTime() || ZShelter.PanicEnemySpawnTime > CurTime() || (owner.LastNoiseTime && owner.LastNoiseTime > CurTime())) && !bypassChecks) then return end
 		local wep = owner:GetActiveWeapon()
 		if(!IsValid(wep) || !wep.Primary || wep.Primary.Projectile != class) then return end
 		local scale = wep.VolumeMultiplier || 1
 		local noise = (2.5 * scale)
-		ZShelter.AddNoise(noise, owner)
+		if(!GetGlobalBool("Night", false)) then
+			ZShelter.AddNoise(noise, owner)
+		end
 		if(owner.Callbacks && owner.Callbacks.OnFireProjectile) then
 			for k,v in pairs(owner.Callbacks.OnFireProjectile) do
 				v(owner)

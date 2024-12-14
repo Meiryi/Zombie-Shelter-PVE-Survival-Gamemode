@@ -96,14 +96,14 @@ ZShelter.AddInfo("SanityRegen", {
 		["ru"] = "",
 	},
 	desc = {
-		["en"] = "Recovers sanity when killing enemies, +4 per upgrade",
+		["en"] = "Recovers sanity when killing enemies, +1.5 per upgrade",
 		["bg"] = "",
 		["de"] = "",
 		["fr"] = "",
 		["tr"] = "",
 		["vi"] = "",
-		["zh-TW"] = "殺死敵人時回復理智, 每升級一次增加 4",
-		["zh-CN"] = "杀死敌人时回复理智, 每升级一次增加 4",
+		["zh-TW"] = "殺死敵人時回復理智, 每升級一次增加 1.5",
+		["zh-CN"] = "杀死敌人时回复理智, 每升级一次增加 1.5",
 		["ru"] = "",
 	}
 })

@@ -14,6 +14,7 @@
 ]]
 
 ZShelter.ItemConfig = {}
+ZShelter.ItemConfig_Debug = {}
 
 function ZShelter.SortItemConfig()
 	table.sort(ZShelter.ItemConfig, function(a,b) return (a.woods + a.irons) < (b.woods + b.irons) end)
@@ -50,7 +51,7 @@ function ZShelter.ConvertConfigToCode()
 end
 
 function ZShelter.AddItem(category, class, title, woods, irons, damage, no_ammo_supply, requiredskills, icon, volume, ammocapacity, ammoregen, shelterlevel, requiredLevel)
-	table.insert(ZShelter.ItemConfig, {
+	local data = {
 		category = category,
 		title = title,
 		class = class,
@@ -65,131 +66,143 @@ function ZShelter.AddItem(category, class, title, woods, irons, damage, no_ammo_
 		volume = volume,
 		shelterlevel = shelterlevel,
 		requiredLevel = requiredLevel || 0,
-	})
+	}
+	table.insert(ZShelter.ItemConfig, data)
+
+	local index = util.CRC(title..class)
+	ZShelter.ItemConfig_Debug[index] = data
 end
 
 function ZShelter.CreateDefaultItems()
-			ZShelter.AddItem("Pistol", "tfa_cso_usp", "USP-45", 3, 5, 1.5, true, {}, nil, 0.35, -1, -1, 1)
-			ZShelter.AddItem("Pistol", "tfa_cso_glock", "Glock", 6, 8, 2, true, {}, nil, 0.35, -1, -1, 1)
-			ZShelter.AddItem("Pistol", "tfa_cso_fiveseven", "Five-Seven", 8, 10, 2.5, true, {}, nil, 0.5, -1, -1, 1)
-			ZShelter.AddItem("Pistol", "tfa_cso_deagle", "Desert Eagle", 10, 14, 3.5, true, {}, nil, 1, -1, -1, 1)
-			ZShelter.AddItem("Pistol", "tfa_zsh_cso_mauser_c96", "Mauser C96", 12, 10, 2, true, {}, nil, 0.85, -1, -1, 1)
-			ZShelter.AddItem("Pistol", "tfa_cso_elite", "Dual Elites", 16, 14, 2.25, true, {}, nil, 0.45, -1, -1, 1)
+			ZShelter.AddItem("Pistol", "zsh_tfa_cso_usp", "USP-45", 3, 5, 1.5, true, {}, "default", 0.35, -1, -1, 1)
+			ZShelter.AddItem("Pistol", "tfa_cso_glock", "Glock", 6, 8, 2, true, {}, "default", 0.35, -1, -1, 1)
+			ZShelter.AddItem("Pistol", "tfa_cso_fiveseven", "Five-Seven", 8, 10, 2.5, true, {}, "default", 0.5, -1, -1, 1)
+			ZShelter.AddItem("Pistol", "tfa_cso_deagle", "Desert Eagle", 10, 14, 3.5, true, {}, "default", 1, -1, -1, 1)
+			ZShelter.AddItem("Pistol", "tfa_zsh_cso_mauser_c96", "Mauser C96", 12, 10, 2, true, {}, "default", 0.85, -1, -1, 1)
+			ZShelter.AddItem("Pistol", "tfa_cso_elite", "Dual Elites", 16, 14, 2.25, true, {}, "default", 0.45, -1, -1, 1)
 
-			ZShelter.AddItem("Pistol", "tfa_cso_sapientia", "Sapientia", 14, 18, 3, true, {}, nil, 1.5, -1, -1, 2)
-			ZShelter.AddItem("Pistol", "tfa_cso_skull1", "SKULL 1", 18, 15, 4, true, {}, nil, 1.5, -1, -1, 2)
-			ZShelter.AddItem("Pistol", "tfa_cso_balrog1", "Barlog 1", 20, 16, 3, true, {}, nil, 2.25, -1, -1, 2)
-			ZShelter.AddItem("Pistol", "tfa_cso_vulcanus1", "Vulcanus 1", 21, 20, 2, true, {}, nil, 0.35, -1, -1, 2)
-			ZShelter.AddItem("Pistol", "tfa_cso_ddeagle", "Duel Desert Eagle", 30, 30, 0.7, true, {}, nil, 0.35, -1, -1, 2)
-			ZShelter.AddItem("Pistol", "tfa_zsh_cso_thanatos1", "Thanatos 7", 45, 42, 1, true, {}, nil, 1.5, -1, -1, 2)
+			ZShelter.AddItem("Pistol", "tfa_cso_sapientia", "Sapientia", 14, 18, 3, true, {}, "default", 1.5, -1, -1, 2)
+			ZShelter.AddItem("Pistol", "tfa_cso_skull1", "SKULL 1", 18, 15, 4, true, {}, "default", 1.5, -1, -1, 2)
+			ZShelter.AddItem("Pistol", "tfa_cso_balrog1", "Barlog 1", 20, 16, 3, true, {}, "default", 2.25, -1, -1, 2)
+			ZShelter.AddItem("Pistol", "tfa_cso_vulcanus1", "Vulcanus 1", 21, 20, 2, true, {}, "default", 0.35, -1, -1, 2)
+			ZShelter.AddItem("Pistol", "tfa_cso_ddeagle", "Duel Desert Eagle", 30, 30, 0.7, true, {}, "default", 0.35, -1, -1, 2)
+			ZShelter.AddItem("Pistol", "tfa_zsh_cso_cyclone", "Cyclone", 30, 30, 1, true, {}, "default", 1, -1, -1, 2)
+			ZShelter.AddItem("Pistol", "tfa_zsh_cso_thanatos1", "Thanatos 1", 45, 42, 1, true, {}, "default", 1.5, -1, -1, 2)
 
-			ZShelter.AddItem("Pistol", "tfa_cso_m950_attack", "M950", 25, 21, 1.5, true, {}, nil, 0.35, -1, -1, 3)
-			ZShelter.AddItem("Pistol", "tfa_cso_cyclone", "Cyclone", 30, 30, 1, true, {}, nil, 1, -1, -1, 3)
+			ZShelter.AddItem("Pistol", "tfa_cso_m950_attack", "M950", 25, 21, 1.5, true, {}, "default", 0.35, -1, -1, 3)
+			ZShelter.AddItem("Pistol", "tfa_zsh_cso_star_taylor", "Star Taylor", 40, 43, 1, true, {}, "default", 1, -1, -1, 3)
 
-			ZShelter.AddItem("Pistol", "tfa_zsh_cso_desperado", "Desperado", 48, 55, 1, true, {}, nil, 2.25, -1, -1, 4)
+			ZShelter.AddItem("Pistol", "tfa_zsh_cso_desperado", "Desperado", 48, 55, 1, true, {}, "default", 2.25, -1, -1, 4)
+			ZShelter.AddItem("Pistol", "tfa_zsh_cso_gunkata", "Dual Baretta Gunslinger", 70, 68, 1, true, {}, "default", 1.5, -1, -1, 4)
 
-			ZShelter.AddItem("SMG", "tfa_cso_ump45", "UMP45", 7, 6, 1.25, true, {"Beginner Gun Mastery"}, nil, 0.8, -1, -1)
-			ZShelter.AddItem("SMG", "tfa_cso_mp5", "MP5", 8, 9, 1.5, true, {"Beginner Gun Mastery"}, nil, 0.8, -1, -1, 1)
-			ZShelter.AddItem("SMG", "tfa_cso_mac10_v2", "MAC-10", 10, 12, 2, true, {"Beginner Gun Mastery"}, nil, 0.8, -1, -1, 1)
-			ZShelter.AddItem("SMG", "tfa_cso_mp40", "MP40", 12, 10, 1.15, true, {"Beginner Gun Mastery"}, nil, 0.8, -1, -1, 1)
-			ZShelter.AddItem("SMG", "tfa_cso_tmp", "TMP", 20, 18, 2, true, {"Beginner Gun Mastery"}, nil, 0.35, -1, -1)
+			ZShelter.AddItem("SMG", "tfa_cso_ump45", "UMP45", 7, 6, 1.25, true, {"Beginner Gun Mastery"}, "default", 0.8, -1, -1)
+			ZShelter.AddItem("SMG", "tfa_cso_mp5", "MP5", 8, 9, 1.5, true, {"Beginner Gun Mastery"}, "default", 0.8, -1, -1, 1)
+			ZShelter.AddItem("SMG", "tfa_cso_mac10_v2", "MAC-10", 10, 12, 2, true, {"Beginner Gun Mastery"}, "default", 0.8, -1, -1, 1)
+			ZShelter.AddItem("SMG", "tfa_cso_mp40", "MP40", 12, 10, 1.15, true, {"Beginner Gun Mastery"}, "default", 0.8, -1, -1, 1)
+			ZShelter.AddItem("SMG", "tfa_cso_tmp", "TMP", 20, 18, 2, true, {"Beginner Gun Mastery"}, "default", 0.35, -1, -1)
 
-			ZShelter.AddItem("SMG", "tfa_cso_k1a", "K1A", 15, 12, 1.5, true, {"Beginner Gun Mastery"}, nil, 1.25, -1, -1, 2)
-			ZShelter.AddItem("SMG", "tfa_cso_thompson_chicago", "Thompson", 26, 26, 1.75, true, {"Beginner Gun Mastery"}, nil, 1, -1, -1, 2)
-			ZShelter.AddItem("SMG", "tfa_cso_p90", "P90", 28, 30, 1.85, true, {"Beginner Gun Mastery"}, nil, 1, -1, -1, 2)
-			ZShelter.AddItem("SMG", "tfa_cso_bizon", "PP-19", 33, 35, 2, true, {"Beginner Gun Mastery"}, nil, 1.15, -1, -1, 2)
+			ZShelter.AddItem("SMG", "tfa_cso_k1a", "K1A", 15, 12, 1.5, true, {"Beginner Gun Mastery"}, "default", 1.25, -1, -1, 2)
+			ZShelter.AddItem("SMG", "tfa_cso_thompson_chicago", "Thompson", 26, 26, 1.75, true, {"Beginner Gun Mastery"}, "default", 1, -1, -1, 2)
+			ZShelter.AddItem("SMG", "tfa_cso_p90", "P90", 28, 30, 1.85, true, {"Beginner Gun Mastery"}, "default", 1, -1, -1, 2)
+			ZShelter.AddItem("SMG", "tfa_cso_bizon", "PP-19", 33, 35, 2, true, {"Beginner Gun Mastery"}, "default", 1.15, -1, -1, 2)
 
-			ZShelter.AddItem("SMG", "tfa_cso_skull3_a", "SKULL 3", 50, 53, 1.5, true, {"Beginner Gun Mastery"}, nil, 0.5, -1, -1, 3)
-			ZShelter.AddItem("SMG", "tfa_cso_dmp7a1", "Dual MP7A1", 61, 55, 0.7, true, {"Beginner Gun Mastery"}, nil, 1.35, -1, -1, 3)
+			ZShelter.AddItem("SMG", "tfa_cso_skull3_a", "SKULL 3", 50, 53, 1.5, true, {"Beginner Gun Mastery"}, "default", 0.5, -1, -1, 3)
+			ZShelter.AddItem("SMG", "tfa_cso_dmp7a1", "Dual MP7A1", 61, 55, 0.7, true, {"Beginner Gun Mastery"}, "default", 1.35, -1, -1, 3)
 
-			ZShelter.AddItem("Shotgun", "tfa_cso_m3", "M3", 10, 12, 4, true, {"Beginner Gun Mastery"}, nil, 10, -1, -1, 1)
-			ZShelter.AddItem("Shotgun", "tfa_cso_ksg12", "KSG12", 16, 18, 4, true, {"Beginner Gun Mastery"}, nil, 8, -1, -1, 1)
-			ZShelter.AddItem("Shotgun", "tfa_cso_m1887", "M1887", 16, 20, 4, true, {"Beginner Gun Mastery"}, nil, 10, -1, -1, 1)
-			ZShelter.AddItem("Shotgun", "tfa_cso_spas12", "SPAS 12", 20, 22, 5, true, {"Beginner Gun Mastery"}, nil, 10, -1, -1, 1)
+			ZShelter.AddItem("Shotgun", "tfa_cso_m3", "M3", 10, 12, 4, true, {"Beginner Gun Mastery"}, "default", 10, -1, -1, 1)
+			ZShelter.AddItem("Shotgun", "tfa_cso_ksg12", "KSG12", 16, 18, 4, true, {"Beginner Gun Mastery"}, "default", 8, -1, -1, 1)
+			ZShelter.AddItem("Shotgun", "tfa_cso_m1887", "M1887", 16, 20, 4, true, {"Beginner Gun Mastery"}, "default", 10, -1, -1, 1)
+			ZShelter.AddItem("Shotgun", "tfa_cso_spas12", "SPAS 12", 20, 22, 5, true, {"Beginner Gun Mastery"}, "default", 10, -1, -1, 1)
 
-			ZShelter.AddItem("Shotgun", "tfa_cso_dbarrel", "Double Barrel", 15, 18, 2.5, true, {"Beginner Gun Mastery"}, nil, 12, -1, -1, 2)
-			ZShelter.AddItem("Shotgun", "tfa_cso_xm1014", "XM1014", 25, 24, 4, true, {"Beginner Gun Mastery"}, nil, 6, -1, -1, 2)
-			ZShelter.AddItem("Shotgun", "tfa_cso_uts15", "UTS15", 28, 28, 3, true, {"Beginner Gun Mastery"}, nil, 6, -1, -1, 2)
-			ZShelter.AddItem("Shotgun", "tfa_cso_usas12", "USAS-12", 33, 30, 3.35, true, {"Beginner Gun Mastery"}, nil, 5, -1, -1, 2)
-			ZShelter.AddItem("Shotgun", "tfa_zsh_cso_qbarrel", "Quad Barrel", 36, 37, 2, true, {"Beginner Gun Mastery"}, nil, 10, -1, -1, 2)
+			ZShelter.AddItem("Shotgun", "tfa_cso_dbarrel", "Double Barrel", 15, 18, 2.5, true, {"Beginner Gun Mastery"}, "default", 12, -1, -1, 2)
+			ZShelter.AddItem("Shotgun", "tfa_cso_xm1014", "XM1014", 25, 24, 4, true, {"Beginner Gun Mastery"}, "default", 6, -1, -1, 2)
+			ZShelter.AddItem("Shotgun", "tfa_cso_uts15", "UTS15", 28, 28, 3, true, {"Beginner Gun Mastery"}, "default", 6, -1, -1, 2)
+			ZShelter.AddItem("Shotgun", "tfa_cso_usas12", "USAS-12", 33, 30, 3.35, true, {"Beginner Gun Mastery"}, "default", 5, -1, -1, 2)
+			ZShelter.AddItem("Shotgun", "tfa_zsh_cso_qbarrel", "Quad Barrel", 36, 37, 2, true, {"Beginner Gun Mastery"}, "default", 10, -1, -1, 2)
+			ZShelter.AddItem("Shotgun", "tfa_zsh_cso_thanatos11", "Thanatos 11", 44, 51, 1, true, {"Beginner Gun Mastery"}, "default", 8, -1, -1, 2)
 
-			ZShelter.AddItem("Shotgun", "tfa_cso_mk3a1", "MK3A1", 37, 29, 2, true, {"Beginner Gun Mastery"}, nil, 5, -1, -1, 3)
-			ZShelter.AddItem("Shotgun", "tfa_cso_skull11", "SKULL 11", 40, 40, 2, true, {"Beginner Gun Mastery"}, nil, 6, -1, -1, 3)
-			ZShelter.AddItem("Shotgun", "tfa_cso_volcano", "Volcano", 54, 60, 1.8, true, {"Beginner Gun Mastery"}, nil, 4, -1, -1, 3)
-			ZShelter.AddItem("Shotgun", "tfa_zsh_cso_balrog11", "Balrog 11", 55, 68, 3, true, {"Beginner Gun Mastery"}, nil, 6, -1, -1, 3)
+			ZShelter.AddItem("Shotgun", "tfa_cso_mk3a1", "MK3A1", 37, 29, 2, true, {"Beginner Gun Mastery"}, "default", 5, -1, -1, 3)
+			ZShelter.AddItem("Shotgun", "tfa_cso_skull11", "SKULL 11", 40, 40, 2, true, {"Beginner Gun Mastery"}, "default", 6, -1, -1, 3)
+			ZShelter.AddItem("Shotgun", "tfa_cso_volcano", "Volcano", 54, 60, 1.8, true, {"Beginner Gun Mastery"}, "default", 4, -1, -1, 3)
+			ZShelter.AddItem("Shotgun", "tfa_zsh_cso_balrog11", "Balrog 11", 55, 68, 3, true, {"Beginner Gun Mastery"}, "default", 6, -1, -1, 3)
 
-			ZShelter.AddItem("Rifle", "tfa_cso_famas", "FAMAS", 14, 12, 2, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 1)
-			ZShelter.AddItem("Rifle", "tfa_cso_ak47", "AK-47", 18, 21, 2, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 1)
-			ZShelter.AddItem("Rifle", "tfa_cso_scarh", "Scar-H", 20, 23, 2.25, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 1)
-			ZShelter.AddItem("Rifle", "tfa_cso_aug", "Steyr AUG", 22, 22, 2.25, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 1)
-			ZShelter.AddItem("Rifle", "tfa_cso_sg552", "SG552", 25, 29, 2.35, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 1)
-			ZShelter.AddItem("Rifle", "tfa_cso_xm8", "XM8", 25, 30, 2.5, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 1)
+			ZShelter.AddItem("Rifle", "tfa_cso_famas", "FAMAS", 14, 12, 2, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 1)
+			ZShelter.AddItem("Rifle", "tfa_cso_ak47", "AK-47", 18, 21, 2, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 1)
+			ZShelter.AddItem("Rifle", "tfa_cso_scarh", "Scar-H", 20, 23, 2.25, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 1)
+			ZShelter.AddItem("Rifle", "tfa_cso_aug", "Steyr AUG", 22, 22, 2.25, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 1)
+			ZShelter.AddItem("Rifle", "tfa_cso_sg552", "SG552", 25, 29, 2.35, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 1)
+			ZShelter.AddItem("Rifle", "tfa_cso_xm8", "XM8", 25, 30, 2.5, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 1)
 
-			ZShelter.AddItem("Rifle", "tfa_cso_m14ebr", "M14 EBR", 25, 22, 2.5, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 2, -1, -1, 2)
-			ZShelter.AddItem("Rifle", "tfa_cso_balrog5", "Balrog 5", 28, 30, 1.65, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 2)
-			ZShelter.AddItem("Rifle", "tfa_cso_ethereal", "Ethereal", 30, 32, 2.15, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 2)
+			ZShelter.AddItem("Rifle", "zsh_tfa_cso_m4a1", "M4A1", 18, 21, 2, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 2)
+			ZShelter.AddItem("Rifle", "tfa_cso_m14ebr", "M14 EBR", 25, 22, 2.5, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 2, -1, -1, 2)
+			ZShelter.AddItem("Rifle", "tfa_cso_balrog5", "Balrog 5", 28, 30, 1.65, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 2)
+			ZShelter.AddItem("Rifle", "tfa_cso_ethereal", "Ethereal", 30, 32, 2.15, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 2)
 
-			ZShelter.AddItem("Rifle", "tfa_cso_skull4", "SKULL 4", 38, 42, 2, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 2.25, -1, -1, 3)
-			ZShelter.AddItem("Rifle", "tfa_cso_tornadoa", "Tornado", 45, 49, 1.25, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.5, -1, -1, 3)
-			ZShelter.AddItem("Rifle", "tfa_cso_plasmagun", "Plasma Gun", 45, 49, 1.75, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.5, -1, -1, 3)
+			ZShelter.AddItem("Rifle", "tfa_cso_skull4", "SKULL 4", 38, 42, 2, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 2.25, -1, -1, 3)
+			ZShelter.AddItem("Rifle", "tfa_cso_tornadoa", "Tornado", 45, 49, 1.25, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.5, -1, -1, 3)
+			ZShelter.AddItem("Rifle", "tfa_cso_plasmagun", "Plasma Gun", 45, 49, 1.75, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.5, -1, -1, 3)
 
-			ZShelter.AddItem("Rifle", "tfa_cso_guardian", "AUG Guardian", 75, 69, 0.85, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 4)
-			ZShelter.AddItem("Rifle", "tfa_zsh_cso_lycanthrope", "SG552 Lycanthrope", 88, 75, 1, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 4)
-			ZShelter.AddItem("Rifle", "tfa_zsh_cso_darkknight", "M4A1 Dark Knight", 105, 129, 0.85, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 4)
-			ZShelter.AddItem("Rifle", "tfa_zsh_cso_paladin", "AK-47 Paladin", 155, 159, 0.85, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 4)
-			ZShelter.AddItem("Rifle", "tfa_zsh_cso_cerberus", "SG552 Cerberus", 180, 190, 1, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, nil, 1.75, -1, -1, 4)
+			ZShelter.AddItem("Rifle", "tfa_cso_guardian", "AUG Guardian", 75, 69, 1.25, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 4)
+			ZShelter.AddItem("Rifle", "tfa_zsh_cso_lycanthrope", "SG552 Lycanthrope", 88, 75, 1, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 4)
+			ZShelter.AddItem("Rifle", "tfa_zsh_cso_darkknight", "M4A1 Dark Knight", 105, 129, 0.85, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 4)
+			ZShelter.AddItem("Rifle", "tfa_zsh_cso_paladin", "AK-47 Paladin", 155, 159, 1.75, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 4)
+			ZShelter.AddItem("Rifle", "tfa_zsh_cso_cerberus", "SG552 Cerberus", 180, 190, 1, true, {"Beginner Gun Mastery,Intermediate Gun Mastery"}, "default", 1.75, -1, -1, 4)
 
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_scout", "Scout", 18, 12, 6, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 5, -1, -1, 1)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_m24", "M24", 24, 29, 5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 9, -1, -1, 1)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_xm2010", "XM2010", 32, 35, 6, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 14, -1, -1, 1)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_scout", "Scout", 18, 12, 6, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 5, -1, -1, 1)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_m24", "M24", 24, 29, 5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 9, -1, -1, 1)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_xm2010", "XM2010", 32, 35, 6, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 14, -1, -1, 1)
 
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_m95", "M95", 35, 33, 2, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 14, -1, -1, 2)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_awp", "AWP", 39, 42, 7.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 14, -1, -1, 2)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_vsk94", "VSK94", 40, 40, 4, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 1.15, -1, -1, 2)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_m95", "M95", 35, 33, 2, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 14, -1, -1, 2)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_awp", "AWP", 39, 42, 7.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 14, -1, -1, 2)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_vsk94", "VSK94", 40, 40, 4, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 1.15, -1, -1, 2)
 
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_sl8", "SL8", 32, 30, 1.85, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 3.5, -1, -1, 3)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_sg550", "SG550", 40, 44, 2.35, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 3.5, -1, -1, 3)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_wa2000", "WA2000", 50, 52, 2.85, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 6, -1, -1, 3)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_skull5", "SKULL 5", 55, 60, 2.5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 3.5, -1, -1, 3)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_bendita", "Bendita", 60, 54, 1.15, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 6, -1, -1, 3)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_sl8", "SL8", 32, 30, 1.85, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 3.5, -1, -1, 3)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_sg550", "SG550", 40, 44, 2.35, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 3.5, -1, -1, 3)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_wa2000", "WA2000", 50, 52, 2.85, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 6, -1, -1, 3)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_skull5", "SKULL 5", 55, 60, 2.5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 3.5, -1, -1, 3)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_bendita", "Bendita", 60, 54, 1.15, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 6, -1, -1, 3)
 
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_destroyer", "Destroyer", 89, 82, 0.7, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 20, -1, -1, 4)
-			ZShelter.AddItem("Sniper Rifle", "tfa_cso_thunderbolt", "Thunderbolt", 102, 98, 2, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 30, -1, -1, 4)
+			ZShelter.AddItem("Sniper Rifle", "tfa_cso_destroyer", "Destroyer", 89, 82, 0.7, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 20, -1, -1, 4)
+			ZShelter.AddItem("Sniper Rifle", "zsh_tfa_cso_thunderbolt", "Thunderbolt", 102, 98, 4.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 30, -1, -1, 4)
 
-			ZShelter.AddItem("Heavy", "tfa_cso_mg42", "MG42", 18, 20, 1.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 1)
-			ZShelter.AddItem("Heavy", "tfa_cso_mk48", "MK48", 22, 26, 1.35, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 1)
-			ZShelter.AddItem("Heavy", "tfa_cso_m249", "M249", 26, 29, 2, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 1)
-			ZShelter.AddItem("Heavy", "tfa_cso_hk23", "HK23", 31, 35, 2.15, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 1)
-			ZShelter.AddItem("Heavy", "tfa_cso_m60", "M60", 36, 42, 2.5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 1)
+			ZShelter.AddItem("Heavy", "tfa_cso_mg42", "MG42", 18, 20, 1.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 1)
+			ZShelter.AddItem("Heavy", "tfa_cso_mk48", "MK48", 22, 26, 1.35, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 1)
+			ZShelter.AddItem("Heavy", "tfa_cso_m249", "M249", 26, 29, 2, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 1)
+			ZShelter.AddItem("Heavy", "tfa_cso_hk23", "HK23", 31, 35, 2.15, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 1)
+			ZShelter.AddItem("Heavy", "tfa_cso_m60", "M60", 36, 42, 2.5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 1)
 
-			ZShelter.AddItem("Heavy", "tfa_cso_m249ex", "SKULL 7", 40, 42, 1.65, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 2)
-			ZShelter.AddItem("Heavy", "tfa_cso_mg36_xmas", "MG36 XMAS", 45, 42, 1.5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 0.75, -1, -1, 2)
-			ZShelter.AddItem("Heavy", "tfa_cso_k3", "K3", 52, 50, 2.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 2)
-			ZShelter.AddItem("Heavy", "tfa_cso_avalanche", "Avalanche", 62, 63, 1.15, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 2)
+			ZShelter.AddItem("Heavy", "tfa_cso_m249ex", "SKULL 7", 40, 42, 1.65, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 2)
+			ZShelter.AddItem("Heavy", "tfa_cso_mg36_xmas", "MG36 XMAS", 45, 42, 1.5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 0.75, -1, -1, 2)
+			ZShelter.AddItem("Heavy", "tfa_cso_k3", "K3", 52, 50, 2.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 2)
+			ZShelter.AddItem("Heavy", "tfa_cso_avalanche", "Avalanche", 62, 63, 1.15, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 2)
 
-			ZShelter.AddItem("Heavy", "tfa_cso_mg3", "MG3", 79, 72, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 3)
-			ZShelter.AddItem("Heavy", "tfa_zsh_cso_m134", "M134 Minigun", 79, 72, 1.5, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 3)
-			ZShelter.AddItem("Heavy", "tfa_zsh_cso_thanatos7", "Thanatos 7", 102, 90, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 3)
+			ZShelter.AddItem("Heavy", "tfa_cso_mg3", "MG3", 79, 72, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 3)
+			ZShelter.AddItem("Heavy", "tfa_zsh_cso_m134", "M134 Minigun", 79, 72, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 3)
+			ZShelter.AddItem("Heavy", "tfa_zsh_cso_thanatos7", "Thanatos 7", 102, 90, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 3)
+			ZShelter.AddItem("Heavy", "tfa_zsh_cso_vulcanus7", "Vulcanus 7", 115, 95, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 3)
 
-			ZShelter.AddItem("Heavy", "tfa_cso_balrog7", "Balrog 7", 133, 122, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 4)
-			ZShelter.AddItem("Heavy", "tfa_cso_broad", "Broad Divine", 145, 140, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 4)
-			ZShelter.AddItem("Heavy", "tfa_zsh_cso_m249phoenix", "M249 Phoenix", 180, 190, 1.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 2, -1, -1, 4)
+			ZShelter.AddItem("Heavy", "tfa_cso_balrog7", "Balrog 7", 133, 122, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 4)
+			ZShelter.AddItem("Heavy", "tfa_cso_broad", "Broad Divine", 145, 140, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 4)
+			ZShelter.AddItem("Heavy", "tfa_zsh_cso_m249phoenix", "M249 Phoenix", 180, 190, 1.25, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 2, -1, -1, 4)
 
-			ZShelter.AddItem("Explosive", "tfa_cso_m79", "M79", 30, 35, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 15, -1, -1, 1)
+			ZShelter.AddItem("Explosive", "tfa_zsh_cso_chaingrenade", "Decoy Grenade", 20, 20, 1, true, {"Beginner Gun Mastery"}, "default", 5, -1, -1, 1)
+			ZShelter.AddItem("Explosive", "tfa_cso_m79", "M79", 30, 35, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 15, -1, -1, 1)
 
-			ZShelter.AddItem("Explosive", "tfa_zsh_cso_petrolboomer", "Petrol Boomer", 45, 50, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, nil, 15, 32, 1, 2)
+			ZShelter.AddItem("Explosive", "tfa_zsh_cso_petrolboomer", "Petrol Boomer", 45, 50, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery"}, "default", 15, 32, 1, 2)
 
-			ZShelter.AddItem("Explosive", "tfa_cso_rpg7", "RPG-7", 72, 60, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 20, 5, 5, 3)
-			ZShelter.AddItem("Explosive", "tfa_cso_milkorm32", "Milkor MGL", 87, 79, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 20, 36, 2, 3)
+			ZShelter.AddItem("Explosive", "tfa_cso_rpg7", "RPG-7", 72, 60, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 20, 5, 5, 3)
+			ZShelter.AddItem("Explosive", "tfa_cso_milkorm32", "Milkor MGL", 87, 79, 1.75, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 20, 36, 2, 3)
 
-			ZShelter.AddItem("Explosive", "tfa_cso_at4ex", "AT4", 103, 84, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, nil, 25, 5, 5, 4)
+			ZShelter.AddItem("Explosive", "tfa_cso_at4ex", "AT4", 103, 84, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 25, 5, 5, 4)
 
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_tritacknife", "Throwing Knife", 25, 25, 1, false, {"Silence"}, nil, 0.0, -1, -1, 1)
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_chainsaw", "Chainsaw", 32, 30, 1, false, {"Health Boost"}, nil, 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_tritacknife", "Throwing Knife", 25, 25, 1, false, {"Silence"}, "default", 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_chainsaw", "Chainsaw", 32, 30, 1, false, {"Health Boost"}, "default", 0.0, -1, -1, 1)
 
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_rockbreaker", "Construction Drill", 30, 33, 1, false, {"Transporting Drone", "Defense Matrix"}, nil, 0.0, -1, -1, 1)
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow", "Compound Bow", 38, 38, 1, false, {}, nil, 0.0, -1, -1, 1)
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow_v6", "Compound Bow EX", 55, 55, 1, false, {"Beginner Gun Mastery"}, nil, 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_rockbreaker", "Construction Drill", 30, 33, 1, false, {"Transporting Drone", "Defense Matrix"}, "default", 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow", "Compound Bow", 38, 38, 1, false, {}, "default", 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow_v6", "Compound Bow EX", 55, 55, 1, false, {"Beginner Gun Mastery"}, "default", 0.0, -1, -1, 1)
+
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_arbalest", "Arbalest", 320, 320, 1, false, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery", "Airstrike"}, "default", 2, -1, -1, 4)
 
 
 	if(!file.Exists("zombie shelter v2/item.txt", "DATA")) then
