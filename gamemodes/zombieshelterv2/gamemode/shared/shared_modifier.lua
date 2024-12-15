@@ -22,7 +22,7 @@ if(SERVER) then
 				count = count + 1
 			end
 			if(count <= 0 || count < math.Round(player.GetCount() * 0.5)) then continue end
-			if(modifier.category == "DiffDown_Muts") then
+			if(modifier.category == "Decrease_Diff_Mods2") then
 				ZShelter.Modifiers.HasEasyMode = true
 			end
 			ZShelter.Modifiers.ApplyModifier(modifierName)
@@ -140,7 +140,7 @@ function ZShelter.Modifiers.Register(name, data)
 end
 
 ZShelter.Modifiers.Register("ModN_PlayerDmgUp", {
-	category = "DiffDown_Muts",
+	category = "Decrease_Diff_Mods2",
 	categoryColor = Color(55, 255, 55, 255),
 	desc = "ModD_PlayerDmgUp",
 	scoreMul = 0.75,
@@ -159,7 +159,7 @@ ZShelter.Modifiers.Register("ModN_PlayerDmgUp", {
 })
 
 ZShelter.Modifiers.Register("ModN_ExtraSkillpoint", {
-	category = "DiffDown_Muts",
+	category = "Decrease_Diff_Mods2",
 	categoryColor = Color(55, 255, 55, 255),
 	desc = "ModD_ExtraSkillpoint",
 	scoreMul = 0.75,
@@ -174,7 +174,7 @@ ZShelter.Modifiers.Register("ModN_ExtraSkillpoint", {
 })
 
 ZShelter.Modifiers.Register("ModN_2xSkillpoints", {
-	category = "DiffDown_Muts",
+	category = "Decrease_Diff_Mods2",
 	categoryColor = Color(55, 255, 55, 255),
 	desc = "ModD_2xSkillpoints",
 	scoreMul = 0.2,
@@ -189,7 +189,7 @@ ZShelter.Modifiers.Register("ModN_2xSkillpoints", {
 })
 
 ZShelter.Modifiers.Register("ModN_ZombieAtkDmgDown", {
-	category = "DiffDown_Muts",
+	category = "Decrease_Diff_Mods2",
 	categoryColor = Color(55, 255, 55, 255),
 	desc = "ModD_ZombieAtkDmgDown",
 	scoreMul = 0.8,
@@ -205,7 +205,7 @@ ZShelter.Modifiers.Register("ModN_ZombieAtkDmgDown", {
 })
 
 ZShelter.Modifiers.Register("ModN_ResourceSpawnUp", {
-	category = "DiffDown_Muts",
+	category = "Decrease_Diff_Mods2",
 	categoryColor = Color(55, 255, 55, 255),
 	desc = "ModD_ResourceSpawnUp",
 	scoreMul = 0.7,
@@ -222,7 +222,7 @@ ZShelter.Modifiers.Register("ModN_ResourceSpawnUp", {
 ]]
 
 ZShelter.Modifiers.Register("ModN_RangedAtk", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_RangedAtk",
 	scoreMul = 1.2,
@@ -235,7 +235,7 @@ ZShelter.Modifiers.Register("ModN_RangedAtk", {
 })
 
 ZShelter.Modifiers.Register("ModN_Shield", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_Shield",
 	scoreMul = 1.2,
@@ -248,7 +248,7 @@ ZShelter.Modifiers.Register("ModN_Shield", {
 })
 
 ZShelter.Modifiers.Register("ModN_NoSkillBox", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_NoSkillBox",
 	scoreMul = 1.4,
@@ -261,7 +261,7 @@ ZShelter.Modifiers.Register("ModN_NoSkillBox", {
 })
 
 ZShelter.Modifiers.Register("ModN_AmountZombieUp", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_AmountZombieUp",
 	scoreMul = 1.5,
@@ -274,7 +274,7 @@ ZShelter.Modifiers.Register("ModN_AmountZombieUp", {
 })
 
 ZShelter.Modifiers.Register("ModN_ZombieSpawnUp", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_ZombieSpawnUp",
 	scoreMul = 1.5,
@@ -288,7 +288,7 @@ ZShelter.Modifiers.Register("ModN_ZombieSpawnUp", {
 
 local DayCount = 0
 ZShelter.Modifiers.Register("ModN_LessSkillpoints", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_LessSkillpoints",
 	scoreMul = 1.4,
@@ -311,7 +311,7 @@ ZShelter.Modifiers.Register("ModN_LessSkillpoints", {
 })
 
 ZShelter.Modifiers.Register("ModN_LessResourcesSpawn", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_LessResourcesSpawn",
 	scoreMul = 1.1,
@@ -324,7 +324,7 @@ ZShelter.Modifiers.Register("ModN_LessResourcesSpawn", {
 })
 
 ZShelter.Modifiers.Register("ModN_LessResourcesSpawn", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_LessResourcesSpawn",
 	scoreMul = 1.125,
@@ -337,7 +337,7 @@ ZShelter.Modifiers.Register("ModN_LessResourcesSpawn", {
 })
 
 ZShelter.Modifiers.Register("ModN_LessPlayerDmg", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_LessPlayerDmg",
 	scoreMul = 1.1,
@@ -357,7 +357,7 @@ ZShelter.Modifiers.Register("ModN_LessPlayerDmg", {
 })
 
 ZShelter.Modifiers.Register("ModN_LessTime", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_LessTime",
 	scoreMul = 1.2,
@@ -370,7 +370,7 @@ ZShelter.Modifiers.Register("ModN_LessTime", {
 })
 
 ZShelter.Modifiers.Register("ModN_EnemyAtkDmgUp", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_EnemyAtkDmgUp",
 	scoreMul = 1.35,
@@ -387,7 +387,7 @@ ZShelter.Modifiers.Register("ModN_EnemyAtkDmgUp", {
 
 --[[
 ZShelter.Modifiers.Register("ModN_OnePunchmanZombie", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_OnePunchmanZombie",
 	scoreMul = 1.1,
@@ -404,7 +404,7 @@ ZShelter.Modifiers.Register("ModN_OnePunchmanZombie", {
 ]]
 
 ZShelter.Modifiers.Register("ModN_RunnersDay", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_RunnersDay",
 	scoreMul = 1.25,
@@ -421,7 +421,7 @@ ZShelter.Modifiers.Register("ModN_RunnersDay", {
 })
 
 ZShelter.Modifiers.Register("ModN_Hardcore", {
-	category = "DiffUP_Muts",
+	category = "Increase_Diff_Mods1",
 	categoryColor = Color(255, 55, 55, 255),
 	desc = "ModD_Hardcore",
 	scoreMul = 5,
@@ -556,7 +556,7 @@ ZShelter.Modifiers.Register("ModN_Hardcore", {
 ]]
 
 ZShelter.Modifiers.Register("ModN_FriendlyFire", {
-	category = "Other_Muts",
+	category = "Other_Mods",
 	categoryColor = Color(255, 255, 255, 255),
 	desc = "ModD_FriendlyFire",
 	scoreMul = 1,

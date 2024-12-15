@@ -1,5 +1,5 @@
 SWEP.Base				= "tfa_gun_base"
-SWEP.Category				= "TFA CS:O Machine Guns" --The category.  Please, just choose something generic or something I've already done if you plan on only doing like one swep.
+SWEP.Category				= "#zshelter.category.machine_gun" --The category.  Please, just choose something generic or something I've already done if you plan on only doing like one swep.
 SWEP.Author				= "Kamikaze" --Author Tooltip
 SWEP.Contact				= "" --Contact Info Tooltip
 SWEP.Purpose				= "" --Purpose Tooltip
@@ -7,7 +7,7 @@ SWEP.Instructions				= "" --Instructions Tooltip
 SWEP.Spawnable				= true --Can you, as a normal user, spawn this?
 SWEP.AdminSpawnable			= true --Can an adminstrator spawn this?  Does not tie into your admin mod necessarily, unless its coded to allow for GMod's default ranks somewhere in its code.  Evolve and ULX should work, but try to use weapon restriction rather than these.
 SWEP.DrawCrosshair			= true		-- Draw the crosshair?
-SWEP.PrintName				= "M249 Phoenix"		-- Weapon name (Shown on HUD)
+SWEP.PrintName				= "#zshelter.weapon.m249_phoenix"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 3				-- Slot in the weapon selection menu.  Subtract 1, as this starts at 0.
 SWEP.SlotPos				= 73			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter if enabled in the GUI.
@@ -16,7 +16,7 @@ SWEP.BounceWeaponIcon   		= 	false	-- Should the weapon icon bounce?
 SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.Weight				= 30			-- This controls how "good" the weapon is for autopickup.
-SWEP.Type	= "Transcendent Grade Machine Gun"
+SWEP.Type	= "#zshelter.type.transcendent_machine_gun"
 SWEP.Primary.Knockback = 0 
 SWEP.ProceduralHolsterTime = 0
 

@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_bash_base"
-SWEP.Category = "TFA CS:O Equipment"
+SWEP.Category = "#zshelter.category.equipment"
 SWEP.Author = "Kamikaze, ★Bullet★"
-SWEP.PrintName = "Ripper"
-SWEP.Type	= "Transcendent Grade Equipment"
+SWEP.PrintName = "#zshelter.weapon.ripper"
+SWEP.Type	= "#zshelter.type.transcendent_equipment"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_chainsaw.mdl"
 SWEP.ViewModelFOV = 80
 SWEP.ViewModelFlip = true

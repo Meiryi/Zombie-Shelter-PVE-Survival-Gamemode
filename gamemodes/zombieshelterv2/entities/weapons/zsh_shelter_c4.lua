@@ -9,8 +9,8 @@ weight = 0
 } )
 end
 
-SWEP.PrintName = "C4"
-SWEP.Category = "ArcCW - Zombie Shelter"
+SWEP.PrintName = "#zshelter.weapon.c4"
+SWEP.Category = "#zshelter.category.arccw_zshelter"
 SWEP.Spawnable = false
 SWEP.AdminSpawnable = true
 SWEP.AdminOnly = false

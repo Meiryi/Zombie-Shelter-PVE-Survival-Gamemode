@@ -1,6 +1,6 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "TFA CS:O Melees"
-SWEP.PrintName = "Machete"
+SWEP.Category = "#zshelter.category.melee"
+SWEP.PrintName = "#zshelter.weapon.machete"
 SWEP.Author	= "★Bullet★"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_machete.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_machete.mdl"
@@ -8,7 +8,7 @@ SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV = 80
 SWEP.UseHands = true
 SWEP.HoldType = "knife"
-SWEP.Type	= "Common Grade Melee"
+SWEP.Type	= "#zshelter.type.common_melee"
 SWEP.DrawCrosshair = true
 
 SWEP.Primary.Directional = false

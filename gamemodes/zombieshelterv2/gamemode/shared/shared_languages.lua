@@ -2328,7 +2328,7 @@ ZShelter.L("#ModifiersList", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#DiffUP_Muts", {
+ZShelter.L("#Increase_Diff_Mods1", {
 	["en"] = "Increase Difficulty",
 	["bg"] = "",
 	["de"] = "",
@@ -2340,7 +2340,7 @@ ZShelter.L("#DiffUP_Muts", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#Other_Muts", {
+ZShelter.L("#Other_Mods", {
 	["en"] = "Other",
 	["bg"] = "",
 	["de"] = "",
@@ -2352,7 +2352,7 @@ ZShelter.L("#Other_Muts", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#DiffDown_Muts", {
+ZShelter.L("#Decrease_Diff_Mods2", {
 	["en"] = "Decrease Difficulty",
 	["bg"] = "",
 	["de"] = "",
@@ -2868,8 +2868,8 @@ ZShelter.L("#ModD_FriendlyFire", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RanksMenu", {
+	["en"] = "Ranks",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2880,8 +2880,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#ExperienceList", {
+	["en"] = " EXP",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2892,8 +2892,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankStarsAmount", {
+	["en"] = "x",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2904,8 +2904,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankExpMultiplier", {
+	["en"] = "x ",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2916,8 +2916,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Beginner", {
+	["en"] = "Beginner",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2928,8 +2928,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Rookie", {
+	["en"] = "Rookie",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2940,8 +2940,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Novice", {
+	["en"] = "Novice",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2952,8 +2952,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Apprentice", {
+	["en"] = "Apprentice",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2964,8 +2964,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Adept", {
+	["en"] = "Adept",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2976,8 +2976,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Skilled", {
+	["en"] = "Skilled",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2988,8 +2988,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Expert", {
+	["en"] = "Expert",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -3000,8 +3000,8 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Specialist", {
+	["en"] = "Specialist",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -3012,8 +3012,428 @@ ZShelter.L("#ModD_ZombieAtkDmgDown", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#ModD_ZombieAtkDmgDown", {
-	["en"] = "-40% Zombie attack damage",
+ZShelter.L("#RankName_Elite", {
+	["en"] = "Elite",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#RankName_Veteran", {
+	["en"] = "Veteran",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#RankName_Master", {
+	["en"] = "Master",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#RankName_Elite", {
+	["en"] = "Elite",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Rank_StarRewardWeapons", {
+	["en"] = "Bonus Weapons",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Rank_RewardWeaponsBack", {
+	["en"] = "Back",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#RankName_Elite", {
+	["en"] = "Elite",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_souldagger", {
+	["en"] = "Soul Bane Dagger",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_souldagger", {
+	["en"] = "+5 Primary attack damage, +15 Secondary attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_kujang", {
+	["en"] = "Kujang",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_kujang", {
+	["en"] = "+10 Primary attack damage, +30 Secondary attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_nata", {
+	["en"] = "Nata Knife",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_nata", {
+	["en"] = "+35 Primary attack damage, +120 Secondary attack damage and 60% range",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_tomahawk", {
+	["en"] = "Tomahawk",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_tomahawk", {
+	["en"] = "+25 Primary attack damage, +50 Secondary attack damage, +25 Build speed",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_horseaxe", {
+	["en"] = "Flame Tomahawk",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_horseaxe", {
+	["en"] = "+30 Primary attack damage, +60 Secondary attack damage, Set target on fire with 8 afterburn damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_crowbarcraft", {
+	["en"] = "Electric Crowbar",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_crowbarcraft", {
+	["en"] = "+30 Primary attack damage, +60 Secondary attack damage and 20% attack speed, Secondary attack stuns target for 0.4s",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_janus9", {
+	["en"] = "Janus-9",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_janus9", {
+	["en"] = "+30 Primary attack damage, +100 Secondary attack damage, Secondary attack can knockback enemies",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_dualkatana", {
+	["en"] = "Dual Wakizashi",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_dualkatana", {
+	["en"] = "Primary attack slash two times, each slash will be more powerful, +100 Secondary attack damage, Hitting on same enemy will increase damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_runebreaker", {
+	["en"] = "Blade Runebreaker",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_runebreaker", {
+	["en"] = "+230 Primary attack damage, +50 Secondary attack damage, Secondary attack are ranged and can pierce through enemies",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Name_dualsword", {
+	["en"] = "Dual Sword Phantom Slayer",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Bonus_Desc_dualsword", {
+	["en"] = "Both primary and secondary have combo attacks, only first attack can gather resources",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#SettingsMenu", {
+	["en"] = "Settings",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Gamemenu_key", {
+	["en"] = "Game UI",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Buildingsmenu_key", {
+	["en"] = "Build Menu",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Skillsmenu_key", {
+	["en"] = "Skill Menu",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Configmenu_key", {
+	["en"] = "Config Menu",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Toggleready_key", {
+	["en"] = "Ready",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Activeskill_key", {
+	["en"] = "Active Skill",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Dropweapon_key", {
+	["en"] = "Drop Weapon",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#PlayerIdleText", {
+	["en"] = "You're AFK\nBot is taking control",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",

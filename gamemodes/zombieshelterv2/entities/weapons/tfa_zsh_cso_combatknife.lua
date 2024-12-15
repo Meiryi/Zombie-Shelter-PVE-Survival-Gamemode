@@ -1,6 +1,6 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "TFA CS:O Melees"
-SWEP.PrintName = "Soul Bane Dagger"
+SWEP.Category = "#zshelter.category.melee"
+SWEP.PrintName = "#zshelter.weapon.soul_bane_dagger"
 SWEP.Author		= "Kamikaze" --Author Tooltip
 SWEP.ViewModel = "models/weapons/tfa_cso/c_combatknife.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_combatknife.mdl"

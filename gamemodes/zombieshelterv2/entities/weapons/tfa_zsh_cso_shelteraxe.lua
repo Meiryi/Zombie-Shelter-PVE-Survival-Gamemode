@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "TFA CS:O Melees"
-SWEP.PrintName = "Shelter Axe"
+SWEP.Category = "#zshelter.category.melee"
+SWEP.PrintName = "#zshelter.weapon.shelter_axe"
 SWEP.Author	= "Kamikaze" --Author Tooltip
-SWEP.Type	= "Melee weapon"
+SWEP.Type	= "#zshelter.type.melee"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_shelteraxe.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_shelteraxe.mdl"
 SWEP.ViewModelFlip = false

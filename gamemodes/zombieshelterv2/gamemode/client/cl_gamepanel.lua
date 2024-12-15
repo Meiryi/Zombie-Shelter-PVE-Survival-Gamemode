@@ -319,7 +319,7 @@ local steammat = Material("zsh/icon/steam.png", "smooth")
 local starmat = Material("zsh/icon/star.png", "smooth")
 local func = {
 	{
-		title = "Ranks",
+		title = "RanksMenu",
 		func = function(ui)
 			local function stars(parent, x, y, size, margin, rank)
 				if(rank <= 0) then return end
@@ -343,7 +343,7 @@ local func = {
 			local playerRank = 1
 			local playerAvatar = ZShelter.CircleAvatar(ui, textpadding, textpadding, size, size, LocalPlayer(), 186)
 			local currentRank, currentLevel, currentEXP, nextRequirement = ZShelter.CalculateRank(LocalPlayer():GetNWInt("ZShelterEXP", 0))
-			local title = "["..ZShelter.GetLevelTitle(currentLevel).."] "
+			local title = ZShelter_GetTranslate("["..ZShelter.GetLevelTitle(currentLevel).."] ")
 			local text_w, text_h, text_1 = ZShelter.CreateLabel(ui, playerAvatar:GetX() + playerAvatar:GetWide() + sidepadding * 2, playerAvatar:GetY() + sidepadding * 2, title, "ZShelter-GameUITitle", ZShelter.GetLevelColor(currentLevel))
 			local text_w, text_h, text = ZShelter.CreateLabel(ui, playerAvatar:GetX() + playerAvatar:GetWide() + sidepadding * 2 + text_w, playerAvatar:GetY() + sidepadding * 2, LocalPlayer():Nick(), "ZShelter-GameUITitle", Color(255, 255, 255, 255))
 			local size = ScreenScaleH(16)
@@ -354,7 +354,7 @@ local func = {
 				surface.DrawTexturedRect(0, 0, size, size)
 			end
 			_star:SetY(_star:GetY() - _star:GetTall())
-			local _, _, ranktext = ZShelter.CreateLabel(ui, _star:GetX() + _star:GetWide(), text:GetY() + (text:GetTall()), "x"..currentRank + (currentLevel * 5), "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+			local _, _, ranktext = ZShelter.CreateLabel(ui, _star:GetX() + _star:GetWide(), text:GetY() + (text:GetTall()), ZShelter_GetTranslate("#RankStarsAmount")..currentRank + (currentLevel * 5), "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
 			ranktext:SetY(ranktext:GetY() - ranktext:GetTall())
 			local starSize = ScreenScaleH(16)
 			stars(ui, text_1:GetX() + gap, text:GetY() + text_h, starSize, 0, currentRank)
@@ -378,7 +378,7 @@ local func = {
 			else
 				multiplierColor = Color(255, 100, 100, 255)
 			end
-			local textwide, texttall, text = ZShelter.CreateLabel(ui, barX, y + texttall, "x "..multiplier, "ZShelter-GameUIDescription", multiplierColor) 
+			local textwide, texttall, text = ZShelter.CreateLabel(ui, barX, y + texttall, ZShelter_GetTranslate("#RankExpMultiplier")..multiplier, "ZShelter-GameUIDescription", multiplierColor) 
 			local textwide, texttall, text = ZShelter.CreateLabel(ui, barX + bar_exp:GetWide(), y - (bar_exp:GetTall() + textpadding + gap), currentEXP, "ZShelter-GameUIStatisticTextSmall", Color(255, 255, 255, 255))
 			text.CentHor()
 			local scl = 0.3
@@ -408,7 +408,7 @@ local func = {
 						end
 						local currentRank, currentLevel, currentEXP, nextRequirement = ZShelter.CalculateRank(v.exp)
 						local nick, check = ZShelter.GetName(v.steamid)
-						local text_wide, text_tall, title = ZShelter.CreateLabel(panel, gap + avatar:GetWide(), gap, "["..ZShelter.GetLevelTitle(currentLevel).."] ", "ZShelter-GameUIGameUITitle2x", ZShelter.GetLevelColor(currentLevel))
+						local text_wide, text_tall, title = ZShelter.CreateLabel(panel, gap + avatar:GetWide(), gap, ZShelter_GetTranslate("["..ZShelter.GetLevelTitle(currentLevel).."] "), "ZShelter-GameUIGameUITitle2x", ZShelter.GetLevelColor(currentLevel))
 						local text_wide, text_tall, nick = ZShelter.CreateLabel(panel, gap + avatar:GetWide() + text_wide, gap, nick, "ZShelter-GameUIGameUITitle2x", Color(255, 255, 255, 255))
 						stars(panel, gap + avatar:GetWide()	, nick:GetY() + text_tall + gap, starSize, 0, currentRank)
 						if(check) then
@@ -422,7 +422,7 @@ local func = {
 								nick.NextCheck = SysTime() + 0.25
 							end
 						end
-						local text_wide, text_tall, exp = ZShelter.CreateLabel(panel, panel:GetWide(), panel:GetTall() * 0.5, v.exp.." EXP", "ZShelter-GameUIGameUITitle2x", Color(255, 255, 255, 255))
+						local text_wide, text_tall, exp = ZShelter.CreateLabel(panel, panel:GetWide(), panel:GetTall() * 0.5, v.exp..ZShelter_GetTranslate("#ExperienceList"), "ZShelter-GameUIGameUITitle2x", Color(255, 255, 255, 255))
 						exp.CentVer()
 						exp:SetX(exp:GetX() - (text_wide + sidepadding))
 						local button = ZShelter.InvisButton(panel, 0, 0, panel:GetWide(), panel:GetTall(), function()
@@ -448,9 +448,9 @@ local func = {
 			scroll.RefreshLeaderboard()
 
 			local bw, bh = ui:GetWide() * 0.15, ScreenScaleH(24)
-			local meleeButton = ZShelter.CreateButton(ui, ui:GetWide() - (bw + sidepadding), sidepadding, bw, bh, "Bonus Weapons", "ZShelter-GameUIButton", Color(255, 255, 255, 255), Color(30, 30, 30, 255), function()
+			local meleeButton = ZShelter.CreateButton(ui, ui:GetWide() - (bw + sidepadding), sidepadding, bw, bh, ZShelter_GetTranslate("#Rank_StarRewardWeapons"), "ZShelter-GameUIButton", Color(255, 255, 255, 255), Color(30, 30, 30, 255), function()
 				local panel = ZShelter.CreatePanel(ui, 0, 0, ui:GetWide(), ui:GetTall(), Color(30, 30, 30, 255))
-				local backButton = ZShelter.CreateButton(panel, panel:GetWide() - (bw + sidepadding), sidepadding, bw, bh, "Back", "ZShelter-GameUIButton", Color(255, 255, 255, 255), Color(30, 30, 30, 255), function()
+				local backButton = ZShelter.CreateButton(panel, panel:GetWide() - (bw + sidepadding), sidepadding, bw, bh, ZShelter_GetTranslate("#Rank_RewardWeaponsBack"), "ZShelter-GameUIButton", Color(255, 255, 255, 255), Color(30, 30, 30, 255), function()
 					panel:Remove()
 				end)
 				backButton.Paint = function()
@@ -471,8 +471,8 @@ local func = {
 						local clr = ZShelter.GetLevelColor(level)
 						local size = pnl:GetTall() * 2.25
 						local icon = ZShelter.CreateImage(pnl, 0, (size - pnl:GetTall()) * -0.5, size, size, "entities/"..melee.icon..".png", Color(255, 255, 255, 255))
-						local _, _, title = ZShelter.CreateLabel(pnl, icon:GetX() + icon:GetWide() + sidepadding, sidepadding, melee.name, "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
-						local _, _, desc = ZShelter.CreateLabel(pnl, title:GetX(), title:GetY() + title:GetTall() + sidepadding, melee.desc, "ZShelter-GameUIStatisticTextSmall", Color(255, 255, 255, 255))
+						local _, _, title = ZShelter.CreateLabel(pnl, icon:GetX() + icon:GetWide() + sidepadding, sidepadding, ZShelter_GetTranslate("#Bonus_Name_")..melee.name, "ZShelter-GameUIDescription", Color(255, 255, 255, 255))
+						local _, _, desc = ZShelter.CreateLabel(pnl, title:GetX(), title:GetY() + title:GetTall() + sidepadding, ZShelter_GetTranslate("#Bonus_Desc_")..melee.desc, "ZShelter-GameUIStatisticTextSmall", Color(255, 255, 255, 255))
 
 						local btn = ZShelter.InvisButton(pnl, 0, 0, pnl:GetWide(), pnl:GetTall(), function()
 							if(myLevel >= level) then
@@ -1114,7 +1114,7 @@ local func = {
 	},
 	]]
 	{
-		title = "Settings",
+		title = "SettingsMenu",
 		func = function(ui)
 			local gap = ScreenScaleH(4)
 			local dockmargin = ScreenScaleH(2)
@@ -1130,7 +1130,7 @@ local func = {
 					base:Dock(TOP)
 					base:DockMargin(0, 0, 0, dockmargin)
 
-					local _, _, title = ZShelter.CreateLabel(base, gap, base:GetTall() * 0.5, title, "ZShelter-GameUIKeybindTitle", Color(255, 255, 255, 255))
+					local _, _, title = ZShelter.CreateLabel(base, gap, base:GetTall() * 0.5, ZShelter_GetTranslate("#"..title), "ZShelter-GameUIKeybindTitle", Color(255, 255, 255, 255))
 					title.CentVer()
 					local _, _, key_t = ZShelter.CreateLabel(base, base:GetWide(), base:GetTall() * 0.5, input.GetKeyName(tonumber(key)), "ZShelter-GameUIKeybindTitle", Color(255, 255, 255, 255))
 					key_t.CentVer()
@@ -1199,13 +1199,13 @@ local func = {
 				["GameUI"] = 93,
 				["Skill"] = 101,
 			]]
-			addkeybind("Game UI", "GameUI")
-			addkeybind("Build Menu", "BuildMenu")
-			addkeybind("Skill Menu", "SkillMenu")
-			addkeybind("Config Menu", "ConfigMenu")
-			addkeybind("Ready", "Ready")
-			addkeybind("Active Skill", "Skill")
-			addkeybind("Drop Weaoon", "DropGun")
+			addkeybind("Gamemenu_key", "GameUI")
+			addkeybind("Buildingsmenu_key", "BuildMenu")
+			addkeybind("Skillsmenu_key", "SkillMenu")
+			addkeybind("Configmenu_key", "ConfigMenu")
+			addkeybind("Toggleready_key", "Ready")
+			addkeybind("Activeskill_key", "Skill")
+			addkeybind("Dropweapon_key", "DropGun")
 		end,
 	},
 	{
