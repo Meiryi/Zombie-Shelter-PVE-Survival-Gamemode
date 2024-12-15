@@ -298,7 +298,7 @@ function ZShelter.GetName(steamid64)
 		steamworks.RequestPlayerInfo(steamid64, function(nick)
 			local ret = nick
 			if(!ret || ret == "" || ret == "anonymous") then
-				ret = "<INVALID PLAYER>"
+				ret = ZShelter_GetTranslate("#Player_NotFound")
 			end
 			ZShelter.Names[steamid64] = ret
 			ZShelter.WriteName(steamid64, nick)
@@ -508,7 +508,7 @@ local func = {
 		end,
 	},
 	{
-		title = "Modifiers",
+		title = "ModifiersList",
 
 		func = function(ui)
 			local categories = {}
@@ -552,13 +552,13 @@ local func = {
 						local append = ""
 						if(displayEXPInformation) then
 							if(modifier.scoreMul > 1) then
-								append = "  (+"..((modifier.scoreMul - 1) * 100).."% EXP)"
+								append = ZShelter_GetTranslate("#XP_Mod_Plus1")..((modifier.scoreMul - 1) * 100)..ZShelter_GetTranslate("#XP_Mod_Plus2")
 							else
-								append = "  (-"..((1 - modifier.scoreMul) * 100).."% EXP)"
+								append = ZShelter_GetTranslate("#XP_Mod_Minus1")..((1 - modifier.scoreMul) * 100)..ZShelter_GetTranslate("#XP_Mod_Minus2")
 							end
 						end
-						local _, _, title = ZShelter.CreateLabel(pnl, sidepadding, sidepadding, (modifier.title || "NULL")..append, "ZShelter-GameUIModifierTitle", Color(255, 255, 255, 255))
-						local _, _, desc = ZShelter.CreateLabel(pnl, sidepadding, 0, modifier.desc || "NULL", "ZShelter-GameUIModifierDesc", Color(255, 255, 255, 255))
+						local _, _, title = ZShelter.CreateLabel(pnl, sidepadding, sidepadding, ZShelter_GetTranslate("#"..modifier.title || "NULL")..append, "ZShelter-GameUIModifierTitle", Color(255, 255, 255, 255))
+						local _, _, desc = ZShelter.CreateLabel(pnl, sidepadding, 0, ZShelter_GetTranslate("#"..modifier.desc) || "NULL", "ZShelter-GameUIModifierDesc", Color(255, 255, 255, 255))
 						desc:SetY(pnl:GetTall() - desc:GetTall() - textpadding_2)
 
 						local stringIndex = modifier.title.."Voted"
@@ -628,7 +628,7 @@ local func = {
 					panel:Dock(TOP)
 					panel:DockMargin(0, 0, 0, gap)
 					panel.AvatarLayer = ZShelter.CreatePanel(panel, 0, 0, panel:GetWide(), panel:GetTall(), Color(0, 0, 0, 0))
-					local _, _, dif = ZShelter.CreateLabel(panel, sidepadding, panel:GetTall() / 2, category, "ZShelter-SummeryButton", Color(255, 255, 255, 255))
+					local _, _, dif = ZShelter.CreateLabel(panel, sidepadding, panel:GetTall() / 2, ZShelter_GetTranslate("#"..category), "ZShelter-SummeryButton", Color(255, 255, 255, 255))
 					dif:CentVer()
 					local color = categoryColor[category] || Color(255, 255, 255, 255)
 					local wide = 0
@@ -1003,12 +1003,12 @@ local func = {
 									base.CheckDev = false
 								else
 									if(ZShelter.Names[k]) then
-										nick.UpdateText(ZShelter_GetTranslate_Var("#DeveloperTag", ZShelter.Names[k]))
+										nick.UpdateText(ZShelter.Names[k]..ZShelter_GetTranslate("#DeveloperTag"))
 										nick:SetTextColor(Color(255, 185, 20, 255))
 									end
 								end
 							end
-							if(nick:GetText() == "<INVALID PLAYER>") then
+							if(nick:GetText() == ZShelter_GetTranslate("#Player_NotFound")) then
 								base:Remove()
 								scroll:InvalidateLayout()
 								count = math.max(count - 1, 0)

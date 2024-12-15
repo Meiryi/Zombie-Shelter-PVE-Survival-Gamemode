@@ -22,7 +22,7 @@ if(SERVER) then
 				count = count + 1
 			end
 			if(count <= 0 || count < math.Round(player.GetCount() * 0.5)) then continue end
-			if(modifier.category == "Decrease Difficulty") then
+			if(modifier.category == "DiffDown_Muts") then
 				ZShelter.Modifiers.HasEasyMode = true
 			end
 			ZShelter.Modifiers.ApplyModifier(modifierName)
@@ -139,10 +139,10 @@ function ZShelter.Modifiers.Register(name, data)
 	ZShelter.Modifiers.List[name] = data
 end
 
-ZShelter.Modifiers.Register("Increased player damage", {
-	category = "Decrease Difficulty",
+ZShelter.Modifiers.Register("ModN_PlayerDmgUp", {
+	category = "DiffDown_Muts",
 	categoryColor = Color(55, 255, 55, 255),
-	desc = "+50% Player damage",
+	desc = "ModD_PlayerDmgUp",
 	scoreMul = 0.75,
 
 	hooks = {
@@ -158,10 +158,10 @@ ZShelter.Modifiers.Register("Increased player damage", {
 	},
 })
 
-ZShelter.Modifiers.Register("+1 Starting skillpoint", {
-	category = "Decrease Difficulty",
+ZShelter.Modifiers.Register("ModN_ExtraSkillpoint", {
+	category = "DiffDown_Muts",
 	categoryColor = Color(55, 255, 55, 255),
-	desc = "1 Extra starting skillpoint",
+	desc = "ModD_ExtraSkillpoint",
 	scoreMul = 0.75,
 
 	hooks = {
@@ -173,10 +173,10 @@ ZShelter.Modifiers.Register("+1 Starting skillpoint", {
 	},
 })
 
-ZShelter.Modifiers.Register("Double skillpoint", {
-	category = "Decrease Difficulty",
+ZShelter.Modifiers.Register("ModN_2xSkillpoints", {
+	category = "DiffDown_Muts",
 	categoryColor = Color(55, 255, 55, 255),
-	desc = "Gain 2 skillpoints every day",
+	desc = "ModD_2xSkillpoints",
 	scoreMul = 0.2,
 
 	hooks = {
@@ -188,10 +188,10 @@ ZShelter.Modifiers.Register("Double skillpoint", {
 	},
 })
 
-ZShelter.Modifiers.Register("Decreased zombie attack damage", {
-	category = "Decrease Difficulty",
+ZShelter.Modifiers.Register("ModN_ZombieAtkDmgDown", {
+	category = "DiffDown_Muts",
 	categoryColor = Color(55, 255, 55, 255),
-	desc = "-40% Zombie attack damage",
+	desc = "ModD_ZombieAtkDmgDown",
 	scoreMul = 0.8,
 
 	hooks = {
@@ -204,10 +204,10 @@ ZShelter.Modifiers.Register("Decreased zombie attack damage", {
 	},
 })
 
-ZShelter.Modifiers.Register("Increased resource spawn", {
-	category = "Decrease Difficulty",
+ZShelter.Modifiers.Register("ModN_ResourceSpawnUp", {
+	category = "DiffDown_Muts",
 	categoryColor = Color(55, 255, 55, 255),
-	desc = "+75% Resource spawns",
+	desc = "ModD_ResourceSpawnUp",
 	scoreMul = 0.7,
 
 	hooks = {
@@ -221,10 +221,10 @@ ZShelter.Modifiers.Register("Increased resource spawn", {
 	----------------------------------------------------------------------------------------
 ]]
 
-ZShelter.Modifiers.Register("Ranged attack mutation", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_RangedAtk", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "Enable ranged attack mutation",
+	desc = "ModD_RangedAtk",
 	scoreMul = 1.2,
 
 	hooks = {
@@ -234,10 +234,10 @@ ZShelter.Modifiers.Register("Ranged attack mutation", {
 	},
 })
 
-ZShelter.Modifiers.Register("Shield mutation", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_Shield", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "Enable shield mutation",
+	desc = "ModD_Shield",
 	scoreMul = 1.2,
 
 	hooks = {
@@ -247,10 +247,10 @@ ZShelter.Modifiers.Register("Shield mutation", {
 	},
 })
 
-ZShelter.Modifiers.Register("No skill boxes", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_NoSkillBox", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "No skillboxes will spawn",
+	desc = "ModD_NoSkillBox",
 	scoreMul = 1.4,
 
 	hooks = {
@@ -260,10 +260,10 @@ ZShelter.Modifiers.Register("No skill boxes", {
 	},
 })
 
-ZShelter.Modifiers.Register("Increased amount of zombie", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_AmountZombieUp", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "+100% Amount of zombies",
+	desc = "ModD_AmountZombieUp",
 	scoreMul = 1.5,
 
 	hooks = {
@@ -273,10 +273,10 @@ ZShelter.Modifiers.Register("Increased amount of zombie", {
 	},
 })
 
-ZShelter.Modifiers.Register("Increased spawn rate", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_ZombieSpawnUp", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "+100% Spawn rate",
+	desc = "ModD_ZombieSpawnUp",
 	scoreMul = 1.5,
 
 	hooks = {
@@ -287,10 +287,10 @@ ZShelter.Modifiers.Register("Increased spawn rate", {
 })
 
 local DayCount = 0
-ZShelter.Modifiers.Register("Less skillpoints", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_LessSkillpoints", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "Gain skilpoints every 2 days",
+	desc = "ModD_LessSkillpoints",
 	scoreMul = 1.4,
 
 	hooks = {
@@ -310,10 +310,10 @@ ZShelter.Modifiers.Register("Less skillpoints", {
 	},
 })
 
-ZShelter.Modifiers.Register("Less resource spawn", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_LessResourcesSpawn", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "-40% Resource spawns",
+	desc = "ModD_LessResourcesSpawn",
 	scoreMul = 1.1,
 
 	hooks = {
@@ -323,10 +323,10 @@ ZShelter.Modifiers.Register("Less resource spawn", {
 	},
 })
 
-ZShelter.Modifiers.Register("Less resource spawn", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_LessResourcesSpawn", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "-40% Resource spawns",
+	desc = "ModD_LessResourcesSpawn",
 	scoreMul = 1.125,
 
 	hooks = {
@@ -336,10 +336,10 @@ ZShelter.Modifiers.Register("Less resource spawn", {
 	},
 })
 
-ZShelter.Modifiers.Register("Less player damage", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_LessPlayerDmg", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "-25% Player Damage",
+	desc = "ModD_LessPlayerDmg",
 	scoreMul = 1.1,
 
 	hooks = {
@@ -356,10 +356,10 @@ ZShelter.Modifiers.Register("Less player damage", {
 	},
 })
 
-ZShelter.Modifiers.Register("Less time", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_LessTime", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "-25% Day and night time",
+	desc = "ModD_LessTime",
 	scoreMul = 1.2,
 
 	hooks = {
@@ -369,10 +369,10 @@ ZShelter.Modifiers.Register("Less time", {
 	},
 })
 
-ZShelter.Modifiers.Register("Increased enemy attack damage", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_EnemyAtkDmgUp", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "+50% Enemy attack damage",
+	desc = "ModD_EnemyAtkDmgUp",
 	scoreMul = 1.35,
 
 	hooks = {
@@ -386,10 +386,10 @@ ZShelter.Modifiers.Register("Increased enemy attack damage", {
 })
 
 --[[
-ZShelter.Modifiers.Register("One punch man zombies", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_OnePunchmanZombie", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "+1000% Enemy attack damage",
+	desc = "ModD_OnePunchmanZombie",
 	scoreMul = 1.1,
 
 	hooks = {
@@ -403,10 +403,10 @@ ZShelter.Modifiers.Register("One punch man zombies", {
 })
 ]]
 
-ZShelter.Modifiers.Register("Enemy running on day", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_RunnersDay", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "All enemies will be running no matter it's night or day",
+	desc = "ModD_RunnersDay",
 	scoreMul = 1.25,
 
 	hooks = {
@@ -420,10 +420,10 @@ ZShelter.Modifiers.Register("Enemy running on day", {
 	},
 })
 
-ZShelter.Modifiers.Register("Hardcore mode", {
-	category = "Increase Difficulty",
+ZShelter.Modifiers.Register("ModN_Hardcore", {
+	category = "DiffUP_Muts",
 	categoryColor = Color(255, 55, 55, 255),
-	desc = "THE ULTIMATE AIDS GAME EXPERIENCE",
+	desc = "ModD_Hardcore",
 	scoreMul = 5,
 
 	hooks = {
@@ -555,10 +555,10 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 	----------------------------------------------------------------------------------------
 ]]
 
-ZShelter.Modifiers.Register("Friendly Fire", {
-	category = "Other",
+ZShelter.Modifiers.Register("ModN_FriendlyFire", {
+	category = "Other_Muts",
 	categoryColor = Color(255, 255, 255, 255),
-	desc = "Enable friendly fire",
+	desc = "ModD_FriendlyFire",
 	scoreMul = 1,
 
 	hooks = {

@@ -353,7 +353,7 @@ ZShelter.AddBuildItem("GeneratorCategory",  "Generator",  5,  5,  0, 120,  "prop
 ZShelter.AddBuildItem("GeneratorCategory",  "Resource Generator",  12,  12,  65,  200,  "obj_structure_resource_generator",  "models/props_wasteland/laundry_washer003.mdl",  0,  Vector(0, 0, 25), {
 	maxamount = 2,
 }, {"Advanced Engineering"})
-ZShelter.AddBuildItem("Generator",  "Resource Converter",  16,  16,  10,  200,  "obj_structure_resource_converter",  "models/props_combine/combine_generator01.mdl",  0,  Vector(0, 0, 90), {
+ZShelter.AddBuildItem("GeneratorCategory",  "Resource Converter",  16,  16,  10,  200,  "obj_structure_resource_converter",  "models/props_combine/combine_generator01.mdl",  0,  Vector(0, 0, 90), {
 	upgradable = true,
 	upgrade_attackscale = 0,
 	upgrade_healthscale = 0,

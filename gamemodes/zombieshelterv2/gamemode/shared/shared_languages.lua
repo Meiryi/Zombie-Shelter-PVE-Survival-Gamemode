@@ -2089,7 +2089,7 @@ ZShelter.L("#BuildBy", {
 })
 
 ZShelter.L("#DeveloperTag", {
-	["en"] = "<VAR> [Dev]",
+	["en"] = " [Dev]",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2148,8 +2148,8 @@ ZShelter.L("#Skillpanel_Desc", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#SkillsTier_X", {
-	["en"] = "Tier : <VAR>",
+ZShelter.L("#SkillsTier", {
+	["en"] = "Tier : ",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2160,8 +2160,8 @@ ZShelter.L("#SkillsTier_X", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#UpgradeLevel_X", {
-	["en"] = "Level <VAR>",
+ZShelter.L("#UpgradeLevel", {
+	["en"] = "Level ",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2184,8 +2184,8 @@ ZShelter.L("#ShelterUpgradeDone", {
 	["zh-CN"] = "",
 })
 
-ZShelter.L("#Ammocount_X", {
-	["en"] = "Ammos : <VAR> / <VAR>",
+ZShelter.L("#Ammocount", {
+	["en"] = "Ammos : ",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2209,7 +2209,7 @@ ZShelter.L("#Evac5Min", {
 })
 
 ZShelter.L("#PlayerCalledevac", {
-	["en"] = "<VAR> Called for rescue!   [<VAR>/<VAR>]",
+	["en"] = " Called for rescue!   [",
 	["bg"] = "",
 	["de"] = "",
 	["fr"] = "",
@@ -2304,6 +2304,725 @@ ZShelter.L("#SB_Unmute", {
 	["zh-CN"] = "",
 })
 
+ZShelter.L("#Player_NotFound", {
+	["en"] = "<INVALID PLAYER>",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModifiersList", {
+	["en"] = "Modifiers",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#DiffUP_Muts", {
+	["en"] = "Increase Difficulty",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#Other_Muts", {
+	["en"] = "Other",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#DiffDown_Muts", {
+	["en"] = "Decrease Difficulty",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#XP_Mod_Plus1", {
+	["en"] = "  (+",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#XP_Mod_Plus2", {
+	["en"] = "% EXP)",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#XP_Mod_Minus1", {
+	["en"] = "  (-",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#XP_Mod_Minus2", {
+	["en"] = "% EXP)",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_Hardcore", {
+	["en"] = "Hardcore mode",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_Hardcore", {
+	["en"] = "THE ULTIMATE AIDS GAME EXPERIENCE",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_RunnersDay", {
+	["en"] = "Enemy running on day",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_RunnersDay", {
+	["en"] = "All enemies will be running no matter it's night or day",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_RangedAtk", {
+	["en"] = "Ranged attack mutation",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_RangedAtk", {
+	["en"] = "Enable ranged attack mutation",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_Shield", {
+	["en"] = "Shield mutation",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_Shield", {
+	["en"] = "Enable shield mutation",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_NoSkillBox", {
+	["en"] = "No skill boxes",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_NoSkillBox", {
+	["en"] = "No skillboxes will spawn",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_AmountZombieUp", {
+	["en"] = "Increased amount of zombie",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_AmountZombieUp", {
+	["en"] = "+100% Amount of zombies",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_ZombieSpawnUp", {
+	["en"] = "Increased spawn rate",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieSpawnUp", {
+	["en"] = "+100% Spawn rate",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_LessSkillpoints", {
+	["en"] = "Less skillpoints",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_LessSkillpoints", {
+	["en"] = "Gain skilpoints every 2 days",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_LessResourcesSpawn", {
+	["en"] = "Less resource spawn",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_LessResourcesSpawn", {
+	["en"] = "-40% Resource spawns",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_LessPlayerDmg", {
+	["en"] = "Less player damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_LessPlayerDmg", {
+	["en"] = "-25% Player Damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_LessTime", {
+	["en"] = "Less time",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_LessTime", {
+	["en"] = "-25% Day and night time",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_EnemyAtkDmgUp", {
+	["en"] = "Increased enemy attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_EnemyAtkDmgUp", {
+	["en"] = "+50% Enemy attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_OnePunchmanZombie", {
+	["en"] = "One punch man zombies",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_OnePunchmanZombie", {
+	["en"] = "+1000% Enemy attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_PlayerDmgUp", {
+	["en"] = "Increased player damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_PlayerDmgUp", {
+	["en"] = "+50% Player damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_ExtraSkillpoint", {
+	["en"] = "+1 Starting skillpoint",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ExtraSkillpoint", {
+	["en"] = "1 Extra starting skillpoint",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_2xSkillpoints", {
+	["en"] = "Double skillpoint",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_2xSkillpoints", {
+	["en"] = "Gain 2 skillpoints every day",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_ZombieAtkDmgDown", {
+	["en"] = "Decreased zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_ResourceSpawnUp", {
+	["en"] = "Increased resource spawn",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ResourceSpawnUp", {
+	["en"] = "+75% Resource spawns",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModN_FriendlyFire", {
+	["en"] = "Friendly Fire",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_FriendlyFire", {
+	["en"] = "Enable friendly fire",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
+
+ZShelter.L("#ModD_ZombieAtkDmgDown", {
+	["en"] = "-40% Zombie attack damage",
+	["bg"] = "",
+	["de"] = "",
+	["fr"] = "",
+	["tr"] = "",
+	["ru"] = "",
+	["vi"] = "",
+	["zh-TW"] = "",
+	["zh-CN"] = "",
+})
 
 local TemporaryUnsupportedLanguage = {
 
