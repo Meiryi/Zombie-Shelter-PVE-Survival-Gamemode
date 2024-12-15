@@ -2088,6 +2088,18 @@ ZShelter.L("#BuildBy", {
 	["zh-CN"] = "由 <VAR> 建造",
 })
 
+ZShelter.L("#MeleeDMG", {
+	["en"] = "Only damagable by melee",
+	["bg"] = "Само уязвими от близък бой",
+	["de"] = "Nur durch Nahkampf verletzbar",
+	["fr"] = "Seulement endommageable par le corps à corps",
+	["tr"] = "Sadece yakın dövüş ile zarar verilebilir",
+	["ru"] = "",
+	["vi"] = "Chỉ bị tấn công bằng vũ khí gần",
+	["zh-TW"] = "只能使用近戰攻擊",
+	["zh-CN"] = "只能使用近战攻击",
+})
+
 ZShelter.L("#DeveloperTag", {
 	["en"] = " [Dev]",
 	["bg"] = "",

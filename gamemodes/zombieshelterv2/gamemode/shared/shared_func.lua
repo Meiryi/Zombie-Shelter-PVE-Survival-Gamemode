@@ -194,8 +194,12 @@ end
 function ZShelter.CalculateDayEXPMultiplier(day)
 	local f = math.min(day / 3, 1)
 	local multiplier = (0.8 + math.Clamp(day * 0.05, 0, 0.85)) * f
-	if(day == 1) then
+	if(day < 3) then
 		multiplier = 0
+	else
+		if(day == 3) then
+			multiplier = 0.33
+		end
 	end
 	return multiplier
 end
