@@ -1,10 +1,10 @@
 -- Variables that are used on both client and server
-SWEP.Category				= "TFA CS:O Equipment"
+SWEP.Category				= "#zshelter.category.equipment"
 SWEP.Author				= ""
 SWEP.Contact				= ""
 SWEP.Purpose				= ""
 SWEP.Instructions				= ""
-SWEP.PrintName				= "Decoy Grenade"		-- Weapon name (Shown on HUD)
+SWEP.PrintName				= "#zshelter.weapon.decoy_grenade"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu
 SWEP.SlotPos				= 40			-- Position in the slot
 SWEP.DrawAmmo				= false		-- Should draw the default HL2 ammo counter

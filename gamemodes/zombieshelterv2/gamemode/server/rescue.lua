@@ -22,7 +22,7 @@ function ZShelter.StartRescue()
 	ZShelter.RestorePaths()
 	ZShelter.FilteEnemy(true)
 	ZShelter.ToggleBarricadeCollision(true)
-	ZShelter.BroadcastMessage("Rescue will come in 5 minutes!", Color(255, 255, 255, 255), true)
+	ZShelter.BroadcastMessage(ZShelter_GetTranslate("#Evac5Min"), Color(255, 255, 255, 255), true)
 end
 
 local cd = {}
@@ -31,7 +31,7 @@ function ZShelter.ProcessRescue(ply)
 	if(cd[ply:SteamID64()] && cd[ply:SteamID64()] > CurTime()) then return end
 	ZShelter.RescueList[ply:EntIndex()] = true
 	local count = table.Count(ZShelter.RescueList)
-	ZShelter.BroadcastMessage(ply:Nick().." Called for rescue!   ["..count.."/"..(player.GetCount()).."]", Color(255, 255, 255, 255), true)
+	ZShelter.BroadcastMessage(ply:Nick()..ZShelter_GetTranslate("#PlayerCalledevac")..count.."/"..(player.GetCount()).."]", Color(255, 255, 255, 255), true)
 
 	if(count >= player.GetCount()) then
 		ZShelter.StartRescue()

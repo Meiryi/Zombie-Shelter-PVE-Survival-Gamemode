@@ -1,6 +1,6 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "TFA CS:O Melees"
-SWEP.PrintName = "Nata Knife"
+SWEP.Category = "#zshelter.category.melee"
+SWEP.PrintName = "#zshelter.weapon.nata_knife"
 SWEP.Author		= "Kamikaze" --Author Tooltip
 SWEP.ViewModel = "models/weapons/tfa_cso/c_nata.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_nata.mdl"

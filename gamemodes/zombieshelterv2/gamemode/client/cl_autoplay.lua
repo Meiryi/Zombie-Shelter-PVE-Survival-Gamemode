@@ -964,7 +964,7 @@ hook.Add("HUDPaint", "ZShelter_AFK_HUDPaint", function()
 			mul = 1 - mul
 		end
 		local alp = 25 + 230 * mul
-		ZShelter.ShadowText("You're AFK\nBot is taking control", "ZShelter-HUDFont", scrw * 0.5, scrh * 0.575, Color(255, 255, 255, alp), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, 1)
+		ZShelter.ShadowText(ZShelter_GetTranslate("#PlayerIdleText"), "ZShelter-HUDFont", scrw * 0.5, scrh * 0.575, Color(255, 255, 255, alp), Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, 1)
 	end
 	if(!ZShelter.IsAFKing) then
 		alpha = math.Clamp(alpha - ZShelter.GetFixedValue(20), 0, 255)

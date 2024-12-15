@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_melee_base"
-SWEP.Category = "TFA CS:O Melees"
-SWEP.PrintName = "Brionac"
+SWEP.Category = "#zshelter.category.melee"
+SWEP.PrintName = "#zshelter.weapon.brionac"
 SWEP.Author	= "Kamikaze" --Author Tooltip
-SWEP.Type	= "Melee weapon"
+SWEP.Type	= "#zshelter.type.melee"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_brionac.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_katana.mdl"
 SWEP.ViewModelFlip = false

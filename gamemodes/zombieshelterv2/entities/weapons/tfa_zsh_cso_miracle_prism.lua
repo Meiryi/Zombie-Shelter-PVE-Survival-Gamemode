@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "TFA CS:O Melees"
-SWEP.PrintName = "Miracle Prism Sword"
+SWEP.Category = "#zshelter.category.melee"
+SWEP.PrintName = "#zshelter.weapon.miracle_prism_sword"
 SWEP.Author				= "Kamikaze" --Author Tooltip
-SWEP.Type	= "Unique grade melee weapon"
+SWEP.Type	= "#zshelter.type.unique_melee"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_magicknife.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_magicknife.mdl"
 SWEP.ViewModelFlip = false

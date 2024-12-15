@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "TFA CS:O Melees"
-SWEP.PrintName = "Tomahawk"
+SWEP.Category = "#zshelter.category.melee"
+SWEP.PrintName = "#zshelter.weapon.tomahawk"
 SWEP.Author	= "Kamikaze" --Author Tooltip
-SWEP.Type	= "Melee weapon"
+SWEP.Type	= "#zshelter.type.melee"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_tomahawk.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_tomahawk.mdl"
 SWEP.ViewModelFlip = false

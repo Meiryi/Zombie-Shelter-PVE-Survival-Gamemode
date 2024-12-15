@@ -1,13 +1,13 @@
 SWEP.Base				= "tfa_gun_base"
-SWEP.Category				= "TFA CS:O Equipment" --The category.  Please, just choose something generic or something I've already done if you plan on only doing like one swep.
+SWEP.Category				= "#zshelter.category.equipment" --The category.  Please, just choose something generic or something I've already done if you plan on only doing like one swep.
 SWEP.Author				= "Meika, ★Bullet★, Kamikaze" --Author Tooltip
 SWEP.Contact				= "" --Contact Info Tooltip
-SWEP.Purpose				= "Dragon cannon, but better. RMB to transform (spam LMB while transform for a surprise)" --Purpose Tooltip
+SWEP.Purpose				= "#zshelter.weapon_help.red_dragon_cannon" --Purpose Tooltip
 SWEP.Instructions				= "" --Instructions Tooltip
 SWEP.Spawnable				= true --Can you, as a normal user, spawn this?
 SWEP.AdminSpawnable			= true --Can an adminstrator spawn this?  Does not tie into your admin mod necessarily, unless its coded to allow for GMod's default ranks somewhere in its code.  Evolve and ULX should work, but try to use weapon restriction rather than these.
 SWEP.DrawCrosshair			= true		-- Draw the crosshair?
-SWEP.PrintName				= "Red Dragon Cannon"		-- Weapon name (Shown on HUD)
+SWEP.PrintName				= "#zshelter.weapon.red_dragon_cannon"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 4				-- Slot in the weapon selection menu.  Subtract 1, as this starts at 0.
 SWEP.SlotPos				= 73			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter if enabled in the GUI.
