@@ -738,19 +738,36 @@ SWEP.NextRechargeTime = 0
 function SWEP:Think() 
 	if SERVER then
 		if self.Secondary.Nextregen <= CurTime()  and self:Ammo2() < 60 then 
-			self.Owner:GiveAmmo( 1,"cosmic_stone", true )                     -------SECONDARY AMMO REGEN
-			self.Secondary.Nextregen =  CurTime()  + 0.2
+			local totalcharge = CurTime() - self.Secondary.Nextregen
+			if(self.Secondary.Nextregen != 0 && totalcharge != CurTime()) then
+				totalcharge = math.Round(math.max(totalcharge / 0.33, 1))
+			else
+				totalcharge = 1
+			end
+			self.Owner:GiveAmmo( totalcharge,"cosmic_stone", true )
+			self.Secondary.Nextregen =  CurTime()  + 0.33
 		end
 
 		local charge = self:GetNWInt("Arbalest_Charge")
 		local progress = self:GetNWInt("Arbalest_ChargeProgress")
+		if(charge >= 3) then
+			self.NextRechargeTime = CurTime()
+		end
 		if(self.NextRechargeTime < CurTime() && charge < 3) then
-			self:SetNWInt("Arbalest_ChargeProgress", progress + 1)
-			if(progress >= 100) then
-				self:SetNWInt("Arbalest_ChargeProgress", 0)
-				self:SetNWInt("Arbalest_Charge", charge + 1)
+			local totalcharge = CurTime() - self.NextRechargeTime
+			local gain = 1
+			if(self.NextRechargeTime != 0 && totalcharge != CurTime()) then
+				totalcharge = math.Round(math.max(totalcharge / 0.175, 1))
+				gain = math.floor(math.max(totalcharge / 100, 1))
+			else
+				totalcharge = 1
 			end
-			self.NextRechargeTime = CurTime() + 0.1
+			self:SetNWInt("Arbalest_ChargeProgress", progress + totalcharge)
+			if(self:GetNWInt("Arbalest_ChargeProgress") >= 100) then
+				self:SetNWInt("Arbalest_ChargeProgress", self:GetNWInt("Arbalest_ChargeProgress") - 100)
+				self:SetNWInt("Arbalest_Charge", math.min(charge + gain, 3))
+			end
+			self.NextRechargeTime = CurTime() + 0.175
 		end
 	end
 	BaseClass.Think(self)

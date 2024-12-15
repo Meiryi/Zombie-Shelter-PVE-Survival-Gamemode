@@ -102,7 +102,14 @@ end
 
 function ZShelter.HandleBarricade(barricade, player, damage)
 	if(!GetGlobalBool("GameStarted")) then return end
-	barricade:SetHealth(barricade:Health() - damage)
+	if(barricade:GetClass() != "func_breakable") then
+		barricade:SetHealth(barricade:Health() - damage)
+	else
+		local wep = player:GetActiveWeapon()
+		if(IsValid(wep) && ZShelter.IsMeleeWeapon(wep:GetClass())) then
+			barricade:SetHealth(barricade:Health() - damage)
+		end
+	end
 	ZShelter.SyncHP(barricade, player)
 	if(barricade:Health() <= 0) then
 		local mins, maxs = barricade:GetModelBounds()

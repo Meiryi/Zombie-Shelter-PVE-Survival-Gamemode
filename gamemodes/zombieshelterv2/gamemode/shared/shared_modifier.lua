@@ -457,12 +457,8 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 		ZShelterGameStarted = function()
 			GetConVar("zshelter_difficulty"):SetInt(9)
 			ZShelter.StartedDifficulty = GetConVar("zshelter_difficulty"):GetInt()
-			SetGlobalInt("Time", 480)
-			SetGlobalFloat("EnemySpawnTimeMul", GetGlobalFloat("EnemySpawnTimeMul", 1) * 0.85)
-
-			for _, ply in ipairs(player.GetAll()) do
-				ply:SetNWInt("SkillPoints", ply:GetNWInt("SkillPoints") + 1)
-			end
+			SetGlobalInt("Time", 360)
+			SetGlobalFloat("EnemySpawnTimeMul", GetGlobalFloat("EnemySpawnTimeMul", 1) * 0.75)
 
 			ZShelter.EnemyConfig = {}
 
@@ -485,10 +481,10 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_psycho_h", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(3, false, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_psycho_o", "none", 100, 12, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(5, false, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(4, false, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(4, true, false, false, "npc_vj_zshelter_heavy_h", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(4, false, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(4, true, false, false, "npc_vj_zshelter_heavy_o", "none", 100, 10, 550, -1, -1, 35, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_boomer_h", "none", 100, 25, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(6, true, false, false, "npc_vj_zshelter_boomer_h", "none", 100, 25, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(6, false, false, false, "npc_vj_zshelter_boomer_o", "none", 100, 25, 170, -1, -1, 3, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
@@ -505,9 +501,9 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 			ZShelter.AddEnemy(15, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 3, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(20, true, false, false, "npc_vj_zshelter_common_o_grenade", "none", 100, 10, 220, -1, -1, 0, Color(55, 255, 55, 255), 5, CurMinDifficulty, CurMaxDifficulty)
 
-			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 50, 8000, 4, -1, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 85, 8000, 6, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
-			ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 20, 6000, 10, -1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(3, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 50, 7000, 4, 2, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(5, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 85, 9500, 6, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
+			ZShelter.AddEnemy(7, true, false, false, "npc_vj_zshelter_heavy_boss", "none", 100, 20, 15000, 10, -1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(8, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 17000, 9, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_boss_fallen_titan", "none", 100, 65, 20000, 11, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(10, true, false, false, "npc_vj_zshelter_boss_ampsuit", "none", 100, 65, 20000, 11, 1, 0, Color(255, 255, 255, 255), 1, CurMinDifficulty, CurMaxDifficulty)
@@ -541,9 +537,6 @@ ZShelter.Modifiers.Register("Hardcore mode", {
 			ZShelter.AddEnemy(13, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3400, 15, 10, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(15, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3400, 17, 14, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
 			ZShelter.AddEnemy(17, true, false, false, "npc_vj_zshelter_deimos_o", "none", 100, 25, 3400, -1, 20, 0, Color(255, 255, 255, 255), -1, CurMinDifficulty, CurMaxDifficulty)
-
-			SetGlobalBool("BP_Mending Tower", true)
-			SetGlobalBool("BP_Freeze Tower", true)
 
 			ZShelter.SpawnResources(130)
 			ZShelter.FilteEnemy()

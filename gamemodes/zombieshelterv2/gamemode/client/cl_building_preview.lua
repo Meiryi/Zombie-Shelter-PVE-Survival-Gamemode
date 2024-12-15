@@ -209,7 +209,8 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 			entity.olen = 0
 		end
 		local nwname = entity:GetNWString("Name", "Friendly Building")
-		if(entity:GetClass() == "func_breakable") then
+		local isbreakable = entity:GetClass() == "func_breakable"
+		if(isbreakable) then
 			nwname = "Barricade"
 		end
 		local name = ZShelter_GetTranslate("#"..nwname)
@@ -224,6 +225,17 @@ hook.Add("HUDPaint", "ZShelter-BuildingHints", function()
 		local side = ScreenScaleH(10)
 		local startX, maxW = x + side, w - (side * 2)
 		local damage, kills = math.floor(entity:GetNWInt("ZShelter_DamageDealt", 0)), entity:GetNWInt("ZShelter_KillCount", 0)
+
+		if(isbreakable) then
+			local dmginfow, dmginfoh = ScreenScaleH(185), ScreenScaleH(18)
+			local textpadding = ScreenScaleH(3)
+			local basey = y - (dmginfoh + imgsx)
+			local sx = ScreenScaleH(16)
+			local textxpadding = sx * 0.5
+			draw_RoundedBox(0, x, basey, dmginfow, dmginfoh, Color(155, 0, 0, 100))
+			basey = basey + ScreenScaleH(1)
+			draw_DrawText(ZShelter_GetTranslate("#MeleeDMG"), "ZShelter-HUDUpgradeDesc", x + w * 0.5, basey + textpadding, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+		end
 
 		if(damage > 0 || kills > 0) then
 			local dmginfow, dmginfoh = ScreenScaleH(185), ScreenScaleH(18)

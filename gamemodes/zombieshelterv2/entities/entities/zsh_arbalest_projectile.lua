@@ -35,7 +35,7 @@ if SERVER then
 			ent:SetVelocity(ent:GetVelocity() * -1 + vel + Vector(0, 0, 64)) -- No escape for you lol
 		end
 
-		local dmg = 70
+		local dmg = 100
 		if(self.HitTargets[ent:EntIndex()] < CurTime()) then
 			if(ent:IsPlayer() || (ent:IsNPC() && !ent.IsBuilding) || ent:IsNextBot()) then
 				local attacker = self:GetOwner()
@@ -47,9 +47,21 @@ if SERVER then
 					inflictor = self
 				end
 
+				if(ent:IsPlayer()) then
+					ent:TakeDamage(8, ent, ent)
+
+					if(IsValid(self.Owner) && self.Owner:IsPlayer()) then
+						net.Start("ZShelter-DamageNumber")
+						net.WriteInt(ent:EntIndex(), 32)
+						net.WriteInt(8, 32)
+						net.WriteVector(ent:GetPos() + ent:OBBCenter())
+						net.Send(self.Owner)
+					end
+				end
+
 				local dmginfo = DamageInfo()
 				if(ent.IsBoss) then
-					dmginfo:SetDamage(1500)
+					dmginfo:SetDamage(2000)
 					self.BlackListEnts[ent:EntIndex()] = true
 				else
 					dmginfo:SetDamage(dmg)

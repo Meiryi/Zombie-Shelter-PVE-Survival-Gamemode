@@ -30,7 +30,7 @@ net.Receive("ZShelter-UncraftWeapon", function(len, ply)
 	end
 end)
 
-function ZShelter.CraftWeapon(ply, data)
+function ZShelter.CraftWeapon(ply, data, index)
 	local wep = ents.Create(data.class)
 	wep:Spawn()
 	wep.DamageScaling = data.dmgscale
@@ -40,7 +40,7 @@ function ZShelter.CraftWeapon(ply, data)
 	wep.AmmoRegenSpeed = data.ammoregen || -1
 	wep.Category = data.category
 	wep:SetNWBool("zsh_shootable_weapon", true)
-	wep:SetNWInt("zsh_index", index1)
+	wep:SetNWInt("zsh_index", index)
 	wep:SetNWInt("zsh_woods", data.woods)
 	wep:SetNWInt("zsh_irons", data.irons)
 
@@ -61,7 +61,7 @@ net.Receive("ZShelter-Worktable", function(len, ply)
 	local data = ZShelter.ItemConfig[index1]
 	if(!data || !ZShelter.CanCraftWeapon(ply, data) || ply:HasWeapon(data.class)) then return end
 
-	ZShelter.CraftWeapon(ply, data)
+	ZShelter.CraftWeapon(ply, data, index1)
 
 	ply:SetNWInt("WoodsUsed", ply:GetNWInt("WoodsUsed", 0) + data.woods)
 	ply:SetNWInt("IronsUsed", ply:GetNWInt("IronsUsed", 0) + data.irons)
