@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "#zshelter.category.melee"
-SWEP.PrintName = "#zshelter.weapon.kujang"
+SWEP.Category = "TFA CS:O Melees"
+SWEP.PrintName = "Kujang"
 SWEP.Author	= "Kamikaze" --Author Tooltip
-SWEP.Type	= "#zshelter.type.melee"
+SWEP.Type	= "Melee weapon"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_kujang.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_kujang.mdl"
 SWEP.ViewModelFlip = false

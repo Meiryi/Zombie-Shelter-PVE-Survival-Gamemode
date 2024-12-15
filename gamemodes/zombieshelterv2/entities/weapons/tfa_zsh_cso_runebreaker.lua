@@ -1,6 +1,6 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "#zshelter.category.melee"
-SWEP.PrintName = "#zshelter.weapon.runebreaker"
+SWEP.Category = "TFA CS:O Melees"
+SWEP.PrintName = "Runebreaker"
 
 SWEP.ViewModel = "models/weapons/tfa_cso/c_runebreaker.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_runebreaker.mdl"

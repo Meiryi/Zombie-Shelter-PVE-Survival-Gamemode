@@ -3,16 +3,16 @@ if (GetConVar(SWEP.Gun.."_allowed")) != nil then
 	if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then SWEP.Base = "tfa_blacklisted" SWEP.PrintName = SWEP.Gun return end
 end
 SWEP.Base				= "tfa_gun_base"
-SWEP.Category				= "#zshelter.category.shotgun" --The category.  Please, just choose something generic or something I've already done if you plan on only doing like one swep.
+SWEP.Category				= "TFA CS:O Shotguns" --The category.  Please, just choose something generic or something I've already done if you plan on only doing like one swep.
 SWEP.Author				= "Kamikaze, ★Bullet★" --Author Tooltip
 SWEP.Contact				= "" --Contact Info Tooltip
-SWEP.Purpose				= "#zshelter.weapon_help.thanatos11" --Purpose Tooltip
-SWEP.Purpose				= "#zshelter.weapon_help2.thanatos11" --Purpose Tooltip
+SWEP.Purpose				= "Shoots Thanatos 11 Blades that regens every 12 seconds. Right click to switch to secondary mode." --Purpose Tooltip
+SWEP.Purpose				= "When wielded, this weapon automatically generates blades. Right click to switch to secondary mode, allowing you to fire them." --Purpose Tooltip
 SWEP.Instructions				= "" --Instructions Tooltip
 SWEP.Spawnable				= true --Can you, as a normal user, spawn this?
 SWEP.AdminSpawnable			= true --Can an adminstrator spawn this?  Does not tie into your admin mod necessarily, unless its coded to allow for GMod's default ranks somewhere in its code.  Evolve and ULX should work, but try to use weapon restriction rather than these.
 SWEP.DrawCrosshair			= true		-- Draw the crosshair?
-SWEP.PrintName				= "#zshelter.weapon.thanatos11"		-- Weapon name (Shown on HUD)
+SWEP.PrintName				= "THANATOS-11"		-- Weapon name (Shown on HUD)
 SWEP.Slot				= 3				-- Slot in the weapon selection menu.  Subtract 1, as this starts at 0.
 SWEP.SlotPos				= 73			-- Position in the slot
 SWEP.DrawAmmo				= true		-- Should draw the default HL2 ammo counter if enabled in the GUI.
@@ -22,7 +22,7 @@ SWEP.AutoSwitchTo			= true		-- Auto switch to if we pick it up
 SWEP.AutoSwitchFrom			= true		-- Auto switch from if you pick up a better weapon
 SWEP.Weight				= 30			-- This controls how "good" the weapon is for autopickup.
 SWEP.Revolver			= false			-- New TFA Base feature. Tell it that I'm a revolver, not a bolt-action.
-SWEP.Type	= "#zshelter.type.rare_shotgun"
+SWEP.Type	= "Rare Grade Shotgun"
 SWEP.Primary.Knockback = 0 
 SWEP.ProceduralHolsterTime = 0
 

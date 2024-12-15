@@ -1,6 +1,6 @@
 SWEP.Base = "tfa_melee_base"
-SWEP.Category = "#zshelter.category.melee"
-SWEP.PrintName = "#zshelter.weapon.vulcanus9"
+SWEP.Category = "TFA CS:O Melees"
+SWEP.PrintName = "VULCANUS-9"
 
 SWEP.ViewModel = "models/weapons/tfa_cso/c_vulcanus9.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_vulcanus9.mdl"

@@ -1,6 +1,6 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "#zshelter.category.melee"
-SWEP.PrintName = "#zshelter.weapon.skull9"
+SWEP.Category = "TFA CS:O Melees"
+SWEP.PrintName = "SKULL-9"
 
 SWEP.ViewModel = "models/weapons/tfa_cso/c_skull_9.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_skull_9.mdl"

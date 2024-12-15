@@ -153,7 +153,7 @@ function ZShelter.MakeShelterTab(ui)
 		local base = ZShelter.CreatePanel(pa, 0, 0, pa:GetWide(), ui.container:GetTall() * 0.7, Color(30, 30, 30, 255))
 			base:Dock(TOP)
 			base:DockMargin(0, 0, 0, dockmargin)
-			local tw, th, text = ZShelter.CreateLabel(base, dockmargin, 0, ZShelter_GetTranslate("#UpgradeLevel")..(k + 1), "ZShelter-MenuBig", Color(200, 200, 200, 255))
+			local tw, th, text = ZShelter.CreateLabel(base, dockmargin, 0, "Level "..(k + 1), "ZShelter-MenuBig", Color(200, 200, 200, 255))
 			base.Paint = function()
 				draw.RoundedBox(0, 0, 0, base:GetWide(), base:GetTall(), Color(30, 30, 30, 150))
 				draw.RoundedBox(0, 0, 0, base:GetWide(), innermargin + th, Color(0, 0, 0, 220))
@@ -255,7 +255,7 @@ function ZShelter.MakeShelterTab(ui)
 					surface.DrawTexturedRect(0, offs, w, tall)
 					surface.DrawTexturedRect(0, offs + h - tall, w, tall)
 
-					draw.DrawText(ZShelter_GetTranslate("#ShelterUpgradeDone"), "ZShelter-MenuBig", base:GetWide() / 2, base:GetTall() * 0.45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+					draw.DrawText("Done", "ZShelter-MenuBig", base:GetWide() / 2, base:GetTall() * 0.45, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 				end
 			end
 			break

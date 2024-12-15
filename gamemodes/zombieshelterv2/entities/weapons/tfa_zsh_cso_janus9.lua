@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "#zshelter.category.melee"
-SWEP.PrintName = "#zshelter.weapon.janus9"
+SWEP.Category = "TFA CS:O Melees"
+SWEP.PrintName = "JANUS-9"
 SWEP.Author				= "Kamikaze" --Author Tooltip
-SWEP.Type	= "#zshelter.type.epic_melee"
+SWEP.Type	= "Epic grade melee weapon"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_janus9.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_janus9.mdl"
 SWEP.ViewModelFlip = false

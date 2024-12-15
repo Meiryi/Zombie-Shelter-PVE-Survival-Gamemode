@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "#zshelter.category.melee"
-SWEP.PrintName = "#zshelter.weapon.dual_sword_phantom_slayer"
+SWEP.Category = "TFA CS:O Melees"
+SWEP.PrintName = "Dual Sword Phantom Slayer"
 SWEP.Author				= "Kamikaze, Meika, ★Bullet★" --Author Tooltip
-SWEP.Purpose = "#zshelter.weapon_help.dual_sword_phantom_slayer" --Purpose Tooltip
+SWEP.Purpose = "Slashing everything along it's path. For activating special attack = LMB > Hold RMB > Hold LMB > Hold RMB" --Purpose Tooltip
 SWEP.ViewModel = "models/weapons/tfa_cso/c_dualphantomslayer.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_dualsword_thunder.mdl"
 SWEP.ViewModelFlip = false

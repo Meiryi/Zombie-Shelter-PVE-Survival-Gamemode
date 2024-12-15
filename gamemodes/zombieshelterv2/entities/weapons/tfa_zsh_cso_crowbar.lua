@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "#zshelter.category.melee"
-SWEP.PrintName = "#zshelter.weapon.crowbar"
+SWEP.Category = "TFA CS:O Melees"
+SWEP.PrintName = "Crowbar"
 SWEP.Author	= "Kamikaze" --Author Tooltip
-SWEP.Type	= "#zshelter.type.melee"
+SWEP.Type	= "Melee weapon"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_crowbar.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_crowbar.mdl"
 SWEP.ViewModelFlip = false

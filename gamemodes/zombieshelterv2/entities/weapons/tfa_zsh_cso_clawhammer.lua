@@ -1,6 +1,6 @@
 SWEP.Base = "tfa_zsh_melee_base"
-SWEP.Category = "#zshelter.category.melee"
-SWEP.PrintName = "#zshelter.weapon.claw_hammer"
+SWEP.Category = "TFA CS:O Melees"
+SWEP.PrintName = "Claw Hammer"
 SWEP.Author	= "★Bullet★"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_clawhammer.mdl"
 SWEP.WorldModel = "models/weapons/tfa_cso/w_clawhammer.mdl"
@@ -8,7 +8,7 @@ SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV = 80
 SWEP.UseHands = true
 SWEP.HoldType = "melee"
-SWEP.Type	= "#zshelter.type.common_melee"
+SWEP.Type	= "Common Grade Melee"
 SWEP.DrawCrosshair = true
 
 SWEP.Primary.Directional = false

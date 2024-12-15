@@ -1,8 +1,8 @@
 SWEP.Base = "tfa_bash_base"
-SWEP.Category = "#zshelter.category.equipment"
+SWEP.Category = "TFA CS:O Equipment"
 SWEP.Author = "★Bullet★"
-SWEP.PrintName = "#zshelter.weapon.rock_breaker"
-SWEP.Type	= "#zshelter.type.common_equipment"
+SWEP.PrintName = "Rock Breaker"
+SWEP.Type	= "Common Grade Equipment"
 SWEP.ViewModel = "models/weapons/tfa_cso/c_rockbreaker.mdl"
 SWEP.ViewModelFOV = 80
 SWEP.ViewModelFlip = true
