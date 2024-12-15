@@ -645,11 +645,11 @@ net.Receive("ZShelter_BuildRequest", function(len, ply)
 	ply:AddFrags(math.floor((woods + irons + powers) * 0.65))
 
 	if(storage) then
-		SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - data.woods, 0))
-		SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - data.irons, 0))
+		SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - woods, 0))
+		SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - irons, 0))
 	else
-		ply:SetNWInt("Woods", math.max(ply:GetNWInt("Woods", 1) - data.woods, 0))
-		ply:SetNWInt("Irons", math.max(ply:GetNWInt("Irons", 1) - data.irons, 0))
+		ply:SetNWInt("Woods", math.max(ply:GetNWInt("Woods", 1) - woods, 0))
+		ply:SetNWInt("Irons", math.max(ply:GetNWInt("Irons", 1) - irons, 0))
 	end
 
 	ZShelter.CreateBuilding(ply, data, vec, yaw)

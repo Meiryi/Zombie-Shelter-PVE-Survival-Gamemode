@@ -752,6 +752,7 @@ function SWEP:Think()
 		local progress = self:GetNWInt("Arbalest_ChargeProgress")
 		if(charge >= 3) then
 			self.NextRechargeTime = CurTime()
+			self:SetNWInt("Arbalest_ChargeProgress", 0)
 		end
 		if(self.NextRechargeTime < CurTime() && charge < 3) then
 			local totalcharge = CurTime() - self.NextRechargeTime

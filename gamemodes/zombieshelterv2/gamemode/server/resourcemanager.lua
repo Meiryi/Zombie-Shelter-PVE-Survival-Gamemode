@@ -59,6 +59,10 @@ local resourceMaxAmount = {
 	obj_resource_wood = 6,
 	obj_resource_iron = 4,
 }
+local resourceMinAmount = {
+	obj_resource_wood = 1,
+	obj_resource_iron = 2,
+}
 
 function ZShelter.SpawnBonusResource()
 	for k,v in pairs(ents.FindByClass("info_zshelter_resource_bonus_area")) do
@@ -69,6 +73,7 @@ end
 function ZShelter.DebugSpawnResource(player, amount)
 		local pos = player:GetEyeTrace().HitPos
 		local type = resourceToSpawn[math.random(1, #resourceToSpawn)]
+		local min = resourceMinAmount[type]
 		local max = resourceMaxAmount[type]
 		if(!max) then max = 8 end
 		local res = ents.Create(type)
@@ -91,9 +96,10 @@ function ZShelter.SpawnResources(amount)
 	for i = 1, amount do
 		local pos = ZShelter.ResourceSpawnPoint[math.random(1, #ZShelter.ResourceSpawnPoint)]
 		local type = resourceToSpawn[math.random(1, #resourceToSpawn)]
+		local min = resourceMinAmount[type]
 		local max = resourceMaxAmount[type]
 		if(!max) then max = 8 end
-		local amount = math.random(1, max)
+		local amount = math.random(min, max)
 		local res = ents.Create(type)
 			res:SetPos(pos)
 			res:SetAngles(Angle(0, math.random(-180, 180), 0))
@@ -164,9 +170,10 @@ function ZShelter.RandomResourceVec(vec, amount)
 
 		if(!util.IsInWorld(pos)) then continue end
 		local type = resourceToSpawn[math.random(1, #resourceToSpawn)]
+		local min = resourceMinAmount[type]
 		local max = resourceMaxAmount[type]
 		if(!max) then max = 8 end
-		local amount = math.random(1, max)
+		local amount = math.random(min, max)
 		local res = ents.Create(type)
 			res:SetPos(pos)
 			res:SetAngles(Angle(0, math.random(-180, 180), 0))

@@ -429,7 +429,7 @@ BaseClass.Think(self)
 end
 
 function SWEP:PrimaryAttack( ... )
-if not IsFirstTimePredicted() or not self:CanPrimaryAttack() then return end
+	if(!self:CanPrimaryAttack() || (CLIENT && !IsFirstTimePredicted()) || self:GetNextPrimaryFire() > CurTime()) then return end
 	if self:GetSilenced() and not self.Owner:KeyDown(IN_USE) then
 		if CurTime() > self:GetNextPrimaryFire() and self:GetStatus() == TFA.GetStatus("idle") and self:Ammo2() > 0 then
 			self.Owner:ViewPunch(Angle(-3,0,0))
