@@ -162,9 +162,9 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 		end
 	end
 
-	if(target:IsNPC() && !target.IsBuilding) then
+	if(target:IsNPC() && !target.IsBuilding && !attacker:IsPlayer()) then
 		if(target:GetNWFloat("ResistanceTime", 0) > CurTime()) then
-			dmginfo:SetDamage(damage * 0.5)
+			dmginfo:SetDamage(damage * 0.65)
 			damage = dmginfo:GetDamage()
 		end
 	end
