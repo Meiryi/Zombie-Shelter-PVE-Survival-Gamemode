@@ -278,7 +278,7 @@ ZShelter.AddInfo("Double Tap", {
 		["vi"] = "+10% cơ hội gây sát thương gấp đôi mỗi lần nâng cấp",
 		["zh-TW"] = "每升級一次增加 10% 機率造成雙倍傷害",
 		["zh-CN"] = "每升级一次增加 10% 机率造成双倍伤害",
-		["ru"] = "",
+		["ru"] = "+10% шанс нанести двойной урон при каждом улучшении",
 		["de"] = "+10% Chance, bei jedem Upgrade doppelten Schaden zu verursachen",
 	}
 })
@@ -300,7 +300,7 @@ ZShelter.AddInfo("Melee Stunning", {
 		["bg"] = "",
 		["fr"] = "",
 		["tr"] = "",
-		["vi"] = "",
+		["vi"] = "Оглушает врагов на 0,75 сек. при ударе дополнительной атакой боевым топором",
 		["zh-TW"] = "使用戰斧的次要攻擊可暈眩敵人0.75秒",
 		["zh-CN"] = "使用战斧的次要攻击可晕眩敌人0.75秒",
 		["ru"] = "",
@@ -453,7 +453,7 @@ ZShelter.AddInfo("Damage Amplifier", {
 		["vi"] = "Tăng sát thương cho tất cả người chơi / tháp pháo gần đó, +15% mỗi lần nâng cấp",
 		["zh-TW"] = "提升附近所有玩家/砲塔的傷害, 每升一级增加 15%",
 		["zh-CN"] = "提升附近所有玩家/炮塔的伤害, 每升一级增加 15%",
-		["ru"] = "Увеличивает урон всех ближайших игроков / турелей",
+		["ru"] = "Увеличивает урон всех ближайших игроков и турелей, +15% за улучшение",
 		["de"] = "Erhöht den Schaden aller Spieler / Geschütztürme in der Nähe, +15% pro Upgrade",
 	}
 })
@@ -478,7 +478,7 @@ ZShelter.AddInfo("Vampire", {
 		["vi"] = "",
 		["zh-TW"] = "使用近戰武器攻擊敵人時回復生命, 每升級一次回復 10 HP",
 		["zh-CN"] = "使用近战武器攻击敌人时回复生命, 每升一级回复 10 HP",
-		["ru"] = "",
+		["ru"] = "Восстанавливает здоровье при нанесении урона врагам оружием ближнего боя,\n+10 ед. здоровья за обновление",
 		["de"] = "",
 	}
 })
@@ -503,7 +503,7 @@ ZShelter.AddInfo("Self Recovering", {
 		["vi"] = "Hồi máu mỗi giây, +2 HP hồi phục mỗi lần nâng cấp",
 		["zh-TW"] = "每秒鐘回復生命值",
 		["zh-CN"] = "每秒钟回复一定生命值",
-		["ru"] = "Восстанавливает здоровье ежесекундно",
+		["ru"] = "Восстанавливает здоровье ежесекундно, +2 ед. здоровья за улучшение",
 		["de"] = "Regeneriert Gesundheit jede Sekunde, +2HP Regenerierung pro Upgrade",
 	}
 })
@@ -567,7 +567,7 @@ ZShelter.AddInfo("Aim Assist", {
 		["vi"] = "",
 		["zh-TW"] = "輔助瞄準",
 		["zh-CN"] = "辅助瞄准",
-		["ru"] = "",
+		["ru"] = "Помощь в прицеливании",
 		["de"] = "",
 	},
 	desc = {
@@ -578,7 +578,7 @@ ZShelter.AddInfo("Aim Assist", {
 		["vi"] = "",
 		["zh-TW"] = "自動瞄準敵人\n按住使用鍵啟動",
 		["zh-CN"] = "自动瞄准敌人\n按住使用键激活",
-		["ru"] = "",
+		["ru"] = "Автоматическое наведение на врага\nУдерживайте клавишу использования для применения",
 		["de"] = "",
 	}
 })
@@ -592,7 +592,7 @@ ZShelter.AddInfo("Armor Regenerate", {
 		["vi"] = "",
 		["zh-TW"] = "護甲修復",
 		["zh-CN"] = "护甲修复",
-		["ru"] = "",
+		["ru"] = "Восстановление брони",
 		["de"] = "",
 	},
 	desc = {
@@ -603,7 +603,7 @@ ZShelter.AddInfo("Armor Regenerate", {
 		["vi"] = "",
 		["zh-TW"] = "每秒鐘恢復護甲, 每升級一次增加 1",
 		["zh-CN"] = "每秒钟恢复护甲, 每升级一次增加 1",
-		["ru"] = "",
+		["ru"] = "Восстанавливает броню ежесекундно, +1 ед. брони за улучшение",
 		["de"] = "",
 	}
 })
@@ -617,7 +617,7 @@ ZShelter.AddInfo("Battle Axe Upgrade", {
 		["vi"] = "",
 		["zh-TW"] = "戰斧",
 		["zh-CN"] = "战斧",
-		["ru"] = "",
+		["ru"] = "Переход на боевой топор",
 		["de"] = "",
 	},
 	desc = {
@@ -628,7 +628,7 @@ ZShelter.AddInfo("Battle Axe Upgrade", {
 		["vi"] = "",
 		["zh-TW"] = "將近戰武器替換成戰斧, 可以攻擊多個敵人, 並擊退敵人",
 		["zh-CN"] = "将近战武器替换为战斧, 可以攻击多个敌人, 并击退敌人",
-		["ru"] = "",
+		["ru"] = "Переделать оружие ближнего боя в боевой топор, способный поражать нескольких врагов и\nотбрасывать врагов",
 		["de"] = "",
 	}
 })
@@ -642,7 +642,7 @@ ZShelter.AddInfo("Firerate Boost", {
 		["vi"] = "",
 		["zh-TW"] = "射速提升",
 		["zh-CN"] = "射速提升",
-		["ru"] = "",
+		["ru"] = "Повышение скорострельности",
 		["de"] = "",
 	},
 	desc = {
@@ -653,7 +653,7 @@ ZShelter.AddInfo("Firerate Boost", {
 		["vi"] = "",
 		["zh-TW"] = "提升Hitscan武器的射速, 每升級一次增加 10%",
 		["zh-CN"] = "提升Hitscan武器的射速, 每升级一次增加 10%",
-		["ru"] = "",
+		["ru"] = "Повышает скорострельность оружия с мгновенным попаданием,\n+10% к скорострельности за улучшение",
 		["de"] = "",
 	}
 })
@@ -667,7 +667,7 @@ ZShelter.AddInfo("Damage Reflecting", {
 		["vi"] = "Phản Sát Thương",
 		["zh-TW"] = "傷害反彈",
 		["zh-CN"] = "伤害反弹",
-		["ru"] = "",
+		["ru"] = "Отражение урона",
 		["de"] = "Schadensablenkung",
 	},
 	desc = {
@@ -678,7 +678,7 @@ ZShelter.AddInfo("Damage Reflecting", {
 		["vi"] = "Phản sát thương đến từ tất cả các nguồn, +400% sát thương mỗi lần nâng cấp",
 		["zh-TW"] = "反彈所有受到的傷害, 每升級一次增加 400%",
 		["zh-CN"] = "反弹所有受到的伤害, 每升级一次增加 400%",
-		["ru"] = "",
+		["ru"] = "Отражение всего получаемого урона, +400% урона за улучшение",
 		["de"] = "Lenkt jeden eingehenden Schaden ab, +400% Schaden pro Upgrade",
 	}
 })
@@ -693,7 +693,7 @@ ZShelter.AddInfo("Layered Defense", {
 		["vi"] = "",
 		["zh-TW"] = "多層防禦",
 		["zh-CN"] = "多层防御",
-		["ru"] = "",
+		["ru"] = "Многослойная защита",
 	},
 	desc = {
 		["en"] = "Regenerates a shield every 8 seconds, shield breaks after taking any amount of damage\nWhen shield breaks, recover 7% of maximum health (Every layer provides extra 3% of health)\n+1 Layer per upgrade\n-1 second cooldown per melee kills",
@@ -704,7 +704,7 @@ ZShelter.AddInfo("Layered Defense", {
 		["vi"] = "",
 		["zh-TW"] = "每 8 秒回復一層護盾, 受到任何傷害後護盾破碎\n當護盾破碎時, 回復 7% 最大生命值 (每層提供額外 3% 最大生命值)\n每升級一次增加 1 層\n每次近戰擊殺減少 1 秒冷卻時間",
 		["zh-CN"] = "每 8 秒回复一层护盾, 受到任何伤害后护盾破碎\n当护盾破碎时, 回复 7% 最大生命值 (每层提供额外 3% 最大生命值)\n每升级一次增加 1 层\n每次近战击杀减少 1 秒冷却时间",
-		["ru"] = "",
+		["ru"] = "Восстанавливает щит каждые 8 секунд, щит разрушается при получении любого урона\nПри разрушении щита восстанавливается 7% от макс. запаса здоровья (каждый слой даёт доп. 3% здоровья)\n+1 слой за улучшение\n-1 сек. восстановления за каждое убийство в ближнем бою",
 	}
 })
 
@@ -718,7 +718,7 @@ ZShelter.AddInfo("Silencer", {
 		["vi"] = "",
 		["zh-TW"] = "消音器",
 		["zh-CN"] = "消音器",
-		["ru"] = "",
+		["ru"] = "Глушитель",
 	},
 	desc = {
 		["en"] = "Decrease noises from weapons, -10% per upgrade",
@@ -729,7 +729,7 @@ ZShelter.AddInfo("Silencer", {
 		["vi"] = "",
 		["zh-TW"] = "減少武器噪音, 每升級一次減少 10%",
 		["zh-CN"] = "减少武器噪音, 每升级一次减少 10%",
-		["ru"] = "",
+		["ru"] = "Уменьшает шум от оружия, -10% за улучшение",
 	}
 })
 
@@ -743,7 +743,7 @@ ZShelter.AddInfo("Bullet Saving", {
 		["vi"] = "",
 		["zh-TW"] = "節省彈藥",
 		["zh-CN"] = "节省弹药",
-		["ru"] = "",
+		["ru"] = "Экономия пуль",
 	},
 	desc = {
 		["en"] = "Small chance to not consume ammo when shooting a hitscan weapon, +15% per upgrade",
@@ -754,7 +754,7 @@ ZShelter.AddInfo("Bullet Saving", {
 		["vi"] = "",
 		["zh-TW"] = "射擊 Hitscan 武器時有機率不消耗彈藥, 每升級一次增加 15%",
 		["zh-CN"] = "射击 Hitscan 武器时有机率不消耗弹药, 每升级一次增加 15%",
-		["ru"] = "",
+		["ru"] = "Небольшой шанс не потратить патроны при стрельбе из оружия с мгновенным попаданием, +15% за улучшение",
 	}
 })
 
@@ -768,7 +768,7 @@ ZShelter.AddInfo("Ammo Capacity Boost", {
 		["vi"] = "",
 		["zh-TW"] = "",
 		["zh-CN"] = "",
-		["ru"] = "",
+		["ru"] = "Увеличение вместимости боеприпасов",
 	},
 	desc = {
 		["en"] = "Increase ammo capacity, +100% per upgrade",
@@ -779,7 +779,7 @@ ZShelter.AddInfo("Ammo Capacity Boost", {
 		["vi"] = "",
 		["zh-TW"] = "增加攜彈量, 每升級一次增加 100%",
 		["zh-CN"] = "增加携弹量, 每升级一次增加 100%",
-		["ru"] = "",
+		["ru"] = "Увеличивает боезапас, +100% за улучшение",
 	}
 })
 
@@ -793,7 +793,7 @@ ZShelter.AddInfo("Quick Reload", {
 		["vi"] = "",
 		["zh-TW"] = "快速裝填",
 		["zh-CN"] = "快速装填",
-		["ru"] = "",
+		["ru"] = "Быстрая перезарядка",
 	},
 	desc = {
 		["en"] = "Increase shotgun's reload speed, load two shells at once",
@@ -804,6 +804,6 @@ ZShelter.AddInfo("Quick Reload", {
 		["vi"] = "",
 		["zh-TW"] = "增加霰彈槍的裝彈速度, 一次裝兩發",
 		["zh-CN"] = "增加霰弹枪的装弹速度, 一次装两发",
-		["ru"] = "",
+		["ru"] = "Увеличивает скорость перезарядки дробовиков, заряжает два патрона одновременно",
 	}
 })

@@ -386,7 +386,7 @@ ZShelter.AddInfo("Overheal", {
 		["vi"] = "Tăng tạm thời máu tối đa của công trình, +25% máu mỗi cấp\nCông trình hồi phục sẽ không bị choáng\n*Chỉ hoạt động khi sửa chữa thủ công*",
 		["zh-TW"] = "暫時提升建築物的最高耐久, 每升級一次增加 25%\n超量修復後不受暈眩效果影響\n*只在手動修復時有效*",
 		["zh-CN"] = "暂时提升建筑物的耐久上限, 每升一级增加 25%\n超量修复后不受晕眩效果影响\n*只在手动修复时有效*",
-		["ru"] = "Временно увеличивает макс. запас прочности строений, +25% прочности за улучшение\nСтроение со сверхпрочностью не будет оглушено",
+		["ru"] = "Временно увеличивает макс. запас прочности строений, +25% прочности за улучшение\nСтроение со сверхпрочностью не будет оглушено\n*Срабатывает только при ручном ремонте*",
 	}
 })
 
@@ -525,7 +525,7 @@ ZShelter.AddInfo("Damage Reflection", {
 		["vi"] = "Phản Xạ Sát Thương",
 		["zh-TW"] = "傷害反彈",
 		["zh-CN"] = "伤害反弹",
-		["ru"] = "",
+		["ru"] = "Отражение урона",
 	},
 	desc = {
 		["en"] = "Reflects damage when turret is being attacked\n+25% Damage to attacker per upgrade\n+5 Damage to all nearby enemies per upgrade",
@@ -536,7 +536,7 @@ ZShelter.AddInfo("Damage Reflection", {
 		["vi"] = "Phản xạ sát thương khi tháp pháo bị tấn công\n+25% Sát thương cho kẻ tấn công mỗi cấp\n+5 Sát thương cho tất cả kẻ địch gần đó mỗi cấp",
 		["zh-TW"] = "槍塔會反彈傷害至攻擊者\n每升級一次增加 25%對攻擊者的傷害",
 		["zh-CN"] = "枪塔会反弹伤害至攻击者\n每升级一次增加 25%对攻击者的伤害",
-		["ru"] = "",
+		["ru"] = "Отражает урон, когда турель атакована\n+25% к урону по атакующему за улучшение\n+5 ед. урона всем ближайшим врагам за улучшение",
 	}
 })
 
@@ -550,7 +550,7 @@ ZShelter.AddInfo("Defense Matrix", {
 		["vi"] = "",
 		["zh-TW"] = "防禦矩陣",
 		["zh-CN"] = "防御矩阵",
-		["ru"] = "",
+		["ru"] = "Защитная матрица",
 	},
 	desc = {
 		["en"] = "Increases turret's defense when you place them near each other\n+25% Maximum damage resistance per upgrade",
@@ -561,7 +561,7 @@ ZShelter.AddInfo("Defense Matrix", {
 		["vi"] = "",
 		["zh-TW"] = "當你將槍塔放置在彼此附近時增加防禦\n每升級一次增加 25% 最大傷害抵抗",
 		["zh-CN"] = "当你将枪塔放置在彼此附近时增加防御\n每升级一次增加 25% 最大伤害抵抗",
-		["ru"] = "",
+		["ru"] = "Увеличение защиты турелей, когда вы ставите их рядом друг с другом\n+25% к макс. сопротивляемому урону за улучшение",
 	}
 })
 
@@ -575,7 +575,7 @@ ZShelter.AddInfo("Offensive Matrix", {
 		["vi"] = "",
 		["zh-TW"] = "攻擊矩陣",
 		["zh-CN"] = "攻击矩阵",
-		["ru"] = "",
+		["ru"] = "Наступательная матрица",
 	},
 	desc = {
 		["en"] = "Increases turret's attack damage when you place them near each other\n+13% Maximum attack damage per upgrade",
@@ -586,7 +586,7 @@ ZShelter.AddInfo("Offensive Matrix", {
 		["vi"] = "",
 		["zh-TW"] = "當你將槍塔放置在彼此附近時增加攻擊傷害\n每升級一次增加 13% 最大攻擊傷害",
 		["zh-CN"] = "当你将枪塔放置在彼此附近时增加攻击伤害\n每升级一次增加 13% 最大攻击伤害",
-		["ru"] = "",
+		["ru"] = "Увеличение урона атаки турелей, когда вы размещаете их рядом друг с другом\n+13% к макс. урону атаки за улучшение",
 	}
 })
 
@@ -600,7 +600,7 @@ ZShelter.AddInfo("Armor Repairing", {
 		["vi"] = "",
 		["zh-TW"] = "護甲修復",
 		["zh-CN"] = "护甲修复",
-		["ru"] = "",
+		["ru"] = "Ремонт брони",
 	},
 	desc = {
 		["en"] = "Allow you to repair teammate's armor by hitting them with melee\n+20 Armor per upgrade",
@@ -611,7 +611,7 @@ ZShelter.AddInfo("Armor Repairing", {
 		["vi"] = "",
 		["zh-TW"] = "可以使用近戰武器修復隊友的護甲\n每升級一次增加 20 護甲",
 		["zh-CN"] = "可以使用近战武器修复队友的护甲\n每升级一次增加 20 护甲",
-		["ru"] = "",
+		["ru"] = "Позволяет восстанавливать броню союзника, ударяя его в ближнем бою\n+20 ед. брони за улучшение",
 	}
 })
 
@@ -625,7 +625,7 @@ ZShelter.AddInfo("Quick Deploy", {
 		["vi"] = "",
 		["zh-TW"] = "快速部屬",
 		["zh-CN"] = "快速部署",
-		["ru"] = "",
+		["ru"] = "Быстрое развёртывание",
 	},
 	desc = {
 		["en"] = "Buildings will have some of it's health when being deployed\n+17.5% Health per upgrade",
@@ -636,7 +636,7 @@ ZShelter.AddInfo("Quick Deploy", {
 		["vi"] = "",
 		["zh-TW"] = "部署建築物時會有一部分的生命值\n每升級一次增加 17.5% 生命值",
 		["zh-CN"] = "部署建筑物时会有一部分的生命值\n每升级一次增加 17.5% 生命值",
-		["ru"] = "",
+		["ru"] = "Строения будут сохранять часть прочности при развёртывании\n+17,5% к прочности за улучшение",
 	}
 })
 
@@ -650,7 +650,7 @@ ZShelter.AddInfo("Precision Suppression", {
 		["vi"] = "",
 		["zh-TW"] = "精確壓制",
 		["zh-CN"] = "精确压制",
-		["ru"] = "",
+		["ru"] = "Точное подавление",
 	},
 	desc = {
 		["en"] = "Damage will gradually increase when shooting at the same target\n+25% Maximum damage per upgrade",
@@ -661,6 +661,6 @@ ZShelter.AddInfo("Precision Suppression", {
 		["vi"] = "",
 		["zh-TW"] = "對同一目標持續射擊時傷害會逐漸增加\n每升級一次增加 25% 最大傷害",
 		["zh-CN"] = "对同一目标持续射击时伤害会逐渐增加\n每升级一次增加 25% 最大伤害",
-		["ru"] = "",
+		["ru"] = "Урон постепенно увеличивается при стрельбе по одной и той же цели\n+25% к макс. урону за улучшение",
 	}
 })

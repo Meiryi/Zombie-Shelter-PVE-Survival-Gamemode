@@ -448,7 +448,7 @@ ZShelter.AddInfo("Trap Health Boost", {
 		["vi"] = "Tăng Máu Bẫy",
 		["zh-TW"] = "提升陷阱耐久",
 		["zh-CN"] = "提升陷阱耐久",
-		["ru"] = "",
+		["ru"] = "Укрепление прочности ловушек",
 	},
 	desc = {
 		["en"] = "Increase trap's health, +15% health per upgrade",
@@ -459,7 +459,7 @@ ZShelter.AddInfo("Trap Health Boost", {
 		["vi"] = "Tăng máu của bẫy, +15% máu mỗi cấp độ",
 		["zh-TW"] = "增加陷阱的耐久, 每升級一次增加 15%",
 		["zh-CN"] = "增加陷阱的耐久, 每升一级增加 15%",
-		["ru"] = "",
+		["ru"] = "Увеличивает прочность ловушки, +15% прочности за улучшение",
 	}
 })
 
@@ -534,7 +534,7 @@ ZShelter.AddInfo("Slick Repairing", {
 		["vi"] = "Sửa chữa một bẫy cũng sửa chữa các bẫy xung quanh, +1.5 mét mỗi cấp độ",
 		["zh-TW"] = "修復附近所有陷阱類建築物, 每升級一次增加 86 單位距離",
 		["zh-CN"] = "修复附近所有陷阱类建筑物, 每升一级增加 86 单位距离",
-		["ru"] = "Ремонтирует все ближайшие ловушки. Радиус +86 единиц",
+		["ru"] = "Ремонтируя ловушку, вы также ремонтируете соседние ловушки, +1,5 метра за улучшение",
 	}
 })
 
@@ -573,7 +573,7 @@ ZShelter.AddInfo("Sanity Recovering", {
 		["vi"] = "",
 		["zh-TW"] = "理智回復",
 		["zh-CN"] = "理智回复",
-		["ru"] = "",
+		["ru"] = "Восстановление рассудка",
 	},
 	desc = {
 		["en"] = "Recovers sanity when gathering resources\n+1 Sanity per upgrade",
@@ -584,6 +584,6 @@ ZShelter.AddInfo("Sanity Recovering", {
 		["vi"] = "",
 		["zh-TW"] = "採集資源時回復理智\n每升級一次增加 1 點理智",
 		["zh-CN"] = "采集资源时回复理智\n每升一级增加 1 点理智",
-		["ru"] = "",
+		["ru"] = "Восстанавливает рассудок при сборе ресурсов\n+1 ед. рассудка за улучшение",
 	}
 })
