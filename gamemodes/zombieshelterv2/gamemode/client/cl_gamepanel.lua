@@ -1163,9 +1163,11 @@ local func = {
 					end
 
 					base.BindKey = function(key)
+					if(key == 0 || key == 1) then return end
 						ZShelter.WriteKeybind(index, key)
 						key_t.UpdateText(input.GetKeyName(ZShelter.Keybinds[index]))
 						key_t:SetX(base:GetWide() - (key_t:GetWide() + gap))
+						return true
 					end
 
 					base.GetKey = function()
@@ -1184,9 +1186,10 @@ local func = {
 							keybind.WarningTime = SysTime() + 0.1
 							return
 						end
-						currentSelectedKeybind.BindKey(i)
-						currentSelectedKeybind = nil
-						return
+						if(currentSelectedKeybind.BindKey(i)) then
+							currentSelectedKeybind = nil
+							return
+						end
 					end
 				end
 			end

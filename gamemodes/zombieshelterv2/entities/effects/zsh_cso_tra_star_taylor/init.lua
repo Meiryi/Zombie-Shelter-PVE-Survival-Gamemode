@@ -15,6 +15,11 @@ function EFFECT:Init(data)
 	self.Attachment = data:GetAttachment()
 	local owent
 
+	if(!IsValid(self.WeaponEnt)) then
+		self.InValid = true
+		return
+	end
+
 	local pos = data:GetOrigin()
     local emitter = ParticleEmitter(pos)
     local smoke

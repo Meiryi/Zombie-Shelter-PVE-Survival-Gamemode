@@ -13,6 +13,7 @@
 	任何形式的编辑是不被允许的 (包括模式的名称), 若有问题请在Steam上联络我
 ]]
 ZShelter.AmmoCapacity = 300
+ZShelter.PlayerSkillpointsRecord = ZShelter.PlayerSkillpointsRecord || {}
 
 function ZShelter.GiveMelee(player)
 	if(player.Callbacks.OnGiveMelee) then
@@ -62,9 +63,17 @@ function ZShelter.InitPlayerVariables(ply)
 
 	ply:SetNWInt("Woods", 0)
 	ply:SetNWInt("Irons", 0)
-
+	local id = ply:SteamID64()
 	if(GetGlobalBool("GameStarted")) then
-		ply:SetNWInt("SkillPoints", ZShelter.CalcStartSkillPoints(player.GetCount()) + (GetGlobalInt("Day", 1) - 1))
+		if(ZShelter.PlayerSkillpointsRecord[id]) then
+			ply:SetNWInt("SkillPoints", ZShelter.PlayerSkillpointsRecord[id])
+		else
+			ply:SetNWInt("SkillPoints", ZShelter.CalcStartSkillPoints(player.GetCount()) + (GetGlobalInt("Day", 1) - 1))
+		end
+	else
+		if(ZShelter.PlayerSkillpointsRecord[id]) then
+			ply:SetNWInt("SkillPoints", ZShelter.PlayerSkillpointsRecord[id])
+		end
 	end
 
 	ply:SetNWFloat("Sanity", 100)
@@ -90,6 +99,15 @@ function ZShelter.InitPlayerVariables(ply)
 
 	hook.Run("ZShelterPostPlayerInitVariables", ply)
 end
+
+hook.Add("PlayerDisconnected", "ZShelter-RecordSkillpoints", function(ply)
+	local id = ply:SteamID64()
+	local points = ply:GetNWInt("SkillPoints", 0) + ply:GetNWInt("SkillPoints_TotalSpent", 0)
+	print(points)
+	if(points > 0) then
+		ZShelter.PlayerSkillpointsRecord[id] = points
+	end
+end)
 
 hook.Add("PlayerInitialSpawn", "ZShelter-InitPlayer", function(ply)
 	ZShelter.InitPlayerVariables(ply)

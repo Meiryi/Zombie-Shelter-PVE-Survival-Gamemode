@@ -59,6 +59,7 @@ net.Receive("ZShelter-UpgradeSkill", function(len, ply)
 	-- Skill successfully upgraded
 
 	ply:SetNWInt("SkillPoints", math.max(ply:GetNWInt("SkillPoints", 0) - 1, 0))
+	ply:SetNWInt("SkillPoints_TotalSpent", ply:GetNWInt("SkillPoints_TotalSpent", 0) + 1)
 	ply:SetNWInt(class.."SkillSpent", ply:GetNWInt(class.."SkillSpent", 0) + 1)
 
 	ZShelter.ApplySkill(ply, tier, skill)

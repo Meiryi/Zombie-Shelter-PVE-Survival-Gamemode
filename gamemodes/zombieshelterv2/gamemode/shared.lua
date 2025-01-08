@@ -50,6 +50,7 @@ CreateConVar("zshelter_default_item_config", 1, FCVAR_NOTIFY + FCVAR_REPLICATED 
 
 CreateConVar("zshelter_friendly_fire", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Friendly fire", 0, 1)
 CreateConVar("zshelter_start_with_resources", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Start with full resources", 0, 1)
+CreateConVar("zshelter_shared_skillbox", 0, FCVAR_NOTIFY + FCVAR_REPLICATED + FCVAR_ARCHIVE, "Skillpoints will be shared with every player when this is turned on", 0, 1)
 
 CreateConVar("zshelter_debug_enable_sandbox", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Enable sandbox", 0, 1)
 CreateConVar("zshelter_debug_disable_sanity", 0, FCVAR_NOTIFY + FCVAR_REPLICATED, "Disable sanity system", 0, 1)
@@ -116,6 +117,7 @@ file.CreateDir("zombie shelter v2/playerdata/")
 
 ZShelter.GameVersion = "1.1.0"
 ZShelter.ConfigVersion = "1.1.0" -- DANGER, MODIFY THIS WILL RESET CONFIGS
+ZShelter.KeybindVersion = "1.1.0"
 ZShelter.BasePath = "zombieshelterv2/gamemode/"
 ZShelter.MaximumDifficulty = 9
 ZShelter.BossTriggerDistance = 512

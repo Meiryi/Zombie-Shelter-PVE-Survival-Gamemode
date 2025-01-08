@@ -648,7 +648,7 @@ function SWEP:SecondaryAttack()
 				util.Effect("zshelter_exp_gunkata", effectdata)
 
 				for _, ent in ipairs(ents.FindInSphere(self.Owner:GetPos(), 300)) do
-					if(ent == self.Owner) then continue end
+					if(ent == self.Owner || ent.IsBuilding) then continue end
 					local vel = (ent:GetPos() - self.Owner:GetPos()):GetNormal() * 1024
 					vel.z = vel.z + 128
 					ent:SetVelocity(vel)

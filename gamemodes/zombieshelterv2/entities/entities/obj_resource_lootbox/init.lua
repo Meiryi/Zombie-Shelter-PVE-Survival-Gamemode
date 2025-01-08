@@ -33,6 +33,12 @@ function ENT:StartTouch(ent)
 	if(!ent:IsPlayer() || !ent:Alive()) then return end
 	ZShelter.AddResourceToPlayer(ent, "Woods", math.random(1, 20))
 	ZShelter.AddResourceToPlayer(ent, "Irons", math.random(1, 20))
-	ent:SetNWInt("SkillPoints", ent:GetNWInt("SkillPoints", 0) + 1, 0)
+	if(GetConVar("zshelter_shared_skillbox"):GetInt() != 1) then
+		ent:SetNWInt("SkillPoints", ent:GetNWInt("SkillPoints", 0) + 1, 0)
+	else
+		for _, player in ipairs(player.GetAll()) do
+			player:SetNWInt("SkillPoints", player:GetNWInt("SkillPoints", 0) + 1)
+		end
+	end
 	self:Remove()
 end

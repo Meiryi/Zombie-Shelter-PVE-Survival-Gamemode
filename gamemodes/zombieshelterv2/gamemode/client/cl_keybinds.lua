@@ -15,7 +15,14 @@ function ZShelter.WriteKeybind(func, key)
 end
 
 function ZShelter.ReadKeybinds()
+	local version = file.Read("zombie shelter v2/keyversion.txt", "DATA")
 	local keybinds = file.Read("zombie shelter v2/keybinds.txt", "DATA")
+	if(!version || version != ZShelter.KeybindVersion) then
+		print("Outdated keybind version, writing new keybinds")
+		ZShelter.WriteDefaultKeybinds()
+		file.Write("zombie shelter v2/keyversion.txt", ZShelter.KeybindVersion)
+	end
+
 	if(keybinds) then
 		ZShelter.Keybinds = util.JSONToTable(keybinds)
 	else

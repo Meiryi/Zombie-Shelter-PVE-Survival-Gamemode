@@ -321,7 +321,7 @@ ZShelter.AddBuildItem("Recovery",  "Campfire",  2,  1,  0,  50,  "prop_physics",
 }, {"Campfire"})
 local powergain = 60
 ZShelter.AddBuildItem("Generator",  "Generator",  5,  5,  0, 120,  "prop_physics",  "models/shigure/shelter_b_generator04.mdl",  0,  Vector(0, 0, 0), {
-		maxamount = 5,
+		maxamount = 6,
 		bait = true,
 		oncomplete = function(self)
 			local power = 90 + (GetGlobalInt("ShelterLevel", 0) * powergain)

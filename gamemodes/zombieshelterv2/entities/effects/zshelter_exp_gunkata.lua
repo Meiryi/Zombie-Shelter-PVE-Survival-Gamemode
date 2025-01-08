@@ -1,6 +1,3 @@
--- 'Borrowed' from Zombie Survival's explosion_fusordisc effect
--- https://github.com/JetBoom/zombiesurvival/blob/master/gamemodes/zombiesurvival/entities/effects/explosion_fusordisc.lua
-
 function EFFECT:Init(effectdata)
 	local pos = effectdata:GetOrigin()
 	local normal = effectdata:GetNormal()
