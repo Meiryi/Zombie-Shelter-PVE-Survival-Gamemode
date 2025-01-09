@@ -178,7 +178,7 @@ hook.Add("EntityTakeDamage", "ZShelter-DamageHandling", function(target, dmginfo
 	-- Player to anything (exlcuding turrets)
 
 	if(attacker:IsPlayer() && !target.IsBuilding) then
-		local wep = attacker:GetActiveWeapon()
+		local wep = dmginfo:GetInflictor()
 		if(dmginfo:GetDamageCustom() != 8 && !target.IsBoss) then
 			local ismelee = false
 			if(IsValid(wep)) then
@@ -354,8 +354,72 @@ function ZShelter.AddDamageNumber(player, eindex, damage, pos)
 	})
 end
 
+ZShelter.MoneyToAdd = {}
+hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo, took)
+	local attacker = dmginfo:GetAttacker()
+	local inflictor = dmginfo:GetInflictor()
+	local damage = dmginfo:GetDamage()
+	if(IsValid(target) && target:IsPlayer() && target:Alive() && damage >= 0 && took) then
+		net.Start("ZShelter_PlayerHurt")
+		net.WriteEntity(attacker)
+		net.Send(target)
+	end
+
+	if(!took) then return end
+	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
+
+	if(target:IsNPC() && !target.AttackedByTurrets && !target.IsBuilding && !target.IsTurret && damage > 0) then
+		local dmg = math.min(damage, target:GetMaxHealth())
+		local base = 15
+		local bonus = 6
+		local nerf = 1
+		local tolarance = 0.01
+		attacker.ZShelterDamages = (attacker.ZShelterDamages || 0) + dmg
+		if(math.Round((attacker.ZShelterDamages / base) * bonus) > 0) then
+			if(!attacker.MoneyNerf) then
+				attacker.MoneyNerf = 0
+			end
+			if(attacker.MoneyNerf > CurTime()) then
+				local t = attacker.MoneyNerf
+				local n = attacker.MoneyNerf - CurTime()
+				local f = math.Clamp(n / tolarance, 0, 0.9)
+				nerf = 1 - f
+				if(n < tolarance) then
+					attacker.MoneyNerf = attacker.MoneyNerf + 0.002
+				end
+			else
+				attacker.MoneyNerf = CurTime() + 0.002
+			end
+			local money = math.Round(((attacker.ZShelterDamages / base) * bonus) * nerf)
+			table.insert(ZShelter.MoneyToAdd, {
+				ply = attacker,
+				money = money,
+			})
+			attacker.ZShelterDamages = 0
+		end
+	end
+
+	if(IsValid(target) && target:GetClass() == "func_breakable") then
+		ZShelter.SyncHP(target, attacker)
+	end
+
+	local pos = dmginfo:GetDamagePosition()
+	local mins, maxs = target:GetModelBounds()
+	mins.z = 0
+	maxs.z = 0
+	local dst = mins:Distance(maxs) * 1.25
+	local p1, p2 = Vector(pos.x, pos.y, 0), inflictor:GetPos()
+	p2.z = 0
+	if(pos == Vector(0, 0, 0) || (IsValid(inflictor) && p1:Distance(p2) < dst)) then
+		pos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z * 0.5)
+	end
+
+	ZShelter.AddDamageNumber(attacker, target:EntIndex(), damage, pos)
+end)
+
 hook.Add("Tick", "ZShelter-SendDamage", function()
 	local damageToSend = {}
+	local moneys = {}
 	for _, damageData in ipairs(ZShelter.DamageNumbers) do
 		if(!IsValid(damageData.player)) then continue end
 		local playerIndex = damageData.player:EntIndex()
@@ -386,38 +450,23 @@ hook.Add("Tick", "ZShelter-SendDamage", function()
 		end
 	end
 
+	for _, data in ipairs(ZShelter.MoneyToAdd) do
+		if(!IsValid(data.ply)) then continue end
+		if(!moneys[data.ply:EntIndex()]) then
+			moneys[data.ply:EntIndex()] = data.money
+		else
+			moneys[data.ply:EntIndex()] = moneys[data.ply:EntIndex()] + data.money
+		end
+	end
+
+	for ply, money in pairs(moneys) do
+		local player = Entity(ply)
+		if(!IsValid(player)) then continue end
+		ZShelter.AddMoney(player, money)
+	end
+
+	ZShelter.MoneyToAdd = {}
 	ZShelter.DamageNumbers = {}
-end)
-
-hook.Add("PostEntityTakeDamage", "ZShelter-GetDamage", function(target, dmginfo, took)
-	local attacker = dmginfo:GetAttacker()
-	local inflictor = dmginfo:GetInflictor()
-	local damage = dmginfo:GetDamage()
-	if(IsValid(target) && target:IsPlayer() && target:Alive() && damage >= 0 && took) then
-		net.Start("ZShelter_PlayerHurt")
-		net.WriteEntity(attacker)
-		net.Send(target)
-	end
-
-	if(!took) then return end
-	if(!IsValid(attacker) || !attacker:IsPlayer()) then return end
-
-	if(IsValid(target) && target:GetClass() == "func_breakable") then
-		ZShelter.SyncHP(target, attacker)
-	end
-
-	local pos = dmginfo:GetDamagePosition()
-	local mins, maxs = target:GetModelBounds()
-	mins.z = 0
-	maxs.z = 0
-	local dst = mins:Distance(maxs) * 1.25
-	local p1, p2 = Vector(pos.x, pos.y, 0), inflictor:GetPos()
-	p2.z = 0
-	if(pos == Vector(0, 0, 0) || (IsValid(inflictor) && p1:Distance(p2) < dst)) then
-		pos = target:GetPos() + Vector(0, 0, target:OBBMaxs().z * 0.5)
-	end
-
-	ZShelter.AddDamageNumber(attacker, target:EntIndex(), damage, pos)
 end)
 
 hook.Add("HandlePlayerArmorReduction", "ZShelter-ArmorHandling", function(ply, dmginfo)

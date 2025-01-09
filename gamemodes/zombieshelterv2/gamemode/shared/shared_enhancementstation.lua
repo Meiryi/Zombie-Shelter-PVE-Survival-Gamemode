@@ -41,14 +41,19 @@ if(SERVER) then
 		local enh = ZShelter.Enhancements.Buffs[index]
 		if(!IsValid(wep) || !wep:IsWeapon() || !enh) then return end
 		local cost = ZShelter.Enhancements.CalculateCost(wep, enh)
-		if(wep:GetNWInt("UG_"..enh.name, 0) >= enh.maxUpgrade || !ZShelter.RequirementsCompare(cost, cost)) then return end
+		if(wep:GetNWInt("UG_"..enh.name, 0) >= enh.maxUpgrade || !ZShelter.RequirementsCompare(ply, cost, cost)) then return end
 
-		SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - cost, 0))
-		SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - cost, 0))
+		if(ZShelter.EconomyEnabled()) then
+			ZShelter.RemoveMoney(ply, math.floor(cost * ZShelter.ResourceToMoney))
+		else
+			SetGlobalInt("Woods", math.max(GetGlobalInt("Woods", 0) - cost, 0))
+			SetGlobalInt("Irons", math.max(GetGlobalInt("Irons", 0) - cost, 0))
+
+			ply:SetNWInt("WoodsUsed", ply:GetNWInt("WoodsUsed", 0) + cost)
+			ply:SetNWInt("IronsUsed", ply:GetNWInt("IronsUsed", 0) + cost)
+		end
+
 		wep:SetNWInt("UG_"..enh.name, wep:GetNWInt("UG_"..enh.name, 0) + 1)
-
-		ply:SetNWInt("WoodsUsed", ply:GetNWInt("WoodsUsed", 0) + cost)
-		ply:SetNWInt("IronsUsed", ply:GetNWInt("IronsUsed", 0) + cost)
 
 		if(enh.upgradefunc) then
 			enh.upgradefunc(wep, ply)
@@ -118,17 +123,17 @@ ZShelter.Enhancements.Register({
 
 ZShelter.Enhancements.Register({
 	name = "Steady Control",
-	desc = "Decrease weapon's recoil by 20%",
-	price = 9,
+	desc = "Decrease weapon's recoil by 15%",
+	price = 4,
 	price_step = 0.1,
 	price_scale = 0.05,
-	maxUpgrade = 2,
+	maxUpgrade = 4,
 
 	condfunc = function(wep)
 		return wep:GetMaxClip1() > 1 && wep.IsTFAWeapon
 	end,
 	upgradefunc = function(wep)
-		local scale = wep:GetNWInt("UG_Steady Control", 1) * 0.2
+		local scale = wep:GetNWInt("UG_Steady Control", 1) * 0.15
 		if(!wep.InitializeOriginalRecoil) then
 			wep.Primary_TFA.OldKickUp = wep.Primary_TFA.KickUp
 			wep.Primary_TFA.OldKickDown = wep.Primary_TFA.KickDown

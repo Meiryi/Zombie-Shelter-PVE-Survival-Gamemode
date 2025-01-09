@@ -643,6 +643,13 @@ function ZShelter.PaintHUD()
 	end
 
 	local ypos = startY - (resTall + padding) * 2
+
+	if(ZShelter.EconomyEnabled()) then
+		local _y = ypos - (resTall + padding)
+		draw_RoundedBox(padding, padding, _y, wide * 0.5, resTall, Color(30, 30, 30, 200))
+		draw_DrawText("$"..LocalPlayer():GetNWInt("ZShelter_Money", 0), "ZShelter-HUDElemFont", startX + wide * 0.25, _y + ScreenScaleH(6), Color(55, 255, 55, 255), TEXT_ALIGN_CENTER)
+	end
+
 	draw_RoundedBox(padding, padding, ypos, wide, resTall, Color(30, 30, 30, 200))
 
 	surface_SetDrawColor(255, 255, 255, 255)

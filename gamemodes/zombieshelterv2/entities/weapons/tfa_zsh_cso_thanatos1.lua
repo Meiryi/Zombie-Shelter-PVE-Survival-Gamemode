@@ -431,10 +431,10 @@ function SWEP:Think()
 		if self:Ammo2() <= 0 then 
 			if(self.Nextregen <= CurTime()) then
 				self.Owner:GiveAmmo( 1,"Thanatos1_Blade", true )
-				self.Nextregen =  CurTime()  + 7
+				self.Nextregen =  CurTime()  + 3
 			end
 		else
-			self.Nextregen =  CurTime()  + 7
+			self.Nextregen =  CurTime()  + 3
 		end
 	end
 	BaseClass.Think(self)

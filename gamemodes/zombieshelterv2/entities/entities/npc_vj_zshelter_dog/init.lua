@@ -81,7 +81,12 @@ ENT.Skill_Time = 8.0
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-	timer.Simple(0.0, function() if(!IsValid(self)) then return end self:EmitSound("zshelter/zombies/zombiedog_howls.wav", 1556, 100, 1, CHAN_STATIC) end)
+	timer.Simple(0.0, function()
+		if(!IsValid(self)) then return end
+		if(math.random(1, 2) == 2) then
+			self:EmitSound("zshelter/zombies/zombiedog_howls.wav", 100, 100, 1, CHAN_STATIC)
+		end
+	end)
 	self:SetCollisionBounds(Vector(12, 12, 65), Vector(-12, -12, 0))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

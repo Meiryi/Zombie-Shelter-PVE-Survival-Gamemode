@@ -79,6 +79,7 @@ function ZShelter.InitPlayerVariables(ply)
 	ply:SetNWFloat("Sanity", 100)
 	ply:SetNWFloat("SanityCost", 1.5)
 	ply:SetNWString("Tier4Skill", "")
+	ply:SetNWInt("ZShelter_Money", 800)
 
 	ply:SetNWFloat("DamageResistance", 1)
 	ply:SetNWFloat("DamageScale", 1)

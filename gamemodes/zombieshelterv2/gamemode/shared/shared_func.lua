@@ -161,19 +161,35 @@ function ZShelter.CanCraftWeapon(player, data)
 			data.requiredskills = val
 		end
 	end
-	local woods = GetGlobalInt("Woods", 0)
-	local irons = GetGlobalInt("Irons", 0)
-	if(woods < data.woods || irons < data.irons) then return end
-	if(data.requiredskills) then
-		for k,v in pairs(data.requiredskills) do
-			if(player:GetNWInt("SK_"..v, 0) <= 0) then return false end
+	if(ZShelter.EconomyEnabled()) then
+		local costs = math.floor((data.woods + data.irons) * ZShelter.ResourceToMoney)
+		if(player:GetNWInt("ZShelter_Money", 0) < costs) then
+			return false
+		end
+		if(data.requiredskills) then
+			for k,v in pairs(data.requiredskills) do
+				if(player:GetNWInt("SK_"..v, 0) <= 0) then return false end
+			end
+		end
+	else
+		local woods = GetGlobalInt("Woods", 0)
+		local irons = GetGlobalInt("Irons", 0)
+		if(woods < data.woods || irons < data.irons) then return end
+		if(data.requiredskills) then
+			for k,v in pairs(data.requiredskills) do
+				if(player:GetNWInt("SK_"..v, 0) <= 0) then return false end
+			end
 		end
 	end
 	return true
 end
 
-function ZShelter.RequirementsCompare(woods, irons)
-	return GetGlobalInt("Woods", 0) >= woods && GetGlobalInt("Irons", 0) >= irons
+function ZShelter.RequirementsCompare(ply, woods, irons) -- woods and irons are always the same
+	if(ZShelter.EconomyEnabled()) then
+		return ply:GetNWInt("ZShelter_Money") >= math.floor(woods * ZShelter.ResourceToMoney)
+	else
+		return GetGlobalInt("Woods", 0) >= woods && GetGlobalInt("Irons", 0) >= irons
+	end
 end
 
 function ZShelter.CompressTable(tab)

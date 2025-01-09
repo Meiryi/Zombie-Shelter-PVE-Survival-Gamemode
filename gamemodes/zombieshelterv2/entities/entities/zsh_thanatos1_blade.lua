@@ -46,6 +46,11 @@ if SERVER then
 	end
 
 	function ENT:PhysicsCollide(data, physobj)
+		if(IsValid(data.HitEntity) and data.HitEntity:IsPlayer()) then
+			data.HitEntity:TakeDamage(600)
+			self:Remove()
+			return
+		end
 		local owent = self.Owner and self.Owner or self
 		util.BlastDamage(self,owent,self:GetPos(),self.Radius,self.Damage)
 		local fx = EffectData()

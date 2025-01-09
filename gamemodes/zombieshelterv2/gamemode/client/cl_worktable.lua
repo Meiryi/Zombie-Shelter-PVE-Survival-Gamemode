@@ -101,6 +101,7 @@ function ZShelter.RefundTab(category, container)
 	local dockmargin = ScreenScaleH(4)
 	local innermargin = ScreenScaleH(2)
 	local textmargin = ScreenScaleH(1)
+	local econ = ZShelter.EconomyEnabled()
 
 	local type = "Uncraft Weapons"
 	local base = ZShelter.CreatePanel(category, 0, 0, category:GetWide(), category:GetTall() * 0.08, Color(40, 40, 40, 255))
@@ -156,16 +157,27 @@ function ZShelter.RefundTab(category, container)
 							[1] = "Woods",
 							[2] = "Irons",
 						}
-						local tw, th = ZShelter.GetTextSize("ZShelter-WorktableDesc", "dummy")
-						local w, h = pnl:GetSize()
-						local size = h * 0.5
-						local yaxis = (h / 2) - (size / 2) - th / 2
-						local nextX = w - (size + dockmargin * 2)
-						for x,y in pairs(list) do
-							ZShelter.CreateImage(pnl, nextX, yaxis, size, size, "zsh/icon/"..string.lower(y)..".png", Color(255, 255, 255, 255))
-							local tw, th, cost = ZShelter.CreateLabel(pnl, nextX + size / 2, (yaxis + size) - innermargin, math.floor(data[string.lower(y)] * refundScale), "ZShelter-WorktableDesc", Color(200, 200, 200, 255))
-							cost:CentHor()
-							nextX = nextX - (size + dockmargin * 2)
+						if(!econ) then
+							local tw, th = ZShelter.GetTextSize("ZShelter-WorktableDesc", "dummy")
+							local w, h = pnl:GetSize()
+							local size = h * 0.5
+							local yaxis = (h / 2) - (size / 2) - th / 2
+							local nextX = w - (size + dockmargin * 2)
+							for x,y in pairs(list) do
+								ZShelter.CreateImage(pnl, nextX, yaxis, size, size, "zsh/icon/"..string.lower(y)..".png", Color(255, 255, 255, 255))
+								local tw, th, cost = ZShelter.CreateLabel(pnl, nextX + size / 2, (yaxis + size) - innermargin, math.floor(data[string.lower(y)] * refundScale), "ZShelter-WorktableDesc", Color(200, 200, 200, 255))
+								cost:CentHor()
+								nextX = nextX - (size + dockmargin * 2)
+							end
+						else
+							local costs = 0
+							for x,y in pairs(list) do
+								costs = costs + data[string.lower(y)] * (refundScale * 0.5)
+							end
+							local refund = math.floor(math.Round(costs, 2) * ZShelter.ResourceToMoney)
+							local tw, th, cost = ZShelter.CreateLabel(pnl, pnl:GetWide(), pnl:GetTall() * 0.5, "$"..refund, "ZShelter-WorktableBig", Color(200, 200, 200, 255))
+							cost:CentVer()
+							cost:SetX(pnl:GetWide() - (tw + dockmargin))
 						end
 
 						local invisbutton = ZShelter.InvisButton(pnl, 0, 0, pnl:GetWide(), pnl:GetTall(), function()
@@ -315,6 +327,7 @@ function ZShelter.OpenWorktable()
 	local innermargin = ScreenScaleH(2)
 	local textmargin = ScreenScaleH(1)
 	local listPos = {}
+	local econ = ZShelter.EconomyEnabled()
 	for k,v in next, order do
 		local base = ZShelter.CreatePanel(ui.cate, 0, 0, ui.cate:GetWide(), ui.cate:GetTall() * 0.08, Color(40, 40, 40, 255))
 		local w, h = base:GetSize()
@@ -429,15 +442,26 @@ function ZShelter.OpenWorktable()
 						[1] = "Woods",
 						[2] = "Irons",
 					}
-
 					local size = h * 0.4
 					local yaxis = (h / 2) - (size / 2)
 					local nextX = w - (size + dockmargin * 2)
-					for x,y in pairs(list) do
-						ZShelter.CreateImage(panel, nextX, yaxis, size, size, "zsh/icon/"..string.lower(y)..".png", Color(255, 255, 255, 255))
-						local tw, th, cost = ZShelter.CreateLabel(panel, nextX + size / 2, (yaxis + size) - innermargin, v[string.lower(y)], "ZShelter-WorktableDesc", Color(200, 200, 200, 255))
-						cost:CentHor()
-						nextX = nextX - (size + dockmargin * 2)
+					if(!econ) then
+						for x,y in pairs(list) do
+							ZShelter.CreateImage(panel, nextX, yaxis, size, size, "zsh/icon/"..string.lower(y)..".png", Color(255, 255, 255, 255))
+							local tw, th, cost = ZShelter.CreateLabel(panel, nextX + size / 2, (yaxis + size) - innermargin, v[string.lower(y)], "ZShelter-WorktableDesc", Color(200, 200, 200, 255))
+							cost:CentHor()
+							nextX = nextX - (size + dockmargin * 2)
+						end
+					else
+						local costs = 0
+						for x,y in pairs(list) do
+							costs = costs + v[string.lower(y)]
+						end
+						costs = math.floor(costs * ZShelter.ResourceToMoney)
+						local tw, th, cost = ZShelter.CreateLabel(panel, panel:GetWide(), panel:GetTall() * 0.5 + title:GetTall() * 0.5, "$"..costs, "ZShelter-WorktableBig", Color(200, 200, 200, 255))
+						cost:CentVer()
+						cost:SetX(panel:GetWide() - (tw + dockmargin))
+						nextX = nextX	- tw - dockmargin
 					end
 
 					yaxis = yaxis + dockmargin

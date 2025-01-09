@@ -15,49 +15,82 @@ if SERVER then
 		self:Think()
 	end
 
-function ENT:ApplyDamage(ent)
-	local attacker = self.Attacker
-	if(!IsValid(attacker)) then
-		attacker = self
+	function ENT:ApplyDamage(ent)
+		local attacker = self.Attacker
+		if(!IsValid(attacker)) then
+			attacker = self
+		end
+		ZShelter.DealNoScaleDamage(attacker, ent, 65)
 	end
-	ent:TakeDamage(35, attacker, attacker)
-end
 
-	ENT.CurrentChain = 0
-	ENT.MaxTargets = 6
-	ENT.ChainedTargets = {}
-	function ENT:ChainAttack(startTarget)
-		if(self.CurrentChain >= self.MaxTargets || !IsValid(startTarget)) then return end
-		self.CurrentChain = self.CurrentChain + 1
-		print(self.CurrentChain)
+	local vvis = function(vec, ent)
+		return util.TraceLine({
+			start = ent:GetPos() + ent:OBBCenter(),
+			endpos = vec,
+			filter = ent,
+			mask = MASK_SHOT,
+			collisiongroup = COLLISION_GROUP_DEBRIS,
+		}).Fraction == 1
+	end
+
+	--[[
 		local effectdata = EffectData()
 			effectdata:SetOrigin(startTarget:GetPos() + startTarget:OBBCenter())
 			util.Effect("exp_heavenscorcher", effectdata)
+	]]
+
+	ENT.CurrentChain = 0
+	ENT.MaxTargets = 8
+	ENT.ChainedTargets = {}
+	function ENT:ChainAttack(startTarget)
+		if(self.CurrentChain >= self.MaxTargets) then return end
+		self.CurrentChain = self.CurrentChain + 1
+
+		if(startTarget != self) then
+			local effectdata = EffectData()
+				effectdata:SetOrigin(startTarget:GetPos() + startTarget:OBBCenter())
+				util.Effect("exp_heavenscorcher", effectdata)
+		end
 
 		self:ApplyDamage(startTarget)
-		for _, ent in ipairs(ents.FindInSphere(startTarget:GetPos(), 256)) do
-			if((!ent:IsNPC() && !ent:IsPlayer() && !ent:IsNextBot()) || ent.IsBuilding) then continue end
-			if(ent == self:GetOwner() || ent == startTarget || self.ChainedTargets[ent:EntIndex()]) then continue end
-			self.ChainedTargets[ent:EntIndex()] = true
-			self:ApplyDamage(ent)
-			self:ChainAttack(ent)
-			if(self.CurrentChain >= self.MaxTargets) then return end
-			return
+
+		local startvec = startTarget:GetPos() + startTarget:OBBCenter()
+		local maxDST = 386
+		local target = nil
+		local dst = 0
+		for _, ent in ipairs(ents.FindInSphere(startTarget:GetPos(), maxDST)) do
+			if(ent == self:GetOwner() || ent:Health() <= 0 || (!ent:IsNPC() && !ent:IsPlayer() && !ent:IsNextBot()) || ent.IsBuilding) then continue end
+			if(self.ChainedTargets[ent:EntIndex()]) then continue end
+			if(!vvis(startvec, ent)) then continue end
+			local d = ent:GetPos():Distance(startTarget:GetPos())
+			if(!target || d < dst) then
+				target = ent
+				dst = d
+			end
+		end
+
+		if(IsValid(target)) then
+			self.ChainedTargets[target:EntIndex()] = true
+			self:ChainAttack(target)
+			self.CurrentChain = self.CurrentChain + 1
 		end
 	end
 
 	function ENT:Think()
 		local owner = self:GetOwner()
+		if(IsValid(self.AttachTarget)) then
+			self:SetPos(self.AttachTarget:GetPos())
+		end
 		if(!IsValid(owner)) then self:Remove() return end
 		if(self.NextExplode < CurTime()) then
 			self.NextExplode = CurTime() + 0.33
 
-			self:SetPos(owner:GetPos() + owner:OBBCenter())
 			self.ChainedTargets = {
-				[owner:EntIndex()] = true
+				[owner:EntIndex()] = true,
+				[self:EntIndex()] = true,
 			}
 			self.CurrentChain = 0
-			self:ChainAttack(owner)
+			self:ChainAttack(self)
 
 			self.ExplodeCount = self.ExplodeCount + 1
 			if(self.ExplodeCount >= 4) then

@@ -196,13 +196,14 @@ function ZShelter.CreateDefaultItems()
 			ZShelter.AddItem("Explosive", "tfa_cso_at4ex", "AT4", 103, 84, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery"}, "default", 25, 5, 5, 4)
 
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_tritacknife", "Throwing Knife", 25, 25, 1, false, {"Silence"}, "default", 0.0, -1, -1, 1)
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_chainsaw", "Chainsaw", 32, 30, 1, false, {"Health Boost"}, "default", 0.0, -1, -1, 1)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_chainsaw", "Chainsaw", 32, 30, 1, true, {"Health Boost"}, "default", 0.0, -1, -1, 1)
 
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_rockbreaker", "Construction Drill", 30, 33, 1, false, {"Transporting Drone", "Defense Matrix"}, "default", 0.0, -1, -1, 1)
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow", "Compound Bow", 38, 38, 1, false, {}, "default", 0.0, -1, -1, 1)
 			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_bow_v6", "Compound Bow EX", 55, 55, 1, false, {"Beginner Gun Mastery"}, "default", 0.0, -1, -1, 1)
 
-			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_arbalest", "Arbalest", 320, 320, 1, false, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery", "Airstrike"}, "default", 2, -1, -1, 4)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_arbalest", "Arbalest", 320, 320, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery", "Airstrike"}, "default", 2, -1, -1, 4)
+			ZShelter.AddItem("Miscellaneous", "tfa_zsh_cso_heavenscorcher", "Heaven Splitter", 320, 320, 1, true, {"Beginner Gun Mastery", "Intermediate Gun Mastery", "Advanced Gun Mastery", "Airstrike"}, "default", 2, -1, -1, 4)
 
 
 	if(!file.Exists("zombie shelter v2/item.txt", "DATA")) then

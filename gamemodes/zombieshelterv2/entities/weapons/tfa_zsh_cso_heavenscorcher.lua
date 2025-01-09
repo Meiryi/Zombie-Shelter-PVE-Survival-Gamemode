@@ -19,13 +19,13 @@ SWEP.Type	= "Epic Grade Equipment"
 SWEP.Primary.Knockback = 0 
 SWEP.ProceduralHolsterTime = 0
 SWEP.Primary.PenetrationMultiplier	= -1
-SWEP.Primary.HullSize = 1
+SWEP.Primary.HullSize = 8
 
 --[[WEAPON HANDLING]]--
 
 --Firing related
 SWEP.Primary.Sound 			= Sound("HeavenScorcher.Fire")				-- This is the sound of the weapon, when you shoot.
-SWEP.Primary.Damage	= 250					-- Damage, in standard damage points.
+SWEP.Primary.Damage	= 280					-- Damage, in standard damage points.
 SWEP.Primary.BlastRadius	= 0               -- Radius for DMG_BLAST
 SWEP.DamageType = DMG_BULLET --See DMG enum.  This might be DMG_SHOCK, DMG_BURN, DMG_BULLET, etc.
 SWEP.Primary.NumShots	= 1 --The number of shots the weapon fires.  SWEP.Shotgun is NOT required for this to be >1.
@@ -267,7 +267,7 @@ SWEP.MuzzleFlashEffect = "cso_muz_heavenscorcher" --Change to a string of your m
 --Tracer Stuff
 
 SWEP.Tracer				= 0		--Bullet tracer.  TracerName overrides this.
-SWEP.TracerName 		= "tra_zsh_heaven" 	--Change to a string of your tracer name.  Can be custom.
+SWEP.TracerName 		= "none" 	--Change to a string of your tracer name.  Can be custom.
 								--There is a nice example at https://github.com/garrynewman/garrysmod/blob/master/garrysmod/gamemodes/base/entities/effects/tooltracer.lua
 SWEP.TracerCount 		= 1 	--0 disables, otherwise, 1 in X chance
 
@@ -275,7 +275,7 @@ SWEP.TracerCount 		= 1 	--0 disables, otherwise, 1 in X chance
 SWEP.TracerLua 			= false --Use lua effect, TFA Muzzle syntax.  Currently obsolete.
 SWEP.TracerDelay		= 0.01 --Delay for lua tracer effect
 
-SWEP.Primary.ImpactEffect = "exp_heavenscorcher"
+SWEP.Primary.ImpactEffect = nil
 --[[EVENT TABLE]]--
 
 SWEP.EventTable = {} --Event Table, used for custom events when an action is played.  This can even do stuff like playing a pump animation after shooting.
@@ -413,21 +413,25 @@ SWEP.Secondary.DefaultClip = 3
 SWEP.Secondary.Ammo = "scorcher_mine"
 SWEP.Secondary.Sound = Sound("HeavenScorcher.Mine_Shoot")
 
-SWEP.Secondary.Projectile = "heaven_scorcher_grenade"
+SWEP.Secondary.Projectile = "zsh_heaven_scorcher_grenade"
 SWEP.Secondary.ProjectileModel = "models/weapons/tfa_cso/w_heaven_bomb.mdl"
 SWEP.Secondary.ProjectileVelocity = 800
-SWEP.Secondary.Damage = 25000
+SWEP.Secondary.Damage = 2000
 
 SWEP.DetonateDelay = 0
 SWEP.Callbacks = {}
 SWEP.Callbacks.OnHit = {}
 
 SWEP.Callbacks.OnHit["HeavenScorcher"] = function(attacker, target, dmginfo)
+	if(!target:IsNPC() && !target:IsNextBot() && !target:IsPlayer()) then return end
+	if(target.IsBuilding || IsValid(attacker.ChainObj)) then return end
 	local ent = ents.Create("obj_heaven_chain")
 		ent:SetPos(target:GetPos())
-		ent:SetOwner(target)
+		ent:SetOwner(attacker)
 		ent:Spawn()
 		ent.Attacker = attacker
+		ent.AttachTarget = target
+		attacker.ChainObj = ent
 end
 
 function SWEP:PrimaryAttack( ... )
@@ -444,13 +448,14 @@ function SWEP:PrimaryAttack( ... )
 			self:SetClip2( 0 )
 			self:TakeSecondaryAmmo( 1 )
 			if SERVER then
-			local ent = ents.Create( "heaven_scorcher_grenade" )
+			local ent = ents.Create(self.Secondary.Projectile)
 			ent:SetPos( self.Owner:GetShootPos() )
 			ent:SetAngles( Angle(90, 0, 0) )
 			ent:SetModel( "models/weapons/tfa_cso/w_heaven_bomb.mdl" )
 			ent:Spawn()
 			ent:Activate()
 			ent.pOwner = self.Owner -- Remember to add this
+			ent.Damage = self.Secondary.Damage
 			ent:SetOwner(self.Owner)
 			ent:GetPhysicsObject():SetVelocity( self.Owner:GetAimVector() * 950 )
 			end
@@ -487,7 +492,7 @@ function SWEP:Think2( ... )
 	if(SERVER) then
 		if(self.Owner:GetViewModel(0):GetSequence() == 6 && self.DetonateDelay < CurTime()) then
 			timer.Simple(0.75, function()
-				for k,v in pairs(ents.FindByClass("heaven_scorcher_grenade")) do
+				for k,v in pairs(ents.FindByClass("zsh_heaven_scorcher_grenade")) do
 					if(!IsValid(v)) then continue end
 					if(v.pOwner == nil) then continue end
 					if(v.pOwner == self.Owner) then v:Remove() end
@@ -500,28 +505,34 @@ function SWEP:Think2( ... )
 end
 
 function SWEP:SecondaryAttack()
-    if not self:CanPrimaryAttack() then return end
+    if not self:CanPrimaryAttack() || self:Ammo2() <= 0 then return end
 
     if self.CanBeSilenced and ( SERVER or not sp ) and self:Ammo2() > 0 then
         self:ChooseSilenceAnim( not self:GetSilenced() )
         success, tanim = self:SetStatus(TFA.Enum.STATUS_SILENCER_TOGGLE)
-        self:SetStatusEnd( CurTime() + 0.1 )
+        self:SetStatusEnd( CurTime() + 0.33 )
         return
     end
     if self.CanBeSilenced and ( SERVER or not sp ) then
         self:ChooseSilenceAnim( self:GetSilenced() )
-        self:SetStatusEnd( CurTime() + self:GetActivityLength( tanim ) )
+        self:SetStatusEnd( CurTime() + 1 )
         return
     end
 end
 
+SWEP.CurrentGen = 0
 function SWEP:PostPrimaryAttack()
-if self:GetSilenced() then
-self:SetStatus(TFA.Enum.STATUS_SILENCER_TOGGLE)
-self:SetStatusEnd(CurTime() + 1)
-self:SetNextPrimaryFire(CurTime() + 1)
-end
-BaseClass.PostPrimaryAttack(self)
+	if self:GetSilenced() then
+		self:SetStatus(TFA.Enum.STATUS_SILENCER_TOGGLE)
+		self:SetStatusEnd(CurTime() + 1)
+		self:SetNextPrimaryFire(CurTime() + 1)
+	end
+	self.CurrentGen = self.CurrentGen + 1
+	if(self.CurrentGen >= 20 && SERVER) then
+		self.CurrentGen = 0
+		self.Owner:GiveAmmo(1, self.Secondary.Ammo, true)
+	end
+	BaseClass.PostPrimaryAttack(self)
 end
 
 function SWEP:CompleteReload()

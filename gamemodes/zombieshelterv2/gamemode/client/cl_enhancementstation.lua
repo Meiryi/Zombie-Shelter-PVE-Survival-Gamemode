@@ -117,19 +117,40 @@ function ZShelter.CreateEnhancementPanel(parent, wep)
 		local costLabels = {}
 		local cost = ZShelter.Enhancements.CalculateCost(wep, enh)
 
-		for xpos, res in next, resources do
-			local icon = ZShelter.CreateImage(basepnl, nextX, basey, sx, sx, "zsh/icon/"..string.lower(res)..".png")
-			local _, _, _cost = ZShelter.CreateLabel(basepnl, nextX + (sx / 2), basey + sx, cost, "ZShelter-MenuSmall", Color(200, 200, 200, 255))
-			_cost:CentHor()
+		local econ = ZShelter.EconomyEnabled()
+		if(econ) then
+			local _, _, _cost = ZShelter.CreateLabel(basepnl, basepnl:GetWide(), basey + (basepnl:GetTall() - pnl:GetTall()) * 0.5, "$"..math.floor(cost * ZShelter.ResourceToMoney), "ZShelter-Enhancement-Desc", Color(200, 200, 200, 255))
+			_cost.CentVer()
+			_cost:SetX(basepnl:GetWide() - _cost:GetWide() - dockmargin)
+			_cost.UpdateText = function(str)
+				_cost:SetText(str)
+				local w, h = ZShelter.GetTextSize(_cost:GetFont(), _cost:GetText())
+				_cost:SetSize(w, h)
+				_cost:SetX(basepnl:GetWide() - _cost:GetWide() - dockmargin)
+			end
 			_cost.Think = function()
-				if(GetGlobalInt(res, 0) < cost) then
+				if(!ZShelter.RequirementsCompare(LocalPlayer(), cost, cost)) then
 					_cost:SetTextColor(Color(255, 55, 55, 255))
 				else
 					_cost:SetTextColor(Color(255, 255, 255, 255))
 				end
 			end
 			table.insert(costLabels, _cost)
-			nextX = nextX - sx - dockmargin * 2
+		else
+			for xpos, res in next, resources do
+				local icon = ZShelter.CreateImage(basepnl, nextX, basey, sx, sx, "zsh/icon/"..string.lower(res)..".png")
+				local _, _, _cost = ZShelter.CreateLabel(basepnl, nextX + (sx / 2), basey + sx, cost, "ZShelter-MenuSmall", Color(200, 200, 200, 255))
+				_cost:CentHor()
+				_cost.Think = function()
+					if(GetGlobalInt(res, 0) < cost) then
+						_cost:SetTextColor(Color(255, 55, 55, 255))
+					else
+						_cost:SetTextColor(Color(255, 255, 255, 255))
+					end
+				end
+				table.insert(costLabels, _cost)
+				nextX = nextX - sx - dockmargin * 2
+			end
 		end
 
 		btn.Alpha = 0
@@ -144,7 +165,11 @@ function ZShelter.CreateEnhancementPanel(parent, wep)
 			draw.RoundedBox(0, 0, 0, btn:GetWide(), btn:GetTall(), Color(255, 255, 255, btn.Alpha))
 
 			for _, l in ipairs(costLabels) do
-				l.UpdateText(cost)
+				if(econ) then
+					l.UpdateText("$"..math.floor(cost * ZShelter.ResourceToMoney))
+				else
+					l.UpdateText(cost)
+				end
 			end
 
 			local startX = btn:GetWide() - (squareRadius + dockmargin)

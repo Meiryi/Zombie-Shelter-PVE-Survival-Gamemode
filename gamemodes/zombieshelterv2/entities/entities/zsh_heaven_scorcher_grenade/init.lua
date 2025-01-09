@@ -11,6 +11,7 @@ ENT.LightSprite = nil
 ENT.LightSprite2 = nil
 ENT.EXPSprite = nil
 ENT.pOwner = nil -- Since owner cannot collide with it's now entity, I had to do it in this way
+ENT.Damage = 1000
 
 function ENT:Initialize()
 	self:SetModel("models/weapons/tfa_cso/w_heaven_bomb.mdl")
@@ -33,7 +34,7 @@ function ENT:Think()
 	if(!self.Set) then
 		local tr = {
 			start = self:GetPos(),
-			endpos = self:GetPos() - Vector(0, 0, 6),
+			endpos = self:GetPos() - Vector(0, 0, 12),
 			filter = self, self.pOwner,
 		}
 		local tr_ = util.TraceLine(tr)
@@ -61,13 +62,9 @@ function ENT:Think()
 end
 
 function ENT:OnRemove()
-	local e = EffectData()
-	self.EXPSprite = ents.Create("env_sprite_oriented")
-	self.EXPSprite:SetKeyValue("model","materials/sprites/heavenscorcher_exp2.vmt")
-	self.EXPSprite:SetKeyValue("scale", "1")		
-	self.EXPSprite:SetPos(self:GetPos() + Vector(0, 0, 50))
-	self.EXPSprite:Spawn()
-	self.EXPSprite:Fire("Kill","",0.7)
+	local effectdata = EffectData()
+		effectdata:SetOrigin(self:GetPos() + self:OBBCenter())
+		util.Effect("exp_heavenscorcher", effectdata)
 	sound.Play("weapons/tfa_cso/heaven_scorcher/mine_exp.wav", self:GetPos() + Vector(0, 0, 5), 100, 100, 1)
 	local owner = self.pOwner
 	if(IsValid(owner)) then
@@ -79,7 +76,7 @@ function ENT:OnRemove()
 				continue
 			end
 			local d = DamageInfo()
-				d:SetDamage(25000)
+				d:SetDamage(self.Damage)
 				d:SetDamageType(64)
 				d:SetDamagePosition(v:GetPos())
 				d:SetAttacker(owner)
